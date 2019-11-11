@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.Login.LoginActivity"
+    android:background="#00000000">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="30dp"
+        android:paddingLeft="@dimen/card_padding"
+        android:paddingRight="@dimen/card_padding"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/guide_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.shizhefei.view.indicator.FixedIndicatorView
+        android:id="@+id/guide_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guide_viewPager"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_device_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:textColor="#E9F0FF"
+        android:textSize="20sp"
+        android:text="@string/common_my_device"/>
+
+    <TextView
+        android:id="@+id/tv_no_device_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/tv_device_title"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_device_title"
+        android:layout_marginTop="10dp"
+        android:textColor="#8EA9E0"
+        android:textSize="14sp"
+        android:text="@string/home_no_device"/>
+
+    <Button
+        android:id="@+id/btn_bind_device"
+        android:layout_width="136dp"
+        android:layout_height="36dp"
+        android:textSize="16sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_no_device_tip"
+        android:text="@string/common_bind_device"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/login_button_background"
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/btn_ignore"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@id/btn_bind_device"
+        app:layout_constraintTop_toBottomOf="@id/tv_no_device_tip"
+        android:layout_marginStart="14dp"
+        android:text="@string/common_ignore"
+        android:textColor="#4176E3"
+        android:background="@null"
+        android:layout_marginTop="15dp" />
+
+    <ImageButton
+        android:id="@+id/ib_help_sleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_bind_device"
+        android:background="@mipmap/home_icon_sleep_aid"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/tv_help_sleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#B2C1E0"
+        android:textSize="12sp"
+        android:text="@string/index_help_sleep"
+        app:layout_constraintLeft_toLeftOf="@id/ib_help_sleep"
+        app:layout_constraintRight_toRightOf="@id/ib_help_sleep"
+        app:layout_constraintTop_toBottomOf="@id/ib_help_sleep"
+        android:layout_marginTop="8dp"/>
+
+    <ImageButton
+        android:id="@+id/ib_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ib_help_sleep"
+        android:background="@mipmap/home_icon_sleep_aid"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#B2C1E0"
+        android:textSize="12sp"
+        android:text="@string/index_alarms"
+        app:layout_constraintLeft_toLeftOf="@id/ib_alarm"
+        app:layout_constraintRight_toRightOf="@id/ib_alarm"
+        app:layout_constraintTop_toBottomOf="@id/ib_alarm"
+        android:layout_marginTop="8dp"/>
+
+    <ImageButton
+        android:id="@+id/ib_devices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/ib_help_sleep"
+        android:background="@mipmap/home_icon_equipment"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="40dp"/>
+
+    <TextView
+        android:id="@+id/tv_devices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#B2C1E0"
+        android:textSize="12sp"
+        android:text="@string/index_device"
+        app:layout_constraintLeft_toLeftOf="@id/ib_devices"
+        app:layout_constraintRight_toRightOf="@id/ib_devices"
+        app:layout_constraintTop_toBottomOf="@id/ib_devices"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/iv_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm"
+        app:layout_constraintRight_toLeftOf="@id/iv_humidity"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/home_icon_temperature"/>
+
+    <TextView
+        android:id="@+id/tv_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report_current_temperature"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="@id/iv_temperature"
+        app:layout_constraintLeft_toLeftOf="@id/iv_temperature"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_temperature_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0℃"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_temperature"
+        app:layout_constraintRight_toRightOf="@id/iv_temperature"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="0dp"/>
+
+    <ImageView
+        android:id="@+id/iv_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm"
+        app:layout_constraintLeft_toRightOf="@id/iv_temperature"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/home_icon_humidity"/>
+
+    <TextView
+        android:id="@+id/tv_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report_current_humidity"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="@id/iv_humidity"
+        app:layout_constraintLeft_toLeftOf="@id/iv_humidity"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_humidity_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_humidity"
+        app:layout_constraintRight_toRightOf="@id/iv_humidity"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="0dp"/>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="0dp"
+        android:layout_height="152dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_humidity"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_sleep_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toBottomOf="@id/banner"
+        android:layout_marginTop="20dp"
+        android:textColor="#E9F0FF"
+        android:textSize="20sp"
+        android:text="@string/index_yamy_class"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_sleep_class_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/tv_sleep_class"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_sleep_class"
+        android:layout_marginTop="20dp"
+        android:textColor="#B2C1E0"
+        android:textSize="14sp"
+        android:text="@string/index_more"/>
+
+    <com.deadline.statebutton.StateButton
+        android:id="@+id/btn_close_advertisement"
+        android:layout_width="38dp"
+        android:layout_height="22dp"
+        app:layout_constraintRight_toRightOf="@id/banner"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/index_close"
+        android:textSize="10sp"
+        android:background="@null"
+        app:radius="11dp"
+        app:animationDuration="200"
+        app:normalBackgroundColor="#88FFFFFF"
+        app:normalTextColor="#000000"
+        app:pressedTextColor="#4176E3"
+        app:pressedBackgroundColor="#4176E3"/>
+
+    <com.deadline.statebutton.StateButton
+        android:id="@+id/btn_start_buy"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:layout_constraintRight_toRightOf="@id/banner"
+        app:layout_constraintBottom_toBottomOf="@id/banner"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="1dp"
+        android:text="@string/index_buy_it_now"
+        android:textSize="14sp"
+        android:background="@null"
+        app:radius="12dp"
+        app:animationDuration="200"
+        app:normalBackgroundColor="#4AC4C4"
+        app:normalTextColor="#FFFFFF"
+        app:pressedTextColor="#4176E3"
+        app:pressedBackgroundColor="#4176E3"
+        android:visibility="gone"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.haibin.calendarview.CalendarLayout
+        android:id="@+id/calendarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#00000000"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:calendar_show_mode="both_month_week_view"
+        android:gravity="center">
+
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBG"
+            app:calendar_padding="10dp"
+            app:month_view="com.zhang.xiaofei.smartsleep.Kit.Calendar.SimpleMonthView"
+            app:calendar_height="46dp"
+            app:current_month_lunar_text_color="#499BE5"
+            app:current_month_text_color="#FFFFFF"
+            app:min_year="2004"
+            app:other_month_text_color="#3E4C67"
+            app:selected_text_color="#FFFFFF"
+            app:selected_theme_color="#499BE5"
+            app:week_background="#00000000"
+            app:week_text_color="#8EA9E0"
+            app:week_view="com.zhang.xiaofei.smartsleep.Kit.Calendar.SimpleWeekView"
+            app:year_view_day_text_color="#333333"
+            app:year_view_day_text_size="9sp"
+            app:year_view_month_text_color="#ff0000"
+            app:year_view_month_text_size="20sp"
+            app:year_view_scheme_color="#f17706"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sleep_week_average"
+            android:layout_marginTop="30dp"/>
+    </com.haibin.calendarview.CalendarLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

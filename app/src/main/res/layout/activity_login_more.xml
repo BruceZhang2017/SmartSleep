@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.Login.LoginMoreActivity"
+    android:background="@color/colorBG"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@mipmap/home_page_bg"/>
+
+    <com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarHeightView
+        android:id="@+id/view_status_bar_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:use_type="use_padding_top"
+        tools:visibility="visible" >
+    </com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarHeightView>
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/layout_custom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_status_bar_height" />
+
+    <ImageView
+        android:id="@+id/iv_head"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/login_icon_head"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_title"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/tv_cardId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="ID 666666"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="58dp"
+        android:gravity="right"
+        android:text="@string/common_nick"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cardId" />
+
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_nickname"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#1AFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="14dp"/>
+
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="@string/login_input_nickname"
+        android:singleLine="true"
+        android:textColorHint="#ff555A63"
+        app:layout_constraintBottom_toTopOf="@id/iv_line"
+        app:layout_constraintLeft_toRightOf="@id/tv_nickname"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:background="@null"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/tv_sex"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="right"
+        android:layout_marginTop="31dp"
+        android:text="@string/common_sex"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+        />
+
+    <ImageView
+        android:id="@+id/iv_line_sex"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_sex"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#1AFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/tv_sex"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="14dp"/>
+
+    <Button
+        android:id="@+id/btn_sex"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="@string/login_select_sex"
+        android:textColorHint="#ff555A63"
+        app:layout_constraintBottom_toTopOf="@id/iv_line_sex"
+        app:layout_constraintLeft_toRightOf="@id/tv_sex"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:background="@null"/>
+
+    <TextView
+        android:id="@+id/tv_birthday"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="right"
+        android:layout_marginTop="31dp"
+        android:text="@string/login_birth"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sex"
+        />
+
+    <ImageView
+        android:id="@+id/iv_line_birthday"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_birthday"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#1AFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/tv_birthday"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="14dp"/>
+
+    <Button
+        android:id="@+id/btn_birthday"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="@string/middle_date_of_birth"
+        android:textColorHint="#ff555A63"
+        app:layout_constraintBottom_toTopOf="@id/iv_line_birthday"
+        app:layout_constraintLeft_toRightOf="@id/tv_birthday"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:background="@null"/>
+
+    <TextView
+        android:id="@+id/tv_height"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="right"
+        android:layout_marginTop="31dp"
+        android:text="@string/common_height"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_birthday"
+        />
+
+    <ImageView
+        android:id="@+id/iv_line_height"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_height"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#1AFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/tv_height"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="14dp"/>
+
+    <Button
+        android:id="@+id/btn_height"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="@string/login_height"
+        android:textColorHint="#ff555A63"
+        app:layout_constraintBottom_toTopOf="@id/iv_line_height"
+        app:layout_constraintLeft_toRightOf="@id/tv_height"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:background="@null"/>
+
+    <TextView
+        android:id="@+id/tv_weight"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="right"
+        android:layout_marginTop="31dp"
+        android:text="@string/common_weight"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_height"
+        />
+
+    <ImageView
+        android:id="@+id/iv_line_weight"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_weight"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="#1AFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/tv_weight"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="14dp"/>
+
+    <Button
+        android:id="@+id/btn_weight"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="@string/login_weight"
+        android:textColorHint="#ff555A63"
+        app:layout_constraintBottom_toTopOf="@id/iv_line_weight"
+        app:layout_constraintLeft_toRightOf="@id/tv_weight"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:background="@null"/>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="202dp"
+        android:layout_height="50dp"
+        android:textSize="16sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_line_weight"
+        android:text="@string/common_nextstep"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/login_button_background"
+        android:layout_marginTop="44dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

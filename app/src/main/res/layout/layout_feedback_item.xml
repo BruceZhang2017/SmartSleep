@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="17dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        android:text="产品问题"/>
+
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_type"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        android:text="已完成"/>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_type"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/color_555A63"
+        android:textSize="14sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="问题描述问题描述问题描述问题描述问题描述问…"/>
+
+    <com.deadline.statebutton.StateButton
+        android:id="@+id/btn_unsolved"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc"
+        android:layout_marginTop="14dp"
+        android:text="@string/mine_unsolved"
+        android:textSize="14sp"
+        android:background="@null"
+        app:radius="5dp"
+        app:animationDuration="200"
+        app:normalStrokeWidth="1dp"
+        app:normalBackgroundColor="@color/colorBG"
+        app:normalTextColor="#4CC4C3"
+        app:pressedTextColor="#4176E3"
+        app:normalStrokeColor="#4CC4C3"
+        app:pressedBackgroundColor="#4176E3"/>
+
+    <com.deadline.statebutton.StateButton
+        android:id="@+id/btn_solved"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        app:layout_constraintRight_toLeftOf="@id/btn_unsolved"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/mine_resolved"
+        android:textSize="14sp"
+        android:background="@null"
+        app:radius="5dp"
+        app:animationDuration="200"
+        app:normalStrokeWidth="1dp"
+        app:normalBackgroundColor="@color/colorBG"
+        app:normalTextColor="#4CC4C3"
+        app:pressedTextColor="#4176E3"
+        app:normalStrokeColor="#4CC4C3"
+        app:pressedBackgroundColor="#4176E3"/>
+
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#1AFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/btn_unsolved"
+        android:layout_marginTop="19dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

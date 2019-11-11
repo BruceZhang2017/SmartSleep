@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/str_item_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/str_image_holder"
+        android:layout_width="match_parent"
+        app:riv_corner_radius="5dp"
+        android:layout_height="110dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/home_head_view_pager_image_view_bg"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/str_textview_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="45dp"
+        android:text="轻睡眠 · 运动系列"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhite"/>
+
+    <TextView
+        android:id="@+id/str_textview_feature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="睡前小按摩"
+        android:textSize="15sp"
+        android:textColor="#B2C1E0"
+        android:layout_below="@id/str_textview_holder"/>
+
+</RelativeLayout>

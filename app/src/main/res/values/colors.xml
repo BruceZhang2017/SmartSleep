@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#090E17</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorBG">#090E17</color>
+    <color name="color_555A63">#555A63</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="circleProgressBG">#29FFFFFF</color>
+    <color name="circleProgressFG">#FF5DF2FF</color>
+    <color name="reportTopSelectedColor">#76D5DD</color>
+    <color name="reportTopNormalColor">#838EA0</color>
+    <color name="tranparencyColor">#00000000</color>
+    <color name="halftranparencyColor">#AA000000</color>
+    <color name="navigationBarRightColor">#4176E3</color>
+    <color name="color_315FEE">#315FEE</color>
+    <color name="color_6EE1CA">#6EE1CA</color>
+    <color name="color_B2C1E0">#B2C1E0</color>
+    <color name="color_5DF2FF">#5DF2FF</color>
+    <color name="color_090E17">#090E17</color>
+    <color name="color_FFC858">#FFC858</color>
+    <color name="color_33315FEE">#33315FEE</color>
+    <color name="color_499BE5">#499BE5</color>
+    <color name="color_33499BE5">#33499BE5</color>
+    <color name="color_61D088">#61D088</color>
+    <color name="color_3361D088">#3361D088</color>
+    <color name="color_67D9F1">#67D9F1</color>
+    <color name="color_3367D9F1">#3367D9F1</color>
+    <color name="color_4AC4C4">#4AC4C4</color>
+    <color name="color_4176E3">#4176E3</color>
+    <color name="color_F62C2C">#F62C2C</color>
+    <color name="color_0A1833">#0A1833</color>
+    <color name="color_8EA9E1">#8EA9E1</color>
+</resources>

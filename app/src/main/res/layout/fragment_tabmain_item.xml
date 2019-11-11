@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/tv_simulation_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="37dp"
+                android:drawableLeft="@mipmap/report_icon_date"
+                android:drawablePadding="9dp"/>
+
+            <ImageButton
+                android:id="@+id/ib_left_pre"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_simulation_data"
+                app:layout_constraintBottom_toBottomOf="@id/tv_simulation_data"
+                android:layout_marginStart="50dp"
+                android:src="@mipmap/report_icon_back"
+                android:background="@null"/>
+
+            <ImageButton
+                android:id="@+id/ib_right_next"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_simulation_data"
+                app:layout_constraintBottom_toBottomOf="@id/tv_simulation_data"
+                android:layout_marginEnd="50dp"
+                android:src="@mipmap/report_icon_next"
+                android:background="@null"/>
+
+            <io.feeeei.circleseekbar.CircleSeekBar
+                android:id="@+id/circle_percent_progress"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_simulation_data"
+                android:layout_marginTop="25dp"
+                app:wheel_max_process="100"
+                app:wheel_cur_process="30"
+                app:wheel_reached_width="@dimen/wheel_width"
+                app:wheel_unreached_width="@dimen/wheel_width"
+                app:wheel_pointer_radius="@dimen/wheel_point_width"
+                android:padding="4dp"
+                app:wheel_can_touch="false"
+                app:wheel_unreached_color="#29FFFFFF"
+                app:wheel_reached_color="#5DF2FF"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/report_sleep_analysis"
+                android:textColor="#8EA9E0"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/circle_percent_progress" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textColor="#FFFFFF"
+                android:textSize="50sp"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintLeft_toLeftOf="@id/circle_percent_progress"
+                app:layout_constraintTop_toTopOf="@id/circle_percent_progress"
+                app:layout_constraintBottom_toBottomOf="@id/circle_percent_progress"
+                app:layout_constraintRight_toRightOf="@id/circle_percent_progress" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_sleep_quality"
+                android:textColor="#4176E3"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_percent_progress"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_review_value"
+                app:layout_constraintRight_toRightOf="@id/circle_percent_progress" />
+
+            <ImageView
+                android:id="@+id/iv_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_desc"
+                android:layout_marginTop="28dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="#17FFFFFF"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_line"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_04"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:text="@string/report_awake"
+                android:textColor="#61D088"
+                android:textSize="8sp"
+                android:gravity="right"
+                android:singleLine="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/chart1"
+                android:layout_marginBottom="40dp"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_03"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:text="@string/report_Light_sleep"
+                android:textColor="#62CFEA"
+                android:textSize="8sp"
+                android:gravity="right"
+                android:singleLine="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_sleep_review_value_04"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_02"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:text="@string/report_moderate_sleep"
+                android:textColor="#499BE5"
+                android:textSize="8sp"
+                android:gravity="right"
+                android:singleLine="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_sleep_review_value_03"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_01"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:text="@string/report_deep_sleep"
+                android:textColor="#4176E3"
+                android:textSize="8sp"
+                android:gravity="right"
+                android:singleLine="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_sleep_review_value_02"
+                android:layout_marginBottom="20dp"/>
+
+            <ImageView
+                android:id="@+id/iv_moon"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@mipmap/report_icon_moon"
+                app:layout_constraintRight_toRightOf="@id/tv_sleep_review_value_01"
+                app:layout_constraintBottom_toTopOf="@id/tv_sleep_review_value_01"
+                android:layout_marginBottom="12dp"/>
+
+            <ImageView
+                android:id="@+id/iv_sun"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@mipmap/report_icon_sun"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_moon"
+                app:layout_constraintBottom_toBottomOf="@id/iv_moon"
+                android:layout_marginRight="15dp"/>
+
+
+            <com.zhang.xiaofei.smartsleep.UI.Home.CirclePercentView
+                android:id="@+id/circle_sleep_1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                app:circleIsGradient="false"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chart1"
+                android:layout_marginTop="20dp"
+                app:layout_constraintRight_toLeftOf="@id/circle_sleep_2"
+                app:layout_constraintHorizontal_chainStyle="spread"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6%"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_1"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_1"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_1"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_1" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_deep_sleep"
+                android:textColor="#4176E3"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_1"
+                app:layout_constraintTop_toBottomOf="@id/circle_sleep_1"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_1"
+                android:layout_marginTop="10dp"/>
+
+            <com.zhang.xiaofei.smartsleep.UI.Home.CirclePercentView
+                android:id="@+id/circle_sleep_2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                app:circleIsGradient="false"
+                app:layout_constraintLeft_toRightOf="@id/circle_sleep_1"
+                app:layout_constraintRight_toLeftOf="@id/circle_sleep_3"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_1"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_1"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6%"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_2"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_2"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_2"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_2" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_moderate_sleep"
+                android:textColor="#499BE5"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_2"
+                app:layout_constraintTop_toBottomOf="@id/circle_sleep_2"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_2"
+                android:layout_marginTop="10dp"/>
+
+            <com.zhang.xiaofei.smartsleep.UI.Home.CirclePercentView
+                android:id="@+id/circle_sleep_3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                app:circleIsGradient="false"
+                app:layout_constraintLeft_toRightOf="@id/circle_sleep_2"
+                app:layout_constraintRight_toLeftOf="@id/circle_sleep_4"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_2"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_2"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6%"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_3"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_3"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_3"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_3" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_Light_sleep"
+                android:textColor="#62CFEA"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_3"
+                app:layout_constraintTop_toBottomOf="@id/circle_sleep_3"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_3"
+                android:layout_marginTop="10dp"/>
+
+            <com.zhang.xiaofei.smartsleep.UI.Home.CirclePercentView
+                android:id="@+id/circle_sleep_4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                app:circleIsGradient="false"
+                app:layout_constraintLeft_toRightOf="@id/circle_sleep_3"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_3"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_3"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6%"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_4"
+                app:layout_constraintTop_toTopOf="@id/circle_sleep_4"
+                app:layout_constraintBottom_toBottomOf="@id/circle_sleep_4"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_4" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_awake"
+                android:textColor="#61D088"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_sleep_4"
+                app:layout_constraintTop_toBottomOf="@id/circle_sleep_4"
+                app:layout_constraintRight_toRightOf="@id/circle_sleep_4"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_quality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_sleep_data"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_review_value_1"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cl_2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_quality"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/block_bordor">
+
+                <TextView
+                    android:id="@+id/tv_time_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23时30分"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_time_1"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time_1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="7dp"
+                    android:src="@mipmap/report_icon_sleeping_time"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_1"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/middle_fall_asleep"
+                    android:textColor="#555A63"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@id/iv_time_1"
+                    app:layout_constraintTop_toTopOf="@id/iv_time_1"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_time_1"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_tag_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_health"
+                    android:textColor="#4BBE20"
+                    android:textSize="10sp"
+                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_1"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_1"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="6dp"
+                    android:paddingLeft="9dp"
+                    android:paddingRight="9dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:background="@drawable/textview_bordor"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cl_1"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_quality"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/block_bordor">
+
+                <TextView
+                    android:id="@+id/tv_time_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23时30分"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_time_2"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time_2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/report_icon_fall_asleep"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_2"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/middle_sleep_duration"
+                    android:textColor="#555A63"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@id/iv_time_2"
+                    app:layout_constraintTop_toTopOf="@id/iv_time_2"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_time_2"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_tag_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_health"
+                    android:textColor="#CAAD2A"
+                    android:textSize="10sp"
+                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_2"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_2"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_2"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="6dp"
+                    android:paddingLeft="9dp"
+                    android:paddingRight="9dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:background="@drawable/textview_bordor"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/cl_4"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintTop_toBottomOf="@id/cl_1"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/block_bordor">
+
+                <TextView
+                    android:id="@+id/tv_time_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23时30分"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_time_3"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time_3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/report_icon_sleep_duration"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_3"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_sleep_hour"
+                    android:textColor="#555A63"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@id/iv_time_3"
+                    app:layout_constraintTop_toTopOf="@id/iv_time_3"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_time_3"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_tag_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_health"
+                    android:textColor="#4BBE20"
+                    android:textSize="10sp"
+                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_3"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_3"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_3"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="6dp"
+                    android:paddingLeft="9dp"
+                    android:paddingRight="9dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:background="@drawable/textview_bordor"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cl_3"
+                app:layout_constraintTop_toBottomOf="@id/cl_2"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/block_bordor">
+
+                <TextView
+                    android:id="@+id/tv_time_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23时30分"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_time_4"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time_4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/report_icon_noise"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_time_4"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_ambient_noise"
+                    android:textColor="#555A63"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@id/iv_time_4"
+                    app:layout_constraintTop_toTopOf="@id/iv_time_4"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_time_4"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_tag_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_health"
+                    android:textColor="#CAAD2A"
+                    android:textSize="10sp"
+                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_4"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_4"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_4"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="6dp"
+                    android:paddingLeft="9dp"
+                    android:paddingRight="9dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:background="@drawable/textview_bordor"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_3"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:id="@+id/tv_sleep_bottom_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_heart"
+                    android:textColor="#E9F0FF"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginLeft="22dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_bottom_count_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_bottom_1"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_bottom_1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="20dp"/>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart2"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sleep_bottom_1"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_5"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_sleep_bottom_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_respiratory_rate"
+                    android:textColor="#E9F0FF"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginLeft="22dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_bottom_count_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_bottom_2"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_bottom_2"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="20dp"/>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart3"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sleep_bottom_2"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_6"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="40dp">
+
+                <TextView
+                    android:id="@+id/tv_sleep_bottom_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_turn_over"
+                    android:textColor="#E9F0FF"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginLeft="22dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sleep_bottom_count_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_sleep_bottom_3"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_bottom_3"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="20dp"/>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart4"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sleep_bottom_3"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
