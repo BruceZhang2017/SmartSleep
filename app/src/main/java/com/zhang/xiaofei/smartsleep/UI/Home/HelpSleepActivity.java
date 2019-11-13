@@ -1,7 +1,10 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -13,24 +16,39 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.UiThread;
+
+import com.deadline.statebutton.StateButton;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.ximalaya.ting.android.opensdk.test.MainFragmentActivity;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
+import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener {
 
     ImageButton ibBack;
     TextView tvTime;
     TextView tvTimeRange;
+    TextView tvTip;
+    TextView tvRealTime;
     Handler handler;
     MainFragmentActivity xmPlayer;
     ImageButton ibPalyPause;
@@ -38,6 +56,14 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     ImageButton ibPlayNext;
     TextView tvSoundTitle;
     Switch switch1;
+    StateButton btnSleep;
+    private static final String DYNAMICACTION = "com.example.petter.broadcast.MyDynamicFilter";
+    Realm mRealm;
+    int currentTime;
+    int getupH = 0;
+    int getupM = 0;
+    int sleepH = 0;
+    int sleepM = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +72,43 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         ibBack = (ImageButton) findViewById(R.id.ib_back);
         ibBack.setOnClickListener(this);
         tvTime = (TextView)findViewById(R.id.tv_time);
-        tvTime.setText(createTimeValue("13时20分"));
+        tvTime.setText(createTimeValue("00时00分"));
         tvTimeRange = (TextView)findViewById(R.id.tv_time_range);
-        tvTimeRange.setText("07:40-08:00");
+        tvTip = (TextView)findViewById(R.id.tv_tip);
+        tvRealTime = (TextView)findViewById(R.id.tv_alarm_remain_time);
+        initialCurrentTime();
+        mRealm = Realm.getDefaultInstance();
+        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
+        if (userList != null && userList.size() > 0) {
+            System.out.println("已经制定过闹钟信息");
+            for (AlarmModel model: userList) {
+                if (model.getType() == 0) {
+                    getupH = model.getHour();
+                    getupM = model.getMinute();
+                } else {
+                    sleepH = model.getHour();
+                    sleepM = model.getMinute();
+                }
+            }
+            tvTimeRange.setText((sleepH > 10 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 10 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 10 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 10 ? (getupM + "") : ("0" + getupM))  );
+            Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvTimeRange.setCompoundDrawables(drawable,null,null,null);
+            tvTip.setText(R.string.sleep_motion_tip2);
+            timer.schedule(task, 0, 10000);
+            tvTip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentB = new Intent(HelpSleepActivity.this, SmartSleepTestActivity.class);
+                    startActivity(intentB);
+                }
+            });
+        } else {
+            tvTimeRange.setText(R.string.alarm_not_set);
+            Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_edit);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvTimeRange.setCompoundDrawables(null,null,drawable,null);
+        }
 
         initializeHandler();
 
@@ -83,6 +143,33 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 }
             }
         });
+
+        btnSleep = (StateButton) findViewById(R.id.btn_sleep);
+        btnSleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
+                    btnSleep.setText(R.string.common_get_up);
+                    Intent intentBroadcast = new Intent();   //定义Intent
+                    intentBroadcast.setAction(DYNAMICACTION);
+                    intentBroadcast.putExtra("arg0", 3);
+                    sendBroadcast(intentBroadcast);
+                } else {
+                    btnSleep.setText(R.string.alarm_sleep);
+                    Intent intentBroadcast = new Intent();   //定义Intent
+                    intentBroadcast.setAction(DYNAMICACTION);
+                    intentBroadcast.putExtra("arg0", 4);
+                    sendBroadcast(intentBroadcast);
+                }
+            }
+        });
+
+        boolean isSleep = getIntent().getBooleanExtra("value", false);
+        if (isSleep) {
+            btnSleep.setText(R.string.common_get_up);
+        } else {
+            btnSleep.setText(R.string.alarm_sleep);
+        }
     }
 
     @Override
@@ -114,6 +201,12 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 System.out.println("none");
                 break;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 
     @Override
@@ -179,5 +272,86 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         xmPlayer.onCreate();
     }
 
+    private void initialCurrentTime() {
+        String str = currentDate(System.currentTimeMillis());
+        String[] array = str.split("-");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Integer.parseInt(array[0]), Integer.parseInt(array[1]) - 1, Integer.parseInt(array[2]),0,0,0);
+        currentTime = (int)(calendar.getTimeInMillis() / 1000);
+        System.out.println("当前时间：" + currentTime);
+    }
 
+    private String currentDate(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(time);
+        String str=simpleDateFormat.format(date);
+        return str;
+    }
+
+    Timer timer = new Timer();
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            try {
+                refreshTime();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private void refreshTime() {
+        int realTime = (int)(System.currentTimeMillis() / 1000);
+        System.out.println("刷新时间: " + realTime + "当前为主线程：" + (Looper.getMainLooper() == Looper.myLooper()));
+        if (sleepH > 12) {
+            int sleep = currentTime + sleepH * 60 * 60 + sleepM * 60  - 24 * 60 * 60;
+            int getup = currentTime + getupH * 60 * 60 + getupM * 60;
+            if (realTime < getup) {
+                int h = (getup - realTime) / (60 * 60);
+                int m = ((getup - realTime) % (60 * 60)) / 60;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvRealTime.setText(R.string.alarm_get_up_to_time);
+                    }
+                });
+            } else {
+                int h = (sleep + 24 * 60 * 60 - realTime) / (60 * 60);
+                int m = ((sleep + 24 * 60 * 60 - realTime) % (60 * 60)) / 60;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvRealTime.setText(R.string.alarm_sleep_to_time);
+                    }
+                });
+
+            }
+        } else {
+            int sleep = currentTime + sleepH * 60 * 60 + sleepM * 60;
+            int getup = currentTime + getupH * 60 * 60 + getupM * 60;
+            if (realTime < getup) {
+                int h = (getup - realTime) / (60 * 60);
+                int m = ((getup - realTime) % (60 * 60)) / 60;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvRealTime.setText(R.string.alarm_get_up_to_time);
+                    }
+                });
+            } else {
+                int h = (sleep + 24 * 60 * 60 - realTime) / (60 * 60);
+                int m = ((sleep + 24 * 60 * 60 - realTime) % (60 * 60)) / 60;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvRealTime.setText(R.string.alarm_sleep_to_time);
+                    }
+                });
+            }
+        }
+    }
 }

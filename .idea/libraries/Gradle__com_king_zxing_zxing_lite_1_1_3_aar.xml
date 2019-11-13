@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.king.zxing:zxing-lite:1.1.3@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/afcd42f3c44b6cbbdbdc5e8c9bf55c82/jetified-zxing-lite-1.1.3/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/afcd42f3c44b6cbbdbdc5e8c9bf55c82/jetified-zxing-lite-1.1.3/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.king.zxing/zxing-lite/1.1.3/84ff4803773dabec1efc1bf050f36445125277e1/zxing-lite-1.1.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.king.zxing/zxing-lite/1.1.3/df92e5cdf22b92a845ceedd531c07f4991146b39/zxing-lite-1.1.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

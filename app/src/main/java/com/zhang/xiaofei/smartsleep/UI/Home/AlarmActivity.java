@@ -49,9 +49,6 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
     @BindView(R.id.btn_friday2) StateButton btnFirday2;
     @BindView(R.id.btn_saturday2) StateButton btnSaturday2;
     @BindView(R.id.switch_alarm) Switch switchAlarm;
-    @BindView(R.id.switch_sleep_alert) Switch switchSleepAlert;
-    @BindView(R.id.group_alarm) Group groupAlarm;
-    @BindView(R.id.group_sleep_alert) Group groupSleepAlert;
     @BindView(R.id.tv_value) TextView tvValue;
     @BindView(R.id.tv_value2) TextView tvValue2;
 
@@ -95,11 +92,6 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         }
         if (alramGetupModel != null) {
             switchAlarm.setChecked(alramGetupModel.isOpen());
-            groupAlarm.setVisibility(alramGetupModel.isOpen() ? View.VISIBLE : View.GONE);
-        }
-        if (alramSleepModel != null) {
-            switchSleepAlert.setChecked(alramSleepModel.isOpen());
-            groupSleepAlert.setVisibility(alramSleepModel.isOpen() ? View.VISIBLE : View.GONE);
         }
         initialWheel();
         initialButtons();
@@ -151,12 +143,8 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
     }
 
     private void getNoLinkData() {
-        for (int i = 0; i < 12; i++) {
-            if(i == 0){
-                hours.add("12");
-            } else {
-                hours.add(i < 10 ? ("0" + i) : (i + ""));
-            }
+        for (int i = 0; i < 24; i++) {
+            hours.add(i < 10 ? ("0" + i) : (i + ""));
         }
         for (int i = 0; i < 59; i++) {
             minutes.add(i < 10 ? ("0" + i) : ("" + i));
@@ -291,6 +279,12 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             btnSaturday.setSelected(alramGetupModel.isSaturday());
             btnSunday.setSelected(alramGetupModel.isSunday());
             changeColor(btnSunday.isSelected(), btnSunday);
+            changeColor(btnMonday.isSelected(), btnMonday);
+            changeColor(btnTuesday.isSelected(), btnTuesday);
+            changeColor(btnWednesday.isSelected(), btnWednesday);
+            changeColor(btnThursday.isSelected(), btnThursday);
+            changeColor(btnFirday.isSelected(), btnFirday);
+            changeColor(btnSaturday.isSelected(), btnSaturday);
         }
         if (alramSleepModel != null) {
             btnMonday2.setSelected(alramSleepModel.isMonday());
@@ -301,6 +295,12 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             btnSaturday2.setSelected(alramSleepModel.isSaturday());
             btnSunday2.setSelected(alramSleepModel.isSunday());
             changeColor(btnSunday2.isSelected(), btnSunday2);
+            changeColor(btnMonday2.isSelected(), btnMonday2);
+            changeColor(btnTuesday2.isSelected(), btnTuesday2);
+            changeColor(btnWednesday2.isSelected(), btnWednesday2);
+            changeColor(btnThursday2.isSelected(), btnThursday2);
+            changeColor(btnFirday2.isSelected(), btnFirday2);
+            changeColor(btnSaturday2.isSelected(), btnSaturday2);
         }
     }
 
@@ -503,7 +503,6 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    groupAlarm.setVisibility(View.VISIBLE);
                     mRealm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
@@ -511,7 +510,6 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
                         }
                     });
                 } else {
-                    groupAlarm.setVisibility(View.GONE);
                     mRealm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
@@ -521,34 +519,9 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
                 }
             }
         });
-        switchSleepAlert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    groupSleepAlert.setVisibility(View.VISIBLE);
-                    mRealm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            alramSleepModel.setOpen(true);
-                        }
-                    });
-                } else {
-                    groupSleepAlert.setVisibility(View.GONE);
-                    mRealm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            alramSleepModel.setOpen(false);
-                        }
-                    });
-                }
-            }
-        });
     }
 
     private void startClockStartSleep() {
-        if (groupSleepAlert.getVisibility() != View.VISIBLE) {
-            return;
-        }
         if (alramSleepModel.getHour() == 0 && alramSleepModel.getMinute() == 0) {
             return;
         }
@@ -562,35 +535,31 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             return;
         }
         int hour = alramSleepModel.getHour();
-        hour = hour < 12 ? hour : 0;
         int munitue = alramSleepModel.getMinute();
         if (btnSaturday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 16, 6, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 16, 6, "睡觉闹钟响了", 1);
         }
         if (btnMonday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 11, 1, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 11, 1, "睡觉闹钟响了", 1);
         }
         if (btnTuesday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 12, 2, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 12, 2, "睡觉闹钟响了", 1);
         }
         if (btnWednesday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 13, 3, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 13, 3, "睡觉闹钟响了", 1);
         }
         if (btnThursday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 14, 4, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 14, 4, "睡觉闹钟响了", 1);
         }
         if (btnFirday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 15, 5, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 15, 5, "睡觉闹钟响了", 1);
         }
         if (btnSunday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour + 12, munitue, 17, 7, "睡觉闹钟响了", 1);
+            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 17, 7, "睡觉闹钟响了", 1);
         }
     }
 
     private void startClockStartGetup() {
-        if (groupAlarm.getVisibility() != View.VISIBLE) {
-            return;
-        }
         if (alramGetupModel.getHour() == 0 && alramGetupModel.getMinute() == 0) {
             return;
         }

@@ -81,10 +81,10 @@ public class FastBLEManager implements BLEDataObserver {
     }
 
     public void setScanRule() {
-        String[] names = new String[]{"SLEEP_BABY", "Sleep_Baby"};
+        String[] names = new String[]{"SLEEP_BABY", "Sleep_Baby", "SLEEP_BUTTON", "Sleep_Button", "sleep_baby", "sleep_button"};
         BleScanRuleConfig.Builder builder = new BleScanRuleConfig.Builder()
                 .setDeviceName(true, names)   // 只扫描指定广播名的设备，可选
-                .setScanTimeOut(1000);             // 扫描超时时间，可选，默认1秒
+                .setScanTimeOut(2000);             // 扫描超时时间，可选，默认2秒
         if (macAddress != null && macAddress.length() > 0) {
            builder.setDeviceMac(macAddress);
         }
@@ -139,12 +139,14 @@ public class FastBLEManager implements BLEDataObserver {
                     operationManager.bleDataObserver = FastBLEManager.this;
                 }
                 currentBleDevice = bleDevice;
+                ObserverManager.getInstance().notifyObserver(true, macAddress);
             }
 
             @Override
             public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
                 operationManager = null;
                 currentBleDevice = null;
+                ObserverManager.getInstance().notifyObserver(false, macAddress);
             }
         });
     }
@@ -257,9 +259,16 @@ public class FastBLEManager implements BLEDataObserver {
     }
 
     @Override
-    public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, Boolean heartStop, Boolean breatheStop, Boolean outBedAlarm) {
+    public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm) {
         if (bleDataObserver != null) {
-            bleDataObserver.handleBLEData(mac, time, temperature, humdity, heartRate, heartStop, breatheStop, outBedAlarm);
+            bleDataObserver.handleBLEData(mac, time, temperature, humdity, heartRate, breathRate, breatheStop, outBedAlarm);
+        }
+    }
+
+    @Override
+    public void handleBLEWrite(int flag) {
+        if (bleDataObserver != null) {
+            bleDataObserver.handleBLEWrite(flag);
         }
     }
 }

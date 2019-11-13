@@ -80,7 +80,7 @@ public class MainFragmentActivity {
                 mPlayerManager.removeOnConnectedListerner(this);
 
                 mPlayerManager.setPlayMode(XmPlayListControl.PlayMode.PLAY_MODEL_LIST);
-                Toast.makeText(activity, "播放器初始化成功", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, "播放器初始化成功", Toast.LENGTH_SHORT).show();
             }
         });
 

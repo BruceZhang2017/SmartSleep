@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,8 @@ import com.zhang.xiaofei.smartsleep.UI.Me.EasyCaptureActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import io.realm.Realm;
@@ -67,7 +70,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private ReportFragment mTab2;
     private FoundGoodsFragment mTab3;
     private MineFragment mTab4;
-    private int currentIndex = 0;
     public static final int RC_CAMERA = 0X01;
     public static final int REQUEST_CODE_SCAN = 0X01;
     public FastBLEManager fastBLEManager;
@@ -76,6 +78,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private int userId = 0; // 用户ID
     private Intent foregroundIntent;
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
+    private boolean isSleep = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         list.add(mTab4);
 
         mPager.setAdapter(new Adapter(getSupportFragmentManager(),list));
+        mPager.setOffscreenPageLimit(3);
         mTabbar.setContainer(mPager);
         //设置Badge消失的代理
         mTabbar.setDismissListener(this);
@@ -105,6 +109,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             @Override
             public void onClick(View v) {
                 Intent intentB = new Intent();
+                intentB.putExtra("value", isSleep);
                 intentB.setClassName(HomeActivity.this,"com.zhang.xiaofei.smartsleep.UI.Home.HelpSleepActivity");
                 HomeActivity.this.startActivity(intentB);
                 HomeActivity.this.overridePendingTransition(R.anim.activity_open,0);
@@ -120,7 +125,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             userId = userModel.getUserInfo().getUserId();
         }
 
-        foregroundIntent = new Intent(); // 开启前端服务。
+        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
         foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
         //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
         foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
@@ -135,7 +140,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
     @Override
     public void onTabSelect(int index) {
-        currentIndex = index;
+        // 底部Tab选中的index
     }
 
     @Override
@@ -267,11 +272,19 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 case REQUEST_CODE_SCAN:
                     String result = data.getStringExtra(Intents.Scan.RESULT);
                     Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-                    if (result.startsWith("SLEEPBABY_")) {
-                        String res = result.replace("SLEEPBABY_", "");
+                    if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_")) {
+                        int type = 0;
+                        String res = "";
+                        if (result.startsWith("SLEEPBABY_")) {
+                            res = result.replace("SLEEPBABY_", "");
+                            type = 1;
+                        } else {
+                            res = result.replace("SLEEPBUTTON_", "");
+                            type = 2;
+                        }
                         String[] array = res.split(",");
                         if (array.length == 2) {
-                            addDevice(array[0], array[1].replace("-", ":"));
+                            addDevice(array[0], array[1].replace("-", ":"), type);
                             refreshBLEAndDevice();
                         }
                     }
@@ -288,7 +301,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         }
     }
 
-    private void addDevice(String serial, String mac) {
+    private void addDevice(String serial, String mac, int type) {
         YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
         UserModel userModel = userManager.loadUserInfo();
         int userId = userModel.getUserInfo().getUserId();
@@ -297,29 +310,30 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             System.out.println("数据库已经存在同样的设备");
             return;
         }
-
+        RealmResults<DeviceModel> userListB = mRealm.where(DeviceModel.class).findAll();
+        int size = userListB.size();
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 DeviceModel model = realm.createObject(DeviceModel.class);
                 model.setUserId(userId);
                 model.setMac(mac);
-                model.setDeviceType(1);
+                model.setDeviceType(type);
                 model.setBindTime("");
-                model.setDeviceSerial("YMB" + serial);
+                model.setDeviceSerial(serial);
                 model.setVersion(1);
-                model.setId(1);
+                model.setId(1 + size);
                 model.setUpToCloud(false);
             }
         });
 
         Intent intentBroadcast = new Intent();   //定义Intent
-        intentBroadcast.setAction(DEVICEACTION);
+        intentBroadcast.setAction(DEVICEACTION); // 传递绑定成功的Action
         sendBroadcast(intentBroadcast);
     }
 
     // 初始化蓝牙
-    public void initialBLE() {
+    private void initialBLE() {
         fastBLEManager = new FastBLEManager();
         fastBLEManager.context = this;
         fastBLEManager.onCreate();
@@ -328,7 +342,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         refreshBLEAndDevice();
     }
 
-    public void refreshBLEAndDevice() {
+    // 刷新设备列表并扫描第一个设备
+    private void refreshBLEAndDevice() {
         YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
         UserModel userModel = userManager.loadUserInfo();
         int userId = userModel.getUserInfo().getUserId();
@@ -341,6 +356,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             for (DeviceModel model: userList) {
                 mTab1.deviceList.add(model);
             }
+            Collections.reverse(mTab1.deviceList);
+            mTab1.currentDevice = 0;
             fastBLEManager.macAddress = userList.get(0).getMac();
             fastBLEManager.startBLEScan(); // 重新刷列表
             if (mTab1 != null) {
@@ -382,22 +399,58 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     }
 
     @Override
-    public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, Boolean heartStop, Boolean breatheStop, Boolean outBedAlarm) {
+    public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm) {
+        if (mTab1 == null && mTab1.deviceList.size() > mTab1.currentDevice) {
+            return;
+        }
+        int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getId();
         mRealm.executeTransactionAsync(new Realm.Transaction(){
             @Override
             public void execute(Realm realm) {
                 RecordModel model = realm.createObject(RecordModel.class);
                 model.setUserId(userId);
-                model.setDeviceId(1);
+                model.setDeviceId(deviceId);
                 model.setTime(time);
                 model.setTemperature(temperature);
                 model.setHumidity(humdity);
                 model.setHeartRate(heartRate);
-                model.setHeartStop(heartStop);
+                model.setBreathRate(breathRate);
                 model.setBreatheStop(breatheStop);
                 model.setOutBedAlarm(outBedAlarm);
             }
         });
+    }
+
+    @Override
+    public void handleBLEWrite(int flag) {
+        if (flag == 1) { // 同步时间至设备端
+            if (mTab1 == null) {
+                return;
+            }
+            int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+            if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                fastBLEManager.operationManager.write(
+                        fastBLEManager.operationManager.bleOperation.syncTime(deviceId));
+            }
+        } else if (flag == 2) { // 读取温度和湿度
+            if (mTab1 == null) {
+                return;
+            }
+            int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+            if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                fastBLEManager.operationManager.write(
+                        fastBLEManager.operationManager.bleOperation.getTemplateAndHumidity(deviceId));
+            }
+        } else if (flag == 3) { // 读取flash内数据
+            if (mTab1 == null) {
+                return;
+            }
+            int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+            if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                fastBLEManager.operationManager.write(
+                        fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
+            }
+        }
     }
 
     // 将设备上报至服务器端
@@ -409,7 +462,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         System.out.println("token:" + userModel.getToken());
         List<NameValuePair> postParam = new ArrayList<>();
         postParam.add(new NameValuePair("userId",userModel.getUserInfo().getUserId() + ""));
-        postParam.add(new NameValuePair("deviceSerial","YMB" + serial));
+        postParam.add(new NameValuePair("deviceSerial",serial));
         postParam.add(new NameValuePair("mac",mac));
         postParam.add(new NameValuePair("version","" + version));
 
@@ -450,12 +503,15 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (intent.getAction().equals(DYNAMICACTION)) {    //动作检测
                 System.out.println("检测到用户到绑定设备");
                 int arg0 = intent.getIntExtra("arg0", 0);
-                if (arg0 == 0) {
+                if (arg0 == 0) { // 新增设备
                     String serial = intent.getStringExtra("serial");
                     String mac = intent.getStringExtra("mac");
-                    addDevice(serial, mac);
+                    int type = intent.getIntExtra("type", 0);
+                    addDevice(serial, mac, type);
+                    fastBLEManager.stopBLEScan();
+                    fastBLEManager.onDisConnect();
                     refreshBLEAndDevice();
-                } else if (arg0 == 1) {
+                } else if (arg0 == 1) { // 删除设备
                     String mac = intent.getStringExtra("mac").toUpperCase();
                     if (mac.equals(fastBLEManager.macAddress)) {
                         fastBLEManager.stopBLEScan();
@@ -463,39 +519,87 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     }
                     refreshBLEAndDevice();
                 } else if (arg0 == 2) { // 设置闹钟
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
                     mRealm = Realm.getDefaultInstance();
-                    RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
-                    if (userList != null && userList.size() > 0) {
+                    RealmResults<AlarmModel> alarmList = mRealm.where(AlarmModel.class).findAll();
+                    if (alarmList != null && alarmList.size() > 0) {
                         boolean sleep = false;
                         int sleepHour = 0;
                         int sleepMinute = 0;
                         int getupHour = 0;
                         int getupMinute = 0;
-                        for (AlarmModel model: userList) {
+                        for (AlarmModel model: alarmList) {
                             if (model.getType() == 0) {
+                                sleep = model.isOpen();
                                 getupHour = model.getHour();
                                 getupMinute = model.getMinute();
                             } else {
-                                sleep = model.isOpen();
                                 sleepHour = model.getHour();
                                 getupMinute = model.getMinute();
                             }
                         }
-                        if (sleepHour != 12) {
-                            sleepHour += 12;
-                        }
+                        System.out.println("设置的闹钟：" + getupHour + " " + getupMinute + " " + sleepHour + " " + sleepMinute);
                         if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                             fastBLEManager.operationManager.write(
                                     fastBLEManager.operationManager.bleOperation.autoDetection(
-                                            0x01,
+                                            deviceId,
                                             sleep,
                                             sleepHour + ":" + sleepMinute + ":" + "00",
                                             getupHour + ":" + getupMinute + ":" + "00"));
                         }
                     }
-                }
+                } else if (arg0 == 3) { // 睡觉 operation
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.setSleepState(deviceId, true));
+                    }
 
+                    ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+                    isSleep = true;
+                    imageView.setImageResource(R.mipmap.nav_icon_sleep_select);
+
+                } else if (arg0 == 4) { // 起床
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.setGetUpState(deviceId, true));
+                    }
+
+                    ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+                    isSleep = true;
+                    imageView.setImageResource(R.mipmap.nav_icon_sleep);
+
+                } else if (arg0 == 5) { // 请求读取falsh数据
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
+                    }
+                }
             }
+        }
+    }
+
+    // 切换设备连接
+    public void exchangeDevice(int current) {
+        if (mTab1 != null) {
+            fastBLEManager.stopBLEScan();
+            fastBLEManager.onDisConnect();
+            fastBLEManager.macAddress = mTab1.deviceList.get(current).getMac();
+            fastBLEManager.startBLEScan();
         }
     }
 }

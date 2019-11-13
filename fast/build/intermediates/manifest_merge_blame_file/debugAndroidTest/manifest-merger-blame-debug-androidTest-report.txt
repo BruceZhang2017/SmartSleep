@@ -3,47 +3,47 @@
 3    package="com.clj.blesample.test" >
 4
 5    <uses-sdk
-5-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:5:5-74
+5-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:5:5-74
 6        android:minSdkVersion="21"
-6-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:5:15-41
+6-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:5:15-41
 7        android:targetSdkVersion="28" />
-7-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:5:42-71
+7-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:5:42-71
 8
 9    <instrumentation
-9-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:11:5-15:72
+9-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:11:5-15:72
 10        android:name="android.test.InstrumentationTestRunner"
-10-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:11:22-75
+10-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:11:22-75
 11        android:functionalTest="false"
-11-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:14:22-52
+11-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:14:22-52
 12        android:handleProfiling="false"
-12-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:13:22-53
+12-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:13:22-53
 13        android:label="Tests for com.clj.blesample.test"
-13-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:15:22-70
+13-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:15:22-70
 14        android:targetPackage="com.clj.blesample.test" />
-14-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:12:22-68
+14-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:12:22-68
 15
 16    <uses-permission android:name="android.permission.BLUETOOTH" />
-16-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-68
-16-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:22-65
+16-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-68
+16-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:9:22-65
 17    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-17-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-74
-17-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:22-71
+17-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-74
+17-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:22-71
 18    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-18-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-81
-18-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:22-78
+18-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-81
+18-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:22-78
 19    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-19-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:5-79
-19-->[__tested_artifact__::fast] /Users/anker/Documents/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:22-76
+19-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:5-79
+19-->[__tested_artifact__::fast] /Users/anker/SmartSleep/fast/build/intermediates/library_manifest/debug/AndroidManifest.xml:12:22-76
 20
 21    <application
-21-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:7:5-9:19
+21-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:7:5-9:19
 22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 22-->[androidx.core:core:1.0.0] /Users/anker/.gradle/caches/transforms-2/files-2.1/9d932711c797dc0ac4b0ddb85b2dd5dc/core-1.0.0/AndroidManifest.xml:22:18-86
 23        android:debuggable="true" >
-23-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:7:18-43
+23-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:7:18-43
 24        <uses-library android:name="android.test.runner" />
-24-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:8:9-60
-24-->/Users/anker/Documents/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger2256285952420549787.xml:8:23-57
+24-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:8:9-60
+24-->/Users/anker/SmartSleep/fast/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6154509235808401908.xml:8:23-57
 25    </application>
 26
 27</manifest>

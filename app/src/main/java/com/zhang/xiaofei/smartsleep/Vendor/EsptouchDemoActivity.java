@@ -47,6 +47,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
 public class EsptouchDemoActivity extends BaseAppActivity implements OnClickListener {
     private static final String TAG = EsptouchDemoActivity.class.getSimpleName();
 
@@ -55,15 +58,17 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
     private EditText mApSsidTV;
     private EditText mApPasswordET;
     private Button mConfirmBtn;
-    String bssid;
+    String bssid = "";
     private EsptouchAsyncTask4 mTask;
     private TextView tvTitle;
     private ImageButton ibLeft;
     private ImageButton ibShowPwd;
     private ImageButton ibClearSSID;
     private Boolean bShowPWD = false;
-
+    private GifImageView ivGif;
     private boolean mReceiverRegistered = false;
+    GifDrawable gifFromResource;
+
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -95,6 +100,7 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
         mApSsidTV = (EditText)findViewById(R.id.et_wifiname);
         mApPasswordET = (EditText)findViewById(R.id.et_wifipwd);
         mConfirmBtn = findViewById(R.id.confirm_btn);
+        ivGif = (GifImageView)findViewById(R.id.iv_head);
         mConfirmBtn.setEnabled(false);
         mConfirmBtn.setOnClickListener(this);
 
@@ -171,6 +177,13 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
             }
         });
 
+        try {
+            gifFromResource = new GifDrawable(getAssets(), "picMadeByMatools.gif");
+            ivGif.setImageDrawable(gifFromResource);
+        } catch(Exception e) {
+
+        }
+
     }
 
     @Override
@@ -185,6 +198,22 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (gifFromResource != null) {
+            gifFromResource.start();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (gifFromResource != null) {
+            gifFromResource.stop();
+        }
     }
 
     @Override
@@ -287,7 +316,7 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
                     : (byte[]) mApSsidTV.getTag();
             byte[] password = ByteUtil.getBytesByString(mApPasswordET.getText().toString());
             byte[] bssid = TouchNetUtil.parseBssid2bytes(this.bssid);
-            byte[] deviceCount = "2".toString().getBytes();
+            byte[] deviceCount = "10".getBytes();
             byte[] broadcast = {(byte)0x01};
 
             if (mTask != null) {
@@ -327,7 +356,7 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
         protected void onPreExecute() {
             Activity activity = mActivity.get();
             mProgressDialog = new ProgressDialog(activity);
-            mProgressDialog.setMessage("内容不详");
+            mProgressDialog.setMessage(activity.getString(R.string.configuring_message));
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setOnCancelListener(dialog -> {
                 synchronized (mLock) {
@@ -384,7 +413,7 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
             mProgressDialog.dismiss();
             if (result == null) {
                 mResultDialog = new AlertDialog.Builder(activity)
-                        .setMessage("内容不详")
+                        .setMessage(R.string.configure_result_failed_port)
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
                 mResultDialog.setCanceledOnTouchOutside(false);
@@ -401,7 +430,7 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
 
             if (!firstResult.isSuc()) {
                 mResultDialog = new AlertDialog.Builder(activity)
-                        .setMessage("内容不详")
+                        .setMessage(R.string.configure_result_failed)
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
                 mResultDialog.setCanceledOnTouchOutside(false);
@@ -410,12 +439,13 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
 
             ArrayList<CharSequence> resultMsgList = new ArrayList<>(result.size());
             for (IEsptouchResult touchResult : result) {
-                String message = "内容不详";
+                String message = activity.getString(R.string.configure_result_success_item,
+                        touchResult.getBssid(), touchResult.getInetAddress().getHostAddress());
                 resultMsgList.add(message);
             }
             CharSequence[] items = new CharSequence[resultMsgList.size()];
             mResultDialog = new AlertDialog.Builder(activity)
-                    .setTitle("内容不详")
+                    .setTitle(R.string.configure_result_success)
                     .setItems(resultMsgList.toArray(items), null)
                     .setPositiveButton(android.R.string.ok, null)
                     .show();

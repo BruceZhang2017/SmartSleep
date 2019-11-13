@@ -9,7 +9,7 @@ public class RecordModel extends RealmObject {
     int temperature;
     int humidity;
     int heartRate;
-    Boolean heartStop;
+    int breathRate;
     Boolean breatheStop;
     Boolean outBedAlarm;
 
@@ -53,12 +53,12 @@ public class RecordModel extends RealmObject {
         this.humidity = humidity;
     }
 
-    public Boolean getHeartStop() {
-        return heartStop;
+    public int getBreathRate() {
+        return breathRate;
     }
 
-    public void setHeartStop(Boolean heartStop) {
-        this.heartStop = heartStop;
+    public void setBreathRate(int breathRate) {
+        this.breathRate = breathRate;
     }
 
     public Boolean getBreatheStop() {

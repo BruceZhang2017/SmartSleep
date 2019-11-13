@@ -196,5 +196,50 @@
     <string name="common_times">次</string>
     <string name="common_times_minute">次/分</string>
     <string name="common_feedback_null">您可以给提出一些意见反馈呢！</string>
+    <string name="common_get_up">起床</string>
+
+    <string name="homepage_series_title_one">一个小时深度助眠</string>
+    <string name="homepage_series_content_one">漫漫长夜，持续陪伴</string>
+    <string name="homepage_series_title_two">15分钟呼吸助眠疗法</string>
+    <string name="homepage_series_content_two">紧张焦虑失眠专用</string>
+    <string name="homepage_series_title_three">晨练瑜伽21天</string>
+    <string name="homepage_series_content_three">良好状态 从早晨开始</string>
+    <string name="homepage_series_title_four">全身扫描放松法</string>
+    <string name="homepage_series_content_four">压力失眠专用</string>
+    <string name="homepage_series_title_five">轻读助眠： 经典古诗文</string>
+    <string name="homepage_series_content_five">聆听华夏文化之韵</string>
+    <string name="homepage_series_title_six">回到当下：冥想训练课</string>
+    <string name="homepage_series_content_six">静心 凝神 聚焦 换新</string>
+    <string name="homepage_series_title_seven">零基础瑜伽入门</string>
+    <string name="homepage_series_content_seven">轻松掌握15种基础动作</string>
+
+    <string name="homepage_one_day">保持好心情，更助好健康！开心生活每一天～</string>
+    <string name="sleep_motion_tip">睡眠纽扣未在监测</string>
+    <string name="sleep_motion_tip2">睡眠纽扣正在监测</string>
+    <string name="alarm_not_set">未设置闹钟</string>
+    <string name="alarm_get_up_to_time">离起床时间剩余</string>
+    <string name="alarm_sleep_to_time">离睡觉时间剩余</string>
+
+    <string name="menu_item_about">关于App</string>
+    <string name="about_app_version">App版本: %s</string>
+    <string name="about_esptouch_version">EspTouch版本: %s</string>
+    <string name="ssid_title">SSID: </string>
+    <string name="bssid_title">BSSID: </string>
+    <string name="password_title">密码: </string>
+    <string name="device_count_title">设备数量: </string>
+    <string name="package_broadcast">广播</string>
+    <string name="package_multicast">组播</string>
+    <string name="confirm">确认</string>
+    <string name="wifi_5g_message">设备不支持 5G Wifi, 请确认当前连接的 Wifi 为 2.4G</string>
+    <string name="location_disable_message">位置信息(GPS)不可用</string>
+    <string name="no_wifi_connection">没有 Wifi 连接</string>
+    <string name="configure_wifi_change_message">Wifi 已断开或发生了变化</string>
+    <string name="configuring_message">Esptouch 正在执行配网, 请稍等片刻…</string>
+    <string name="configure_result_failed">EspTouch 配网失败</string>
+    <string name="configure_result_failed_port">建立 Esptouch 任务失败, 端口可能被其他程序占用</string>
+    <string name="configure_result_success">EspTouch 完成</string>
+    <string name="configure_result_success_item">BSSID = %1$s, 地址 = %2$s</string>
+    <string name="get_flash_data">获取flash数据</string>
+    <string name="dynamic_curve">动态曲线</string>
 
 </resources>

@@ -63,6 +63,20 @@
         android:layout_marginTop="5dp"
         android:textSize="14sp"
         android:gravity="center"
+        android:text="  "
+        android:textColor="@color/colorWhite"/>
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_range"
+        android:layout_marginTop="28dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="@string/sleep_motion_tip"
         android:textColor="@color/colorWhite"/>
 
     <ImageView
@@ -127,9 +141,9 @@
         app:round="true"
         app:animationDuration="200"
         app:normalStrokeWidth="2dp"
-        app:normalBackgroundColor="@color/colorBG"
-        app:normalTextColor="#4AC4C4"
-        app:pressedTextColor="#4176E3"
+        app:normalBackgroundColor="#4AC4C4"
+        app:normalTextColor="#FFFFFF"
+        app:pressedTextColor="#FFFFFF"
         app:normalStrokeColor="#4AC4C4"
         app:pressedBackgroundColor="#4176E3"/>
 

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBG"
+    tools:context=".UI.Home.SmartSleepTestActivity">
+
+    <com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarHeightView
+        android:id="@+id/view_status_bar_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:use_type="use_padding_top"
+        tools:visibility="visible" >
+    </com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarHeightView>
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/layout_custom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_status_bar_height" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@mipmap/home_page_bg"/>
+
+    <com.deadline.statebutton.StateButton
+        android:id="@+id/btn_flash"
+        android:layout_width="202dp"
+        android:layout_height="36dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        android:text="@string/get_flash_data"
+        android:textSize="16sp"
+        android:background="@null"
+        app:round="true"
+        app:animationDuration="200"
+        app:normalStrokeWidth="2dp"
+        app:normalBackgroundColor="#4AC4C4"
+        app:normalTextColor="#FFFFFF"
+        app:pressedTextColor="#FFFFFF"
+        app:normalStrokeColor="#4AC4C4"
+        app:pressedBackgroundColor="#4176E3"/>
+
+    <ImageView
+        android:id="@+id/iv_time_3"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_title"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/report_icon_heart_rate"/>
+
+    <TextView
+        android:id="@+id/tv_sleep_time_3"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="@string/report_heart"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@id/iv_time_3"
+        app:layout_constraintTop_toTopOf="@id/iv_time_3"
+        app:layout_constraintBottom_toBottomOf="@id/iv_time_3"
+        android:layout_marginLeft="10dp"/>
+
+    <com.zhang.xiaofei.smartsleep.UI.Home.DynamicView
+        android:id="@+id/dv_heart"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_time_3"
+        android:layout_marginTop="20dp" />
+
+    <ImageView
+        android:id="@+id/iv_time_4"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dv_heart"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/report_icon_respiratory_rate"/>
+
+    <TextView
+        android:id="@+id/tv_sleep_time_4"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="@string/report_respiratory_rate"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@id/iv_time_4"
+        app:layout_constraintTop_toTopOf="@id/iv_time_4"
+        app:layout_constraintBottom_toBottomOf="@id/iv_time_4"
+        android:layout_marginLeft="10dp"/>
+
+    <com.zhang.xiaofei.smartsleep.UI.Home.DynamicView
+        android:id="@+id/dv_breath"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_time_4"
+        android:layout_marginTop="20dp" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_content"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/btn_flash"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:fadeScrollbars="false"-->
+<!--        android:padding="10dp"-->
+<!--        android:scrollbars="vertical"-->
+<!--        android:textSize="13sp"-->
+<!--        android:textColor="@android:color/black"/>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

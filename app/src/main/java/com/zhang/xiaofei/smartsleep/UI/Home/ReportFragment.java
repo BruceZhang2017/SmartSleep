@@ -30,6 +30,9 @@ public class ReportFragment extends Fragment {
 	private LayoutInflater inflate;
 	private TextView tvTitle;
 	private ImageButton btnRight;
+	ReportDayFragment dayFragment;
+	ReportWeekFragment weekFragment;
+	ReportMonthFragment monthFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class ReportFragment extends Fragment {
 		indicator.setScrollBar(new ColorBar(view.getContext(), Color.rgb(255,255,255), 5));
 		View vHeader = view.findViewById(R.id.include_title);
 		tvTitle = (TextView)view.findViewById(R.id.tv_title);
-		tvTitle.setText(R.string.report_phone_data);
+		tvTitle.setText(R.string.report_sleep_belt);
 		ImageButton ibArrow = (ImageButton)view.findViewById(R.id.ib_arrow);
 		ibArrow.setVisibility(View.VISIBLE);
 		ibArrow.setImageResource(R.mipmap.report_icon_open);
@@ -61,18 +64,17 @@ public class ReportFragment extends Fragment {
 						.asAttachList(
 								new String[]{
 										getResources().getString(R.string.report_sleep_button),
-										getResources().getString(R.string.report_sleep_belt),
-										getResources().getString(R.string.common_smart_phone)},
+										getResources().getString(R.string.report_sleep_belt)},
 								null,
 								new OnSelectListener() {
 									@Override
 									public void onSelect(int position, String text) {
-										if (position == 2) {
-											tvTitle.setText(R.string.report_phone_data);
-										} else if (position == 1) {
+										if (position == 1) {
 											tvTitle.setText(R.string.report_sleep_belt);
+											dayFragment.refreshData(true);
 										} else {
 											tvTitle.setText(R.string.report_sleep_button);
+											dayFragment.refreshData(false);
 										}
 									}
 								})
@@ -137,14 +139,14 @@ public class ReportFragment extends Fragment {
 		@Override
 		public Fragment getFragmentForPage(int position) {
 			if (position == 0) {
-				ReportDayFragment mainFragment = new ReportDayFragment();
-				return mainFragment;
+				dayFragment = new ReportDayFragment();
+				return dayFragment;
 			} else if (position == 1) {
-				ReportWeekFragment mainFragment = new ReportWeekFragment();
-				return mainFragment;
+				weekFragment = new ReportWeekFragment();
+				return weekFragment;
 			} else {
-				ReportMonthFragment mainFragment = new ReportMonthFragment();
-				return mainFragment;
+				monthFragment = new ReportMonthFragment();
+				return monthFragment;
 			}
 		}
 

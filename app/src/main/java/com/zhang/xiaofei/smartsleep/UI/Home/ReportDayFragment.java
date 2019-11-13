@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -31,6 +32,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.haibin.calendarview.CalendarView;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
+import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 
@@ -57,6 +59,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private LineChart chart2; // 翻身
     private LineChart chart3; // 心率
     private LineChart chart4; // 呼吸率
+    private LineChart chart5;
     CalendarView mCalendarView;
     private ImageButton ibLeftPre;
     private ImageButton ibRightNex;
@@ -65,14 +68,22 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private TextView tvTime2; // 入睡时长
     private TextView tvTime3; // 清醒时间
     private TextView tvTime4; // 平均心率
+    private TextView tvTime5; // 清醒时间
+    private TextView tvTime6; // 平均心率
     private TextView tvSimulationData;
     private TextView tvSleepBottomCount1;
     private TextView tvSleepBottomCount2;
     private TextView tvSleepBottomCount3;
+    private ConstraintLayout cl5;
+    private ConstraintLayout cl6;
+    private ConstraintLayout cl11;
     private Realm mRealm;
     private int currentTime = 0;
-    private int grade = 30;
+    private int grade = 83;
     ArrayList<Entry> chart2Values;
+    ArrayList<Entry> chart3Values;
+    int sleepTime = -3600;
+    int getupTime = 7 * 60 * 60;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -102,11 +113,30 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         circleSleep4.setPercentage(34);
         circleSleep4.setBgColor(getResources().getColor(R.color.color_3361D088));
         circleSleep4.setProgressColor(getResources().getColor(R.color.color_61D088));
+
+        initialCurrentTime();
         mRealm = Realm.getDefaultInstance();
+
+        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
+        if (userList != null && userList.size() > 0) {
+            for (AlarmModel model: userList) {
+                if (model.getType() == 0) {
+                    getupTime = model.getHour() * 60 * 60 + model.getMinute() * 60;
+                } else {
+                    if (model.getHour() < 12) {
+                        sleepTime = model.getHour() * 60 * 60 + model.getMinute() * 60;
+                    } else {
+                        sleepTime = (model.getHour() * 60 * 60 + model.getMinute() * 60) - 24 * 60 * 60;
+                    }
+                }
+            }
+        }
+
         initializeForChart(); // 睡眠质量初始化
         initializeForChart2();
         initializeForChart3();
         initializeForChart4();
+        initializeForChart5();
 
         ibLeftPre = (ImageButton)findViewById(R.id.ib_left_pre);
         ibLeftPre.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +164,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         });
 
         initialText();
-        initialCurrentTime();
+
         tvSimulationData = (TextView)findViewById(R.id.tv_simulation_data);
         tvSimulationData.setText(currentDate(System.currentTimeMillis()));
         tvSimulationData.setOnClickListener(new View.OnClickListener() {
@@ -147,11 +177,22 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvSleepBottomCount1 = (TextView)findViewById(R.id.tv_sleep_bottom_count_1);
         tvSleepBottomCount2 = (TextView)findViewById(R.id.tv_sleep_bottom_count_2);
         tvSleepBottomCount3 = (TextView)findViewById(R.id.tv_sleep_bottom_count_3);
-        String content = "70" + getResources().getString(R.string.common_times);
+        String content1 = "90 " + getResources().getString(R.string.common_times_minute);
+        String unit1 = getResources().getString(R.string.common_times_minute);
+        tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, unit1));
+        String content2 = "20 " + getResources().getString(R.string.common_times_minute);
+        String unit2 = getResources().getString(R.string.common_times_minute);
+        tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, unit2));
+        String content = "2 " + getResources().getString(R.string.common_times);
         String unit = getResources().getString(R.string.common_times);
-        tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
-        tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
         tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
+
+        System.out.println("当前的时间端：" + (currentTime + sleepTime) + " " + (currentTime + getupTime));
+
+        cl5 = (ConstraintLayout)findViewById(R.id.cl_5);
+        cl6 = (ConstraintLayout)findViewById(R.id.cl_6);
+        cl11 = (ConstraintLayout)findViewById(R.id.cl_11);
+        cl11.setVisibility(View.GONE);
     }
 
     private void initialText() {
@@ -170,12 +211,22 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String content2 = "17" + unit21 + "30" + unit22;
         tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         tvTime3 = (TextView)findViewById(R.id.tv_time_3);
-        tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         tvTime4 = (TextView)findViewById(R.id.tv_time_4);
         String unit4 = getResources().getString(R.string.common_times_minute);
         String[] array4 = {unit4};
-        String content4 = "16" + unit4;
+        String content4 = "60" + unit4;
+        tvTime3.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
         tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+        String unit5 = "℃";
+        String[] array5 = {unit5};
+        String content5 = "20" + unit5;
+        tvTime5 = (TextView)findViewById(R.id.tv_time_5);
+        tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array5));
+        String unit6 = "%";
+        String[] array6 = {unit6};
+        String content6 = "48" + unit6;
+        tvTime6 = (TextView)findViewById(R.id.tv_time_6);
+        tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
     }
 
     private void refreshGrade() {
@@ -222,9 +273,10 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private void setCharData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<>();
-        long now = 0;
-        long to = 7;
-        for (float i = now; i < to; i++) {
+        long now = currentTime + sleepTime;
+        long to = currentTime + getupTime;
+        System.out.println("时间段: " + now + " " + to);
+        for (float i = now; i < to; i += 3600) {
             float val = (float) (Math.random() * range);
             values.add(new Entry(i, val));
         }
@@ -302,7 +354,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             // disable description text
             chart.getDescription().setEnabled(false);
             // enable touch gestures
-            chart.setTouchEnabled(true);
+            chart.setTouchEnabled(false);
             // set listeners
             //chart.setOnChartValueSelectedListener(this);
             chart.setDrawGridBackground(false);
@@ -320,16 +372,18 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             xAxis = chart.getXAxis();
             xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
             xAxis.setValueFormatter(new ValueFormatter() {
-                private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-                @Override
-                public String getFormattedValue(float value) {
-                    long millis = TimeUnit.HOURS.toMillis((long) value);
-                    return mFormat.format(new Date(millis));
-                }
-            });
-            xAxis.setLabelCount(6);
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            @Override
+            public String getFormattedValue(float value) {
+                long millis = TimeUnit.SECONDS.toMillis((long) value);
+                return mFormat.format(new Date(millis));
+            }
+        });
+            xAxis.setLabelCount(8);
             xAxis.setGranularityEnabled(true);
-            xAxis.setGranularity(1f);
+            xAxis.setGranularity(3600f);
+            xAxis.setAxisMinimum(currentTime + sleepTime);
+            xAxis.setAxisMaximum(currentTime + getupTime);
         }
 
         YAxis yAxis;
@@ -400,10 +454,12 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.enableGridDashedLine(10f, 10f, 0f);
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setLabelCount(6);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setLabelCount(8);
         xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1f);
+        xAxis.setGranularity(3600f);
+        xAxis.setAxisMinimum(currentTime + sleepTime);
+        xAxis.setAxisMaximum(currentTime + getupTime);
         xAxis.setValueFormatter(new ValueFormatter() {
 
             private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
@@ -442,29 +498,23 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         }
 
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
-                .greaterThan("time", currentTime)
-                .lessThan("time", currentTime + 24 * 60 * 60)
+                .greaterThan("time", currentTime + sleepTime)
+                .lessThan("time", currentTime + getupTime)
                 .findAll();
-        System.out.println("获取到的数据总量：" + list.size());
-        for (int i = 1; i < 60 * 24; i++) {
-            boolean value = false;
-            if (list != null && list.size() > 0) {
-                for (RecordModel model: list) {
-                    if (model.getTime() >= currentTime + i * 60 && model.getTime() < currentTime + ((i + 1) * 60)) {
-                        chart2Values.add(new Entry(i, model.getHeartRate()));
-                        value = true;
-                        break;
-                    }
-                }
+        if (list.size() > 100) {
+            for (RecordModel model: list) {
+                System.out.println("获取到的数据时间：" + model.getTime());
+                chart2Values.add(new Entry(model.getTime(), model.getHeartRate()));
             }
-            if (value == false) {
-                chart2Values.add(new Entry(i, 0));
+        } else {
+            for (int i = (currentTime + sleepTime); i < (currentTime + getupTime); i += 60) {
+                float y = getRandom(20, 0);
+                chart2Values.add(new Entry(i, y + 75));
             }
         }
 
-
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(chart2Values, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(chart2Values, "");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setColor(getResources().getColor(R.color.color_6EE1CA));
         set1.setValueTextColor(ColorTemplate.getHoloBlue());
@@ -477,6 +527,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set1.setDrawCircleHole(false);
 
         // create a data object with the data sets
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         LineData data = new LineData(set1);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(9f);
@@ -503,8 +554,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         chart3.setDragEnabled(true);
         chart3.setScaleEnabled(true);
         chart3.setDrawGridBackground(false);
-        chart3.setHighlightPerDragEnabled(true);
-
+        chart3.setHighlightPerDragEnabled(false);
+        chart3.setPinchZoom(false);
         // set an alternative background color
         chart3.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
         //chart3.setViewPortOffsets(10f, 0f, 0f, 0f);
@@ -521,13 +572,15 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.setTextColor(Color.argb(0,0,0,0));
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setLabelCount(6);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setLabelCount(8);
         xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1f);
+        xAxis.setGranularity(3600f);
+        xAxis.setAxisMinimum(currentTime + sleepTime);
+        xAxis.setAxisMaximum(currentTime + getupTime);
         xAxis.setValueFormatter(new ValueFormatter() {
 
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
             @Override
             public String getFormattedValue(float value) {
@@ -555,12 +608,32 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData3() {
-        ArrayList<Entry> values = new ArrayList<>();
-        for (int i = currentTime; i < currentTime + 60 * 24; i++) {
-            values.add(new Entry(i, 0));
+        boolean flag = false;
+        if (chart3Values != null) {
+            flag = true;
+            chart3Values.clear();
+        } else {
+            chart3Values = new ArrayList<>();
         }
+
+        RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
+                .greaterThan("time", currentTime + sleepTime)
+                .lessThan("time", currentTime + getupTime)
+                .findAll();
+        System.out.println("获取到的数据总量：" + list.size());
+        if (list.size() > 100) {
+            for (RecordModel model: list) {
+                chart3Values.add(new Entry(model.getTime(), model.getBreathRate()));
+            }
+        } else {
+            for (int i = (currentTime + sleepTime); i < (currentTime + getupTime); i += 60) {
+                float y = getRandom(10, 0);
+                chart3Values.add(new Entry(i, y + 15));
+            }
+        }
+
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(values, "");
+        LineDataSet set1 = new LineDataSet(chart3Values, "");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setColor(getResources().getColor(R.color.color_6EE1CA));
         set1.setValueTextColor(ColorTemplate.getHoloBlue());
@@ -571,7 +644,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setDrawCircleHole(false);
-
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         // create a data object with the data sets
         LineData data = new LineData(set1);
         data.setValueTextColor(Color.WHITE);
@@ -579,6 +652,9 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
         // set data
         chart3.setData(data);
+        if (flag) {
+            chart3.notifyDataSetChanged();
+        }
     }
 
     private void initializeForChart4() {
@@ -596,8 +672,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         chart4.setDragEnabled(true);
         chart4.setScaleEnabled(true);
         chart4.setDrawGridBackground(false);
-        chart4.setHighlightPerDragEnabled(true);
-
+        chart4.setHighlightPerDragEnabled(false);
+        chart4.setPinchZoom(false);
         // set an alternative background color
         chart4.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
         //chart4.setViewPortOffsets(0f, 0f, 0f, 0f);
@@ -612,10 +688,10 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.enableGridDashedLine(10f, 10f, 0f);
         xAxis.setTextSize(10f);
         xAxis.setTextColor(Color.argb(0,0,0,0));
-        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(6);
+        xAxis.setLabelCount(8);
         xAxis.setGranularityEnabled(true);
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new ValueFormatter() {
@@ -644,7 +720,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         YAxis rightAxis = chart4.getAxisRight();
         rightAxis.setEnabled(false);
 
-        setData4(400, 3);
+        setData4(200, 3);
     }
 
     private void setData4(int count, float range) {
@@ -656,9 +732,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         float to = now + count;
         // increment by 1 hour
         for (float x = now; x < to; x++) {
-
             float y = getRandom(range, 0);
-            System.out.println("X: " + x + "Y: " + y);
             values.add(new Entry(x, y)); // add one entry per hour
         }
 
@@ -675,7 +749,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set1.setDrawCircleHole(false);
         set1.setDrawVerticalHighlightIndicator(false);
         set1.setDrawHorizontalHighlightIndicator(false);
-
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         // create a data object with the data sets
         LineData data = new LineData(set1);
         data.setValueTextColor(Color.WHITE);
@@ -685,26 +759,148 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         chart4.setData(data);
     }
 
+    private void initializeForChart5() {
+        chart5 = findViewById(R.id.chart5);
+
+        // no description text
+        chart5.getDescription().setEnabled(false);
+
+        // enable touch gestures
+        chart5.setTouchEnabled(true);
+
+        chart5.setDragDecelerationFrictionCoef(0.9f);
+
+        // enable scaling and dragging
+        chart5.setDragEnabled(true);
+        chart5.setScaleEnabled(true);
+        chart5.setDrawGridBackground(false);
+        chart5.setHighlightPerDragEnabled(false);
+        chart5.setPinchZoom(false);
+        // set an alternative background color
+        chart5.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+        //chart4.setViewPortOffsets(0f, 0f, 0f, 0f);
+
+        // get the legend (only possible after setting data)
+        Legend l = chart5.getLegend();
+        l.setEnabled(false);
+
+        XAxis xAxis = chart5.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.TOP);
+        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(Color.argb(0,0,0,0));
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(true);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setLabelCount(8);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new ValueFormatter() {
+
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+
+            @Override
+            public String getFormattedValue(float value) {
+
+                long millis = TimeUnit.SECONDS.toMillis((long) value);
+                return mFormat.format(new Date(millis));
+            }
+        });
+
+        YAxis leftAxis = chart5.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(2f);
+        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
+
+        YAxis rightAxis = chart5.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        setData5(200, 2);
+    }
+
+    private void setData5(int count, float range) {
+
+        // now in hours
+        long now = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis());
+        ArrayList<Entry> values = new ArrayList<>();
+        // count = hours
+        float to = now + count;
+        // increment by 1 hour
+        for (float x = now; x < to; x++) {
+            float y = getRandom(range, 0);
+            values.add(new Entry(x, y)); // add one entry per hour
+        }
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(values, "");
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setColor(getResources().getColor(R.color.color_6EE1CA));
+        set1.setValueTextColor(ColorTemplate.getHoloBlue());
+        set1.setLineWidth(1.5f);
+        set1.setDrawCircles(false);
+        set1.setDrawValues(false);
+        set1.setFillAlpha(65);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setDrawCircleHole(false);
+        set1.setDrawVerticalHighlightIndicator(false);
+        set1.setDrawHorizontalHighlightIndicator(false);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        // create a data object with the data sets
+        LineData data = new LineData(set1);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(9f);
+
+        // set data
+        chart5.setData(data);
+    }
+
     protected float getRandom(float range, float start) {
         return (float) (Math.random() * range) + start;
     }
 
+    Dialog dialog;
+
     private void initData() {
+        mCalendarView.setSelectSingleMode();
+        mCalendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
+            @Override
+            public void onCalendarOutOfRange(com.haibin.calendarview.Calendar calendar) {
 
-        final int year = mCalendarView.getCurYear();
-        final int month = mCalendarView.getCurMonth();
+            }
 
+            @Override
+            public void onCalendarSelect(com.haibin.calendarview.Calendar calendar, boolean isClick) {
+                if (isClick) {
+                    currentTime = (int)(calendar.getTimeInMillis() / 1000);
+                    tvSimulationData.setText(currentDate((long)currentTime * 1000));
+                    dialog.hide();
+                }
+            }
+        });
     }
 
     private void verifyDialog()
     {
-        final Dialog dialog = new Dialog(getActivity(), R.style.activity_translucent);
+        dialog = new Dialog(getActivity(), R.style.activity_translucent);
         dialog.setContentView(R.layout.layout_choose_date);
         mCalendarView = (CalendarView)dialog.getWindow().findViewById(R.id.calendarView);
         initData();
         if(dialog!=null && !dialog.isShowing()) {
             dialog.show();
         }
+    }
+
+    public void refreshData(boolean isBlet) {
+        cl5.setVisibility(isBlet ? View.VISIBLE : View.GONE);
+        cl6.setVisibility(isBlet ? View.VISIBLE : View.GONE);
+        cl11.setVisibility(isBlet ? View.GONE : View.VISIBLE);
     }
 
 }

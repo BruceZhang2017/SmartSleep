@@ -196,5 +196,49 @@
     <string name="common_times">times</string>
     <string name="common_times_minute">times/min</string>
     <string name="common_feedback_null">You can give some Advice &amp; feedback!</string>
+    <string name="common_get_up">Get up</string>
 
+    <string name="homepage_series_title_one"> one hour deep sleep aid </string>
+    <string name="homepage_series_content_one"> long night, continuous companion </string>
+    <string name="homepage_series_title_two">15 minutes breathing sleep therapy </string>
+    <string name="homepage_series_content_two">Dedicated anxiety and insomnia </string>
+    <string name="homepage_series_title_three"> morning yoga 21 days </string>
+    <string name="homepage_series_content_three">Good state Start in the morning </string>
+    <string name="homepage_series_title_four"> full body scanning relaxation method</string>
+    <string name="homepage_series_content_four">pressure insomnia dedicated </string>
+    <string name="homepage_series_title_five">Light reading sleep: classic ancient poetry </string>
+    <string name="homepage_series_content_five">Listen to the rhyme of Chinese culture</string>
+    <string name="homepage_series_title_six">Back to the present: meditation training class </string>
+    <string name="homepage_series_content_six">Mute the mind, focus on the new </string>
+    <string name="homepage_series_title_seven">Get started with zero basic yoga</string>
+    <string name="homepage_series_content_seven">Easily master 15 basic actions</string>
+
+    <string name="homepage_one_day">Happly everyday～</string>
+    <string name="sleep_motion_tip">Sleep button not monitored</string>
+    <string name="sleep_motion_tip2">Sleep button is monitoring</string>
+    <string name="alarm_not_set">Alarm not set</string>
+    <string name="alarm_get_up_to_time">Time to get up</string>
+    <string name="alarm_sleep_to_time">Time left to sleep</string>
+
+    <string name="menu_item_about">About App</string>
+    <string name="about_app_version">App Version: %s</string>
+    <string name="about_esptouch_version">EspTouch Version: %s</string>
+    <string name="ssid_title">SSID: </string>
+    <string name="bssid_title">BSSID: </string>
+    <string name="password_title">Password: </string>
+    <string name="device_count_title">Device count: </string>
+    <string name="package_broadcast">Broadcast</string>
+    <string name="package_multicast">Multicast</string>
+    <string name="confirm">Confirm</string>
+    <string name="wifi_5g_message">Device don\'t support 5G Wifi, please make sure the currently connected Wifi is 2.4G</string>
+    <string name="location_disable_message">Location(GPS) is disable</string>
+    <string name="no_wifi_connection">No Wifi connection</string>
+    <string name="configuring_message">Esptouch is configuring, please wait for a moment…</string>
+    <string name="configure_wifi_change_message">Wifi disconnected or changed</string>
+    <string name="configure_result_failed">EspTouch failed</string>
+    <string name="configure_result_failed_port">Create Esptouch task failed, the EspTouch port could be used by other thread</string>
+    <string name="configure_result_success">EspTouch 完成</string>
+    <string name="configure_result_success_item">BSSID = %1$s, InetAddress = %2$s</string>
+    <string name="dynamic_curve">Dynamic curve</string>
+    <string name="get_flash_data">Get flash data</string>
 </resources>

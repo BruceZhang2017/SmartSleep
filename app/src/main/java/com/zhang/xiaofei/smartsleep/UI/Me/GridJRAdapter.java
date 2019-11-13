@@ -76,7 +76,7 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
         } else {
             b.imageViewSample.setImageResource(R.mipmap.icon_placeholder);
             b.imageViewSample.setBackgroundColor(0xFF0A1833);
-            b.textViewSample.setText(jRitem.getDeviceSerial());
+            b.textViewSample.setText(jRitem.getDeviceSerial().contains("01") ? R.string.report_yamy_sleep_belt : R.string.report_yamy_sleep_button);
             b.textViewVersion.setText(jRitem.getVersion() + "");
             b.ibDelete.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         }

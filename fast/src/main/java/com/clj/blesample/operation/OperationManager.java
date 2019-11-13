@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 
 import com.clj.blesample.comm.BLEDataObserver;
+import com.clj.blesample.comm.DataOberverManager;
 import com.clj.blesample.comm.Observer;
-import com.clj.blesample.comm.ObserverManager;
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleWriteCallback;
@@ -15,13 +15,9 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
-public class OperationManager  implements Observer {
+public class OperationManager {
 
     public BleDevice bleDevice;
     private BluetoothGattService bluetoothGattService;
@@ -34,20 +30,12 @@ public class OperationManager  implements Observer {
     public void onCreate() {
         bleOperation = new BLEOperation();
         readService();
-        ObserverManager.getInstance().addObserver(this);
     }
 
     public void onDestroy() {
         BleManager.getInstance().clearCharacterCallback(bleDevice);
-        ObserverManager.getInstance().deleteObserver(this);
     }
 
-    @Override
-    public void disConnected(BleDevice device) {
-        if (device != null && bleDevice != null && device.getKey().equals(bleDevice.getKey())) {
-            //finish();
-        }
-    }
 
     private void readService() {
         String name = bleDevice.getName();
@@ -85,8 +73,7 @@ public class OperationManager  implements Observer {
                     @Override
                     public void onNotifySuccess() {
                         System.out.println("[OperationManager] onNotifySuccess");
-
-                        write(bleOperation.syncTime(0x01));
+                        bleDataObserver.handleBLEWrite(1); // 同步时间
                     }
 
                     @Override
@@ -161,9 +148,9 @@ public class OperationManager  implements Observer {
                     System.out.println("解析数据中:" + battery + " " + flash + " " + strMac + " " + version);
                     bleDataObserver.handleBLEData(battery, flash, strMac, version);
                 }
-                write(bleOperation.getTemplateAndHumidity(0x01));
+                bleDataObserver.handleBLEWrite(2); // 读取温度和湿度
                 if (flash > 0) { // 读取设备里数据
-                    write(bleOperation.syncDataToFlash(0x01));
+                    bleDataObserver.handleBLEWrite(3); // 读取flash内数据
                 }
 
             } else if (data[3] == 0x03) {
@@ -185,19 +172,21 @@ public class OperationManager  implements Observer {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month - 1, day, hour, minute, second);
                 int temTime = (int)(calendar.getTimeInMillis() / 1000);
+
+                int temperature = data[10] & 0xff;
+                int humdity = data[11] & 0xff;
+                int heartRate = data[12] & 0xff;
+                int breathRate = data[13] & 0xff;
+                boolean breatheStop = (data[14] & 0x01) > 0;
+                boolean outBedAlarm = (data[15] & 0x01) > 0;
+                if (bleDataObserver != null) {
+                    bleDataObserver.handleBLEData("", temTime, temperature, humdity, heartRate, breathRate, breatheStop, outBedAlarm);
+                }
                 if (currentTime != 0 && temTime == currentTime) {
                     return;
                 }
                 currentTime = temTime;
-                int temperature = data[10] & 0xff;
-                int humdity = data[11] & 0xff;
-                int heartRate = data[12] & 0xff;
-                boolean heartStop = (data[13] & 0x01) > 0;
-                boolean breatheStop = (data[14] & 0x01) > 0;
-                boolean outBedAlarm = (data[15] & 0x01) > 0;
-                if (bleDataObserver != null) {
-                    bleDataObserver.handleBLEData("", temTime, temperature, humdity, heartRate, heartStop, breatheStop, outBedAlarm);
-                }
+                DataOberverManager.getInstance().notifyObserver(heartRate, breathRate);
             }
         }
     }

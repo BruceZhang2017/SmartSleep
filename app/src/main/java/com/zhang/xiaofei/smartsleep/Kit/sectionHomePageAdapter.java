@@ -99,18 +99,32 @@ public class sectionHomePageAdapter extends easyRegularAdapter<String, itemHomeP
     protected void withBindHolder(itemHomePageBinder holder, String data, int position) {
         if (position % 7 == 0){
             holder.imageViewSample.setImageResource(R.mipmap.pic_1);
+            holder.textViewFeature.setText(R.string.homepage_series_title_one);
+            holder.textViewSample.setText(R.string.homepage_series_content_one);
         } else if (position % 7 == 1){
             holder.imageViewSample.setImageResource(R.mipmap.pic_2);
+            holder.textViewFeature.setText(R.string.homepage_series_title_two);
+            holder.textViewSample.setText(R.string.homepage_series_content_two);
         } else if (position % 7 == 2){
             holder.imageViewSample.setImageResource(R.mipmap.pic_3);
+            holder.textViewFeature.setText(R.string.homepage_series_title_three);
+            holder.textViewSample.setText(R.string.homepage_series_content_three);
         } else if (position % 7 == 3){
             holder.imageViewSample.setImageResource(R.mipmap.pic_4);
+            holder.textViewFeature.setText(R.string.homepage_series_title_four);
+            holder.textViewSample.setText(R.string.homepage_series_content_four);
         } else if (position % 7 == 4){
             holder.imageViewSample.setImageResource(R.mipmap.pic_5);
+            holder.textViewFeature.setText(R.string.homepage_series_title_five);
+            holder.textViewSample.setText(R.string.homepage_series_content_five);
         } else if (position % 7 == 5){
             holder.imageViewSample.setImageResource(R.mipmap.pic_6);
+            holder.textViewFeature.setText(R.string.homepage_series_title_six);
+            holder.textViewSample.setText(R.string.homepage_series_content_six);
         } else if (position % 7 == 6){
             holder.imageViewSample.setImageResource(R.mipmap.pic_7);
+            holder.textViewFeature.setText(R.string.homepage_series_title_seven);
+            holder.textViewSample.setText(R.string.homepage_series_content_seven);
         }
     }
 

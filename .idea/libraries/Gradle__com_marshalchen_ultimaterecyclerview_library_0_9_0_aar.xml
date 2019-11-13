@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.marshalchen.ultimaterecyclerview:library:0.9.0@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6d68769c01fb8b8b118bea7d749433a5/library-0.9.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6d68769c01fb8b8b118bea7d749433a5/library-0.9.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.marshalchen.ultimaterecyclerview/library/0.9.0/253e6fd57f1cf9e05dab8cc67d9a8834253140b/library-0.9.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

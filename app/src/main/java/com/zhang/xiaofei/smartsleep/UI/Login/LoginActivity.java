@@ -27,6 +27,7 @@ import com.zhang.xiaofei.smartsleep.Kit.ValidateHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.UI.Home.HomeActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
@@ -224,8 +225,13 @@ public class LoginActivity extends BaseAppActivity {
                 }
             }else{
                 Toast.makeText(LoginActivity.this, getResources().getText(R.string.login_success), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, LoginMoreActivity.class);
-                startActivity(intent);
+                if (user.getUserInfo().getNikeName() != null && user.getUserInfo().getNikeName().length() > 0) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, LoginMoreActivity.class);
+                    startActivity(intent);
+                }
                 YMUserInfoManager userManager = new YMUserInfoManager( LoginActivity.this);
                 userManager.saveUserInfo(user);
             }

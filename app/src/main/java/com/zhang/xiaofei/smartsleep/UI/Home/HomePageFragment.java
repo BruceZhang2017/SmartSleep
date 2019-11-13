@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.RequestDataCallback;
 import com.clj.blesample.FastBLEManager;
+import com.clj.blesample.comm.Observer;
+import com.clj.blesample.comm.ObserverManager;
 import com.deadline.statebutton.StateButton;
 import com.jpeng.jptabbar.JPTabBar;
 import com.lxj.xpopup.XPopup;
@@ -64,7 +67,7 @@ import butterknife.ButterKnife;
 /**
  * Created by jpeng on 16-11-14.
  */
-public class HomePageFragment extends BasicFunctions implements View.OnClickListener, TextWatcher, OnBannerListener {
+public class HomePageFragment extends BasicFunctions implements View.OnClickListener, TextWatcher, OnBannerListener, Observer {
 
     private Button btnBindDevice;
     private Button btnIgnore;
@@ -93,6 +96,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     private FixedIndicatorView indicator;
     public List<DeviceModel> deviceList = new ArrayList<DeviceModel>();
     public int currentDevice = 0;
+    public int connectedCurrentDevice = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -121,6 +125,14 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         doURV(ultimateRecyclerView);
 
         downloadFoundAdvertises();
+
+        ObserverManager.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ObserverManager.getInstance().deleteObserver(this);
     }
 
     @Override
@@ -131,8 +143,6 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 activity.checkCameraPermissions();
                 break;
             case R.id.ib_help_sleep:
-//                Intent intentB = new Intent(getActivity(), MainFragmentActivity.class);
-//                startActivity(intentB);
                 Toast.makeText(getActivity(), "正在更换喜马拉雅的SDK", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ib_devices:
@@ -449,6 +459,33 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 convertView = LayoutInflater.from(container.getContext())
                         .inflate(R.layout.layout_homepage_device, container, false);
             }
+            TextView tvDeviceName = (TextView)convertView.findViewById(R.id.tv_device_name);
+            if (deviceList.size() > position) {
+                tvDeviceName.setText(deviceList.get(position).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
+            }
+            String unit = getResources().getString(R.string.common_minute2);
+            String[] array = {unit};
+            String content = 83 + "" + unit;
+            TextView tvGrade = (TextView)convertView.findViewById(R.id.tv_sleep_review_value);
+            tvGrade.setText(content);
+            String unit21 = getResources().getString(R.string.common_hour);
+            String unit22 = getResources().getString(R.string.common_minute);
+            String content2 = "23" + unit21 + "30" + unit22;
+            TextView tvSleepTime = (TextView)convertView.findViewById(R.id.tv_sleep_time);
+            tvSleepTime.setText(content2);
+            TextView tvSleepDuration = (TextView)convertView.findViewById(R.id.tv_sleep_duration);
+            tvSleepDuration.setText("08" + unit21 + "00" + unit22);
+            TextView tvBodyMove = (TextView)convertView.findViewById(R.id.tv_body_value);
+            tvBodyMove.setText(R.string.common_many);
+            TextView tvDotValue = (TextView)convertView.findViewById(R.id.tv_dot_value);
+            tvDotValue.setText(5 + "" + getResources().getString(R.string.common_times));
+            ImageView ivBluetooth = (ImageView)convertView.findViewById(R.id.iv_bluetooth);
+            System.out.println("刷新蓝牙图表");
+            if (((connectedCurrentDevice >> position) & 0x01) > 0) {
+                ivBluetooth.setImageResource(R.mipmap.bluetooth2);
+            } else {
+                ivBluetooth.setImageResource(R.mipmap.bluetooth1);
+            }
             return convertView;
         }
 
@@ -474,6 +511,14 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         indicatorViewPager = new IndicatorViewPager(indicator, viewPager);
         inflate = LayoutInflater.from(getActivity());
         indicatorViewPager.setAdapter(adapter);
+        indicatorViewPager.setOnIndicatorPageChangeListener(new IndicatorViewPager.OnIndicatorPageChangeListener() {
+            @Override
+            public void onIndicatorPageChange(int preItem, int currentItem) {
+                currentDevice = currentItem;
+                ((HomeActivity)getActivity()).exchangeDevice(currentDevice);
+                refreshTempratureAndHumdity(0,0);
+            }
+        });
     }
 
     // 显示所有设备
@@ -492,7 +537,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             return;
         }
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)viewPager.getLayoutParams();
-        params.height = (ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(80, getActivity())) * 681 / 960;
+        params.height = (ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(40, getActivity())) * 681 / 960;
         viewPager.setLayoutParams(params);
         ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         paramsB.leftToLeft = R.id.cl_main;
@@ -522,6 +567,19 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         }
         if (tvHumdity != null) {
             tvHumdity.setText(humdity + "%");
+        }
+    }
+
+    @Override
+    public void connectedState(boolean connected, String mac) {
+        System.out.println("收到蓝牙变化的通知：" + connected + " " + mac);
+        for (int i=0;i < deviceList.size();i++) {
+            if (deviceList.get(i).getMac().equals(mac)) {
+                connectedCurrentDevice = (((connectedCurrentDevice >> (i + 1)) << 1) + (connected ? 1 : 0)) << i;
+                System.out.println("connectedCurrentDevice：" + connectedCurrentDevice);
+                adapter.notifyDataSetChanged();
+                break;
+            }
         }
     }
 }
