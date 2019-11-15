@@ -24,6 +24,7 @@ import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.ximalaya.ting.android.opensdk.test.MainFragmentActivity;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
+import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 
@@ -94,7 +95,13 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tvTimeRange.setCompoundDrawables(drawable,null,null,null);
-            tvTip.setText(R.string.sleep_motion_tip2);
+            if (DeviceManager.getInstance().deviceList.size() > 0) {
+                if (DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType() == 1) {
+                    tvTip.setText(R.string.sleep_motion_tip3);
+                } else {
+                    tvTip.setText(R.string.sleep_motion_tip2);
+                }
+            }
             timer.schedule(task, 0, 10000);
             tvTip.setOnClickListener(new View.OnClickListener() {
                 @Override

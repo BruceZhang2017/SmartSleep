@@ -81,10 +81,10 @@ public class FastBLEManager implements BLEDataObserver {
     }
 
     public void setScanRule() {
-        String[] names = new String[]{"SLEEP_BABY", "Sleep_Baby", "SLEEP_BUTTON", "Sleep_Button", "sleep_baby", "sleep_button"};
+        String[] names = new String[]{"SLEEP_BABY", "Sleep_Baby", "SLEEP_BUTTON", "Sleep_Button", "sleep_baby", "sleep_button","Sleep_button"};
         BleScanRuleConfig.Builder builder = new BleScanRuleConfig.Builder()
                 .setDeviceName(true, names)   // 只扫描指定广播名的设备，可选
-                .setScanTimeOut(2000);             // 扫描超时时间，可选，默认2秒
+                .setScanTimeOut(1000);             // 扫描超时时间，可选，默认2秒
         if (macAddress != null && macAddress.length() > 0) {
            builder.setDeviceMac(macAddress);
         }

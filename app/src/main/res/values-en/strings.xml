@@ -216,6 +216,7 @@
     <string name="homepage_one_day">Happly everyday～</string>
     <string name="sleep_motion_tip">Sleep button not monitored</string>
     <string name="sleep_motion_tip2">Sleep button is monitoring</string>
+    <string name="sleep_motion_tip3">Sleep baby is monitoring</string>
     <string name="alarm_not_set">Alarm not set</string>
     <string name="alarm_get_up_to_time">Time to get up</string>
     <string name="alarm_sleep_to_time">Time left to sleep</string>
@@ -241,4 +242,8 @@
     <string name="configure_result_success_item">BSSID = %1$s, InetAddress = %2$s</string>
     <string name="dynamic_curve">Dynamic curve</string>
     <string name="get_flash_data">Get flash data</string>
+    <string name="device_information">Device Information</string>
+    <string name="device_name">Device Name</string>
+
+    <string name="start">Start</string>
 </resources>

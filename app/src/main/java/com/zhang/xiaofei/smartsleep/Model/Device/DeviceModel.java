@@ -11,7 +11,7 @@ public class DeviceModel extends RealmObject {
     int deviceType;
     String bindTime;
     String mac;
-    int version;
+    String version;
     Boolean upToCloud = false;
 
     public int getId() {
@@ -70,11 +70,11 @@ public class DeviceModel extends RealmObject {
         this.upToCloud = upToCloud;
     }
 
-    public int getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 }

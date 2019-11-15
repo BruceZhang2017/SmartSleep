@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.View;
 
 
+import com.bumptech.glide.Glide;
 import com.marshalchen.ultimaterecyclerview.quickAdapter.easyRegularAdapter;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.Kit.itemCommonBinder;
@@ -110,6 +111,7 @@ public class GoodsAdapter extends easyRegularAdapter<GoodsItem, itemCommonBinder
         });
         holder.textViewSample.setText(data.getProductName());
         holder.textViewFeature.setText(data.getTitle());
+        Glide.with(context).load(data.getImgPath()).into(holder.imageViewSample);
     }
 
 

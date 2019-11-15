@@ -51,6 +51,9 @@ public class YMUserInfoManager {
     public UserModel loadUserInfo() {
         SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         String expire = preferences.getString("expire", "");
+        if (expire.length() == 0) {
+            return null;
+        }
         int userId = preferences.getInt("userId", 0);
         String token = preferences.getString("token", "");
         String photo = preferences.getString("photo", "");

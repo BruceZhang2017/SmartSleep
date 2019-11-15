@@ -1,6 +1,7 @@
 package com.zhang.xiaofei.smartsleep.UI.Me;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -74,9 +75,9 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
             b.textViewVersion.setText("");
             b.ibDelete.setVisibility(View.INVISIBLE);
         } else {
-            b.imageViewSample.setImageResource(R.mipmap.icon_placeholder);
+            b.imageViewSample.setImageResource(jRitem.getDeviceType() == 1 ? R.drawable.shuimiandai : R.drawable.shuimiankou);
             b.imageViewSample.setBackgroundColor(0xFF0A1833);
-            b.textViewSample.setText(jRitem.getDeviceSerial().contains("01") ? R.string.report_yamy_sleep_belt : R.string.report_yamy_sleep_button);
+            b.textViewSample.setText(jRitem.getDeviceType() == 1 ? R.string.report_yamy_sleep_belt : R.string.report_yamy_sleep_button);
             b.textViewVersion.setText(jRitem.getVersion() + "");
             b.ibDelete.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         }
@@ -84,14 +85,18 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
             @Override
             public void onClick(View view) {
                 DeviceManageActivity deviceActivity = (DeviceManageActivity)activity;
-                deviceActivity.checkCameraPermissions();
-            }
-        });
-        b.ibDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DeviceManageActivity deviceActivity = (DeviceManageActivity)activity;
-                deviceActivity.deleteDevice(position);
+                if (deviceActivity.isEdit) {
+                    if (b.textViewSample.getText().toString().length() > 0) {
+                        deviceActivity.deleteDevice(position);
+                    }
+                } else {
+                    if (b.textViewSample.getText().toString().length() > 0) {
+                        deviceActivity.pushToOTA(position);
+                    } else {
+                        deviceActivity.checkCameraPermissions();
+                    }
+
+                }
             }
         });
     }

@@ -177,7 +177,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvSleepBottomCount1 = (TextView)findViewById(R.id.tv_sleep_bottom_count_1);
         tvSleepBottomCount2 = (TextView)findViewById(R.id.tv_sleep_bottom_count_2);
         tvSleepBottomCount3 = (TextView)findViewById(R.id.tv_sleep_bottom_count_3);
-        String content1 = "90 " + getResources().getString(R.string.common_times_minute);
+        String content1 = "70 " + getResources().getString(R.string.common_times_minute);
         String unit1 = getResources().getString(R.string.common_times_minute);
         tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, unit1));
         String content2 = "20 " + getResources().getString(R.string.common_times_minute);
@@ -508,8 +508,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
         } else {
             for (int i = (currentTime + sleepTime); i < (currentTime + getupTime); i += 60) {
-                float y = getRandom(20, 0);
-                chart2Values.add(new Entry(i, y + 75));
+                float y = getRandom(10, 0);
+                chart2Values.add(new Entry(i, y + 55));
             }
         }
 

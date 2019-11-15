@@ -69,11 +69,11 @@
     <TextView
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="40dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_time_range"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:textSize="22sp"
         android:gravity="center"
         android:text="@string/sleep_motion_tip"

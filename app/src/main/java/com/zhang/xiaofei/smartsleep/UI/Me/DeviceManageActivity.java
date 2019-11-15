@@ -28,6 +28,7 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.grid.BasicGridLayoutManager;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceListModel;
+import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
@@ -59,7 +60,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
     public static final String TAG = "GLV";
     public static final int RC_CAMERA = 0X01;
     public static final int REQUEST_CODE_SCAN = 0X01;
-    private Boolean isEdit = false;
+    public Boolean isEdit = false;
     Realm mRealm;
     List<DeviceModel> team;
     private static final String DYNAMICACTION = "com.example.petter.broadcast.MyDynamicFilter";
@@ -117,23 +118,14 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
                 }
             }
         });
-        downloadDeviceList();
+
         registerBroadcast();
     }
 
     private List<DeviceModel> getJRList() {
         team = new ArrayList<>();
-        try {
-            RealmResults<DeviceModel> userList = mRealm.where(DeviceModel.class).findAll();
-            if (userList != null && userList.size() > 0) {
-                for (DeviceModel model: userList) {
-                    team.add(model);
-                }
-            }
-            team.add(new DeviceModel());
-        }finally {
-
-        }
+        team.addAll(DeviceManager.getInstance().deviceList);
+        team.add(new DeviceModel());
         return team;
     }
 
@@ -217,78 +209,6 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
             }
 
         }
-    }
-
-    private void downloadOTA() {
-        YMUserInfoManager userManager = new YMUserInfoManager( DeviceManageActivity.this);
-        UserModel userModel = userManager.loadUserInfo();
-        com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "application/x-www-form-urlencoded");
-        com.ansen.http.net.Header headerToken = new com.ansen.http.net.Header("token", userModel.getToken());
-        String saveFilePath= Environment.getExternalStorageDirectory() + "/dfufile.zip";
-        HTTPCaller.getInstance().downloadFile(
-                YMApplication.getInstance().domain() + "test/zips/20191022/dfufile.zip",
-                saveFilePath,
-                new Header[]{header, headerToken},
-                new ProgressUIListener(){
-            @Override
-            public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
-                Log.i("ansen","dowload file content numBytes:"+numBytes+" totalBytes:"+totalBytes+" percent:"+percent+" speed:"+speed);
-            }
-        });
-    }
-
-    private void downloadDeviceList() {
-        YMUserInfoManager userManager = new YMUserInfoManager( DeviceManageActivity.this);
-        UserModel userModel = userManager.loadUserInfo();
-        com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "application/x-www-form-urlencoded");
-        com.ansen.http.net.Header headerToken = new com.ansen.http.net.Header("token", userModel.getToken());
-        List<NameValuePair> postParam = new ArrayList<>();
-        postParam.add(new NameValuePair("userId", "" + userModel.getUserInfo().getUserId()));
-        showHUD();
-        HTTPCaller.getInstance().post(
-                DeviceListModel.class,
-                YMApplication.getInstance().domain() + "app/deviceManage/list?userId=" + userModel.getUserInfo().getUserId(),
-                new com.ansen.http.net.Header[]{header, headerToken},
-                postParam,
-                requestDataCallback
-        );
-    }
-
-    private RequestDataCallback requestDataCallback = new RequestDataCallback<DeviceListModel>() {
-        @Override
-        public void dataCallback(int status, DeviceListModel model) {
-            hideHUD();
-            System.out.println("网络请求返回的Status:" + status);
-            if(model==null || model.getCode() != 200){
-                if (model != null) { // 会提示用户没有绑定设备
-                    //Toast.makeText(DeviceManageActivity.this, model.getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }else{
-                if (model.getData() != null && model.getData().length > 0) {
-                    saveDeviceListToDB(model.getData());
-                }
-            }
-
-        }
-
-        @Override
-        public void dataCallback(DeviceListModel obj) {
-            hideHUD();
-            if (obj == null) {
-                Toast.makeText(DeviceManageActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
-
-    // 将设备信息保存到数据库中
-    private void saveDeviceListToDB(DeviceModel[] models) {
-        team.clear();
-        for (DeviceModel model: models) {
-            team.add(model);
-        }
-        team.add(new DeviceModel());
-        mGridAdapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -414,5 +334,15 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
 
     private void unregisterBroadcast() {
         unregisterReceiver(dynamicReceiver);
+    }
+
+    // 跳转至OTA
+    public void pushToOTA(int postion) {
+        Intent intent = new Intent(DeviceManageActivity.this, OTAActivity.class);
+        intent.putExtra("name", team.get(postion).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
+        intent.putExtra("serial", team.get(postion).getDeviceSerial());
+        intent.putExtra("version", team.get(postion).getVersion());
+        intent.putExtra("mac", team.get(postion).getMac());
+        startActivity(intent);
     }
 }

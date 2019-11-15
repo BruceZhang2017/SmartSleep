@@ -20,7 +20,7 @@ public class ItemGridCellBinder extends UltimateRecyclerviewViewHolder {
     public ImageView imageViewSample;
     public View item_view;
     public TextView textViewVersion;
-    public ImageButton ibDelete;
+    public ImageView ibDelete;
 
     public ItemGridCellBinder(View itemView, boolean isItem) {
         super(itemView);
@@ -29,7 +29,7 @@ public class ItemGridCellBinder extends UltimateRecyclerviewViewHolder {
             textViewVersion = (TextView) itemView.findViewById(R.id.example_row_tv_version);
             imageViewSample = (ImageView) itemView.findViewById(R.id.example_row_iv_image);
             item_view = itemView.findViewById(R.id.planview);
-            ibDelete = (ImageButton)itemView.findViewById(R.id.ib_delete);
+            ibDelete = (ImageView)itemView.findViewById(R.id.iv_delete);
             imageViewSample.post(new Runnable() {
                 @Override
                 public void run() {

@@ -117,4 +117,9 @@ dependencies {
     implementation 'com.bigkoo:alertview:1.0.3'
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    implementation 'no.nordicsemi.android:dfu:1.6.1'
+
+    api 'no.nordicsemi.android:dfu:1.6.1'
+    implementation 'net.vidageek:mirror:1.6.1'
 }

@@ -6,6 +6,7 @@ public class GoodsItem {
     String title = "";
     float price = 0;
     String link = "";
+    String imgPath = "";
 
     public int getId() {
         return id;
@@ -45,5 +46,13 @@ public class GoodsItem {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

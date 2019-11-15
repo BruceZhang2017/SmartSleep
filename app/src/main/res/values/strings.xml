@@ -216,6 +216,7 @@
     <string name="homepage_one_day">保持好心情，更助好健康！开心生活每一天～</string>
     <string name="sleep_motion_tip">睡眠纽扣未在监测</string>
     <string name="sleep_motion_tip2">睡眠纽扣正在监测</string>
+    <string name="sleep_motion_tip3">睡眠带正在监测</string>
     <string name="alarm_not_set">未设置闹钟</string>
     <string name="alarm_get_up_to_time">离起床时间剩余</string>
     <string name="alarm_sleep_to_time">离睡觉时间剩余</string>
@@ -241,5 +242,9 @@
     <string name="configure_result_success_item">BSSID = %1$s, 地址 = %2$s</string>
     <string name="get_flash_data">获取flash数据</string>
     <string name="dynamic_curve">动态曲线</string>
+    <string name="device_information">设备信息</string>
+    <string name="device_name">设备名称</string>
+
+    <string name="start">开始</string>
 
 </resources>

@@ -47,6 +47,7 @@ import com.zhang.xiaofei.smartsleep.Kit.GlideImageLoader;
 import com.zhang.xiaofei.smartsleep.Kit.SampleDataboxset;
 import com.zhang.xiaofei.smartsleep.Kit.sectionHomePageAdapter;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
+import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Packages.Goods;
@@ -94,9 +95,6 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private ViewPager viewPager;
     private FixedIndicatorView indicator;
-    public List<DeviceModel> deviceList = new ArrayList<DeviceModel>();
-    public int currentDevice = 0;
-    public int connectedCurrentDevice = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -341,8 +339,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         tvNoDeviceTip = (TextView)custom_header.findViewById(R.id.tv_no_device_tip);
         tvTemprature = (TextView)custom_header.findViewById(R.id.tv_temperature_value);
         tvHumdity = (TextView)custom_header.findViewById(R.id.tv_humidity_value);
-        if (deviceList.size() > 0) {
-            String mac = deviceList.get(currentDevice).getMac();
+        if (DeviceManager.getInstance().deviceList.size() > 0) {
+            String mac = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getMac();
             String value = DeviceInfoManager.getInstance().hashMap.get(mac);
             if (value != null) {
                 String[] array = value.split("-");
@@ -460,8 +458,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                         .inflate(R.layout.layout_homepage_device, container, false);
             }
             TextView tvDeviceName = (TextView)convertView.findViewById(R.id.tv_device_name);
-            if (deviceList.size() > position) {
-                tvDeviceName.setText(deviceList.get(position).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
+            if (DeviceManager.getInstance().deviceList.size() > position) {
+                tvDeviceName.setText(DeviceManager.getInstance().deviceList.get(position).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
             }
             String unit = getResources().getString(R.string.common_minute2);
             String[] array = {unit};
@@ -481,7 +479,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             tvDotValue.setText(5 + "" + getResources().getString(R.string.common_times));
             ImageView ivBluetooth = (ImageView)convertView.findViewById(R.id.iv_bluetooth);
             System.out.println("刷新蓝牙图表");
-            if (((connectedCurrentDevice >> position) & 0x01) > 0) {
+            if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
                 ivBluetooth.setImageResource(R.mipmap.bluetooth2);
             } else {
                 ivBluetooth.setImageResource(R.mipmap.bluetooth1);
@@ -498,7 +496,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
         @Override
         public int getCount() {
-            return deviceList.size();
+            return DeviceManager.getInstance().deviceList.size();
         }
     };
 
@@ -514,8 +512,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         indicatorViewPager.setOnIndicatorPageChangeListener(new IndicatorViewPager.OnIndicatorPageChangeListener() {
             @Override
             public void onIndicatorPageChange(int preItem, int currentItem) {
-                currentDevice = currentItem;
-                ((HomeActivity)getActivity()).exchangeDevice(currentDevice);
+                DeviceManager.getInstance().currentDevice = currentItem;
+                ((HomeActivity)getActivity()).exchangeDevice(DeviceManager.getInstance().currentDevice);
                 refreshTempratureAndHumdity(0,0);
             }
         });
@@ -526,7 +524,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         if (viewPager == null) {
             return;
         }
-        if (deviceList.size() == 0) {
+        if (DeviceManager.getInstance().deviceList.size() == 0) {
             ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
             paramsB.leftToLeft = R.id.cl_main;
             paramsB.topToBottom = R.id.btn_bind_device;
@@ -573,10 +571,10 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     @Override
     public void connectedState(boolean connected, String mac) {
         System.out.println("收到蓝牙变化的通知：" + connected + " " + mac);
-        for (int i=0;i < deviceList.size();i++) {
-            if (deviceList.get(i).getMac().equals(mac)) {
-                connectedCurrentDevice = (((connectedCurrentDevice >> (i + 1)) << 1) + (connected ? 1 : 0)) << i;
-                System.out.println("connectedCurrentDevice：" + connectedCurrentDevice);
+        for (int i=0;i < DeviceManager.getInstance().deviceList.size();i++) {
+            if (DeviceManager.getInstance().deviceList.get(i).getMac().equals(mac)) {
+                DeviceManager.getInstance().connectedCurrentDevice = (((DeviceManager.getInstance().connectedCurrentDevice >> (i + 1)) << 1) + (connected ? 1 : 0)) << i;
+                System.out.println("connectedCurrentDevice：" + DeviceManager.getInstance().connectedCurrentDevice);
                 adapter.notifyDataSetChanged();
                 break;
             }

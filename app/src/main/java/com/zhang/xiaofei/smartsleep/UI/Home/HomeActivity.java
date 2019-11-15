@@ -33,6 +33,7 @@ import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
+import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
@@ -84,6 +85,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        DeviceManager.getInstance().context = this;
+        DeviceManager.getInstance().readDB();
+        mRealm = Realm.getDefaultInstance();
         mTabbar = (JPTabBar) findViewById(R.id.tabbar);
         mPager = (NoScrollViewPager) findViewById(R.id.view_pager);
         mTab1 = new HomePageFragment();
@@ -130,6 +134,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
         foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
         startService(foregroundIntent);
+
+        DeviceManager.getInstance().downloadDeviceList();
     }
 
     @Override
@@ -321,7 +327,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 model.setDeviceType(type);
                 model.setBindTime("");
                 model.setDeviceSerial(serial);
-                model.setVersion(1);
+                model.setVersion(1 + "");
                 model.setId(1 + size);
                 model.setUpToCloud(false);
             }
@@ -344,29 +350,13 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
     // 刷新设备列表并扫描第一个设备
     private void refreshBLEAndDevice() {
-        YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
-        UserModel userModel = userManager.loadUserInfo();
-        int userId = userModel.getUserInfo().getUserId();
-        if (mTab1 != null) {
-            mTab1.deviceList.clear();
-        }
-        mRealm = Realm.getDefaultInstance();
-        RealmResults<DeviceModel> userList = mRealm.where(DeviceModel.class).equalTo("userId", userId).findAll();
-        if (userList != null && userList.size() > 0) {
-            for (DeviceModel model: userList) {
-                mTab1.deviceList.add(model);
-            }
-            Collections.reverse(mTab1.deviceList);
-            mTab1.currentDevice = 0;
-            fastBLEManager.macAddress = userList.get(0).getMac();
+        DeviceManager.getInstance().readDB();
+        if (DeviceManager.getInstance().deviceList.size() > 0) {
+            fastBLEManager.macAddress = DeviceManager.getInstance().deviceList.get(0).getMac();
             fastBLEManager.startBLEScan(); // 重新刷列表
-            if (mTab1 != null) {
-                mTab1.showDeviceList();
-            }
-        } else {
-            if (mTab1 != null) {
-                mTab1.showDeviceList();
-            }
+        }
+        if (mTab1 != null) {
+            mTab1.showDeviceList();
         }
     }
 
@@ -383,11 +373,12 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 //先查找后得到DeviceModel对象
                 DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
                 if (deviceModel != null) {
-                    deviceModel.setVersion(version);
+                    deviceModel.setVersion(version + "");
                     deviceModel.setUpToCloud(true);
                 }
             }
         });
+        DeviceManager.getInstance().readDB();
     }
 
     @Override
@@ -400,10 +391,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
     @Override
     public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm) {
-        if (mTab1 == null && mTab1.deviceList.size() > mTab1.currentDevice) {
+        if (mTab1 == null && DeviceManager.getInstance().deviceList.size() > DeviceManager.getInstance().currentDevice) {
             return;
         }
-        int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getId();
+        int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getId();
         mRealm.executeTransactionAsync(new Realm.Transaction(){
             @Override
             public void execute(Realm realm) {
@@ -427,7 +418,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (mTab1 == null) {
                 return;
             }
-            int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+            int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
             if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                 fastBLEManager.operationManager.write(
                         fastBLEManager.operationManager.bleOperation.syncTime(deviceId));
@@ -436,7 +427,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (mTab1 == null) {
                 return;
             }
-            int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+            int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
             if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                 fastBLEManager.operationManager.write(
                         fastBLEManager.operationManager.bleOperation.getTemplateAndHumidity(deviceId));
@@ -445,7 +436,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (mTab1 == null) {
                 return;
             }
-            int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+            int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
             if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                 fastBLEManager.operationManager.write(
                         fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
@@ -522,8 +513,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab1 == null) {
                         return;
                     }
-                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
-                    mRealm = Realm.getDefaultInstance();
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     RealmResults<AlarmModel> alarmList = mRealm.where(AlarmModel.class).findAll();
                     if (alarmList != null && alarmList.size() > 0) {
                         boolean sleep = false;
@@ -555,7 +545,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab1 == null) {
                         return;
                     }
-                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setSleepState(deviceId, true));
@@ -569,7 +559,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab1 == null) {
                         return;
                     }
-                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setGetUpState(deviceId, true));
@@ -583,11 +573,13 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab1 == null) {
                         return;
                     }
-                    int deviceId = mTab1.deviceList.get(mTab1.currentDevice).getDeviceType();
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
                     }
+                } else if (arg0 == 6) {
+                    exchangeDevice(DeviceManager.getInstance().currentDevice);
                 }
             }
         }
@@ -598,8 +590,14 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (mTab1 != null) {
             fastBLEManager.stopBLEScan();
             fastBLEManager.onDisConnect();
-            fastBLEManager.macAddress = mTab1.deviceList.get(current).getMac();
+            fastBLEManager.macAddress = DeviceManager.getInstance().deviceList.get(current).getMac();
             fastBLEManager.startBLEScan();
+        }
+    }
+
+    public void refreshTab1() {
+        if (mTab1 != null) {
+            mTab1.showDeviceList();
         }
     }
 }

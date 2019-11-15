@@ -86,6 +86,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
                 if (dynamicViewHeart.current >= 1024) {
                     dynamicViewHeart.values = new int[1024];
                     dynamicViewHeart.current = 0;
+                    return;
                 }
                 dynamicViewHeart.values[dynamicViewHeart.current] = heart;
                 dynamicViewHeart.current += 1;
@@ -94,8 +95,9 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
                 if (dynamicViewBreath.current >= 1024) {
                     dynamicViewBreath.values = new int[1024];
                     dynamicViewBreath.current = 0;
+                    return;
                 }
-                dynamicViewBreath.values[dynamicViewHeart.current] = breath;
+                dynamicViewBreath.values[dynamicViewBreath.current] = breath;
                 dynamicViewBreath.current += 1;
                 dynamicViewBreath.invalidate();
             }
