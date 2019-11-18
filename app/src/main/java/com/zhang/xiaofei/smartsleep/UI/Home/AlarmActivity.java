@@ -58,7 +58,6 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
     private AlarmModel alramGetupModel;
     private AlarmModel alramSleepModel;
     private int userId = 0;
-    private static final String DYNAMICACTION = "com.example.petter.broadcast.MyDynamicFilter";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +135,7 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         mRealm.close();
 
         Intent intentBroadcast = new Intent();   //定义Intent
-        intentBroadcast.setAction(DYNAMICACTION);
+        intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
         intentBroadcast.putExtra("arg0", 2);
         sendBroadcast(intentBroadcast);
 

@@ -206,9 +206,6 @@ public class ReportWeekFragment extends LazyFragment {
 
         setCharData(6, 80);
 
-        // draw points over time
-        chart.animateX(30);
-
         // get the legend (only possible after setting data)
         Legend l = chart.getLegend();
         l.setEnabled(false);
@@ -367,9 +364,6 @@ public class ReportWeekFragment extends LazyFragment {
         }
 
         setCharData2(7, 15);
-
-        // draw points over time
-        chart2.animateX(100);
 
         // get the legend (only possible after setting data)
         Legend l = chart2.getLegend();

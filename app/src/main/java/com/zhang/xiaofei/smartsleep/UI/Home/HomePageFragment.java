@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
@@ -29,6 +33,7 @@ import com.clj.blesample.comm.ObserverManager;
 import com.deadline.statebutton.StateButton;
 import com.jpeng.jptabbar.JPTabBar;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.impl.AttachListPopupView;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.shizhefei.view.indicator.FixedIndicatorView;
@@ -46,12 +51,15 @@ import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Kit.GlideImageLoader;
 import com.zhang.xiaofei.smartsleep.Kit.SampleDataboxset;
 import com.zhang.xiaofei.smartsleep.Kit.sectionHomePageAdapter;
+import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Packages.Goods;
 import com.zhang.xiaofei.smartsleep.Model.Packages.GoodsItem;
+import com.zhang.xiaofei.smartsleep.Model.Record.BreathRecordManger;
+import com.zhang.xiaofei.smartsleep.Model.Record.BreathRecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.FoundGoods.BasicFunctions;
 import com.zhang.xiaofei.smartsleep.UI.Me.DeviceManageActivity;
@@ -64,6 +72,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by jpeng on 16-11-14.
@@ -95,11 +105,16 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private ViewPager viewPager;
     private FixedIndicatorView indicator;
+    int getupH = 0;
+    int getupM = 0;
+    int sleepH = 0;
+    int sleepM = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.tab1, null);
         ButterKnife.bind(this, layout);
+        readAlarmInfo();
         init(layout);
         showDeviceList();
         return layout;
@@ -107,7 +122,6 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private void init(View layout) {
         tvTitle.setText(R.string.common_app_name);
-
         btnRight.setImageResource(R.mipmap.home_icon_more);
         btnRight.setVisibility(View.VISIBLE);
         btnRight.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +204,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     private void handleRightButton(View v) {
         Context context =  (Context) getActivity();
         new XPopup.Builder(context)
+                //.maxWidth(150)
                 .atView(v)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
                 .asAttachList(
                         new String[]{
@@ -457,33 +472,106 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 convertView = LayoutInflater.from(container.getContext())
                         .inflate(R.layout.layout_homepage_device, container, false);
             }
+            int type = 0;
             TextView tvDeviceName = (TextView)convertView.findViewById(R.id.tv_device_name);
             if (DeviceManager.getInstance().deviceList.size() > position) {
-                tvDeviceName.setText(DeviceManager.getInstance().deviceList.get(position).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
+                type = DeviceManager.getInstance().deviceList.get(position).getDeviceType();
+                if (type == 1) {
+                    tvDeviceName.setText(getResources().getString(R.string.report_yamy_sleep_belt));
+                } else if (type == 2) {
+                    tvDeviceName.setText(getResources().getString(R.string.report_yamy_sleep_button));
+                } else {
+                    tvDeviceName.setText(getResources().getString(R.string.homepage_breathing_machine));
+                }
             }
             String unit = getResources().getString(R.string.common_minute2);
             String[] array = {unit};
             String content = 83 + "" + unit;
             TextView tvGrade = (TextView)convertView.findViewById(R.id.tv_sleep_review_value);
             tvGrade.setText(content);
-            String unit21 = getResources().getString(R.string.common_hour);
-            String unit22 = getResources().getString(R.string.common_minute);
-            String content2 = "23" + unit21 + "30" + unit22;
+
             TextView tvSleepTime = (TextView)convertView.findViewById(R.id.tv_sleep_time);
-            tvSleepTime.setText(content2);
+
             TextView tvSleepDuration = (TextView)convertView.findViewById(R.id.tv_sleep_duration);
-            tvSleepDuration.setText("08" + unit21 + "00" + unit22);
+
             TextView tvBodyMove = (TextView)convertView.findViewById(R.id.tv_body_value);
-            tvBodyMove.setText(R.string.common_many);
+
             TextView tvDotValue = (TextView)convertView.findViewById(R.id.tv_dot_value);
-            tvDotValue.setText(5 + "" + getResources().getString(R.string.common_times));
+
             ImageView ivBluetooth = (ImageView)convertView.findViewById(R.id.iv_bluetooth);
             System.out.println("刷新蓝牙图表");
-            if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
-                ivBluetooth.setImageResource(R.mipmap.bluetooth2);
+            if (type == 3) {
+                ivBluetooth.setVisibility(View.INVISIBLE);
             } else {
-                ivBluetooth.setImageResource(R.mipmap.bluetooth1);
+                ivBluetooth.setVisibility(View.VISIBLE);
+                if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
+                    ivBluetooth.setImageResource(R.mipmap.bluetooth2);
+                    removeShineAnimation(ivBluetooth);
+                } else {
+                    ivBluetooth.setImageResource(R.mipmap.bluetooth1);
+                    addShineAnimation(ivBluetooth);
+                }
             }
+
+            TextView tvDot1 = (TextView)convertView.findViewById(R.id.tv_dot_first);
+            TextView tvDot2 = (TextView)convertView.findViewById(R.id.tv_dot_second);
+            TextView tvDot3 = (TextView)convertView.findViewById(R.id.tv_dot_three);
+            TextView tvDot4 = (TextView)convertView.findViewById(R.id.tv_dot_four);
+            if (type == 3) {
+                tvDot1.setText(R.string.breath_machine_1);
+                tvDot2.setText(R.string.breath_machine_2);
+                tvDot3.setText(R.string.breath_machine_3);
+                tvDot4.setText(R.string.breath_machine_4);
+                BreathRecordModel model = BreathRecordManger.getInstance().getCache();
+                if (model != null) {
+                    tvSleepTime.setText(model.getUseDay() + "");
+                    tvSleepDuration.setText(model.getUseDay() + "");
+                    tvBodyMove.setText(model.getUseTime());
+                    tvDotValue.setText(model.getAvgUseTime());
+                } else {
+                    tvSleepTime.setText("0");
+                    tvSleepDuration.setText("0");
+                    tvBodyMove.setText(0 + " h");
+                    tvDotValue.setText(0 + " h");
+                }
+            } else {
+                tvDot1.setText(R.string.middle_fall_asleep);
+                tvDot2.setText(R.string.report_sleep_hour);
+                tvDot3.setText(R.string.common_body_moves);
+                tvDot4.setText(R.string.common_snoring_times);
+                String unit21 = getResources().getString(R.string.common_hour);
+                String unit22 = getResources().getString(R.string.common_minute);
+                String content2 = (sleepH > 9 ? ("" + sleepH) : ("0" + sleepH)) + unit21 + (sleepM > 9 ? ("" + sleepM) : ("0" + sleepM)) + unit22;
+                tvSleepTime.setText(content2);
+                int h = 0;
+                int m = 0;
+                if (getupH > sleepH) {
+                    if (getupM >= sleepM) {
+                        h = getupH - sleepH;
+                        m = getupM - sleepM;
+                    }else {
+                        h = getupH - sleepH - 1;
+                        m = getupM - sleepM + 60;
+                    }
+                } else if (getupH == sleepH) {
+                    if (getupM >= sleepM) {
+                        m = getupM - sleepM;
+                    }
+                } else {
+                    if (getupM >= sleepM) {
+                        h = getupH + 24 - sleepH;
+                        m = getupM - sleepM;
+                    } else {
+                        h = getupH + 24 - sleepH - 1;
+                        m = getupM - sleepM + 60;
+                    }
+                }
+                //System.out.println("h: " + h + "m :" + m);
+                tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit21 + (m > 9 ? ("" + m) : ("0" + m)) + unit22);
+                tvBodyMove.setText(R.string.common_many);
+                tvDotValue.setText(0 + "" + getResources().getString(R.string.common_times));
+            }
+
             return convertView;
         }
 
@@ -499,6 +587,37 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             return DeviceManager.getInstance().deviceList.size();
         }
     };
+
+    // 添加蓝牙图标的闪烁动画
+    private void addShineAnimation(ImageView iv) {
+        AlphaAnimation alphaAnimation1 = new AlphaAnimation(0.5f, 1.0f);
+        alphaAnimation1.setDuration(1000);
+        alphaAnimation1.setRepeatCount(Animation.INFINITE);
+        alphaAnimation1.setRepeatMode(Animation.REVERSE);
+        iv.setAnimation(alphaAnimation1);
+        alphaAnimation1.start();
+    }
+
+    private void removeShineAnimation(ImageView iv) {
+        iv.clearAnimation();
+    }
+
+    private void readAlarmInfo() {
+        Realm mRealm = Realm.getDefaultInstance();
+        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
+        if (userList != null && userList.size() > 0) {
+            System.out.println("已经制定过闹钟信息");
+            for (AlarmModel model : userList) {
+                if (model.getType() == 0) {
+                    getupH = model.getHour();
+                    getupM = model.getMinute();
+                } else {
+                    sleepH = model.getHour();
+                    sleepM = model.getMinute();
+                }
+            }
+        }
+    }
 
     // 初始化顶部设备UI
     private void initDevice(View custom_header) {

@@ -1,6 +1,8 @@
 package com.zhang.xiaofei.smartsleep.Model.Login;
 
-public class BaseProtocol {
+import java.io.Serializable;
+
+public class BaseProtocol implements Serializable {
     int code;
     String msg;
 

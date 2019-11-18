@@ -176,9 +176,6 @@ public class ReportMonthFragment extends LazyFragment {
 
         setCharData(7, 15);
 
-        // draw points over time
-        chart.animateX(30);
-
         // get the legend (only possible after setting data)
         Legend l = chart.getLegend();
         l.setEnabled(false);

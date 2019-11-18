@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import io.feeeei.circleseekbar.CircleSeekBar;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class ReportDayFragment extends LazyFragment { // 日报告
 
@@ -84,6 +85,10 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     ArrayList<Entry> chart3Values;
     int sleepTime = -3600;
     int getupTime = 7 * 60 * 60;
+    LineDataSet set1;
+    LineDataSet set2;
+    int tableRowCount = 0;
+    int tableRowDuration = 0;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -131,7 +136,42 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 }
             }
         }
-
+        System.out.println("计算获取到的SleepTime：" + sleepTime + "计算获取到GetupTime: " + getupTime);
+        int total = getupTime - sleepTime;
+        int[] min = new int[5];
+        if (total % 6 == 0) {
+            tableRowCount = 6;
+            tableRowDuration = total / 6;
+            min[0] = total % 6;
+        } else if (total % 7 == 0) {
+            tableRowCount = 7;
+            tableRowDuration = total / 7;
+            min[1] = total % 7;
+        } else if (total % 8 == 0) {
+            tableRowCount = 8;
+            tableRowDuration = total / 8;
+            min[2] = total % 8;
+        } else if (total % 9 == 0) {
+            tableRowCount = 9;
+            tableRowDuration = total / 9;
+            min[3] = total % 9;
+        } else if (total % 10 == 0) {
+            tableRowCount = 10;
+            tableRowDuration = total / 10;
+            min[4] = total % 10;
+        } else {
+            int max = 0;
+            int index = 0;
+            for (int j = 0; j < 5; j++) {
+                if (min[j] < max) {
+                    max = min[j];
+                    index = j;
+                }
+            }
+            tableRowCount = index + 6;
+            tableRowDuration = (total + max) / (index + 6);
+        }
+        System.out.println("计算获取到的列数：" + tableRowCount + " 每列大小间隔为: " + tableRowDuration + " 开始时间：" + (sleepTime + currentTime));
         initializeForChart(); // 睡眠质量初始化
         initializeForChart2();
         initializeForChart3();
@@ -270,18 +310,85 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         ;
     };
 
+    // 初始化第一个表格
+    private void initializeForChart() {
+        {   // // Chart Style // //
+            chart = findViewById(R.id.chart1);
+            // background color
+            chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+            // disable description text
+            chart.getDescription().setEnabled(false);
+            // enable touch gestures
+            chart.setTouchEnabled(true);
+            // set listeners
+            //chart.setOnChartValueSelectedListener(this);
+            chart.setDrawGridBackground(false);
+            // enable scaling and dragging
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            // chart.setScaleXEnabled(true);
+            // chart.setScaleYEnabled(true);
+            // force pinch zoom along both axis
+            chart.setPinchZoom(false);
+        }
+
+        XAxis xAxis;
+        {   // // X-Axis Style // //
+            xAxis = chart.getXAxis();
+            xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+            xAxis.setValueFormatter(new ValueFormatter() {
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            @Override
+            public String getFormattedValue(float value) {
+                System.out.println("当前列的时间值为：" + value);
+                long millis = TimeUnit.SECONDS.toMillis((long) value);
+                return mFormat.format(new Date(millis));
+            }
+        });
+            xAxis.setGranularityEnabled(true);
+            xAxis.setLabelCount(tableRowCount,true);
+            //xAxis.setGranularity(tableRowDuration);
+            int min = currentTime + sleepTime;
+            xAxis.setAxisMinimum(min);
+            int max = currentTime + sleepTime + tableRowDuration * tableRowCount;
+            System.out.println("当前列的时间值为：min " + min + " max " + max);
+            xAxis.setAxisMaximum(max);
+            //xAxis.setAvoidFirstLastClipping(true);
+            xAxis.setDrawLabels(true);
+        }
+
+        YAxis yAxis;
+        {   // // Y-Axis Style // //
+            yAxis = chart.getAxisLeft();
+            // disable dual axis (only use LEFT axis)
+            chart.getAxisRight().setEnabled(false);
+            yAxis.setTextColor(getResources().getColor(R.color.tranparencyColor));
+            yAxis.setAxisMaximum(5f);
+            yAxis.setAxisMinimum(0f);
+            yAxis.setSpaceTop(0);
+            yAxis.setSpaceBottom(0);
+            yAxis.setLabelCount(5);
+            yAxis.setGranularityEnabled(true);
+            yAxis.setGranularity(1f);
+        }
+
+        setCharData(45, 4);
+
+        // get the legend (only possible after setting data)
+        Legend l = chart.getLegend(); // 就是图表的名称
+        l.setEnabled(false);
+    }
+
+    // 开始设置数据部分
     private void setCharData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<>();
         long now = currentTime + sleepTime;
-        long to = currentTime + getupTime;
-        System.out.println("时间段: " + now + " " + to);
-        for (float i = now; i < to; i += 3600) {
+
+        for (float i = now; i <= (now + tableRowDuration * tableRowCount); i += tableRowDuration) {
             float val = (float) (Math.random() * range);
             values.add(new Entry(i, val));
         }
-
-        LineDataSet set1;
 
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
@@ -290,6 +397,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             set1.notifyDataSetChanged();
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
+            return;
         } else {
             // create a dataset and give it a type
             set1 = new LineDataSet(values, "");
@@ -346,79 +454,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         }
     }
 
-    private void initializeForChart() {
-        {   // // Chart Style // //
-            chart = findViewById(R.id.chart1);
-            // background color
-            chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-            // disable description text
-            chart.getDescription().setEnabled(false);
-            // enable touch gestures
-            chart.setTouchEnabled(false);
-            // set listeners
-            //chart.setOnChartValueSelectedListener(this);
-            chart.setDrawGridBackground(false);
-            // enable scaling and dragging
-            chart.setDragEnabled(true);
-            chart.setScaleEnabled(true);
-            // chart.setScaleXEnabled(true);
-            // chart.setScaleYEnabled(true);
-            // force pinch zoom along both axis
-            chart.setPinchZoom(false);
-        }
-
-        XAxis xAxis;
-        {   // // X-Axis Style // //
-            xAxis = chart.getXAxis();
-            xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-            xAxis.setValueFormatter(new ValueFormatter() {
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-            @Override
-            public String getFormattedValue(float value) {
-                long millis = TimeUnit.SECONDS.toMillis((long) value);
-                return mFormat.format(new Date(millis));
-            }
-        });
-            xAxis.setLabelCount(8);
-            xAxis.setGranularityEnabled(true);
-            xAxis.setGranularity(3600f);
-            xAxis.setAxisMinimum(currentTime + sleepTime);
-            xAxis.setAxisMaximum(currentTime + getupTime);
-        }
-
-        YAxis yAxis;
-        {   // // Y-Axis Style // //
-            yAxis = chart.getAxisLeft();
-            // disable dual axis (only use LEFT axis)
-            chart.getAxisRight().setEnabled(false);
-            yAxis.setTextColor(getResources().getColor(R.color.tranparencyColor));
-            yAxis.setAxisMaximum(5f);
-            yAxis.setAxisMinimum(0f);
-            yAxis.setSpaceTop(0);
-            yAxis.setSpaceBottom(0);
-            yAxis.setLabelCount(5);
-            yAxis.setGranularityEnabled(true);
-            yAxis.setGranularity(1f);
-        }
-
-
-        {
-            // draw limit lines behind data instead of on top
-            //yAxis.setDrawLimitLinesBehindData(true);
-            //xAxis.setDrawLimitLinesBehindData(true);
-
-        }
-
-        setCharData(45, 4);
-
-        // draw points over time
-        chart.animateX(100);
-
-        // get the legend (only possible after setting data)
-        Legend l = chart.getLegend(); // 就是图表的名称
-        l.setEnabled(false);
-    }
-
+    // 初始化第二个表格
     private void initializeForChart2() {
         chart2 = findViewById(R.id.chart2);
 
@@ -455,11 +491,11 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(8);
         xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(3600f);
+        xAxis.setLabelCount(tableRowCount,true);
+        xAxis.setGranularity(tableRowDuration);
         xAxis.setAxisMinimum(currentTime + sleepTime);
-        xAxis.setAxisMaximum(currentTime + getupTime);
+        xAxis.setAxisMaximum(currentTime + sleepTime + tableRowDuration * tableRowCount);
         xAxis.setValueFormatter(new ValueFormatter() {
 
             private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
@@ -489,54 +525,49 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData2() {
-        boolean flag = false;
-        if (chart2Values != null) {
-            flag = true;
-            chart2Values.clear();
-        } else {
-            chart2Values = new ArrayList<>();
-        }
+
+        chart2Values = new ArrayList<>();
 
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
                 .greaterThan("time", currentTime + sleepTime)
                 .lessThan("time", currentTime + getupTime)
-                .findAll();
-        if (list.size() > 100) {
-            for (RecordModel model: list) {
-                System.out.println("获取到的数据时间：" + model.getTime());
-                chart2Values.add(new Entry(model.getTime(), model.getHeartRate()));
-            }
-        } else {
-            for (int i = (currentTime + sleepTime); i < (currentTime + getupTime); i += 60) {
-                float y = getRandom(10, 0);
-                chart2Values.add(new Entry(i, y + 55));
-            }
+                .findAll().sort("time", Sort.ASCENDING);
+        for (RecordModel model: list) {
+            System.out.println("获取到的数据时间：" + model.getTime());
+            chart2Values.add(new Entry(model.getTime(), model.getHeartRate()));
+        }
+
+        if (chart2.getData() != null &&
+                chart2.getData().getDataSetCount() > 0) {
+            set2 = (LineDataSet) chart2.getData().getDataSetByIndex(0);
+            set2.setValues(chart2Values);
+            set2.notifyDataSetChanged();
+            chart2.getData().notifyDataChanged();
+            chart2.notifyDataSetChanged();
+            return;
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(chart2Values, "");
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set1.setColor(getResources().getColor(R.color.color_6EE1CA));
-        set1.setValueTextColor(ColorTemplate.getHoloBlue());
-        set1.setLineWidth(1.5f);
-        set1.setDrawCircles(false);
-        set1.setDrawValues(false);
-        set1.setFillAlpha(65);
-        set1.setFillColor(ColorTemplate.getHoloBlue());
-        set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setDrawCircleHole(false);
+        set2 = new LineDataSet(chart2Values, "");
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set2.setColor(getResources().getColor(R.color.color_6EE1CA));
+        set2.setValueTextColor(ColorTemplate.getHoloBlue());
+        set2.setLineWidth(1.5f);
+        set2.setDrawCircles(false);
+        set2.setDrawValues(false);
+        set2.setFillAlpha(65);
+        set2.setFillColor(ColorTemplate.getHoloBlue());
+        set2.setHighLightColor(Color.rgb(244, 117, 117));
+        set2.setDrawCircleHole(false);
 
         // create a data object with the data sets
-        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        LineData data = new LineData(set1);
+        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        LineData data = new LineData(set2);
         data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(9f);
 
         // set data
         chart2.setData(data);
-        if (flag) {
-            chart2.notifyDataSetChanged();
-        }
     }
 
     private void initializeForChart3() {

@@ -246,4 +246,27 @@
     <string name="device_name">Device Name</string>
 
     <string name="start">Start</string>
+
+    <string name="breath_machine_1">Usege Day</string>
+    <string name="breath_machine_2">Days>4h</string>
+    <string name="breath_machine_3">Usage h</string>
+    <string name="breath_machine_4">Avg Usage h</string>
+    <string name="breath_machine_5">Avg IPAP</string>
+    <string name="breath_machine_6">Avg IPAP P95</string>
+    <string name="breath_machine_7">Avg EPAP</string>
+    <string name="breath_machine_8">EPAP p95</string>
+    <string name="breath_machine_9">Avg AI</string>
+    <string name="breath_machine_10">Avg HI</string>
+    <string name="breath_machine_11"></string>
+    <string name="breath_machine_12">Avg Tial Vol</string>
+    <string name="breath_machine_13">Median Tidal Vol</string>
+    <string name="breath_machine_14">Tidal Vol</string>
+    <string name="breath_machine_15">Avg Minute Vol</string>
+    <string name="breath_machine_16">Median Minute Vol</string>
+    <string name="breath_machine_17">95% Minute Vol</string>
+    <string name="breath_machine_18">Avg RR</string>
+    <string name="breath_machine_19">MedianRR</string>
+    <string name="breath_machine_20">95% RR</string>
+    <string name="homepage_breathing_machine">Yamind breathing-machine</string>
+    <string name="homepage_breathing">breathing machine</string>
 </resources>

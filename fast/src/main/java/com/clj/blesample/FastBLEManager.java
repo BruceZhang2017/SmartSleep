@@ -28,6 +28,7 @@ import com.clj.fastble.callback.BleRssiCallback;
 import com.clj.fastble.callback.BleScanAndConnectCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.data.BleScanState;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.scan.BleScanRuleConfig;
 
@@ -68,7 +69,9 @@ public class FastBLEManager implements BLEDataObserver {
     }
 
     public void stopBLEScan() {
-        BleManager.getInstance().cancelScan();
+        if (BleManager.getInstance().getScanSate() == BleScanState.STATE_SCANNING) {
+            BleManager.getInstance().cancelScan();
+        }
     }
 
     public void onDisConnect() {

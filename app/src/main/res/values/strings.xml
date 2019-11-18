@@ -247,4 +247,27 @@
 
     <string name="start">开始</string>
 
+    <string name="breath_machine_1">使用天数</string>
+    <string name="breath_machine_2">天>4小时</string>
+    <string name="breath_machine_3">使用时间</string>
+    <string name="breath_machine_4">平均使用时间</string>
+    <string name="breath_machine_5">吸气平均压力</string>
+    <string name="breath_machine_6">吸气平均95%值</string>
+    <string name="breath_machine_7">呼气平均压力</string>
+    <string name="breath_machine_8">呼气平均95%值</string>
+    <string name="breath_machine_9">平均AI</string>
+    <string name="breath_machine_10">平均HI</string>
+    <string name="breath_machine_11">平均AHI</string>
+    <string name="breath_machine_12">潮气量平均值</string>
+    <string name="breath_machine_13">潮气量中位值</string>
+    <string name="breath_machine_14">潮气量95%值</string>
+    <string name="breath_machine_15">分钟通气量平均值</string>
+    <string name="breath_machine_16">分钟通气量中位值</string>
+    <string name="breath_machine_17">分钟通气量95%值</string>
+    <string name="breath_machine_18">呼吸频率平均值</string>
+    <string name="breath_machine_19">呼吸频率中位值</string>
+    <string name="breath_machine_20">呼吸频率95%值</string>
+    <string name="homepage_breathing_machine">小雅呼吸机</string>
+    <string name="homepage_breathing">呼吸机</string>
+
 </resources>

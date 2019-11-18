@@ -75,10 +75,23 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
             b.textViewVersion.setText("");
             b.ibDelete.setVisibility(View.INVISIBLE);
         } else {
-            b.imageViewSample.setImageResource(jRitem.getDeviceType() == 1 ? R.drawable.shuimiandai : R.drawable.shuimiankou);
             b.imageViewSample.setBackgroundColor(0xFF0A1833);
-            b.textViewSample.setText(jRitem.getDeviceType() == 1 ? R.string.report_yamy_sleep_belt : R.string.report_yamy_sleep_button);
-            b.textViewVersion.setText(jRitem.getVersion() + "");
+            if (jRitem.getDeviceType() == 1) {
+                b.textViewSample.setText(R.string.report_yamy_sleep_belt);
+                b.imageViewSample.setImageResource(R.drawable.shuimiandai);
+            } else if (jRitem.getDeviceType() == 2) {
+                b.textViewSample.setText(R.string.report_yamy_sleep_button);
+                b.imageViewSample.setImageResource(R.drawable.shuimiankou);
+            } else {
+                b.textViewSample.setText(R.string.homepage_breathing_machine);
+                b.imageViewSample.setImageResource(R.drawable.huxiji);
+            }
+
+            if (jRitem.getDeviceType() > 2) {
+                b.textViewVersion.setText("V0.0");
+            } else {
+                b.textViewVersion.setText("V1." + jRitem.getVersion());
+            }
             b.ibDelete.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         }
         b.item_view.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +104,9 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
                     }
                 } else {
                     if (b.textViewSample.getText().toString().length() > 0) {
+                        if (b.textViewVersion.getText().toString().equals("V0.0")) {
+                            return;
+                        }
                         deviceActivity.pushToOTA(position);
                     } else {
                         deviceActivity.checkCameraPermissions();

@@ -184,27 +184,11 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
                 case REQUEST_CODE_SCAN:
                     String result = data.getStringExtra(Intents.Scan.RESULT);
                     Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-                    if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_")) {
-                        int type = 0;
-                        String res = "";
-                        if (result.startsWith("SLEEPBABY_")) {
-                            res = result.replace("SLEEPBABY_", "");
-                            type = 1;
-                        } else {
-                            res = result.replace("SLEEPBUTTON_", "");
-                            type = 2;
-                        }
-                        String[] array = res.split(",");
-                        if (array.length == 2) {
-                            Intent intentBroadcast = new Intent();   //定义Intent
-                            intentBroadcast.setAction(DYNAMICACTION);
-                            intentBroadcast.putExtra("arg0", 0);
-                            intentBroadcast.putExtra("serial", array[0]);
-                            intentBroadcast.putExtra("type", type);
-                            intentBroadcast.putExtra("mac", array[1].replace("-", ":"));
-                            sendBroadcast(intentBroadcast);
-                        }
-                    }
+                    Intent intentBroadcast = new Intent();   //定义Intent
+                    intentBroadcast.setAction(DYNAMICACTION);
+                    intentBroadcast.putExtra("arg0", 0);
+                    intentBroadcast.putExtra("result", result);
+                    sendBroadcast(intentBroadcast);
                     break;
             }
 

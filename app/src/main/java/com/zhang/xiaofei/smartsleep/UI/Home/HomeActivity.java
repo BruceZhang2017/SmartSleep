@@ -253,7 +253,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             startScan();
         } else {
             // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this, "将设备序列号放入框内，即可自动扫描。",
+            EasyPermissions.requestPermissions(this, "请至设置打开相机权限",
                     RC_CAMERA, perms);
         }
     }
@@ -278,22 +278,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 case REQUEST_CODE_SCAN:
                     String result = data.getStringExtra(Intents.Scan.RESULT);
                     Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-                    if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_")) {
-                        int type = 0;
-                        String res = "";
-                        if (result.startsWith("SLEEPBABY_")) {
-                            res = result.replace("SLEEPBABY_", "");
-                            type = 1;
-                        } else {
-                            res = result.replace("SLEEPBUTTON_", "");
-                            type = 2;
-                        }
-                        String[] array = res.split(",");
-                        if (array.length == 2) {
-                            addDevice(array[0], array[1].replace("-", ":"), type);
-                            refreshBLEAndDevice();
-                        }
-                    }
+                    handleQRCode(result);
                     break;
             }
 
@@ -303,6 +288,29 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (fastBLEManager.checkGPSIsOpen()) {
                 //fastBLEManager.setScanRule("");
                 //fastBLEManager.startScanAndConnect();
+            }
+        }
+    }
+
+    private void handleQRCode(String result) {
+        if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_") || result.startsWith("YMB") ){
+            int type = 0;
+            String res = "";
+            if (result.startsWith("SLEEPBABY_")) {
+                res = result.replace("SLEEPBABY_", "");
+                type = 1;
+            } else if (result.startsWith("SLEEPBUTTON_")) {
+                res = result.replace("SLEEPBUTTON_", "");
+                type = 2;
+            } else {
+                res = result;
+                type = 3;
+            }
+            String[] array = res.split(",");
+            if (array.length == 2) {
+                System.out.println("开始添加设备");
+                addDevice(array[0], array[1].replace("-", ":"), type);
+                refreshBLEAndDevice();
             }
         }
     }
@@ -351,12 +359,22 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     // 刷新设备列表并扫描第一个设备
     private void refreshBLEAndDevice() {
         DeviceManager.getInstance().readDB();
+        String serialId = "";
+        int type = 0;
         if (DeviceManager.getInstance().deviceList.size() > 0) {
-            fastBLEManager.macAddress = DeviceManager.getInstance().deviceList.get(0).getMac();
-            fastBLEManager.startBLEScan(); // 重新刷列表
+            serialId = DeviceManager.getInstance().deviceList.get(0).getDeviceSerial();
+            type = DeviceManager.getInstance().deviceList.get(0).getDeviceType();
+            String mac = DeviceManager.getInstance().deviceList.get(0).getMac();
+            if (mac.length() == 17) {
+                fastBLEManager.macAddress = mac;
+                fastBLEManager.startBLEScan(); // 重新刷列表
+            }
         }
         if (mTab1 != null) {
             mTab1.showDeviceList();
+        }
+        if (mTab2 != null && type == 3) {
+            mTab2.refreshData(serialId);
         }
     }
 
@@ -495,13 +513,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 System.out.println("检测到用户到绑定设备");
                 int arg0 = intent.getIntExtra("arg0", 0);
                 if (arg0 == 0) { // 新增设备
-                    String serial = intent.getStringExtra("serial");
-                    String mac = intent.getStringExtra("mac");
-                    int type = intent.getIntExtra("type", 0);
-                    addDevice(serial, mac, type);
+                    String result = intent.getStringExtra("result");
                     fastBLEManager.stopBLEScan();
                     fastBLEManager.onDisConnect();
-                    refreshBLEAndDevice();
+                    handleQRCode(result);
                 } else if (arg0 == 1) { // 删除设备
                     String mac = intent.getStringExtra("mac").toUpperCase();
                     if (mac.equals(fastBLEManager.macAddress)) {
@@ -511,6 +526,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     refreshBLEAndDevice();
                 } else if (arg0 == 2) { // 设置闹钟
                     if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().deviceList.size() == 0 || DeviceManager.getInstance().deviceList.size() <= DeviceManager.getInstance().currentDevice ) {
                         return;
                     }
                     int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
@@ -590,8 +608,12 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (mTab1 != null) {
             fastBLEManager.stopBLEScan();
             fastBLEManager.onDisConnect();
-            fastBLEManager.macAddress = DeviceManager.getInstance().deviceList.get(current).getMac();
-            fastBLEManager.startBLEScan();
+            String mac = DeviceManager.getInstance().deviceList.get(current).getMac();
+            if (mac.length() == 17) {
+                fastBLEManager.macAddress = mac;
+                fastBLEManager.startBLEScan();
+            }
+
         }
     }
 
