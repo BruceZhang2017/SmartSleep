@@ -3,24 +3,24 @@
 3    package="com.app.test.android.test" >
 4
 5    <uses-sdk
-5-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:5:5-74
+5-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:5:5-74
 6        android:minSdkVersion="21"
-6-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:5:15-41
+6-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:5:15-41
 7        android:targetSdkVersion="28" />
-7-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:5:42-71
+7-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:5:42-71
 8
 9    <instrumentation
-9-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:11:5-15:75
+9-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:11:5-15:75
 10        android:name="android.test.InstrumentationTestRunner"
-10-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:11:22-75
+10-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:11:22-75
 11        android:functionalTest="false"
-11-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:14:22-52
+11-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:14:22-52
 12        android:handleProfiling="false"
-12-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:13:22-53
+12-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:13:22-53
 13        android:label="Tests for com.app.test.android.test"
-13-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:15:22-73
+13-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:15:22-73
 14        android:targetPackage="com.app.test.android.test" />
-14-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:12:22-71
+14-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:12:22-71
 15    <!-- 连接网络 -->
 16    <uses-permission android:name="android.permission.INTERNET" /> <!-- debug环境下将播放中产生的log输出到外置sdk,方便查询问题 -->
 16-->[__tested_artifact__::Ximalaya] /Users/anker/SmartSleep/Ximalaya/build/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-67
@@ -45,14 +45,14 @@
 22-->[__tested_artifact__::Ximalaya] /Users/anker/SmartSleep/Ximalaya/build/intermediates/library_manifest/debug/AndroidManifest.xml:22:22-74
 23
 24    <application
-24-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:7:5-9:19
+24-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:7:5-9:19
 25        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-25-->[androidx.core:core:1.0.0] /Users/anker/.gradle/caches/transforms-2/files-2.1/9d932711c797dc0ac4b0ddb85b2dd5dc/core-1.0.0/AndroidManifest.xml:22:18-86
+25-->[androidx.core:core:1.0.0] /Users/anker/.gradle/caches/transforms-2/files-2.1/627c3387d7346255db80350a6af9d95d/core-1.0.0/AndroidManifest.xml:22:18-86
 26        android:debuggable="true" >
-26-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:7:18-43
+26-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:7:18-43
 27        <uses-library android:name="android.test.runner" />
-27-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:8:9-60
-27-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger5544767043802186346.xml:8:23-57
+27-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:8:9-60
+27-->/Users/anker/SmartSleep/Ximalaya/build/intermediates/tmp/manifest/androidTest/debug/manifestMerger6018583801387048628.xml:8:23-57
 28
 29        <meta-data
 29-->[__tested_artifact__::Ximalaya] /Users/anker/SmartSleep/Ximalaya/build/intermediates/library_manifest/debug/AndroidManifest.xml:25:9-27:64

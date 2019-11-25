@@ -30,9 +30,9 @@ public class SoundChooseActivity extends BaseAppActivity {
         setContentView(R.layout.activity_sound_choose);
         ListView listView = findViewById(R.id.lv_settings);
         List<String> appNames = new ArrayList<>();
-        appNames.add("铃声1");
-        appNames.add("铃声2");
-        appNames.add("铃声3");
+        appNames.add(getResources().getString(R.string.sound1));
+        appNames.add(getResources().getString(R.string.sound2));
+        appNames.add(getResources().getString(R.string.sound3));
         //适配adapter
         listView.setAdapter(new AppListAdapter(appNames));
 

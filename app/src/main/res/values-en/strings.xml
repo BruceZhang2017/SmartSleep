@@ -269,4 +269,10 @@
     <string name="breath_machine_20">95% RR</string>
     <string name="homepage_breathing_machine">Yamind breathing-machine</string>
     <string name="homepage_breathing">breathing machine</string>
+
+    <string name="sound">Sound</string>
+    <string name="sound1">Sound1</string>
+    <string name="sound2">Sound2</string>
+    <string name="sound3">Sound3</string>
+    <string name="all_sound">All Sound</string>
 </resources>

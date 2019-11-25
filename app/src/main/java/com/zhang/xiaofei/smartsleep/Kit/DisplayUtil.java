@@ -19,7 +19,7 @@ public class DisplayUtil {
      * @return
      */
     public static int px2dip(float pxValue, Activity activity) {
-        return (int) (pxValue / getScreenMsg(activity).get(ScreenEnum.Density) / 10 + 0.5f);
+        return (int) (pxValue / (getScreenMsg(activity).get(ScreenEnum.Density) / 10 )+ 0.5f);
     }
     /**
      * 将dip或dp值转换为px值，保证尺寸大小不变

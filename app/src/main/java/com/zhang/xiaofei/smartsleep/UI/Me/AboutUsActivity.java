@@ -2,6 +2,7 @@ package com.zhang.xiaofei.smartsleep.UI.Me;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import com.zhang.xiaofei.smartsleep.Vendor.EsptouchDemoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class AboutUsActivity extends BaseAppActivity {
 
@@ -45,6 +48,11 @@ public class AboutUsActivity extends BaseAppActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     public class AppListAdapter extends BaseAdapter {

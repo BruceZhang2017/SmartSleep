@@ -270,4 +270,10 @@
     <string name="homepage_breathing_machine">小雅呼吸机</string>
     <string name="homepage_breathing">呼吸机</string>
 
+    <string name="sound">铃声</string>
+    <string name="sound1">铃声1</string>
+    <string name="sound2">铃声2</string>
+    <string name="sound3">铃声3</string>
+    <string name="all_sound">所有铃声</string>
+
 </resources>

@@ -55,5 +55,4 @@ public class BaseAppActivity extends AppCompatActivity {
         Log.d("Language", "当前语言：" + language);
         super.attachBaseContext(LanguageUtil.attachBaseContext(newBase, language));
     }
-
 }

@@ -16,14 +16,13 @@
 package com.zhang.xiaofei.smartsleep.UI.Me;
 
 import android.os.Bundle;
-
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.king.zxing.CaptureActivity;
-import com.king.zxing.DecodeFormatManager;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.Tools.StatusBarUtils;
 
@@ -31,7 +30,7 @@ import com.zhang.xiaofei.smartsleep.Tools.StatusBarUtils;
 /**
  * @author Jenly <a href="mailto:jenly1314@gmail.com">Jenly</a>
  */
-public class EasyCaptureActivity extends CaptureActivity {
+public class EasyCaptureActivity extends CaptureActivity implements View.OnClickListener {
 
 
     @Override
@@ -45,6 +44,8 @@ public class EasyCaptureActivity extends CaptureActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         StatusBarUtils.immersiveStatusBar(this,toolbar,0.2f);
         TextView tvTitle = findViewById(R.id.tvTitle);
+        ImageView ibLeft = (ImageView)findViewById(R.id.ivLeft);
+        ibLeft.setOnClickListener(this);
         tvTitle.setText(R.string.index_serial_no);
         getCaptureHelper()
 //                .decodeFormats(DecodeFormatManager.QR_CODE_FORMATS)//设置只识别二维码会提升速度

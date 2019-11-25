@@ -16,6 +16,10 @@ import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.ansen.http.entity.HttpConfig;
 import com.ansen.http.net.HTTPCaller;
 
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.calligraphy3.FontMapper;
+import io.github.inflationx.viewpump.ViewPump;
 import io.realm.Realm;
 
 public class YMApplication extends Application {
@@ -32,6 +36,13 @@ public class YMApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instante = this;
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/pingjian_normal.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
+                .build());
         Log.i("Application", "YMApplication 初始化");
 //        PlatformConfig.setWeixin("你的微信APPID", "你的微信AppSecret");//微信APPID和AppSecret
 //        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret

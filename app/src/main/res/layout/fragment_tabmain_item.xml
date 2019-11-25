@@ -201,6 +201,7 @@
                     android:paddingRight="9dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -268,6 +269,7 @@
                     android:paddingRight="9dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -336,6 +338,7 @@
                     android:paddingRight="9dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -403,6 +406,7 @@
                     android:paddingRight="9dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -470,6 +474,7 @@
                     android:paddingRight="9dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -537,6 +542,7 @@
                     android:paddingRight="9dp"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
+                    android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -818,6 +824,40 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_high_1"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#ED6427"
+                    android:text="@string/common_high"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/chart2"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_middle_1"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#4AC4C4"
+                    android:text="@string/common_normal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_high_1"
+                    android:layout_marginTop="30dp"/>
+
+                <TextView
+                    android:id="@+id/tv_low_1"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#ED6427"
+                    android:text="@string/common_low"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_middle_1"
+                    android:layout_marginTop="30dp"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -862,6 +902,40 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_high_2"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#ED6427"
+                    android:text="@string/common_high"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/chart3"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_middle_2"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#4AC4C4"
+                    android:text="@string/common_normal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_high_2"
+                    android:layout_marginTop="40dp"/>
+
+                <TextView
+                    android:id="@+id/tv_low_2"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#ED6427"
+                    android:text="@string/common_low"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_middle_2"
+                    android:layout_marginTop="40dp"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -916,7 +990,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_7"
                 android:layout_marginTop="20dp"
-                android:paddingBottom="40dp">
+                android:paddingBottom="40dp"
+                app:layout_goneMarginBottom="40dp">
 
                 <TextView
                     android:id="@+id/tv_sleep_bottom_11"

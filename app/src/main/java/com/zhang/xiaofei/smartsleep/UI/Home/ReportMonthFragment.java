@@ -10,6 +10,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,9 +29,18 @@ import com.haibin.calendarview.CalendarView;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
+import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class ReportMonthFragment extends LazyFragment {
 
@@ -43,6 +53,11 @@ public class ReportMonthFragment extends LazyFragment {
     private TextView tvTime5; // 平均呼吸率
     private TextView tvTime6; // 清醒次数
     private CalendarView calendarView;
+    private ImageButton ibLeftPre;
+    private ImageButton ibRightNex;
+    private TextView tvSimulationData;
+    private Realm mRealm;
+    private int currentTime = 0;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -55,7 +70,66 @@ public class ReportMonthFragment extends LazyFragment {
         setContentView(R.layout.fragment_tabmain_item3);
         initializeForChart(); // 睡眠质量初始化
         initialText();
+        mRealm = Realm.getDefaultInstance();
+        initialCalendarView();
+
+        ibLeftPre = (ImageButton)findViewById(R.id.ib_left_pre);
+        ibLeftPre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //currentTime -= 7 * 24 * 60 * 60;
+                //tvSimulationData.setText(getTextValue());
+                calendarView.scrollToPre();
+            }
+        });
+        ibRightNex = (ImageButton)findViewById(R.id.ib_right_next);
+        ibRightNex.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                calendarView.scrollToNext();
+//                currentTime += 7 * 24 * 60 * 60;
+//                tvSimulationData.setText(getTextValue());
+//                getDayData(currentTime);
+//                System.out.println("当前周有的数据为：" + mMap.size());
+            }
+        });
+        tvSimulationData = (TextView)findViewById(R.id.tv_simulation_data);
+        tvSimulationData.setText(currentDate(System.currentTimeMillis()));
     }
+
+    private String currentDate(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date(time);
+        String str = simpleDateFormat.format(date);
+        return str;
+    }
+
+    private void initialCurrentTime() {
+        String str = currentDate(System.currentTimeMillis());
+        String[] array = str.split("-");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Integer.parseInt(array[0]), Integer.parseInt(array[1]) - 1, Integer.parseInt(array[2]),0,0,0);
+
+    }
+
+//    private void getDayData(int startTime) {
+//        mMap.clear();
+//        RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
+//                .greaterThan("time", startTime)
+//                .lessThan("time", startTime + 24 * 60 * 60 * 7)
+//                .findAll().sort("time", Sort.ASCENDING);
+//        for (RecordModel model: list) {
+//            if (mMap.containsKey((Integer) (model.getTime() / 60))) {
+//                List<RecordModel> temlist = mMap.get((Integer) (model.getTime() / 60));
+//                temlist.add(model);
+//                mMap.put((Integer) (model.getTime() / 60), temlist);
+//            } else {
+//                List<RecordModel> temlist = new ArrayList<RecordModel>();
+//                temlist.add(model);
+//                mMap.put((Integer) (model.getTime() / 60), temlist);
+//            }
+//        }
+//    }
 
     @Override
     protected void onDestroyViewLazy() {
@@ -248,6 +322,7 @@ public class ReportMonthFragment extends LazyFragment {
 
     private void initialCalendarView() {
         calendarView = (CalendarView)findViewById(R.id.calendarView);
-
+        calendarView.setEnabled(false);
+        calendarView.setClickable(false);
     }
 }

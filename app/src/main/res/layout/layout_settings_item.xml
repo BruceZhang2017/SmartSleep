@@ -15,7 +15,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="20dp"
         android:textSize="14sp"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:textAppearance="@style/TextAppearance.FontPath"/>
 
     <TextView
         android:id="@+id/tv_value"
@@ -26,7 +27,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="20dp"
         android:textSize="14sp"
-        android:textColor="#4176E3" />
+        android:textColor="#4176E3"
+        android:textAppearance="@style/TextAppearance.FontPath"/>
 
     <ImageView
         android:id="@+id/iv_line"

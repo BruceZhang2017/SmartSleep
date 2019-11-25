@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -80,6 +80,7 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@drawable/night</item>
+        <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
     </style>
 
     <style name="toolBar">
@@ -90,8 +91,38 @@
     </style>
 
     <style name="titlestyle">
-
+        <item name="fontPath">pingjian_normal.ttf</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextViewNoStyleParent" tools:ignore="UnusedResources">
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
+        <item name="fontPath">fonts/pingjian_normal.ttf</item>
+    </style>
+
+    <style name="AppTheme.Widget"/>
+
+    <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
+        <!-- Custom Attr-->
+        <item name="fontPath">fonts/pingjian_normal.ttf</item>
+    </style>
+
+    <style name="AppTheme.Widget.TextView.Style">
+        <item name="fontPath">fonts/pingjian_normal.ttf</item>
+    </style>
+
+    <style name="AppTheme.Widget.TextViewAppearanceStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.FontPath</item>
+    </style>
+
+    <style name="TextAppearance.FontPath" parent="android:TextAppearance">
+        <!-- Custom Attr-->
+        <item name="fontPath">fonts/pingjian_normal.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontPathView" parent="android:TextAppearance">
+        <!-- Custom Attr-->
+        <item name="fontPath">fonts/pingjian_normal.ttf</item>
     </style>
 
 </resources>

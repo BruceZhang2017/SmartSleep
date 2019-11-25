@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.ansen.http.net.HTTPCaller;
@@ -21,7 +19,6 @@ import com.ansen.http.net.NameValuePair;
 import com.ansen.http.net.RequestDataCallback;
 import com.clj.blesample.FastBLEManager;
 import com.clj.blesample.comm.BLEDataObserver;
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.jpeng.jptabbar.BadgeDismissListener;
 import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
@@ -40,15 +37,15 @@ import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
-import com.zhang.xiaofei.smartsleep.UI.Me.DeviceManageActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.EasyCaptureActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -80,11 +77,13 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private Intent foregroundIntent;
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
     private boolean isSleep = false;
+    private Map<String, String> attachValue = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         DeviceManager.getInstance().context = this;
         DeviceManager.getInstance().readDB();
         mRealm = Realm.getDefaultInstance();
@@ -164,6 +163,11 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         fastBLEManager.onDestroy();
         mRealm.close();
         unregisterBroadcast();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
     private void registerBroadcast() {
@@ -309,13 +313,24 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             String[] array = res.split(",");
             if (array.length == 2) {
                 System.out.println("开始添加设备");
-                addDevice(array[0], array[1].replace("-", ":"), type);
-                refreshBLEAndDevice();
+                attachValue.put("mac", array[1].replace("-", ":"));
+                attachValue.put("serial", array[0]);
+                attachValue.put("type", type + "");
+                addDeviceToCloud();
             }
         }
     }
 
-    private void addDevice(String serial, String mac, int type) {
+    private void addDevice() {
+        String mac = attachValue.get("mac");
+        if (mac == null || mac.length() <= 0) {
+            return;
+        }
+        String serial = attachValue.get("serial");
+        if (serial == null || mac.length() <= 0) {
+            return;
+        }
+        int type = Integer.parseInt(attachValue.get("type"));
         YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
         UserModel userModel = userManager.loadUserInfo();
         int userId = userModel.getUserInfo().getUserId();
@@ -337,7 +352,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 model.setDeviceSerial(serial);
                 model.setVersion(1 + "");
                 model.setId(1 + size);
-                model.setUpToCloud(false);
+                model.setUpToCloud(true);
             }
         });
 
@@ -382,9 +397,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     public void handleBLEData(int battery, int flash, String mac, int version) {
         System.out.println("处理BLE返回的数据 " + battery + " " + flash + " " + mac + " " + version);
         DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
-        if (deviceModel != null && deviceModel.getUpToCloud() == false) {
-            addDeviceToCloud(mac, deviceModel.getDeviceSerial(), version);
-        }
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -392,7 +404,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
                 if (deviceModel != null) {
                     deviceModel.setVersion(version + "");
-                    deviceModel.setUpToCloud(true);
                 }
             }
         });
@@ -463,7 +474,15 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     }
 
     // 将设备上报至服务器端
-    private void addDeviceToCloud(String mac, String serial, int version) {
+    private void addDeviceToCloud() {
+        String mac = attachValue.get("mac");
+        if (mac == null || mac.length() <= 0) {
+            return;
+        }
+        String serial = attachValue.get("serial");
+        if (serial == null || mac.length() <= 0) {
+            return;
+        }
         YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
         UserModel userModel = userManager.loadUserInfo();
         com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "multipart/form-data");
@@ -473,7 +492,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         postParam.add(new NameValuePair("userId",userModel.getUserInfo().getUserId() + ""));
         postParam.add(new NameValuePair("deviceSerial",serial));
         postParam.add(new NameValuePair("mac",mac));
-        postParam.add(new NameValuePair("version","" + version));
+        postParam.add(new NameValuePair("version","" + 1));
 
         HTTPCaller.getInstance().postFile(
                 BaseProtocol.class,
@@ -492,8 +511,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 if (user != null) {
                     Toast.makeText(HomeActivity.this, user.getMsg(), Toast.LENGTH_SHORT).show();
                 }
-            }else{
-
+            } else {
+                addDevice();
+                refreshBLEAndDevice();
             }
 
         }

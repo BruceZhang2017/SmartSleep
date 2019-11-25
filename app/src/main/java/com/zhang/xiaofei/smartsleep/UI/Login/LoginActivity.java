@@ -125,7 +125,9 @@ public class LoginActivity extends BaseAppActivity {
 
         @Override
         public void onClick(View view) {
-            startActivity(new Intent(LoginActivity.this, WebActivity.class));
+            Intent intent = new Intent(LoginActivity.this, WebActivity.class);
+            intent.putExtra("url", "https://www.baidu.com");
+            startActivity(intent);
         }
     }
 

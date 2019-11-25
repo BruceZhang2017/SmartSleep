@@ -4,4 +4,10 @@
     <item name="translucent_view" type="id"/>
 
     <item name="iv_image_more" type="id"/>
+
+    <item name="score_1" type="id"/>
+    <item name="score_2" type="id"/>
+    <item name="score_3" type="id"/>
+    <item name="score_4" type="id"/>
+    <item name="score_5" type="id"/>
 </resources>

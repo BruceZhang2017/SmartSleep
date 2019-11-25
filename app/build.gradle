@@ -122,4 +122,7 @@ dependencies {
 
     api 'no.nordicsemi.android:dfu:1.6.1'
     implementation 'net.vidageek:mirror:1.6.1'
+
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
 }

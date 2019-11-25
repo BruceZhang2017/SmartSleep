@@ -169,7 +169,7 @@
                     android:layout_marginTop="3dp"
                     android:textColor="#838EA0"
                     android:textSize="12sp"
-                    android:text="棒棒哒"/>
+                    android:text="@string/common_Awesome"/>
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_3"
