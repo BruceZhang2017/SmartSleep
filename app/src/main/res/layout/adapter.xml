@@ -14,6 +14,7 @@
         android:background="#00000000">
 
         <ImageView
+            android:id="@+id/iv_card_image"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:layout_gravity="top|end"
@@ -21,8 +22,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="-5dp"
             android:background="@drawable/home_head_view_pager_image_view_bg"
-            android:src="@mipmap/icon_placeholder"
-            android:scaleType="center"/>
+            android:scaleType="fitXY"/>
 
     </FrameLayout>
 

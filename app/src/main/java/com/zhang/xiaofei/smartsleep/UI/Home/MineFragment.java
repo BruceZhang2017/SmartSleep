@@ -62,6 +62,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         //适配adapter
         listView.setAdapter(new AppListAdapter(appNames));
         ivHead = (ImageView)layout.findViewById(R.id.iv_head);
+        ivHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginMoreActivity.class);
+                intent.putExtra("value",1);
+                startActivity(intent);
+            }
+        });
         tvID = (TextView)layout.findViewById(R.id.tv_userId);
         tvNickName = (TextView)layout.findViewById(R.id.tv_nickname);
         YMUserInfoManager userManager = new YMUserInfoManager( getActivity());
@@ -79,6 +87,21 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             tvID.setText("ID " + iID);
         }
         return layout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        YMUserInfoManager userManager = new YMUserInfoManager( getActivity());
+        UserModel userModel = userManager.loadUserInfo();
+        String photo = userModel.getUserInfo().getPhoto();
+        if (photo != null && photo.startsWith("http")) {
+            Glide.with(this).load(photo).placeholder(R.mipmap.login_icon_head).into(ivHead);
+        }
+        String nickname = userModel.getUserInfo().getNikeName();
+        if (nickname != null && nickname.length() > 0) {
+            tvNickName.setText(nickname);
+        }
     }
 
     @Override

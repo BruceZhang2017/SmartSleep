@@ -216,7 +216,7 @@ public class CleanCacheUtil {
     public static String getFormatSize(double size) {
         double kiloByte = size / 1024;
         if (kiloByte < 1) {
-            return size + "Byte";
+            return size + "B";
         }
 
         double megaByte = kiloByte / 1024;

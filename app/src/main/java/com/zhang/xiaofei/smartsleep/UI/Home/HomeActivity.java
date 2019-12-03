@@ -205,7 +205,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             mExitTime = System.currentTimeMillis();
         } else {
             //用户退出处理
-            finish();
+            finishAffinity();
             System.exit(0);
         }
     }
@@ -483,6 +483,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (serial == null || mac.length() <= 0) {
             return;
         }
+        String type = attachValue.get("type");
         YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
         UserModel userModel = userManager.loadUserInfo();
         com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "multipart/form-data");
@@ -493,6 +494,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         postParam.add(new NameValuePair("deviceSerial",serial));
         postParam.add(new NameValuePair("mac",mac));
         postParam.add(new NameValuePair("version","" + 1));
+        postParam.add(new NameValuePair("deviceType",type));
 
         HTTPCaller.getInstance().postFile(
                 BaseProtocol.class,
@@ -583,6 +585,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab1 == null) {
                         return;
                     }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
                     int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
@@ -597,6 +602,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab1 == null) {
                         return;
                     }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
                     int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
@@ -609,6 +617,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
                 } else if (arg0 == 5) { // 请求读取falsh数据
                     if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
                         return;
                     }
                     int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();

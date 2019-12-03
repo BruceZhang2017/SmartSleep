@@ -23,6 +23,7 @@ import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.NameValuePair;
 import com.ansen.http.net.RequestDataCallback;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
+import com.zhang.xiaofei.smartsleep.Kit.NetworkUtil.NetworkUtils;
 import com.zhang.xiaofei.smartsleep.Kit.ValidateHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
@@ -195,7 +196,11 @@ public class LoginActivity extends BaseAppActivity {
                 }
             }else{
                 ((Throwable)data).printStackTrace();
-                Toast.makeText(LoginActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+                if (NetworkUtils.isNetWorkAvailable(LoginActivity.this)) {
+                    Toast.makeText(LoginActivity.this, getResources().getText(R.string.mobile_error_tip), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     };

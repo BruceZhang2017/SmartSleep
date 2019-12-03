@@ -275,4 +275,15 @@
     <string name="sound2">Sound2</string>
     <string name="sound3">Sound3</string>
     <string name="all_sound">All Sound</string>
+
+    <string name="mobile_error_tip">Please fill in the correct mobile number</string>
+
+    <string name="report_use_information">Use information</string>
+    <string name="report_therapeutic_pressure">Therapeutic pressure</string>
+    <string name="report_Apnea_hypopnea_index">Apnea hypopnea index</string>
+    <string name="report_volume_minute">Tidal volume &amp; minute ventilation</string>
+    <string name="report_Respiratory_frequency">Respiratory frequency</string>
+    <string name="login_contact_name_hint">Enter contact name</string>
+    <string name="login_contact_phone_hint">Enter contact number</string>
+    <string name="study_tip">Learning hard</string>
 </resources>

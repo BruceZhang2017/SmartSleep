@@ -1,6 +1,7 @@
 package com.zhang.xiaofei.smartsleep.Model.Device;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.NameValuePair;
@@ -8,6 +9,7 @@ import com.ansen.http.net.RequestDataCallback;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.UI.Home.HomeActivity;
+import com.zhang.xiaofei.smartsleep.UI.Login.LoginActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.StartPageActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
@@ -19,6 +21,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class DeviceManager {
 
@@ -80,9 +84,14 @@ public class DeviceManager {
         public void dataCallback(int status, DeviceListModel model) {
 
             System.out.println("网络请求返回的Status:" + status);
-            if(model==null || model.getCode() != 200){
+            if(model == null || model.getCode() != 200){
                 if (model != null) { // 会提示用户没有绑定设备
                     //Toast.makeText(DeviceManageActivity.this, model.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+                if (model.getCode() == 401) {
+                    Intent it = new Intent(getApplicationContext(), LoginActivity.class);
+                    it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(it);
                 }
             }else{
                 if (model.getData() != null && model.getData().length > 0) {

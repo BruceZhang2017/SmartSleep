@@ -34,7 +34,10 @@ public class SleepClassActivity extends BaseAppActivity {
         setContentView(R.layout.activity_sleep_class);
         ViewPager viewPager = (ViewPager) findViewById(R.id.fragment_tabmain_viewPager);
         Indicator indicator = (Indicator) findViewById(R.id.fragment_tabmain_indicator);
-        indicator.setScrollBar(new ColorBar(getContext(), Color.rgb(255,255,255), 5));
+        ColorBar colorBar = new ColorBar(getContext(), Color.rgb(255,255,255), 10);
+        colorBar.setWidth(60);
+        colorBar.getSlideView().setBackground(getResources().getDrawable(R.drawable.block_half_corner_white));
+        indicator.setScrollBar(colorBar);
 
         float unSelectSize = 14;
         float selectSize = unSelectSize * 1.2f;
@@ -69,7 +72,7 @@ public class SleepClassActivity extends BaseAppActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -79,11 +82,9 @@ public class SleepClassActivity extends BaseAppActivity {
             }
             TextView textView = (TextView) convertView;
             if (position == 0) {
-                textView.setText("健康养生");
-            } else if (position == 1) {
-                textView.setText("助眠分类");
+                textView.setText(getResources().getString(R.string.middle_wellness));
             } else {
-                textView.setText("产品教程");
+                textView.setText(getResources().getString(R.string.common_how_to_use));
             }
             return convertView;
         }
@@ -92,9 +93,6 @@ public class SleepClassActivity extends BaseAppActivity {
         public Fragment getFragmentForPage(int position) {
             if (position == 0) {
                 ClassLayerFragment1 mainFragment = new ClassLayerFragment1();
-                return mainFragment;
-            } else if (position == 1) {
-                ClassLayerFragment2 mainFragment = new ClassLayerFragment2();
                 return mainFragment;
             } else {
                 ClassLayerFragment3 mainFragment = new ClassLayerFragment3();

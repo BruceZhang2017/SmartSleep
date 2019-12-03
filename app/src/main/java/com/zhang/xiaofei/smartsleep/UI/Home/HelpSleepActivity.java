@@ -9,41 +9,33 @@ import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.annotation.UiThread;
-
 import com.deadline.statebutton.StateButton;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
-import com.ximalaya.ting.android.opensdk.test.MainFragmentActivity;
+import com.sunofbeaches.himalaya.PlayHelper;
+import com.sunofbeaches.himalaya.PlayHelperCallback;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener {
+public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener, PlayHelperCallback {
 
     ImageButton ibBack;
     TextView tvTime;
@@ -51,7 +43,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     TextView tvTip;
     TextView tvRealTime;
     Handler handler;
-    MainFragmentActivity xmPlayer;
+
     ImageButton ibPalyPause;
     ImageButton ibPlayPre;
     ImageButton ibPlayNext;
@@ -65,15 +57,20 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     int getupM = 0;
     int sleepH = 0;
     int sleepM = 0;
+    String strH = "";
+    String strM = "";
+    private PlayHelper playHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        strH = getResources().getString(R.string.common_hour2);
+        strM = getResources().getString(R.string.common_minute3);
         setContentView(R.layout.activity_help_sleep);
         ibBack = (ImageButton) findViewById(R.id.ib_back);
         ibBack.setOnClickListener(this);
         tvTime = (TextView)findViewById(R.id.tv_time);
-        tvTime.setText(createTimeValue("00时00分"));
+        tvTime.setText(createTimeValue("00" + strH + "00" + strM));
         tvTimeRange = (TextView)findViewById(R.id.tv_time_range);
         tvTip = (TextView)findViewById(R.id.tv_tip);
         tvRealTime = (TextView)findViewById(R.id.tv_alarm_remain_time);
@@ -116,8 +113,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tvTimeRange.setCompoundDrawables(null,null,drawable,null);
         }
-
-        initializeHandler();
 
         ibPalyPause = (ImageButton)findViewById(R.id.ib_play_pause);
         ibPalyPause.setOnClickListener(this);
@@ -177,7 +172,19 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         } else {
             btnSleep.setText(R.string.alarm_sleep);
         }
+
+        playHelper = new PlayHelper();
+        playHelper.playHelperCallback = this;
+        if (playHelper.initPresenter(this)) {
+            showHUD();
+        }
+        if (playHelper.isPlaying()) {
+            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
+            tvSoundTitle.setText(playHelper.playTitle());
+        }
     }
+
+
 
     @Override
     public void finish() {
@@ -192,17 +199,13 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.ib_play_pause:
-                if (xmPlayer.isPlaying()) {
-                    xmPlayer.pause();
-                } else {
-                    xmPlayer.play();
-                }
+                playHelper.play();
                 break;
             case R.id.ib_pre:
-                xmPlayer.playPre();
+                playHelper.playPre();
                 break;
             case R.id.ib_next:
-                xmPlayer.playNext();
+                playHelper.playNext();
                 break;
             default:
                 System.out.println("none");
@@ -219,64 +222,25 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        xmPlayer.onDestroy();
+        playHelper.deinitPresenter();
+        playHelper.playHelperCallback = null;
     }
 
     // 生成大小字体不一样的内容
     private SpannableString createTimeValue(String content) {
         SpannableString spannableString = new SpannableString(content);
         spannableString.setSpan(new AbsoluteSizeSpan(DisplayUtil.sp2px(40, this))
-                , content.indexOf("时")
-                , content.indexOf("时") + 1
+                , content.indexOf(strH)
+                , content.indexOf(strH) + 1
                 , Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new AbsoluteSizeSpan(DisplayUtil.sp2px(40, this))
-                , content.indexOf("分")
-                , content.indexOf("分") + 1
-                , Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        if (strM.trim().length() > 0) {
+            spannableString.setSpan(new AbsoluteSizeSpan(DisplayUtil.sp2px(40, this))
+                    , content.indexOf(strM)
+                    , content.indexOf(strM) + 1
+                    , Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+
         return spannableString;
-    }
-
-    private void initializeHandler() {
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case 4:
-                        int arg1 = msg.arg1;
-                        if (arg1 == 0) {
-                            ibPalyPause.setEnabled(false);
-                            ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
-                        } else if (arg1 == 2) {
-                            ibPalyPause.setEnabled(true);
-                            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
-                        } else if (arg1 == 3 || arg1 == 1) {
-                            ibPalyPause.setEnabled(true);
-                            ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
-                        }
-                        break;
-                    case 1: // 歌曲标题
-                        String title = msg.obj.toString();
-                        tvSoundTitle.setText(title);
-                        break;
-                    case 2: // 上一首
-                        int arg2 = msg.arg1;
-                        ibPlayPre.setEnabled(arg2 > 0);
-                        break;
-                    case 3:
-                        int arg3 = msg.arg1;
-                        ibPlayNext.setEnabled(arg3 > 0);
-                        default:
-                            System.out.println("none");
-                            break;
-                }
-            }
-        };
-
-        xmPlayer = new MainFragmentActivity();
-        xmPlayer.activity = this;
-        xmPlayer.handler = handler;
-        xmPlayer.onCreate();
     }
 
     private void initialCurrentTime() {
@@ -319,7 +283,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
                         tvRealTime.setText(R.string.alarm_get_up_to_time);
                     }
                 });
@@ -329,7 +293,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
                         tvRealTime.setText(R.string.alarm_sleep_to_time);
                     }
                 });
@@ -344,7 +308,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
                         tvRealTime.setText(R.string.alarm_get_up_to_time);
                     }
                 });
@@ -354,11 +318,32 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvTime.setText(createTimeValue( h + "时" + m + "分"));
+                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
                         tvRealTime.setText(R.string.alarm_sleep_to_time);
                     }
                 });
             }
         }
+    }
+
+
+    @Override
+    public void refreshPlayStatus(boolean isPlaying) {
+        if (isPlaying) {
+            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
+        } else {
+            ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
+        }
+
+    }
+
+    @Override
+    public void refreshPlayTitle(String title) {
+        tvSoundTitle.setText(title);
+    }
+
+    @Override
+    public void callbackHideHUD() {
+        hideHUD();
     }
 }

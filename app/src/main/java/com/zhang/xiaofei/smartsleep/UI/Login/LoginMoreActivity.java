@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import com.zhang.xiaofei.smartsleep.Model.Feedback.FeedbackItemModel;
 import com.zhang.xiaofei.smartsleep.Model.Feedback.FeedbackModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
+import com.zhang.xiaofei.smartsleep.Model.Login.UserRefreshModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Home.HomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.FeedbackActivity;
@@ -92,6 +94,7 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
     String birth;
     String height;
     String weight;
+    int value = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,7 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_login_more);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        int value = intent.getIntExtra("value", 0);
+        value = intent.getIntExtra("value", 0);
         btnSex.setOnClickListener(this);
         btnBirthday.setOnClickListener(this);
         btnHeight.setOnClickListener(this);
@@ -155,14 +158,22 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
         String birthday = userModel.getUserInfo().getBirthday();
         if (birthday != null && birthday.length() >= 8) {
             btnBirthday.setText(birthday.substring(0,4) + "-" + birthday.substring(4,6) + "-" + birthday.substring(6, 8));
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            int year = Integer.parseInt(birthday.substring(0,4));
+            int month = Integer.parseInt(birthday.substring(4,6));
+            int day = Integer.parseInt(birthday.substring(6, 8));
+            calendar.set(year, month - 1, day);
+            pvTime.setDate(calendar);
         }
         int height = userModel.getUserInfo().getHeight();
         if (height > 0) {
             btnHeight.setText(height + " cm");
+            HeightOptions.setSelectOptions(height - 30);
         }
         int weight = userModel.getUserInfo().getWeight();
         if (weight > 0) {
             btnWeight.setText(weight + " kg");
+            weightOptions.setSelectOptions(weight);
         }
         int iID = userModel.getUserInfo().getUserId();
         if (iID > 0) {
@@ -174,9 +185,7 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_r:
-                Intent intent = new Intent(LoginMoreActivity.this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                refreshUserInfo();
                 break;
             case R.id.btn_next:
                 refreshUserInfo();
@@ -475,7 +484,7 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
             postParam.add(new NameValuePair("uploadFile", uerHeadImageUrl,true));
         }
         HTTPCaller.getInstance().postFile(
-                BaseProtocol.class,
+                UserRefreshModel.class,
                 YMApplication.getInstance().domain() + "app/user/updateUserInfo",
                 new com.ansen.http.net.Header[]{header, headerToken},
                 postParam,
@@ -483,9 +492,9 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
         );
     }
 
-    private RequestDataCallback requestDataCallback = new RequestDataCallback<BaseProtocol>() {
+    private RequestDataCallback requestDataCallback = new RequestDataCallback<UserRefreshModel>() {
         @Override
-        public void dataCallback(int status, BaseProtocol model) {
+        public void dataCallback(int status, UserRefreshModel model) {
             hideHUD();
             System.out.println("网络请求返回的Status:" + status);
             if(model==null || model.getCode() != 200){
@@ -502,7 +511,14 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
                 userModel.getUserInfo().setBirthday(birth);
                 userModel.getUserInfo().setHeight(Integer.parseInt(height));
                 userModel.getUserInfo().setWeight(Integer.parseInt(weight));
+                if (uerHeadImageUrl != null && uerHeadImageUrl.length() > 0) {
+                    userModel.getUserInfo().setPhoto(model.getData().getPhoto());
+                }
                 userManager.saveUserInfo(userModel);
+                if (value > 0) {
+                    finish();
+                    return;
+                }
                 Intent intentB = new Intent(LoginMoreActivity.this, HomeActivity.class);
                 intentB.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentB);
@@ -511,7 +527,7 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
         }
 
         @Override
-        public void dataCallback(BaseProtocol obj) {
+        public void dataCallback(UserRefreshModel obj) {
             hideHUD();
             if (obj == null) {
                 Toast.makeText(LoginMoreActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();

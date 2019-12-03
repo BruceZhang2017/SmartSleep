@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.RequestDataCallback;
 import com.deadline.statebutton.StateButton;
-import com.ximalaya.ting.android.opensdk.test.data.ViewHolder;
+
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.Model.Feedback.FeedbackItemModel;
@@ -139,6 +139,8 @@ public class FeedbackListActivity extends BaseAppActivity {
                 holder.desc = (TextView)convertView.findViewById(R.id.tv_desc);
                 holder.button1 = (StateButton)convertView.findViewById(R.id.btn_solved);
                 holder.button2 = (StateButton)convertView.findViewById(R.id.btn_unsolved);
+                holder.button1.setVisibility(View.INVISIBLE);
+                holder.button2.setVisibility(View.INVISIBLE);
                 convertView.setTag(holder);
             } else {
                 holder = (FeedbackViewHolder) convertView.getTag();
@@ -147,7 +149,13 @@ public class FeedbackListActivity extends BaseAppActivity {
             FeedbackItemModel item = (FeedbackItemModel)fdList.get(position);
 
             holder.desc.setText(item.getContent());
-
+            if (item.getType() == 1) {
+                holder.title.setText(R.string.mine_operation);
+            } else if (item.getType() == 2) {
+                holder.title.setText(R.string.mine_product);
+            } else {
+                holder.title.setText(R.string.mine_advice);
+            }
 
             return convertView;
         }

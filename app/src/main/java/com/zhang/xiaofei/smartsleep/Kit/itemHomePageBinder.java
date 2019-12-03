@@ -31,20 +31,6 @@ public class itemHomePageBinder extends UltimateRecyclerviewViewHolder {
      */
     public itemHomePageBinder(View itemView, boolean isItem) {
         super(itemView);
-//            itemView.setOnTouchListener(new SwipeDismissTouchListener(itemView, null, new SwipeDismissTouchListener.DismissCallbacks() {
-//                @Override
-//                public boolean canDismiss(Object token) {
-//                    Logs.d("can dismiss");
-//                    return true;
-//                }
-//
-//                @Override
-//                public void onDismiss(View view, Object token) {
-//                   // Logs.d("dismiss");
-//                    remove(getPosition());
-//
-//                }
-//            }));
         if (isItem) {
             textViewSample = (TextView) itemView.findViewById(R.id.str_textview_holder);
             imageViewSample = (RoundedImageView) itemView.findViewById(R.id.str_image_holder);
@@ -56,6 +42,7 @@ public class itemHomePageBinder extends UltimateRecyclerviewViewHolder {
 
     @Override
     public void onItemSelected() {
+        System.out.println("被点击了");
         itemView.setBackgroundColor(Color.LTGRAY);
     }
 

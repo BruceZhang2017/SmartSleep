@@ -28,7 +28,7 @@
         android:layout_marginRight="20dp"
         android:textColor="@color/colorWhite"
         android:textSize="14sp"
-        android:text="已完成"/>
+        android:text="@string/common_done"/>
 
     <TextView
         android:id="@+id/tv_desc"

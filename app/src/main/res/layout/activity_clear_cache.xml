@@ -63,7 +63,7 @@
         android:textSize="40sp"
         android:textStyle="bold"
         android:textColor="@color/navigationBarRightColor"
-        android:text="12 KB"/>
+        android:text="0 KB"/>
 
     <Button
         android:id="@+id/btn_clear"

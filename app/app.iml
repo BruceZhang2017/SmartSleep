@@ -114,17 +114,17 @@
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.jakewharton:butterknife-annotations:10.2.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.1.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.1@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: commons-cli:commons-cli:1.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.mob:MobTools:2019.1109.1211@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.mob:MobCommons:2019.1109.1212@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.mob:MobGUI:2019.0306.1850@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.mob:SDKWrapper:2018.0801.1824@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout-solver:1.1.3@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.picasso:picasso:2.5.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.10.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.10.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.umeng.sdk:common:1.5.1@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.picasso:picasso:2.5.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: net.vidageek:mirror:1.6.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: io.realm:realm-android-library-object-server:4.3.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.king.zxing:zxing-lite:1.1.3@aar" level="project" />
@@ -185,10 +185,11 @@
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.uphyca:stetho_realm:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: cn.smssdk:SMSSDK:3.3.3@aar" level="project" />
-    <orderEntry type="library" name="Gradle: cn.smssdk:ShortMessageSDKGUI:3.3.3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: cn.smssdk:SMSSDK:3.3.4@aar" level="project" />
+    <orderEntry type="library" name="Gradle: cn.smssdk:ShortMessageSDKGUI:3.3.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.clj.fastble:FastBleLib:2.3.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:1.1.3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.lcodecorex:tkrefreshlayout:1.0.7@aar" level="project" />
     <orderEntry type="library" name="Gradle: in.srain.cube:ultra-ptr:1.0.11@aar" level="project" />
     <orderEntry type="library" name="Gradle: jp.wasabeef:recyclerview-animators:2.2.3@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.niniloveyou:StateButton:v1.0.0@aar" level="project" />
@@ -202,17 +203,17 @@
     <orderEntry type="library" name="Gradle: com.umeng.sdk:share-qq:6.9.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.umeng.sdk:share-wechat:6.9.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.umeng.sdk:share-sina:6.9.2@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.lcodecorex:tkrefreshlayout:1.0.7@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.bigkoo:alertview:1.0.3@aar" level="project" />
     <orderEntry type="library" name="Gradle: pl.droidsonroids.gif:android-gif-drawable:1.2.19@aar" level="project" />
     <orderEntry type="library" name="Gradle: pl.droidsonroids:relinker:1.3.1@aar" level="project" />
     <orderEntry type="module" module-name="library" />
     <orderEntry type="module" module-name="fast" />
     <orderEntry type="module" module-name="esptouch" />
-    <orderEntry type="module" module-name="Ximalaya" />
+    <orderEntry type="module" module-name="xiyalama" />
     <orderEntry type="module" module-name="MPChartLib" />
     <orderEntry type="module" module-name="xpopup" />
     <orderEntry type="module" module-name="alarmmanagerclock" />
+    <orderEntry type="module" module-name="bottomDialog" />
     <orderEntry type="module" module-name="pickerview" />
     <orderEntry type="module" module-name="wheelview" />
   </component>

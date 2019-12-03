@@ -76,7 +76,6 @@
         android:layout_marginTop="20dp"
         android:textSize="22sp"
         android:gravity="center"
-        android:text="@string/sleep_motion_tip"
         android:textColor="@color/colorWhite"/>
 
     <ImageView
@@ -154,6 +153,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:text="Switch"
+        android:theme="@style/MySwitch"
         app:layout_constraintBottom_toTopOf="@+id/iv_line"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -185,7 +185,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
-        android:text="海湾之夜"
         android:textColor="#4176E3"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"

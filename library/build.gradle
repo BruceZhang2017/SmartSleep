@@ -28,12 +28,3 @@ dependencies {
     compileOnly 'com.android.support:support-v4:28.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
 }
-
-publish {
-    userOrg = 'peng83508440'//bintray.com用户名
-    groupId = 'com.jpeng'//jcenter上的路径
-    artifactId = 'JPTabBar'//项目名称
-    publishVersion = '1.4.0'//版本号
-    desc = 'The library can make you build the TabBar more quicky,It contains many animate,and implements the filter like WeChat.'
-    licences = ['Apache-2.0']
-}

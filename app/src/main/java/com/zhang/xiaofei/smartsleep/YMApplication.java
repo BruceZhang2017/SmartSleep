@@ -9,7 +9,7 @@ import com.facebook.stetho.Stetho;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-import com.ximalaya.ting.android.opensdk.test.IComponentApplication;
+import com.sunofbeaches.himalaya.IComponentApplication;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 
@@ -29,7 +29,7 @@ public class YMApplication extends Application {
     }
     private static YMApplication instante;
     public static final String[] MODULESLIST =
-            {"com.ximalaya.ting.android.opensdk.test.TingApplication"};
+            {"com.sunofbeaches.himalaya.base.TingApplication"};
 
 
     @Override

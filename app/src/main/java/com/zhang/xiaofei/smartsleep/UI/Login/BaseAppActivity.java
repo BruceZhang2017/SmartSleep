@@ -43,7 +43,9 @@ public class BaseAppActivity extends AppCompatActivity {
     }
 
     public void hideHUD() {
-        hud.dismiss();
+        if (hud != null) {
+            hud.dismiss();
+        }
     }
 
     @Override

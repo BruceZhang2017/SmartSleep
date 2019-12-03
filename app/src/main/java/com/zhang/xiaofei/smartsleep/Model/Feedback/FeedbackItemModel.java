@@ -5,6 +5,7 @@ public class FeedbackItemModel {
     String userId;
     String userName;
     String content;
+    int type;
     FeedbackItemImageModel[] img;
 
     public String getIdeaId() {
@@ -45,5 +46,13 @@ public class FeedbackItemModel {
 
     public void setImg(FeedbackItemImageModel[] img) {
         this.img = img;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

@@ -39,7 +39,8 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
-import com.ximalaya.ting.android.opensdk.test.MainFragmentActivity;
+
+import com.sunofbeaches.himalaya.MainActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
@@ -155,7 +156,9 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 activity.checkCameraPermissions();
                 break;
             case R.id.ib_help_sleep:
-                Toast.makeText(getActivity(), "正在更换喜马拉雅的SDK", Toast.LENGTH_SHORT).show();
+                Intent intentB = new Intent(getActivity(), MainActivity.class);
+                startActivity(intentB);
+                //Toast.makeText(getActivity(), "正在更换喜马拉雅的SDK", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ib_devices:
                 Intent intentC = new Intent(getActivity(), DeviceManageActivity.class);
@@ -317,10 +320,9 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         ultimateRecyclerView.setHasFixedSize(true);
         ultimateRecyclerView.setClipToPadding(false);
         ArrayList<String> list = new ArrayList<>();
-        list.add("o2fn31");
-        list.add("of2n32");
-        list.add("of3n36");
+        list.add("one");
         simpleRecyclerViewAdapter = new sectionHomePageAdapter(list);
+        simpleRecyclerViewAdapter.context = getActivity();
         configLinearLayoutManager(ultimateRecyclerView);
         //enableParallaxHeader();
         enableEmptyViewPolicy();
@@ -329,10 +331,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         enableRefresh();
         // enableScrollControl();
         // enableSwipe();
-        // enableItemClick();
+        //enableItemClick();
         ultimateRecyclerView.setItemViewCacheSize(simpleRecyclerViewAdapter.getAdditionalItems());
-
-
         ultimateRecyclerView.setAdapter(simpleRecyclerViewAdapter);
     }
 
@@ -382,7 +382,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
         mViewPager.setVisibility(View.INVISIBLE);
         mCardAdapter = new CardPagerAdapter();
-        mCardAdapter.addCardItem(new CardItem(R.string.common_my_device, R.string.common_my_device));
+        mCardAdapter.context = getActivity();
         mCardAdapter.addCardItem(new CardItem(R.string.common_my_device, R.string.common_my_device));
         mCardAdapter.addCardItem(new CardItem(R.string.common_my_device, R.string.common_my_device));
         mCardAdapter.addCardItem(new CardItem(R.string.common_my_device, R.string.common_my_device));

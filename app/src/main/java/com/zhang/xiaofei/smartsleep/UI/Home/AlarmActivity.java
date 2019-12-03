@@ -133,7 +133,9 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         mRealm.close();
-
+        if (alramGetupModel.getHour() == 0 && alramGetupModel.getMinute() == 0) {
+            return;
+        }
         Intent intentBroadcast = new Intent();   //定义Intent
         intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
         intentBroadcast.putExtra("arg0", 2);

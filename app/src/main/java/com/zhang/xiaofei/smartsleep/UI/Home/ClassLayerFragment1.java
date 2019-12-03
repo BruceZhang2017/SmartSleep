@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,11 +31,12 @@ public class ClassLayerFragment1 extends BasicFunctions {
     private TextView textView;
     private ProgressBar progressBar;
     private sectionHomePageAdapter simpleRecyclerViewAdapter = null;
+    private ImageView ivNull;
+    private TextView tvNull;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_class_item1, null);
-        ButterKnife.bind(this, layout);
         init(layout);
         return layout;
     }
@@ -42,6 +44,10 @@ public class ClassLayerFragment1 extends BasicFunctions {
     private void init(View layout) {
         ultimateRecyclerView = (UltimateRecyclerView) layout.findViewById(R.id.ultimate_recycler_view);
         doURV(ultimateRecyclerView);
+        ultimateRecyclerView.setVisibility(View.INVISIBLE);
+        ivNull = (ImageView)layout.findViewById(R.id.iv_null);
+        tvNull = (TextView)layout.findViewById(R.id.tv_null);
+
     }
 
     @Override
@@ -56,8 +62,6 @@ public class ClassLayerFragment1 extends BasicFunctions {
         ultimateRecyclerView.setClipToPadding(false);
         ArrayList<String> list = new ArrayList<>();
         list.add("o2fn31");
-        list.add("of2n32");
-        list.add("of3n36");
         simpleRecyclerViewAdapter = new sectionHomePageAdapter(list);
         configLinearLayoutManager(ultimateRecyclerView);
         //enableParallaxHeader();

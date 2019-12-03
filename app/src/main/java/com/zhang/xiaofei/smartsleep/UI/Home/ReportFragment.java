@@ -53,6 +53,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.curzbin.library.BottomDialog;
+import me.curzbin.library.Item;
+import me.curzbin.library.OnItemClickListener;
+
 public class ReportFragment extends Fragment implements CalendarView.OnCalendarRangeSelectListener,
         CalendarView.OnMonthChangeListener {
 	private IndicatorViewPager indicatorViewPager;
@@ -158,6 +162,20 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		btnRight = (ImageButton)view.findViewById(R.id.im_r);
 		btnRight.setImageResource(R.mipmap.report_icon_share);
 		btnRight.setVisibility(View.VISIBLE);
+		btnRight.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new BottomDialog(getActivity())
+						.orientation(BottomDialog.HORIZONTAL)
+						.inflateMenu(R.menu.menu_main, new OnItemClickListener() {
+							@Override
+							public void click(Item item) {
+
+							}
+						})
+						.show();
+			}
+		});
 
 		float unSelectSize = 14;
 		float selectSize = unSelectSize * 1.2f;

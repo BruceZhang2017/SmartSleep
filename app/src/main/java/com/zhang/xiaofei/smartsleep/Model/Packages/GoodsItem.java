@@ -7,6 +7,7 @@ public class GoodsItem {
     float price = 0;
     String link = "";
     String imgPath = "";
+    String createTime = "";
 
     public int getId() {
         return id;
@@ -54,5 +55,13 @@ public class GoodsItem {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }

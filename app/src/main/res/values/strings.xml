@@ -276,4 +276,14 @@
     <string name="sound3">铃声3</string>
     <string name="all_sound">所有铃声</string>
 
+    <string name="mobile_error_tip">请填写正确的手机号码</string>
+
+    <string name="report_use_information">使用信息</string>
+    <string name="report_therapeutic_pressure">治疗压力</string>
+    <string name="report_Apnea_hypopnea_index">呼吸暂停低通气指数</string>
+    <string name="report_volume_minute">潮气量&amp;分钟通气量</string>
+    <string name="report_Respiratory_frequency">呼吸频率</string>
+    <string name="login_contact_name_hint">输入联系人姓名</string>
+    <string name="login_contact_phone_hint">输入联系人号码</string>
+    <string name="study_tip">正在努力学习知识</string>
 </resources>

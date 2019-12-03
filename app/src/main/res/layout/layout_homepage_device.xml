@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:text="83分"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@id/circle_percent_progress"
         app:layout_constraintTop_toTopOf="@id/circle_percent_progress"
         app:layout_constraintBottom_toBottomOf="@id/circle_percent_progress"

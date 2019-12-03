@@ -54,7 +54,6 @@ public class FoundGoodsFragment extends BasicFunctions {
         tvLeft.setVisibility(View.VISIBLE);
         tvLeft.setText(R.string.tab_finding);
 
-        downloadFoundGoods();
     }
 
     @Override
@@ -84,6 +83,14 @@ public class FoundGoodsFragment extends BasicFunctions {
     @Override
     protected void removeButtonTrigger() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (list.size() <= 0) {
+            downloadFoundGoods();
+        }
     }
 
     @Override
@@ -122,7 +129,7 @@ public class FoundGoodsFragment extends BasicFunctions {
     private RequestDataCallback requestDataCallback = new RequestDataCallback<Goods>() {
         @Override
         public void dataCallback(int status, Goods goods) {
-            HomeActivity activity = (HomeActivity)getActivity();
+            //HomeActivity activity = (HomeActivity)getActivity();
             //activity.hideHUD();
             System.out.println("网络请求返回的Status:" + status);
             if(goods==null || goods.getCode() != 200){
@@ -145,7 +152,7 @@ public class FoundGoodsFragment extends BasicFunctions {
 
         @Override
         public void dataCallback(Goods obj) {
-            HomeActivity activity = (HomeActivity)getActivity();
+            //HomeActivity activity = (HomeActivity)getActivity();
             //activity.hideHUD();
             if (obj == null) {
                 Toast.makeText(getActivity(), getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
