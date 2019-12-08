@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.just.agentweb:agentweb:4.1.2@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d3d3492ab33c4fe34c0a72e0144957c7/jetified-agentweb-4.1.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d3d3492ab33c4fe34c0a72e0144957c7/jetified-agentweb-4.1.2/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4a93733f432a9641a2cab39e35d7e8c9/jetified-agentweb-4.1.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4a93733f432a9641a2cab39e35d7e8c9/jetified-agentweb-4.1.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.just.agentweb/agentweb/4.1.2/fd2c624a7c4f4c31aa1da58123c29c58993b7a8a/agentweb-4.1.2-javadoc.jar!/" />

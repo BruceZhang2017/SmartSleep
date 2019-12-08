@@ -1,7 +1,9 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -13,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -58,6 +62,8 @@ public class ReportMonthFragment extends LazyFragment {
     private TextView tvSimulationData;
     private Realm mRealm;
     private int currentTime = 0;
+    private int year = 0;
+    private int month = 0;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -72,7 +78,8 @@ public class ReportMonthFragment extends LazyFragment {
         initialText();
         mRealm = Realm.getDefaultInstance();
         initialCalendarView();
-
+        year = calendarView.getCurYear();
+        month = calendarView.getCurMonth();
         ibLeftPre = (ImageButton)findViewById(R.id.ib_left_pre);
         ibLeftPre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +87,13 @@ public class ReportMonthFragment extends LazyFragment {
                 //currentTime -= 7 * 24 * 60 * 60;
                 //tvSimulationData.setText(getTextValue());
                 calendarView.scrollToPre();
+                if (month > 1) {
+                    month--;
+                } else {
+                    year--;
+                    month = 12;
+                }
+                tvSimulationData.setText(year + "-" + (month > 9 ? ("" + month) : ("0" + month)));
             }
         });
         ibRightNex = (ImageButton)findViewById(R.id.ib_right_next);
@@ -87,10 +101,13 @@ public class ReportMonthFragment extends LazyFragment {
             @Override
             public void onClick(View v) {
                 calendarView.scrollToNext();
-//                currentTime += 7 * 24 * 60 * 60;
-//                tvSimulationData.setText(getTextValue());
-//                getDayData(currentTime);
-//                System.out.println("当前周有的数据为：" + mMap.size());
+                if (month < 11) {
+                    month++;
+                } else {
+                    year++;
+                    month = 1;
+                }
+                tvSimulationData.setText(year + "-" + (month > 9 ? ("" + month) : ("0" + month)));
             }
         });
         tvSimulationData = (TextView)findViewById(R.id.tv_simulation_data);
@@ -324,5 +341,10 @@ public class ReportMonthFragment extends LazyFragment {
         calendarView = (CalendarView)findViewById(R.id.calendarView);
         calendarView.setEnabled(false);
         calendarView.setClickable(false);
+        calendarView.setMonthViewScrollable(false);
+        calendarView.setWeekViewScrollable(false);
+        calendarView.getMonthViewPager().setClickable(false);
+        calendarView.getWeekViewPager().setClickable(false);
+
     }
 }

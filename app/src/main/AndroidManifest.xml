@@ -25,9 +25,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -41,48 +41,65 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.mainTransparent">
-        <activity android:name=".UI.Me.OTAActivity"
+        <activity android:name=".UI.Home.ShareSleepQualityActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".UI.Home.SmartSleepTestActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UI.Me.OTAActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Home.SmartSleepTestActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".UI.Report.SoundChooseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.ClearCacheActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.FeedbackListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.LanguageSystemActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.AboutUsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Home.SleepClassActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.FriendRankActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Home.HelpSleepActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Home.AlarmActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.DeviceManageActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UI.Report.SoundChooseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.ClearCacheActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.FeedbackListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.LanguageSystemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Home.SleepClassActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.FriendRankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Home.HelpSleepActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Home.AlarmActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.DeviceManageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.Me.FeedbackActivity"
             android:exported="false"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".UI.Me.SettingsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Login.LoginMoreActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Me.EasyCaptureActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UI.Me.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Login.LoginMoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Me.EasyCaptureActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.Login.StartPageActivity"
             android:screenOrientation="portrait"
@@ -93,22 +110,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.Login.LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Home.HomeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UI.Login.CountryActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UI.Login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Home.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.Login.CountryActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Vendor.EsptouchDemoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Kit.Webview.WebActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop" />
-        <activity android:name=".Kit.dfutest.DfuUpdateActivity"
-            android:screenOrientation="portrait"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Kit.dfutest.DfuUpdateActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

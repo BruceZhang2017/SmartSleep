@@ -698,5 +698,12 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 break;
             }
         }
+        if (connected == false) {
+            HomeActivity activity = (HomeActivity)getActivity();
+            String macAddress = activity.fastBLEManager.macAddress;
+            if (macAddress.equals(mac)) {
+                activity.fastBLEManager.startScanAndConnect();
+            }
+        }
     }
 }

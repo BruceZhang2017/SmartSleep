@@ -286,4 +286,5 @@
     <string name="login_contact_name_hint">输入联系人姓名</string>
     <string name="login_contact_phone_hint">输入联系人号码</string>
     <string name="study_tip">正在努力学习知识</string>
+    <string name="sleep_report">睡眠报告</string>
 </resources>

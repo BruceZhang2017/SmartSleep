@@ -286,4 +286,5 @@
     <string name="login_contact_name_hint">Enter contact name</string>
     <string name="login_contact_phone_hint">Enter contact number</string>
     <string name="study_tip">Learning hard</string>
+    <string name="sleep_report">Sleep Report</string>
 </resources>

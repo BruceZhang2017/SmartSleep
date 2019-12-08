@@ -26,6 +26,7 @@ import com.jpeng.jptabbar.anno.NorIcons;
 import com.jpeng.jptabbar.anno.SeleIcons;
 import com.jpeng.jptabbar.anno.Titles;
 import com.king.zxing.Intents;
+import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
@@ -128,11 +129,11 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             userId = userModel.getUserInfo().getUserId();
         }
 
-        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
-        foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
-        //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
-        foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
-        startService(foregroundIntent);
+//        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
+//        foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
+//        //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
+//        foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
+//        startService(foregroundIntent);
 
         DeviceManager.getInstance().downloadDeviceList();
     }
@@ -536,12 +537,14 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 int arg0 = intent.getIntExtra("arg0", 0);
                 if (arg0 == 0) { // 新增设备
                     String result = intent.getStringExtra("result");
+                    fastBLEManager.macAddress = "";
                     fastBLEManager.stopBLEScan();
                     fastBLEManager.onDisConnect();
                     handleQRCode(result);
                 } else if (arg0 == 1) { // 删除设备
                     String mac = intent.getStringExtra("mac").toUpperCase();
                     if (mac.equals(fastBLEManager.macAddress)) {
+                        fastBLEManager.macAddress = "";
                         fastBLEManager.stopBLEScan();
                         fastBLEManager.onDisConnect();
                     }
@@ -629,6 +632,13 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     }
                 } else if (arg0 == 6) {
                     exchangeDevice(DeviceManager.getInstance().currentDevice);
+                } else if (arg0 == 7) {
+                    int value = intent.getIntExtra("value", 0);
+                    if (value > 0) {
+                        AlarmTimer.getInstance().startTimer(value);
+                    } else {
+                        AlarmTimer.getInstance().stopTimer();
+                    }
                 }
             }
         }
@@ -637,6 +647,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     // 切换设备连接
     public void exchangeDevice(int current) {
         if (mTab1 != null) {
+            fastBLEManager.macAddress = "";
             fastBLEManager.stopBLEScan();
             fastBLEManager.onDisConnect();
             String mac = DeviceManager.getInstance().deviceList.get(current).getMac();

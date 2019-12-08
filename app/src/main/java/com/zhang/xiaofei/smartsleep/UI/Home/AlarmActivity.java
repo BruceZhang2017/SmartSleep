@@ -21,6 +21,7 @@ import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.UI.Report.SoundChooseActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -537,27 +538,29 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         }
         int hour = alramSleepModel.getHour();
         int munitue = alramSleepModel.getMinute();
+        ArrayList<Integer> testDays = new ArrayList<>();
         if (btnSaturday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 16, 6, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.SATURDAY);
         }
         if (btnMonday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 11, 1, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.MONDAY);
         }
         if (btnTuesday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 12, 2, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.TUESDAY);
         }
         if (btnWednesday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 13, 3, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.WEDNESDAY);
         }
         if (btnThursday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 14, 4, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.THURSDAY);
         }
         if (btnFirday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 15, 5, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.FRIDAY);
         }
         if (btnSunday2.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour, munitue, 17, 7, "睡觉闹钟响了", 1);
+            testDays.add(Calendar.SUNDAY);
         }
+        AlarmManagerUtil.createAlarm(this, "睡觉闹钟响了", hour, munitue, 1, testDays);
     }
 
     private void startClockStartGetup() {
@@ -573,35 +576,38 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
                 btnSaturday.isSelected() == false) {
             return;
         }
+        System.out.println("有闹钟被设置");
         int hour1 = alramGetupModel.getHour();
         int minute1 = alramGetupModel.getMinute();
+        ArrayList<Integer> testDays = new ArrayList<>();
         if (btnSaturday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 6, 6, "起床闹钟响了", 1);
+            testDays.add(Calendar.SATURDAY);
         }
         if (btnMonday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 1, 1, "起床闹钟响了", 1);
+            testDays.add(Calendar.MONDAY);
         }
         if (btnTuesday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 2, 2, "起床闹钟响了", 1);
+            testDays.add(Calendar.TUESDAY);
         }
         if (btnWednesday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 3, 3, "起床闹钟响了", 1);
+            testDays.add(Calendar.WEDNESDAY);
         }
         if (btnThursday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 4, 4, "起床闹钟响了", 1);
+            testDays.add(Calendar.THURSDAY);
         }
         if (btnFirday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 5, 5, "起床闹钟响了", 1);
+            testDays.add(Calendar.FRIDAY);
         }
         if (btnSunday.isSelected()) {
-            AlarmManagerUtil.setAlarm(this, 2, hour1, minute1, 7, 7, "起床闹钟响了", 1);
+            testDays.add(Calendar.SUNDAY);
         }
+        AlarmManagerUtil.createAlarm(this, "起床闹钟响了", hour1, minute1,  1, testDays);
     }
 
     private void clearAlarm() {
-        for (int i = 1; i < 8; i++) {
-            AlarmManagerUtil.cancelAlarm(this, i);
-            AlarmManagerUtil.cancelAlarm(this, i + 10);
-        }
+//        for (int i = 1; i < 8; i++) {
+//            AlarmManagerUtil.cancelAlarm(this, i);
+//            AlarmManagerUtil.cancelAlarm(this, i + 10);
+//        }
     }
 }

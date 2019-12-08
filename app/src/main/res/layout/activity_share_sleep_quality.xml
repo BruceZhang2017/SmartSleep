@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".UI.Home.ShareSleepQualityActivity">
+
+    <com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarHeightView
+        android:id="@+id/view_status_bar_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:use_type="use_padding_top"
+        tools:visibility="visible" >
+    </com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarHeightView>
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/layout_custom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_status_bar_height" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        app:layout_constraintDimensionRatio="h,316:600"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/block_broder_white">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/ic_launcher"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_middle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintDimensionRatio="h,858:1233"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_icon"
+            android:background="@mipmap/poster_bg">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:scaleType="fitXY"
+                android:id="@+id/iv_head"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="20dp"
+                app:riv_corner_radius="30dp"
+                android:src="@mipmap/login_icon_head"/>
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/iv_head"
+                app:layout_constraintTop_toTopOf="@id/iv_head"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Zhang XiaoFei"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/iv_head"
+                app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="3dp"
+                android:text="睡眠报告"
+                android:textSize="14sp"
+                android:textColor="@color/colorWhite"/>
+
+            <io.feeeei.circleseekbar.CircleSeekBar
+                android:id="@+id/circle_percent_progress"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_head"
+                android:layout_marginTop="35dp"
+                app:wheel_max_process="100"
+                app:wheel_cur_process="30"
+                app:wheel_reached_width="@dimen/wheel_width"
+                app:wheel_unreached_width="@dimen/wheel_width"
+                app:wheel_pointer_radius="@dimen/wheel_point_width"
+                android:padding="4dp"
+                app:wheel_can_touch="false"
+                app:wheel_unreached_color="#29FFFFFF"
+                app:wheel_reached_color="#5DF2FF"/>
+
+            <TextView
+                android:id="@+id/tv_sleep_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/report_sleep_analysis"
+                android:textColor="#8EA9E0"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/circle_percent_progress" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textColor="#FFFFFF"
+                android:textSize="50sp"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintLeft_toLeftOf="@id/circle_percent_progress"
+                app:layout_constraintTop_toTopOf="@id/circle_percent_progress"
+                app:layout_constraintBottom_toBottomOf="@id/circle_percent_progress"
+                app:layout_constraintRight_toRightOf="@id/circle_percent_progress" />
+
+            <TextView
+                android:id="@+id/tv_sleep_review_value_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_sleep_quality"
+                android:textColor="#4176E3"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/circle_percent_progress"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_review_value"
+                app:layout_constraintRight_toRightOf="@id/circle_percent_progress" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_qr"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:background="@mipmap/poster_qr_code"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_middle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_qr"
+            android:layout_marginTop="10dp"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:text="长按二维码下载APP体验"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

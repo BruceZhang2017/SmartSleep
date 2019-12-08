@@ -91,6 +91,12 @@ public class PlayHelper implements IPlayerCallback, IRecommendViewCallback {
         }
     }
 
+    public static void stop() {
+        if (PlayerPresenter.getPlayerPresenter().isPlaying()) {
+            PlayerPresenter.getPlayerPresenter().pause();
+        }
+    }
+
     /**
      * 播放第一个推荐的内容.
      */

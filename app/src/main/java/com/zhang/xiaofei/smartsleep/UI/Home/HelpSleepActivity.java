@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
@@ -20,6 +19,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.sunofbeaches.himalaya.PlayHelper;
 import com.sunofbeaches.himalaya.PlayHelperCallback;
+import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
@@ -35,7 +35,7 @@ import java.util.TimerTask;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener, PlayHelperCallback {
+public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener, PlayHelperCallback, AlarmTimer.AlarmTimerInterface {
 
     ImageButton ibBack;
     TextView tvTime;
@@ -88,7 +88,10 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     sleepM = model.getMinute();
                 }
             }
-            tvTimeRange.setText((sleepH > 10 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 10 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 10 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 10 ? (getupM + "") : ("0" + getupM))  );
+            if (sleepH > 12) {
+                currentTime += 24 * 60 * 60;
+            }
+            tvTimeRange.setText((sleepH > 9 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 9 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 9 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 9 ? (getupM + "") : ("0" + getupM))  );
             Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tvTimeRange.setCompoundDrawables(drawable,null,null,null);
@@ -107,6 +110,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     startActivity(intentB);
                 }
             });
+
         } else {
             tvTimeRange.setText(R.string.alarm_not_set);
             Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_edit);
@@ -138,13 +142,36 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                                     new OnSelectListener() {
                                         @Override
                                         public void onSelect(int position, String text) {
-
+                                            int time = 0;
+                                            if (position == 0) {
+                                                time = 10 * 60;
+                                            } else if (position == 1) {
+                                                time = 20 * 60;
+                                            } else if (position == 2) {
+                                                time = 30 * 60;
+                                            } else if (position == 3) {
+                                                time = 60 * 60;
+                                            } else {
+                                                time = 90 * 60;
+                                            }
+                                            Intent intentBroadcast = new Intent();   //定义Intent
+                                            intentBroadcast.setAction(DYNAMICACTION);
+                                            intentBroadcast.putExtra("arg0", 7);
+                                            intentBroadcast.putExtra("value", time);
+                                            sendBroadcast(intentBroadcast);
                                         }
                                     })
                             .show();
+                } else {
+                    Intent intentBroadcast = new Intent();   //定义Intent
+                    intentBroadcast.setAction(DYNAMICACTION);
+                    intentBroadcast.putExtra("arg0", 7);
+                    sendBroadcast(intentBroadcast);
                 }
             }
         });
+        switch1.setChecked(AlarmTimer.getInstance().bStart);
+        AlarmTimer.getInstance().list.add(this);
 
         btnSleep = (StateButton) findViewById(R.id.btn_sleep);
         btnSleep.setOnClickListener(new View.OnClickListener() {
@@ -224,6 +251,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         super.onDestroy();
         playHelper.deinitPresenter();
         playHelper.playHelperCallback = null;
+        AlarmTimer.getInstance().list.remove(this);
     }
 
     // 生成大小字体不一样的内容
@@ -274,6 +302,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     private void refreshTime() {
         int realTime = (int)(System.currentTimeMillis() / 1000);
         System.out.println("刷新时间: " + realTime + "当前为主线程：" + (Looper.getMainLooper() == Looper.myLooper()));
+        System.out.println("睡觉时间: " + sleepH);
+        System.out.println("睡觉时间: " + sleepM);
         if (sleepH > 12) {
             int sleep = currentTime + sleepH * 60 * 60 + sleepM * 60  - 24 * 60 * 60;
             int getup = currentTime + getupH * 60 * 60 + getupM * 60;
@@ -345,5 +375,10 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     @Override
     public void callbackHideHUD() {
         hideHUD();
+    }
+
+    @Override
+    public void stopAlarm() {
+        switch1.setChecked(AlarmTimer.getInstance().bStart);
     }
 }
