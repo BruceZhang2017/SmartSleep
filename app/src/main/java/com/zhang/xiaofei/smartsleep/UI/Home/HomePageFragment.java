@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +14,9 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
@@ -27,19 +24,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.RequestDataCallback;
-import com.clj.blesample.FastBLEManager;
 import com.clj.blesample.comm.Observer;
 import com.clj.blesample.comm.ObserverManager;
 import com.deadline.statebutton.StateButton;
 import com.jpeng.jptabbar.JPTabBar;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.impl.AttachListPopupView;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.shizhefei.view.indicator.FixedIndicatorView;
-import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.IndicatorViewPager;
-
 import com.sunofbeaches.himalaya.MainActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -49,16 +42,13 @@ import com.zhang.xiaofei.smartsleep.Kit.CardPager.CardPagerAdapter;
 import com.zhang.xiaofei.smartsleep.Kit.CardPager.ShadowTransformer;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
-import com.zhang.xiaofei.smartsleep.Kit.GlideImageLoader;
 import com.zhang.xiaofei.smartsleep.Kit.SampleDataboxset;
 import com.zhang.xiaofei.smartsleep.Kit.sectionHomePageAdapter;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
-import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Packages.Goods;
-import com.zhang.xiaofei.smartsleep.Model.Packages.GoodsItem;
 import com.zhang.xiaofei.smartsleep.Model.Record.BreathRecordManger;
 import com.zhang.xiaofei.smartsleep.Model.Record.BreathRecordModel;
 import com.zhang.xiaofei.smartsleep.R;
@@ -68,8 +58,6 @@ import com.zhang.xiaofei.smartsleep.UI.Me.FeedbackActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -399,7 +387,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     private void showDialog() {
         final Dialog dialog = new Dialog(getActivity(), R.style.activity_translucent);
         dialog.setContentView(R.layout.layout_search_device);
-
+        Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.hide();
+            }
+        });
         if(dialog!=null && !dialog.isShowing()) {
             dialog.show();
         }

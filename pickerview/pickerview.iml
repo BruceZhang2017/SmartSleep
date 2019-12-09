@@ -93,5 +93,7 @@
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.0.0@jar" level="project" />
     <orderEntry type="module" module-name="wheelview" />
     <orderEntry type="module" module-name="wheelview" />
+    <orderEntry type="module" module-name="wheelview" />
+    <orderEntry type="module" module-name="wheelview" />
   </component>
 </module>

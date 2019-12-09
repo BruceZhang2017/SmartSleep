@@ -88,9 +88,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     sleepM = model.getMinute();
                 }
             }
-            if (sleepH > 12) {
-                currentTime += 24 * 60 * 60;
-            }
             tvTimeRange.setText((sleepH > 9 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 9 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 9 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 9 ? (getupM + "") : ("0" + getupM))  );
             Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -302,57 +299,35 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     private void refreshTime() {
         int realTime = (int)(System.currentTimeMillis() / 1000);
         System.out.println("刷新时间: " + realTime + "当前为主线程：" + (Looper.getMainLooper() == Looper.myLooper()));
-        System.out.println("睡觉时间: " + sleepH);
-        System.out.println("睡觉时间: " + sleepM);
-        if (sleepH > 12) {
-            int sleep = currentTime + sleepH * 60 * 60 + sleepM * 60  - 24 * 60 * 60;
-            int getup = currentTime + getupH * 60 * 60 + getupM * 60;
-            if (realTime < getup) {
-                int h = (getup - realTime) / (60 * 60);
-                int m = ((getup - realTime) % (60 * 60)) / 60;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
-                        tvRealTime.setText(R.string.alarm_get_up_to_time);
-                    }
-                });
-            } else {
-                int h = (sleep + 24 * 60 * 60 - realTime) / (60 * 60);
-                int m = ((sleep + 24 * 60 * 60 - realTime) % (60 * 60)) / 60;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
-                        tvRealTime.setText(R.string.alarm_sleep_to_time);
-                    }
-                });
-
-            }
-        } else {
-            int sleep = currentTime + sleepH * 60 * 60 + sleepM * 60;
-            int getup = currentTime + getupH * 60 * 60 + getupM * 60;
-            if (realTime < getup) {
-                int h = (getup - realTime) / (60 * 60);
-                int m = ((getup - realTime) % (60 * 60)) / 60;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
-                        tvRealTime.setText(R.string.alarm_get_up_to_time);
-                    }
-                });
-            } else {
-                int h = (sleep + 24 * 60 * 60 - realTime) / (60 * 60);
-                int m = ((sleep + 24 * 60 * 60 - realTime) % (60 * 60)) / 60;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
-                        tvRealTime.setText(R.string.alarm_sleep_to_time);
-                    }
-                });
-            }
+        int sleep = currentTime + sleepH * 60 * 60 + sleepM * 60;
+        int getup = currentTime + getupH * 60 * 60 + getupM * 60;
+        if (getup < sleep) {
+            getup += 24 * 60 * 60;
+        }
+        if (realTime > getup) {
+            sleep += 24 * 60 * 60;
+            getup += 24 * 60 * 60;
+        }
+        if (realTime <= sleep) {
+            int h = (sleep - realTime) / (60 * 60);
+            int m = ((sleep - realTime) % (60 * 60)) / 60;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
+                    tvRealTime.setText(R.string.alarm_sleep_to_time);
+                }
+            });
+        } else if (realTime <= getup) {
+            int h = (getup - realTime) / (60 * 60);
+            int m = ((getup - realTime) % (60 * 60)) / 60;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvTime.setText(createTimeValue( (h > 9 ? ("" + h) : ("0" + h)) + strH + (m > 9 ? ("" + m) : ("0" + m)) + strM));
+                    tvRealTime.setText(R.string.alarm_get_up_to_time);
+                }
+            });
         }
     }
 
