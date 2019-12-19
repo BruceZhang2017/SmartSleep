@@ -443,7 +443,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         @Override
         public void dataCallback(Goods obj) {
             if (obj == null) {
-                Toast.makeText(getActivity(), getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getActivity().getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
             }
         }
     };

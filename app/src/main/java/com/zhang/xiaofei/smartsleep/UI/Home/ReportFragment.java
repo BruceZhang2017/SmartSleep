@@ -395,7 +395,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 			HomeActivity activity = (HomeActivity)getActivity();
 			activity.hideHUD();
 			if (obj == null) {
-				Toast.makeText(getActivity(), getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), getActivity().getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
