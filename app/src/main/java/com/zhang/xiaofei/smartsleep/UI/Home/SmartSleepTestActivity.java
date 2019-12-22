@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.clj.blesample.comm.DataOberverManager;
 import com.clj.blesample.comm.DataObservable;
 import com.clj.blesample.comm.DataObserver;
+import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 
@@ -24,6 +25,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private TextView tvTitle;
     private DynamicView dynamicViewHeart;
     private DynamicView dynamicViewBreath;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +46,28 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         //tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());
         DataOberverManager.getInstance().addObserver(this);
         btnFlash = (Button)findViewById(R.id.btn_flash);
+        btnFlash.setVisibility(View.INVISIBLE);
         btnFlash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentBroadcast = new Intent();   //定义Intent
-                intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
-                intentBroadcast.putExtra("arg0", 5);
-                sendBroadcast(intentBroadcast);
+
             }
         });
-
+        count = DisplayUtil.screenWidth(this);
         dynamicViewHeart = (DynamicView)findViewById(R.id.dv_heart);
-        dynamicViewHeart.rate = 1.5;
+        dynamicViewHeart.initArray(count);
+        dynamicViewHeart.rate = 4096.0f / 100;
         dynamicViewHeart.invalidate();
         dynamicViewBreath = (DynamicView)findViewById(R.id.dv_breath);
-        dynamicViewBreath.rate = 0.4;
+        dynamicViewBreath.initArray(count);
+        dynamicViewBreath.rate = 255.0f / 100;
         dynamicViewBreath.invalidate();
+
+        Intent intentBroadcast = new Intent();   //定义Intent
+        intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
+        intentBroadcast.putExtra("arg0", 5);
+        intentBroadcast.putExtra("value", true);
+        sendBroadcast(intentBroadcast);
     }
 
     public void addText(TextView textView, String content) {
@@ -72,33 +80,49 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Intent intentBroadcast = new Intent();   //定义Intent
+        intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
+        intentBroadcast.putExtra("arg0", 5);
+        intentBroadcast.putExtra("value", false);
+        sendBroadcast(intentBroadcast);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         DataOberverManager.getInstance().deleteObserver(this);
     }
 
     @Override
-    public void notifyData(int heart, int breath) {
+    public void notifyData(int[] heart, int[] breath) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //addText(tvContent, content);
-                if (dynamicViewHeart.current >= 1024) {
-                    dynamicViewHeart.values = new int[1024];
+                if (dynamicViewHeart.current + 50 >= count) {
+                    dynamicViewHeart.values = new int[count];
                     dynamicViewHeart.current = 0;
                     return;
                 }
-                dynamicViewHeart.values[dynamicViewHeart.current] = heart;
-                dynamicViewHeart.current += 1;
-                dynamicViewHeart.invalidate();
+                for (int i = 0; i < 50; i++) {
+                    dynamicViewHeart.values[dynamicViewHeart.current + i] = heart[i];
+                }
 
-                if (dynamicViewBreath.current >= 1024) {
-                    dynamicViewBreath.values = new int[1024];
+                if (dynamicViewBreath.current + 50 >= count) {
+                    dynamicViewBreath.values = new int[count];
                     dynamicViewBreath.current = 0;
                     return;
                 }
-                dynamicViewBreath.values[dynamicViewBreath.current] = breath;
-                dynamicViewBreath.current += 1;
+                for (int i = 0; i < 50; i++) {
+                    dynamicViewBreath.values[dynamicViewBreath.current + i] = breath[i];
+                }
+
+                dynamicViewHeart.current += 50;
+                dynamicViewHeart.invalidate();
+
+                dynamicViewBreath.current += 50;
                 dynamicViewBreath.invalidate();
             }
         });

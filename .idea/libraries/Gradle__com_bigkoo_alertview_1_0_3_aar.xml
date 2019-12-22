@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.bigkoo:alertview:1.0.3@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ef55f961ab20218ffc826dd512ef5689/alertview-1.0.3/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ef55f961ab20218ffc826dd512ef5689/alertview-1.0.3/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e6c7f979586c3ca66e73a53e022aebf5/alertview-1.0.3/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e6c7f979586c3ca66e73a53e022aebf5/alertview-1.0.3/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.bigkoo/alertview/1.0.3/2477326d83d0548ac86859bdf25eb71a698441e7/alertview-1.0.3-javadoc.jar!/" />

@@ -173,9 +173,12 @@ public class Transformer {
                                                  int min, int max) {
 
         final int count = ((int) ((max - min) * phaseX) + 1) * 2;
-
         if (valuePointsForGenerateTransformedValuesLine.length != count) {
-            valuePointsForGenerateTransformedValuesLine = new float[count];
+            if (count > 0) {
+                valuePointsForGenerateTransformedValuesLine = new float[count];
+            } else {
+                valuePointsForGenerateTransformedValuesLine = new float[0];
+            }
         }
         float[] valuePoints = valuePointsForGenerateTransformedValuesLine;
 

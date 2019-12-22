@@ -4,6 +4,8 @@ package com.clj.blesample.operation;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.clj.blesample.comm.BLEDataObserver;
 import com.clj.blesample.comm.DataOberverManager;
@@ -143,7 +145,7 @@ public class OperationManager {
                 }
                 String strMac = HexUtil.formatHexString(mac, true);
                 strMac = strMac.replaceAll(" ", ":").toUpperCase();
-                int flash = (data[6] << 24) + (data[5] << 16) + (data[6] << 8) + data[7];
+                int flash = (data[6] << 24) + (data[7] << 16) + (data[8] << 8) + data[9];
                 if (bleDataObserver != null) {
                     System.out.println("解析数据中:" + battery + " " + flash + " " + strMac + " " + version);
                     bleDataObserver.handleBLEData(battery, flash, strMac, version);
@@ -159,55 +161,63 @@ public class OperationManager {
                 if (bleDataObserver != null) {
                     bleDataObserver.handleBLEData("",temprature, humdity);
                 }
-            } else if (data[3] == 0x0b) {
+            } else if (data[3] == 0x0b) { // Flash数据解析
                 if ((data[4] & 0xff) == 0) {
                     return;
                 }
-                int year = 2000 + (data[4] & 0xff);
-                int month = data[5];
-                int day = data[6];
-                int hour = data[7];
-                int minute = data[8];
-                int second = data[9];
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month - 1, day, hour, minute, second);
-                int temTime = (int)(calendar.getTimeInMillis() / 1000);
-
-                int temperature = data[10] & 0xff;
-                int humdity = data[11] & 0xff;
-                int heartRate = data[12] & 0xff;
-                int breathRate = data[13] & 0xff;
-                boolean breatheStop = (data[14] & 0x01) > 0;
-                boolean outBedAlarm = (data[15] & 0x01) > 0;
-                if (bleDataObserver != null) {
-                    bleDataObserver.handleBLEData("", temTime, temperature, humdity, heartRate, breathRate, breatheStop, outBedAlarm);
-                }
-                if (currentTime != 0 && temTime == currentTime) {
+                if (data.length < 20) {
                     return;
                 }
-                currentTime = temTime;
-                DataOberverManager.getInstance().notifyObserver(heartRate, breathRate);
+                int count = (data.length - 5) / 14;
+                for (int i = 0; i < count; i++) {
+                    int index = 4 + i * 14; // 游标位置
+                    byte[] subData = new byte[14];
+                    for (int j = 0; j < 14; j++) {
+                        subData[j] = data[index + j];
+                    }
+                    parseFlashData(subData);
+                }
+            } else if (data[3] == 0x07) { // 时时数据解析
+                System.out.println("数据长度：" + data.length);
+                if (data.length != 155) {
+                    return;
+                }
+                int[] heartRates = new int[50];
+                int[] breathRates = new int[50];
+                for (int i = 0; i < 50; i++) {
+                    heartRates[i] = ((data[4 + i * 2] & 0xff) << 8) + (data[4 + i * 2 + 1] & 0xff);
+                    breathRates[i] = data[4 + 100 + i] & 0xff;
+                    System.out.println("心率：" + heartRates[i] + "呼吸率：" + breathRates[i]);
+                }
+                DataOberverManager.getInstance().notifyObserver(heartRates, breathRates);
             }
         }
     }
 
-//    private String intToTime(int value) {
-//        return value > 9 ? ("" + value) : ("0" + value);
-//    }
-//
-//    public int parseServerTime(String serverTime) {
-//        String format = "yyyy-MM-dd HH:mm:ss";
-//        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINESE);
-//        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-//        Date date = new Date();
-//        int value = 0;
-//        try {
-//            date = sdf.parse(serverTime);
-//            value = date.
-//        } catch (Exception e) {
-//
-//        }
-//        return value;
-//    }
+    private void parseFlashData(byte[] data) {
+        if (data.length != 14) {
+            return;
+        }
+        System.out.println("解析的值: " + HexUtil.formatHexString(data, true));
+        int year = 2000 + (data[0] & 0xff);
+        int month = data[1];
+        int day = data[2];
+        int hour = data[3];
+        int minute = data[4];
+        int second = data[5];
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day, hour, minute, second);
+        int temTime = (int)(calendar.getTimeInMillis() / 1000);
+
+        int temperature = data[6] & 0xff;
+        int humdity = data[7] & 0xff;
+        int heartRate = data[8] & 0xff;
+        int breathRate = data[9] & 0xff;
+        boolean breatheStop = (data[10] & 0x01) > 0;
+        boolean outBedAlarm = (data[11] & 0x01) > 0;
+        if (bleDataObserver != null) {
+            bleDataObserver.handleBLEData("", temTime, temperature, humdity, heartRate, breathRate, breatheStop, outBedAlarm);
+        }
+    }
 
 }

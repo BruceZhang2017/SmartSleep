@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -128,6 +129,12 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         downloadFoundAdvertises();
 
         ObserverManager.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 读取
     }
 
     @Override
@@ -498,12 +505,17 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 ivBluetooth.setVisibility(View.INVISIBLE);
             } else {
                 ivBluetooth.setVisibility(View.VISIBLE);
-                if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
-                    ivBluetooth.setImageResource(R.mipmap.bluetooth2);
-                    removeShineAnimation(ivBluetooth);
+                if (YMApplication.getInstance().getBLEOpen()) {
+                    if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
+                        ivBluetooth.setImageResource(R.mipmap.bluetooth2);
+                        removeShineAnimation(ivBluetooth);
+                    } else {
+                        ivBluetooth.setImageResource(R.mipmap.bluetooth1);
+                        addShineAnimation(ivBluetooth);
+                    }
                 } else {
-                    ivBluetooth.setImageResource(R.mipmap.bluetooth1);
-                    addShineAnimation(ivBluetooth);
+                    ivBluetooth.setImageResource(R.mipmap.bluetooth3);
+                    removeShineAnimation(ivBluetooth);
                 }
             }
 
@@ -659,6 +671,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         refreshDevice(true);
     }
 
+    // 设备卡片页
     private void refreshDevice(boolean value) {
         if (viewPager == null) {
             return;

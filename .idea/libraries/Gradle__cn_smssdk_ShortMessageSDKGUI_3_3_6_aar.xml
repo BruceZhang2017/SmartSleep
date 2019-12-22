@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: cn.smssdk:ShortMessageSDKGUI:3.3.6@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6858fcff7bb585b3c3d68deb55dce446/ShortMessageSDKGUI-3.3.6/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6858fcff7bb585b3c3d68deb55dce446/ShortMessageSDKGUI-3.3.6/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

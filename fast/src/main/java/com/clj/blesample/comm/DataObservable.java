@@ -7,5 +7,5 @@ public interface DataObservable {
 
     void deleteObserver(DataObserver obj);
 
-    void notifyObserver(int heart, int breath);
+    void notifyObserver(int[] heart, int[] breath);
 }

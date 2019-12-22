@@ -31,7 +31,7 @@ public class DataOberverManager implements DataObservable {
     }
 
     @Override
-    public void notifyObserver(int heart, int breath) {
+    public void notifyObserver(int[] heart, int[] breath) {
         for (int i = 0; i < observers.size(); i++) {
             DataObserver o = observers.get(i);
             o.notifyData(heart, breath);

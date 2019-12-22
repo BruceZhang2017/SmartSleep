@@ -38,7 +38,7 @@ public class BLEOperation {
         value[1] = 0x60;
         value[2] = (byte)deviceId;
         value[3] = 0x02;
-        value[4] = (byte)(open == true ? 0x01 : 0x00);
+        value[4] = (byte)(open == true ? 0x01 : 0x02);
         String[] start = startTime.split(":");
         value[5] = (byte)(Integer.parseInt(start[0]));
         value[6] = (byte)(Integer.parseInt(start[1]));

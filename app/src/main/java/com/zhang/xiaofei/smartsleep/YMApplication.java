@@ -1,6 +1,7 @@
 package com.zhang.xiaofei.smartsleep;
 
 import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
@@ -30,7 +31,7 @@ public class YMApplication extends Application {
     private static YMApplication instante;
     public static final String[] MODULESLIST =
             {"com.sunofbeaches.himalaya.base.TingApplication"};
-
+    private boolean bleOpen = false; // 保存蓝牙是否开启
 
     @Override
     public void onCreate() {
@@ -71,6 +72,9 @@ public class YMApplication extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
+
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bleOpen = bluetoothAdapter.isEnabled();
     }
 
     private void modulesApplicationInit(){
@@ -111,6 +115,14 @@ public class YMApplication extends Application {
 
     public String domain() {
         return "http://cloud.yamind.cn:9999/"; //test/zips/20191022/dfufile.zip
+    }
+
+    public boolean getBLEOpen() {
+        return bleOpen;
+    }
+
+    public void setBLEOpen(boolean value) {
+        bleOpen = value;
     }
 
 }

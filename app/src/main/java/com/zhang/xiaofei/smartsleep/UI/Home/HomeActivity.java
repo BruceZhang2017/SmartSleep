@@ -1,12 +1,15 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +30,7 @@ import com.jpeng.jptabbar.anno.SeleIcons;
 import com.jpeng.jptabbar.anno.Titles;
 import com.king.zxing.Intents;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
+import com.zhang.xiaofei.smartsleep.Kit.Application.BluetoothMonitorReceiver;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
@@ -79,6 +83,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
     private boolean isSleep = false;
     private Map<String, String> attachValue = new HashMap<String, String>();
+    private BluetoothMonitorReceiver bleListenerReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +141,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 //        startService(foregroundIntent);
 
         DeviceManager.getInstance().downloadDeviceList();
+        registerBLE(); // 注册BLE状态监听
     }
 
     @Override
@@ -164,6 +170,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         fastBLEManager.onDestroy();
         mRealm.close();
         unregisterBroadcast();
+        unregisterReceiver(this.bleListenerReceiver);
     }
 
     @Override
@@ -425,7 +432,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             return;
         }
         int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getId();
-        mRealm.executeTransactionAsync(new Realm.Transaction(){
+        System.out.println("插入数据至数据库");
+        mRealm.executeTransaction(new Realm.Transaction(){
             @Override
             public void execute(Realm realm) {
                 RecordModel model = realm.createObject(RecordModel.class);
@@ -627,8 +635,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     }
                     int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        boolean bDetection = intent.getBooleanExtra("value", false);
                         fastBLEManager.operationManager.write(
-                                fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
+                                fastBLEManager.operationManager.bleOperation.setIntoDetectionState(deviceId, bDetection));
                     }
                 } else if (arg0 == 6) {
                     exchangeDevice(DeviceManager.getInstance().currentDevice);
@@ -663,6 +672,46 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (mTab1 != null) {
             mTab1.showDeviceList();
         }
+    }
+
+    Handler bluetoothHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1: // 蓝牙关闭
+                    YMApplication.getInstance().setBLEOpen(false);
+                    break;
+                case 2: // 蓝牙开启
+                    YMApplication.getInstance().setBLEOpen(true);
+                    break;
+            }
+
+        }
+    };
+
+    /*
+    *
+    * */
+    private void registerBLE() {
+        System.out.println("注册监听蓝牙状态变化的广播");
+        // 初始化广播
+        this.bleListenerReceiver = new BluetoothMonitorReceiver();
+        this.bleListenerReceiver.handler = bluetoothHandler;
+        IntentFilter intentFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+            // 注册广播
+        registerReceiver(this.bleListenerReceiver, intentFilter);
+
+    }
+
+    @Override
+    public void calculateReport(int value) {
+        System.out.println("获取到固件返回的数据的总量："  + value);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTab1.tvTitle.setText("" + value);
+            }
+        });
     }
 }
 

@@ -130,6 +130,7 @@ public class FastBLEManager implements BLEDataObserver {
             public void onConnectFail(BleDevice bleDevice, BleException exception) {
                 Log.i(TAG, "[BLE] onConnectFail");
                 currentBleDevice = null;
+                startScanAndConnect(); // 重新开始扫描
             }
 
             @Override
@@ -272,6 +273,13 @@ public class FastBLEManager implements BLEDataObserver {
     public void handleBLEWrite(int flag) {
         if (bleDataObserver != null) {
             bleDataObserver.handleBLEWrite(flag);
+        }
+    }
+
+    @Override
+    public void calculateReport(int value) {
+        if (bleDataObserver != null) {
+            bleDataObserver.calculateReport(value);
         }
     }
 }
