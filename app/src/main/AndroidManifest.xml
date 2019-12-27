@@ -41,8 +41,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.mainTransparent">
-        <activity android:name=".UI.Home.ShareSleepQualityActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity android:name=".UI.Home.MainBLETestActivity"></activity>
+        <activity
+            android:name=".UI.Home.ShareSleepQualityActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.Me.OTAActivity"
             android:screenOrientation="portrait" />

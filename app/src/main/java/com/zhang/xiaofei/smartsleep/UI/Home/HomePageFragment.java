@@ -112,6 +112,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private void init(View layout) {
         tvTitle.setText(R.string.common_app_name);
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainBLETestActivity.class);
+                startActivity(intent);
+            }
+        });
         btnRight.setImageResource(R.mipmap.home_icon_more);
         btnRight.setVisibility(View.VISIBLE);
         btnRight.setOnClickListener(new View.OnClickListener() {
@@ -345,6 +352,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         ibAlarm.setOnClickListener(this);
         btnIgnore = (Button)custom_header.findViewById(R.id.btn_ignore);
         btnIgnore.setOnClickListener(this);
+        btnIgnore.setVisibility(View.INVISIBLE);
         tvDeviceTitle = (TextView)custom_header.findViewById(R.id.tv_device_title);
         tvNoDeviceTip = (TextView)custom_header.findViewById(R.id.tv_no_device_tip);
         tvTemprature = (TextView)custom_header.findViewById(R.id.tv_temperature_value);
@@ -706,11 +714,18 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
         }
         if (connected == false) {
+            if (YMApplication.getInstance().getBLEOpen() == false) {
+                return;
+            }
             HomeActivity activity = (HomeActivity)getActivity();
             String macAddress = activity.fastBLEManager.macAddress;
             if (macAddress.equals(mac)) {
                 activity.fastBLEManager.startScanAndConnect();
             }
         }
+    }
+
+    public void refreshDeviceWithBLEStateChanged() {
+        adapter.notifyDataSetChanged();
     }
 }

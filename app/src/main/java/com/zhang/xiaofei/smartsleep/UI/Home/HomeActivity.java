@@ -32,6 +32,7 @@ import com.king.zxing.Intents;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
 import com.zhang.xiaofei.smartsleep.Kit.Application.BluetoothMonitorReceiver;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
+import com.zhang.xiaofei.smartsleep.Kit.Application.TestDataNotification;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
@@ -424,6 +425,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             mTab1.refreshTempratureAndHumdity(temperature, humdity);
         }
         DeviceInfoManager.getInstance().hashMap.put(mac, temperature + "-" + humdity);
+        TestDataNotification.getInstance().notifyObserver();
     }
 
     @Override
@@ -648,6 +650,18 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     } else {
                         AlarmTimer.getInstance().stopTimer();
                     }
+                } else if (arg0 == 8) {
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.getTemplateAndHumidity(deviceId));
+                    }
                 }
             }
         }
@@ -680,9 +694,14 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             switch (msg.what) {
                 case 1: // 蓝牙关闭
                     YMApplication.getInstance().setBLEOpen(false);
+                    mTab1.refreshDeviceWithBLEStateChanged();
                     break;
                 case 2: // 蓝牙开启
                     YMApplication.getInstance().setBLEOpen(true);
+                    mTab1.refreshDeviceWithBLEStateChanged();
+                    if (fastBLEManager != null && fastBLEManager.macAddress.length() > 0) {
+                        fastBLEManager.startBLEScan();
+                    }
                     break;
             }
 

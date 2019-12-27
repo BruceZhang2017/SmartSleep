@@ -26,18 +26,18 @@ public class BluetoothMonitorReceiver extends BroadcastReceiver {
                             Toast.makeText(context,"蓝牙正在打开",Toast.LENGTH_SHORT).show();
                             break;
                         case BluetoothAdapter.STATE_ON:
-                            //Toast.makeText(context,"蓝牙已经打开",Toast.LENGTH_SHORT).show();
+                            System.out.println("蓝牙已经打开");
                             Message message = new Message();
-                            message.what = 1;
+                            message.what = 2;
                             handler.sendMessage(message);
                             break;
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             Toast.makeText(context,"蓝牙正在关闭",Toast.LENGTH_SHORT).show();
                             break;
                         case BluetoothAdapter.STATE_OFF:
-                            //Toast.makeText(context,"蓝牙已经关闭",Toast.LENGTH_SHORT).show();
+                            System.out.println("蓝牙已经关闭");
                             Message messageB = new Message();
-                            messageB.what = 2;
+                            messageB.what = 1;
                             handler.sendMessage(messageB);
                             break;
                     }

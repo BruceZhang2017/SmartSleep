@@ -17,6 +17,9 @@ import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class SmartSleepTestActivity extends BaseAppActivity implements DataObserver {
 
     //TextView tvContent;
@@ -26,6 +29,8 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private DynamicView dynamicViewHeart;
     private DynamicView dynamicViewBreath;
     private int count = 0;
+    int[] heart;
+    int[] breath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,4 +132,16 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
             }
         });
     }
+
+    // 定时器
+    private Timer mTimer = new Timer();
+    // 定时任务
+    private TimerTask mTask = new TimerTask() {
+        @Override
+        public void run() {
+            // 要做的事情
+
+        }
+    };
+
 }
