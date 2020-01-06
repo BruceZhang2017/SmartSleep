@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.lxj:easyadapter:1.1.1@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/7e7ed1871ecba59093ec1f2516cc7dad/jetified-easyadapter-1.1.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/7e7ed1871ecba59093ec1f2516cc7dad/jetified-easyadapter-1.1.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/69c5699e7815970ecbaf5b82cbba0385/jetified-easyadapter-1.1.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/69c5699e7815970ecbaf5b82cbba0385/jetified-easyadapter-1.1.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.lxj/easyadapter/1.1.1/a0832819da786345883841569ac54bcaae21c29c/easyadapter-1.1.1-javadoc.jar!/" />

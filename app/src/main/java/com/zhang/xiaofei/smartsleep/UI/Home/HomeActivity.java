@@ -732,6 +732,12 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             }
         });
     }
+
+    /// 刷新定时获取温度和湿度的区域
+    private void handleFixedTimeForTempuratureAndHumidity() {
+        
+    }
+
 }
 
 
