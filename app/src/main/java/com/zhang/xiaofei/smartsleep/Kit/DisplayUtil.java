@@ -77,4 +77,10 @@ public class DisplayUtil {
         System.out.println("屏幕的宽度: " + widthPixels + "屏幕的高度：" + heightPixels);
         return widthPixels;
     }
+
+    public static float density(Activity activity) {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.density;
+    }
 }

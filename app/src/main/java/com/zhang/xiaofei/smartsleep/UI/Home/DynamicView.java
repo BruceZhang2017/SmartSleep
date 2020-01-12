@@ -20,6 +20,9 @@ public class DynamicView extends View {
     public int current = 0;
     public float rate = 0;
     public int[] values;
+    public boolean bDrawChart = false;
+    public int screenWidth = 0;
+    public int height = 0;
 
     public DynamicView(Context context) {
         super(context);
@@ -48,32 +51,46 @@ public class DynamicView extends View {
 
     private void initialize() {
         mPaint = new Paint();
-        mPaint.setColor(Color.WHITE);
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(1);
+        mPaint.setStrokeWidth(2);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (current > 0) {
+            mPaint.setColor(Color.BLUE);
+            mPaint.setStrokeWidth(2);
             for (int i = 0; i < values.length; i++) {
                 if (i == 0) {
                     float s = values[0];
-                    s = 100 - s / rate;
-                    canvas.drawLine(49, 50, 50, s, mPaint);
+                    s = height - s / rate;
+                    //canvas.drawLine(49, height, 50, s, mPaint);
                 } else {
                     float s = values[i - 1];
                     float e = values[i];
                     if (e == 0) {
                         continue;
                     }
-                    s = 100 - s / rate;
-                    e = 100 - e / rate;
+                    s = height - s / rate;
+                    e = height - e / rate;
                     canvas.drawLine(49 + i,s,50 + i,e,mPaint);
                 }
             }
         }
+
+        mPaint.setColor(Color.argb(38,255,255,255));
+        mPaint.setStrokeWidth(1);
+        canvas.drawLine(50, 0, 50, height, mPaint);
+        canvas.drawLine(50, 0, screenWidth - 50, 0, mPaint);
+        canvas.drawLine(50, height / 2, screenWidth - 50, height / 2, mPaint);
+        canvas.drawLine(50, height / 4, screenWidth - 50, height / 4, mPaint);
+        canvas.drawLine(50, height * 3 / 4, screenWidth - 50, height * 3 / 4, mPaint);
+        canvas.drawLine(50, height, screenWidth - 50, height, mPaint);
+        canvas.drawLine(screenWidth / 2, 0, screenWidth / 2, height, mPaint);
+        canvas.drawLine(screenWidth * 3 / 4, 0, screenWidth * 3 / 4, height, mPaint);
+        canvas.drawLine(screenWidth / 4, 0, screenWidth / 4, height, mPaint);
+        canvas.drawLine(screenWidth - 50, 0, screenWidth -50 , height, mPaint);
     }
 }

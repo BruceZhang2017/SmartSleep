@@ -187,9 +187,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             tableRowDuration = (total + max) / (index + 6);
         }
 
-        RealmResults<RecordModel> listC = mRealm.where(RecordModel.class).findAll();
-        System.out.println("数据记录表里的数据量为：" + listC.size());
-
         mMap.clear();
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
                 .greaterThan("time", currentTime + sleepTime)
@@ -1060,6 +1057,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 mMap.put((Integer) (model.getTime() / 60), temlist);
             }
         }
+        System.out.println( " 开始时间：" + (sleepTime + currentTime) + "结束时间：" + (currentTime + getupTime) + "获取到的数据量：" + list.size());
         setData2();
         chart2.invalidate();
         setData3();

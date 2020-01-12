@@ -51,6 +51,7 @@
         android:textSize="16sp"
         android:background="@null"
         app:round="true"
+        android:visibility="invisible"
         app:animationDuration="200"
         app:normalStrokeWidth="2dp"
         app:normalBackgroundColor="#4AC4C4"
@@ -84,7 +85,7 @@
     <com.zhang.xiaofei.smartsleep.UI.Home.DynamicView
         android:id="@+id/dv_heart"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_time_3"
@@ -115,7 +116,7 @@
     <com.zhang.xiaofei.smartsleep.UI.Home.DynamicView
         android:id="@+id/dv_breath"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_time_4"

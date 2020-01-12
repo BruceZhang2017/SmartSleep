@@ -31,6 +31,8 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private int count = 0;
     int[] heart;
     int[] breath;
+    private int timeCount = 0;
+    private boolean bStart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +62,16 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         });
         count = DisplayUtil.screenWidth(this);
         dynamicViewHeart = (DynamicView)findViewById(R.id.dv_heart);
+        dynamicViewHeart.screenWidth = count;
         dynamicViewHeart.initArray(count);
-        dynamicViewHeart.rate = 4096.0f / 100;
+        dynamicViewHeart.rate = 4096.0f / DisplayUtil.dip2px(200, this);
+        dynamicViewHeart.height = DisplayUtil.dip2px(200, this);
         dynamicViewHeart.invalidate();
         dynamicViewBreath = (DynamicView)findViewById(R.id.dv_breath);
+        dynamicViewBreath.screenWidth = count;
         dynamicViewBreath.initArray(count);
-        dynamicViewBreath.rate = 255.0f / 100;
+        dynamicViewBreath.rate = 255.0f / DisplayUtil.dip2px(200, this);
+        dynamicViewBreath.height = DisplayUtil.dip2px(200, this);
         dynamicViewBreath.invalidate();
 
         Intent intentBroadcast = new Intent();   //定义Intent
@@ -89,7 +95,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         super.onStop();
         Intent intentBroadcast = new Intent();   //定义Intent
         intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
-        intentBroadcast.putExtra("arg0", 5);
+        intentBroadcast.putExtra("arg0", 9);
         intentBroadcast.putExtra("value", false);
         sendBroadcast(intentBroadcast);
     }
@@ -102,33 +108,31 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
 
     @Override
     public void notifyData(int[] heart, int[] breath) {
+        System.out.println("heart数量：" + heart.length + "breath数量：" + breath.length);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 //addText(tvContent, content);
-                if (dynamicViewHeart.current + 50 >= count) {
-                    dynamicViewHeart.values = new int[count];
+                if (dynamicViewHeart.current + 50 >= count - 100) {
+                    dynamicViewHeart.values = new int[count - 100];
                     dynamicViewHeart.current = 0;
                     return;
                 }
-                for (int i = 0; i < 50; i++) {
-                    dynamicViewHeart.values[dynamicViewHeart.current + i] = heart[i];
-                }
 
-                if (dynamicViewBreath.current + 50 >= count) {
-                    dynamicViewBreath.values = new int[count];
+                if (dynamicViewBreath.current + 50 >= count - 100) {
+                    dynamicViewBreath.values = new int[count - 100];
                     dynamicViewBreath.current = 0;
                     return;
                 }
-                for (int i = 0; i < 50; i++) {
-                    dynamicViewBreath.values[dynamicViewBreath.current + i] = breath[i];
+
+                SmartSleepTestActivity.this.heart = heart;
+                SmartSleepTestActivity.this.breath = breath;
+                timeCount = 0;
+                if (bStart) {
+                    return;
                 }
-
-                dynamicViewHeart.current += 50;
-                dynamicViewHeart.invalidate();
-
-                dynamicViewBreath.current += 50;
-                dynamicViewBreath.invalidate();
+                bStart = true;
+                mTimer.schedule(mTask, 0, 40);
             }
         });
     }
@@ -140,7 +144,21 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         @Override
         public void run() {
             // 要做的事情
-
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (timeCount >= 50) {
+                        return;
+                    }
+                    dynamicViewHeart.values[dynamicViewHeart.current] = heart[timeCount];
+                    dynamicViewBreath.values[dynamicViewBreath.current] = breath[timeCount] > 0 ? breath[timeCount] : 1;
+                    dynamicViewHeart.current += 1;
+                    dynamicViewBreath.current += 1;
+                    dynamicViewBreath.invalidate();
+                    dynamicViewHeart.invalidate();
+                    timeCount++;
+                }
+            });
         }
     };
 

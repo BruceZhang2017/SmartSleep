@@ -20,6 +20,7 @@ import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.sunofbeaches.himalaya.PlayHelper;
 import com.sunofbeaches.himalaya.PlayHelperCallback;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
+import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
@@ -59,11 +60,15 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     int sleepM = 0;
     String strH = "";
     String strM = "";
-    private PlayHelper playHelper;
+    private PlayHelper playHelper; // 播放帮助类
+    private Timer buttonCountDownTimer; // 点击按钮，有3，2，1动画，使用定时器实现功能。
+    private int buttonCountDownCount = 0; // 点击按钮有3秒过渡动画
+    private boolean bSleep = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bSleep = CacheUtil.getInstance(HelpSleepActivity.this).getBool("sleep");
         strH = getResources().getString(R.string.common_hour2);
         strM = getResources().getString(R.string.common_minute3);
         setContentView(R.layout.activity_help_sleep);
@@ -92,13 +97,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tvTimeRange.setCompoundDrawables(drawable,null,null,null);
-            if (DeviceManager.getInstance().deviceList.size() > 0) {
-                if (DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType() == 1) {
-                    tvTip.setText(R.string.sleep_motion_tip3);
-                } else {
-                    tvTip.setText(R.string.sleep_motion_tip2);
-                }
-            }
+
             timer.schedule(task, 0, 10000);
             tvTip.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -174,24 +173,55 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         btnSleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (buttonCountDownTimer != null) {
+                    return;
+                }
                 if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
-                    btnSleep.setText(R.string.common_get_up);
+                    bSleep = true;
+                    btnSleep.setText("3");
                     Intent intentBroadcast = new Intent();   //定义Intent
                     intentBroadcast.setAction(DYNAMICACTION);
                     intentBroadcast.putExtra("arg0", 3);
                     sendBroadcast(intentBroadcast);
                 } else {
-                    btnSleep.setText(R.string.alarm_sleep);
+                    bSleep = false;
+                    btnSleep.setText("3");
                     Intent intentBroadcast = new Intent();   //定义Intent
                     intentBroadcast.setAction(DYNAMICACTION);
                     intentBroadcast.putExtra("arg0", 4);
                     sendBroadcast(intentBroadcast);
                 }
+                buttonCountDownTimer = new Timer();
+                buttonCountDownTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                buttonCountDownCount++;
+                                if (buttonCountDownCount >= 3) {
+                                    buttonCountDownTimer.cancel();
+                                    buttonCountDownTimer = null;
+                                    buttonCountDownCount = 0;
+                                    if (bSleep) {
+                                        btnSleep.setText(R.string.common_get_up);
+                                    } else {
+                                        btnSleep.setText(R.string.alarm_sleep);
+                                    }
+                                    return;
+                                }
+                                btnSleep.setText("" + (3 - buttonCountDownCount));
+                            }
+                        });
+                    }
+                }, 1000, 1000);
+
+                refreshMonitorValue();
             }
         });
 
-        boolean isSleep = getIntent().getBooleanExtra("value", false);
-        if (isSleep) {
+
+        if (bSleep) {
             btnSleep.setText(R.string.common_get_up);
         } else {
             btnSleep.setText(R.string.alarm_sleep);
@@ -206,9 +236,21 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
             tvSoundTitle.setText(playHelper.playTitle());
         }
+
+        refreshMonitorValue();
     }
 
-
+    private void refreshMonitorValue() {
+        if (DeviceManager.getInstance().deviceList.size() > 0 && bSleep == true) {
+            if (DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType() == 1) {
+                tvTip.setText(R.string.sleep_motion_tip3);
+            } else {
+                tvTip.setText(R.string.sleep_motion_tip2);
+            }
+        } else {
+            tvTip.setText("");
+        }
+    }
 
     @Override
     public void finish() {

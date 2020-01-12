@@ -33,6 +33,7 @@ import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
 import com.zhang.xiaofei.smartsleep.Kit.Application.BluetoothMonitorReceiver;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Application.TestDataNotification;
+import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
@@ -50,6 +51,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import io.realm.Realm;
@@ -82,7 +85,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private int userId = 0; // 用户ID
     private Intent foregroundIntent;
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
-    private boolean isSleep = false;
     private Map<String, String> attachValue = new HashMap<String, String>();
     private BluetoothMonitorReceiver bleListenerReceiver;
 
@@ -119,7 +121,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             @Override
             public void onClick(View v) {
                 Intent intentB = new Intent();
-                intentB.putExtra("value", isSleep);
                 intentB.setClassName(HomeActivity.this,"com.zhang.xiaofei.smartsleep.UI.Home.HelpSleepActivity");
                 HomeActivity.this.startActivity(intentB);
                 HomeActivity.this.overridePendingTransition(R.anim.activity_open,0);
@@ -143,6 +144,16 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
         DeviceManager.getInstance().downloadDeviceList();
         registerBLE(); // 注册BLE状态监听
+
+        handleFixedTimeForTempuratureAndHumidity();
+
+        if (CacheUtil.getInstance(HomeActivity.this).getBool("sleep")) {
+            ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+            imageView.setImageResource(R.mipmap.nav_icon_sleep_select);
+        } else {
+            ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+            imageView.setImageResource(R.mipmap.nav_icon_sleep);
+        }
     }
 
     @Override
@@ -172,6 +183,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         mRealm.close();
         unregisterBroadcast();
         unregisterReceiver(this.bleListenerReceiver);
+        readTempuratureTimer.cancel();
     }
 
     @Override
@@ -605,11 +617,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setSleepState(deviceId, true));
+                        ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+                        imageView.setImageResource(R.mipmap.nav_icon_sleep_select);
+                        CacheUtil.getInstance(HomeActivity.this).putBool("sleep", true);
                     }
-
-                    ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
-                    isSleep = true;
-                    imageView.setImageResource(R.mipmap.nav_icon_sleep_select);
 
                 } else if (arg0 == 4) { // 起床
                     if (mTab1 == null) {
@@ -622,13 +633,12 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setGetUpState(deviceId, true));
+                        ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+                        imageView.setImageResource(R.mipmap.nav_icon_sleep);
+                        CacheUtil.getInstance(HomeActivity.this).putBool("sleep", false);
                     }
 
-                    ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
-                    isSleep = true;
-                    imageView.setImageResource(R.mipmap.nav_icon_sleep);
-
-                } else if (arg0 == 5) { // 请求读取falsh数据
+                } else if (arg0 == 5) { // 请求时时数据
                     if (mTab1 == null) {
                         return;
                     }
@@ -641,16 +651,18 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setIntoDetectionState(deviceId, bDetection));
                     }
-                } else if (arg0 == 6) {
+                } else if (arg0 == 6) { // 切换设备
                     exchangeDevice(DeviceManager.getInstance().currentDevice);
-                } else if (arg0 == 7) {
+                } else if (arg0 == 7) { // 设置闹钟
                     int value = intent.getIntExtra("value", 0);
                     if (value > 0) {
                         AlarmTimer.getInstance().startTimer(value);
                     } else {
                         AlarmTimer.getInstance().stopTimer();
                     }
-                } else if (arg0 == 8) {
+                } else if (arg0 == 8) { // 读取温度和湿度
+                    readDeviceTempuratureAndHumidity();
+                } else if (arg0 == 9) { // 退出读取时时数据
                     if (mTab1 == null) {
                         return;
                     }
@@ -659,8 +671,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     }
                     int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        boolean bDetection = intent.getBooleanExtra("value", false);
                         fastBLEManager.operationManager.write(
-                                fastBLEManager.operationManager.bleOperation.getTemplateAndHumidity(deviceId));
+                                fastBLEManager.operationManager.bleOperation.setOutOfDetectionState(deviceId, bDetection));
                     }
                 }
             }
@@ -709,7 +722,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     };
 
     /*
-    *
+    * 注册蓝牙
     * */
     private void registerBLE() {
         System.out.println("注册监听蓝牙状态变化的广播");
@@ -733,9 +746,42 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         });
     }
 
+    // 读取温度和湿度的定时器
+    private Timer readTempuratureTimer = new Timer();
+    // 读取温度和湿度的定时任务
+    private TimerTask readTempuratureTask = new TimerTask() {
+        @Override
+        public void run() {
+            // 要做的事情
+            if (YMApplication.getInstance().getBLEOpen() == false) {
+                return;
+            }
+            readDeviceTempuratureAndHumidity();
+        }
+    };
+
     /// 刷新定时获取温度和湿度的区域
     private void handleFixedTimeForTempuratureAndHumidity() {
-        
+        readTempuratureTimer.schedule(readTempuratureTask, 1000, 5000);
+    }
+
+    private void readDeviceTempuratureAndHumidity() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mTab1 == null) {
+                    return;
+                }
+                if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                    return;
+                }
+                int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                    fastBLEManager.operationManager.write(
+                            fastBLEManager.operationManager.bleOperation.getTemplateAndHumidity(deviceId));
+                }
+            }
+        });
     }
 
 }
