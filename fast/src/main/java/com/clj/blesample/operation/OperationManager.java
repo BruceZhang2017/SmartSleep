@@ -177,7 +177,7 @@ public class OperationManager {
                     }
                     parseFlashData(subData);
                 }
-            } else if (data[3] == 0x07) { // 时时数据解析
+            } else if (data[3] == 0x09) { // 时时数据解析
                 System.out.println("数据长度：" + data.length);
                 if (data.length != 155) {
                     return;
@@ -190,6 +190,13 @@ public class OperationManager {
                     System.out.println("心率：" + heartRates[i] + "呼吸率：" + breathRates[i]);
                 }
                 DataOberverManager.getInstance().notifyObserver(heartRates, breathRates);
+            } else if (data[3] == 0x0c) {
+                int state = data[4];
+                int heart = data[5];
+                int breath = data[6];
+                if (bleDataObserver != null) {
+                    bleDataObserver.handleBLEData(state, heart, breath);
+                }
             }
         }
     }

@@ -316,7 +316,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
 //          progressBar.setIndeterminate(true);
             progressBar.setVisibility(View.GONE);
             Intent intentBroadcast = new Intent();   //定义Intent
-            intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
+            intentBroadcast.setAction("Filter");
             intentBroadcast.putExtra("arg0", 6);
             sendBroadcast(intentBroadcast);
         }

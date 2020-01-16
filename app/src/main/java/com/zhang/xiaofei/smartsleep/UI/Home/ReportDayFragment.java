@@ -40,6 +40,8 @@ import com.zhang.xiaofei.smartsleep.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -540,6 +542,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.setLabelCount(tableRowCount,true);
         xAxis.setAxisMinimum(sleepTime / 60);
         xAxis.setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
+        System.out.println("starttime: " + sleepTime / 60 + " endtime:" + ((sleepTime + tableRowDuration * tableRowCount) / 60));
         xAxis.setValueFormatter(new ValueFormatter() {
 
             private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
@@ -564,7 +567,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         leftAxis.setDrawAxisLine(false);
         leftAxis.setGranularityEnabled(true);
         leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(150f);
+        leftAxis.setAxisMaximum(300f);
         leftAxis.setLabelCount(6, true);
         leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -586,9 +589,13 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             for (RecordModel model: entry.getValue()) {
                 heart += model.getHeartRate();
             }
-            System.out.println("Chart2的值为：" + (entry.getKey() - currentTime / 60 ) + " heart: " + heart / entry.getValue().size());
             chart2Values.add(new Entry(entry.getKey() - currentTime / 60, heart / entry.getValue().size()));
         }
+        Collections.sort(chart2Values, comparatorByX);
+
+//        for (int i = 0; i < 100; i++) {
+//            chart2Values.add(new Entry(i - 100, i + 50));
+//        }
 
 
         if (bChart2) {
@@ -711,6 +718,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
             chart3Values.add(new Entry(entry.getKey() - currentTime / 60, heart / entry.getValue().size()));
         }
+        Collections.sort(chart3Values, comparatorByX);
 
         if (bChart3) {
             set3 = (LineDataSet) chart3.getData().getDataSetByIndex(0);
@@ -1065,5 +1073,14 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         setData4();
         chart4.invalidate();
     }
+
+    Comparator<Entry> comparatorByX = new Comparator<Entry>() {
+        @Override
+        public int compare(Entry lhs, Entry rhs) {
+            if(lhs.getX() > rhs.getX())
+                return 1;
+            return -1;
+        }
+    };
 
 }

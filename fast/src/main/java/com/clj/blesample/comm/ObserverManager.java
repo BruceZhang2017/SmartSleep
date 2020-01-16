@@ -32,10 +32,10 @@ public class ObserverManager implements Observable {
     }
 
     @Override
-    public void notifyObserver(boolean connected, String mac) {
+    public void notifyObserver(int connectState, String mac) {
         for (int i = 0; i < observers.size(); i++) {
             Observer o = observers.get(i);
-            o.connectedState(connected, mac);
+            o.connectedState(connectState, mac);
         }
     }
 

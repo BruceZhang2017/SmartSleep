@@ -9,5 +9,5 @@ public interface Observable {
 
     void deleteObserver(Observer obj);
 
-    void notifyObserver(boolean connected, String mac);
+    void notifyObserver(int connectState, String mac);
 }

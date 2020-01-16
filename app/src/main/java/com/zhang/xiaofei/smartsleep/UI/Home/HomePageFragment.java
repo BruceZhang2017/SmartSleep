@@ -703,17 +703,17 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     }
 
     @Override
-    public void connectedState(boolean connected, String mac) {
-        System.out.println("收到蓝牙变化的通知：" + connected + " " + mac);
-        for (int i=0;i < DeviceManager.getInstance().deviceList.size();i++) {
+    public void connectedState(int connectState, String mac) {
+        System.out.println("收到蓝牙变化的通知：" + connectState + " " + mac);
+        for (int i = 0; i < DeviceManager.getInstance().deviceList.size(); i++) {
             if (DeviceManager.getInstance().deviceList.get(i).getMac().equals(mac)) {
-                DeviceManager.getInstance().connectedCurrentDevice = (((DeviceManager.getInstance().connectedCurrentDevice >> (i + 1)) << 1) + (connected ? 1 : 0)) << i;
+                DeviceManager.getInstance().connectedCurrentDevice = (((DeviceManager.getInstance().connectedCurrentDevice >> (i + 1)) << 1) + (connectState == 1 ? 1 : 0)) << i;
                 System.out.println("connectedCurrentDevice：" + DeviceManager.getInstance().connectedCurrentDevice);
                 adapter.notifyDataSetChanged();
                 break;
             }
         }
-        if (connected == false) {
+        if (connectState == 0) {
             if (YMApplication.getInstance().getBLEOpen() == false) {
                 return;
             }
@@ -722,6 +722,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             if (macAddress.equals(mac)) {
                 activity.fastBLEManager.startScanAndConnect();
             }
+        }
+        if (connectState == 0) {
+            Toast.makeText(getActivity(), "蓝牙连接已断开", Toast.LENGTH_SHORT).show();
+        } else if (connectState == 1) {
+            Toast.makeText(getActivity(), "蓝牙连接已成功", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "蓝牙连接失败，正在重新尝试", Toast.LENGTH_SHORT).show();
         }
     }
 

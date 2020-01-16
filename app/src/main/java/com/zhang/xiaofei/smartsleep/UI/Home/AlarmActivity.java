@@ -138,7 +138,7 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             return;
         }
         Intent intentBroadcast = new Intent();   //定义Intent
-        intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
+        intentBroadcast.setAction("Filter");
         intentBroadcast.putExtra("arg0", 2);
         sendBroadcast(intentBroadcast);
 

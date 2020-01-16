@@ -60,7 +60,7 @@ public class DynamicView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (current > 0) {
-            mPaint.setColor(Color.BLUE);
+            mPaint.setColor(Color.WHITE);
             mPaint.setStrokeWidth(2);
             for (int i = 0; i < values.length; i++) {
                 if (i == 0) {

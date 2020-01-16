@@ -287,4 +287,6 @@
     <string name="login_contact_phone_hint">Enter contact number</string>
     <string name="study_tip">Learning hard</string>
     <string name="sleep_report">Sleep Report</string>
+
+    <string name="bed_away">Bed Away</string>
 </resources>

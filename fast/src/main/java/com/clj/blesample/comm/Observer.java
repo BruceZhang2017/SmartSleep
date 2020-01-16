@@ -5,5 +5,5 @@ import com.clj.fastble.data.BleDevice;
 
 public interface Observer {
 
-    void connectedState(boolean connected, String mac);
+    void connectedState(int connectState, String mac);
 }

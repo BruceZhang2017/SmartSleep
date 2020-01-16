@@ -1,10 +1,14 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
@@ -14,9 +18,9 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.deadline.statebutton.StateButton;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.sunofbeaches.himalaya.PlayHelper;
 import com.sunofbeaches.himalaya.PlayHelperCallback;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
@@ -26,6 +30,7 @@ import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,14 +49,17 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     TextView tvTip;
     TextView tvRealTime;
     Handler handler;
-
+    RoundedImageView roundedImageView;
+    TextView tvCount;
     ImageButton ibPalyPause;
     ImageButton ibPlayPre;
     ImageButton ibPlayNext;
     TextView tvSoundTitle;
+    TextView tvHeartAndBreath;
     Switch switch1;
-    StateButton btnSleep;
-    private static final String DYNAMICACTION = "com.example.petter.broadcast.MyDynamicFilter";
+    CountDownButton btnSleep;
+    private static final String DYNAMICACTION = "Filter";
+    private static final String HELPSLEEPDYNAMICACTION = "Filter2";
     Realm mRealm;
     int currentTime;
     int getupH = 0;
@@ -64,10 +72,18 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     private Timer buttonCountDownTimer; // 点击按钮，有3，2，1动画，使用定时器实现功能。
     private int buttonCountDownCount = 0; // 点击按钮有3秒过渡动画
     private boolean bSleep = false;
+    private DynamicReceiver dynamicReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intentBroadcast = new Intent();   //定义Intent
+        intentBroadcast.setAction("Filter");
+        intentBroadcast.putExtra("arg0", 5);
+        intentBroadcast.putExtra("value", true);
+        sendBroadcast(intentBroadcast);
+
         bSleep = CacheUtil.getInstance(HelpSleepActivity.this).getBool("sleep");
         strH = getResources().getString(R.string.common_hour2);
         strM = getResources().getString(R.string.common_minute3);
@@ -79,6 +95,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         tvTimeRange = (TextView)findViewById(R.id.tv_time_range);
         tvTip = (TextView)findViewById(R.id.tv_tip);
         tvRealTime = (TextView)findViewById(R.id.tv_alarm_remain_time);
+        tvHeartAndBreath = (TextView)findViewById(R.id.tv_heart_breath);
         initialCurrentTime();
         mRealm = Realm.getDefaultInstance();
         RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
@@ -99,13 +116,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             tvTimeRange.setCompoundDrawables(drawable,null,null,null);
 
             timer.schedule(task, 0, 10000);
-            tvTip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intentB = new Intent(HelpSleepActivity.this, SmartSleepTestActivity.class);
-                    startActivity(intentB);
-                }
-            });
 
         } else {
             tvTimeRange.setText(R.string.alarm_not_set);
@@ -113,6 +123,14 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             tvTimeRange.setCompoundDrawables(null,null,drawable,null);
         }
+
+        tvTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentB = new Intent(HelpSleepActivity.this, SmartSleepTestActivity.class);
+                startActivity(intentB);
+            }
+        });
 
         ibPalyPause = (ImageButton)findViewById(R.id.ib_play_pause);
         ibPalyPause.setOnClickListener(this);
@@ -169,57 +187,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         switch1.setChecked(AlarmTimer.getInstance().bStart);
         AlarmTimer.getInstance().list.add(this);
 
-        btnSleep = (StateButton) findViewById(R.id.btn_sleep);
-        btnSleep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (buttonCountDownTimer != null) {
-                    return;
-                }
-                if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
-                    bSleep = true;
-                    btnSleep.setText("3");
-                    Intent intentBroadcast = new Intent();   //定义Intent
-                    intentBroadcast.setAction(DYNAMICACTION);
-                    intentBroadcast.putExtra("arg0", 3);
-                    sendBroadcast(intentBroadcast);
-                } else {
-                    bSleep = false;
-                    btnSleep.setText("3");
-                    Intent intentBroadcast = new Intent();   //定义Intent
-                    intentBroadcast.setAction(DYNAMICACTION);
-                    intentBroadcast.putExtra("arg0", 4);
-                    sendBroadcast(intentBroadcast);
-                }
-                buttonCountDownTimer = new Timer();
-                buttonCountDownTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                buttonCountDownCount++;
-                                if (buttonCountDownCount >= 3) {
-                                    buttonCountDownTimer.cancel();
-                                    buttonCountDownTimer = null;
-                                    buttonCountDownCount = 0;
-                                    if (bSleep) {
-                                        btnSleep.setText(R.string.common_get_up);
-                                    } else {
-                                        btnSleep.setText(R.string.alarm_sleep);
-                                    }
-                                    return;
-                                }
-                                btnSleep.setText("" + (3 - buttonCountDownCount));
-                            }
-                        });
-                    }
-                }, 1000, 1000);
-
-                refreshMonitorValue();
-            }
-        });
-
+        btnSleep = (CountDownButton) findViewById(R.id.btn_sleep);
+        btnSleep.setHandler(countDownHandler);
 
         if (bSleep) {
             btnSleep.setText(R.string.common_get_up);
@@ -238,6 +207,14 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         }
 
         refreshMonitorValue();
+
+        roundedImageView = (RoundedImageView)findViewById(R.id.iv_middle_circle);
+        tvCount = (TextView)findViewById(R.id.tv_count);
+        roundedImageView.setVisibility(View.INVISIBLE);
+        tvCount.setVisibility(View.INVISIBLE);
+
+        handleFixedTimeForHeartAndHealth(); // 读取心率和呼吸率
+        registerBroadcast();
     }
 
     private void refreshMonitorValue() {
@@ -256,6 +233,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     public void finish() {
         super.finish();
         overridePendingTransition(0,R.anim.activity_close);
+        readHeartAndHealthTimer.cancel();
+        readHeartAndHealthTimer = null;
     }
 
     @Override
@@ -282,7 +261,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     @Override
     protected void onStop() {
         super.onStop();
-        timer.cancel();
     }
 
     @Override
@@ -291,6 +269,21 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         playHelper.deinitPresenter();
         playHelper.playHelperCallback = null;
         AlarmTimer.getInstance().list.remove(this);
+        unregisterBroadcast();
+        Intent intentBroadcast = new Intent();   //定义Intent
+        intentBroadcast.setAction("Filter");
+        intentBroadcast.putExtra("arg0", 9);
+        intentBroadcast.putExtra("value", false);
+        sendBroadcast(intentBroadcast);
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = null;
+        if (buttonCountDownTimer != null) {
+            buttonCountDownTimer.cancel();
+            buttonCountDownTimer = null;
+        }
+
     }
 
     // 生成大小字体不一样的内容
@@ -397,5 +390,136 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     @Override
     public void stopAlarm() {
         switch1.setChecked(AlarmTimer.getInstance().bStart);
+    }
+
+    Handler countDownHandler = new Handler(){
+        public void handleMessage(Message msg) {
+            int value = msg.what;
+            switch (value) {
+                case 0:
+                    if (buttonCountDownTimer != null) {
+                        return;
+                    }
+                    roundedImageView.setVisibility(View.VISIBLE);
+                    tvCount.setVisibility(View.VISIBLE);
+                    buttonCountDownTimer = new Timer();
+                    buttonCountDownTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    buttonCountDownCount++;
+                                    if (buttonCountDownCount >= 3) {
+                                        buttonCountDownTimer.cancel();
+                                        buttonCountDownTimer = null;
+                                        buttonCountDownCount = 0;
+                                        roundedImageView.setVisibility(View.INVISIBLE);
+                                        tvCount.setVisibility(View.INVISIBLE);
+                                        tvCount.setText("" + 3);
+                                        if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
+                                            bSleep = true;
+                                            btnSleep.setText(R.string.common_get_up);
+                                            Intent intentBroadcast = new Intent();   //定义Intent
+                                            intentBroadcast.setAction(DYNAMICACTION);
+                                            intentBroadcast.putExtra("arg0", 3);
+                                            sendBroadcast(intentBroadcast);
+                                        } else {
+                                            bSleep = false;
+                                            btnSleep.setText(R.string.alarm_sleep);
+                                            Intent intentBroadcast = new Intent();   //定义Intent
+                                            intentBroadcast.setAction(DYNAMICACTION);
+                                            intentBroadcast.putExtra("arg0", 4);
+                                            sendBroadcast(intentBroadcast);
+                                        }
+
+                                        refreshMonitorValue();
+
+                                        return;
+                                    }
+                                    tvCount.setText("" + (3 - buttonCountDownCount));
+                                }
+                            });
+                        }
+                    }, 1000, 1000);
+                    break;
+                case 1:
+                    if (buttonCountDownTimer != null) {
+                        buttonCountDownTimer.cancel();
+                        buttonCountDownTimer = null;
+                        buttonCountDownCount = 0;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                roundedImageView.setVisibility(View.INVISIBLE);
+                                tvCount.setVisibility(View.INVISIBLE);
+                                tvCount.setText("" + 3);
+                            }
+                        });
+                        return;
+                    }
+                    break;
+                case 2:
+                    break;
+            }
+        };
+    };
+
+    // 读取离床、心率和呼吸率
+    private Timer readHeartAndHealthTimer = new Timer();
+    // 读取温度和湿度的定时任务
+    private TimerTask readHeartAndHealthTask = new TimerTask() {
+        @Override
+        public void run() {
+            // 要做的事情
+            Intent intentBroadcast = new Intent();   //定义Intent
+            intentBroadcast.setAction("Filter");
+            intentBroadcast.putExtra("arg0", 10);
+            sendBroadcast(intentBroadcast);
+
+        }
+    };
+
+    /// 刷新定时获取温度和湿度的区域
+    private void handleFixedTimeForHeartAndHealth() {
+        readHeartAndHealthTimer.schedule(readHeartAndHealthTask, 1000, 5000);
+    }
+
+    private void registerBroadcast() {
+        IntentFilter dynamic_filter = new IntentFilter();
+        dynamic_filter.addAction(HELPSLEEPDYNAMICACTION);    //添加动态广播的Action
+        dynamicReceiver = new DynamicReceiver();
+        registerReceiver(dynamicReceiver, dynamic_filter);    //注册自定义动态广播消息
+    }
+
+    private void unregisterBroadcast() {
+        unregisterReceiver(dynamicReceiver);
+    }
+
+    public class DynamicReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(HELPSLEEPDYNAMICACTION)) {    //动作检测
+                //System.out.println("检测到用户到绑定设备");
+                int arg0 = intent.getIntExtra("arg0", 0);
+                if (arg0 == 0) { // 心跳和呼吸率
+                    int arg1 = intent.getIntExtra("arg1", 0);
+                    int arg2 = intent.getIntExtra("arg2", 0);
+                    int arg3 = intent.getIntExtra("arg3", 0);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (arg1 == 0) {
+                                tvHeartAndBreath.setText(getResources().getString(R.string.bed_away));
+                            } else {
+                                tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + getResources().getString(R.string.common_times_minute) + " " + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + getResources().getString(R.string.common_times_minute));
+                            }
+                        }
+                    });
+                } else if (arg0 == 1) { // 删除设备
+
+                }
+            }
+        }
     }
 }

@@ -75,8 +75,8 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         dynamicViewBreath.invalidate();
 
         Intent intentBroadcast = new Intent();   //定义Intent
-        intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
-        intentBroadcast.putExtra("arg0", 5);
+        intentBroadcast.setAction("Filter");
+        intentBroadcast.putExtra("arg0", 11);
         intentBroadcast.putExtra("value", true);
         sendBroadcast(intentBroadcast);
     }
@@ -94,9 +94,9 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     protected void onStop() {
         super.onStop();
         Intent intentBroadcast = new Intent();   //定义Intent
-        intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
-        intentBroadcast.putExtra("arg0", 9);
-        intentBroadcast.putExtra("value", false);
+        intentBroadcast.setAction("Filter");
+        intentBroadcast.putExtra("arg0", 12);
+        intentBroadcast.putExtra("value", true);
         sendBroadcast(intentBroadcast);
     }
 
@@ -104,6 +104,10 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     protected void onDestroy() {
         super.onDestroy();
         DataOberverManager.getInstance().deleteObserver(this);
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
     }
 
     @Override

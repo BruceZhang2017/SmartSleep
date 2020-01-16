@@ -201,6 +201,21 @@ public class BLEOperation {
         return value;
     }
 
+    public byte[] heartAndBreath(int deviceId) {
+        byte[] value = new byte[20];
+        value[0] = (byte)0xeb;
+        value[1] = 0x60;
+        value[2] = (byte)deviceId;
+        value[3] = 0x0c;
+        for (int i = 4; i < 20; i++) {
+            value[i] = 0x00;
+        }
+        byte[] checkSum = calculateCheckSum(value);
+        value[18] = checkSum[1];
+        value[19] = 0x0a;
+        return value;
+    }
+
     public byte[] calculateCheckSum(byte[] value) {
         if (value.length != 20 && value.length != 21) {
             return new byte[]{0x00, 0x00};

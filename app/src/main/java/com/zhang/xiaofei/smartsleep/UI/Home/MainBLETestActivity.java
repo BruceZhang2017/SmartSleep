@@ -33,7 +33,7 @@ public class MainBLETestActivity extends AppCompatActivity implements ActivityOb
             public void onClick(View v) {
                 currentTime = System.currentTimeMillis();
                 Intent intentBroadcast = new Intent();   //定义Intent
-                intentBroadcast.setAction("com.example.petter.broadcast.MyDynamicFilter");
+                intentBroadcast.setAction("Filter");
                 intentBroadcast.putExtra("arg0", 8);
                 sendBroadcast(intentBroadcast);
             }

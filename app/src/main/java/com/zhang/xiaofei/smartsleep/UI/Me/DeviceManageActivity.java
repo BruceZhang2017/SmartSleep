@@ -63,7 +63,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
     public Boolean isEdit = false;
     Realm mRealm;
     List<DeviceModel> team;
-    private static final String DYNAMICACTION = "com.example.petter.broadcast.MyDynamicFilter";
+    private static final String DYNAMICACTION = "Filter";
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
     private DeviceReceiver dynamicReceiver;
 

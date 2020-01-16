@@ -63,7 +63,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class HomeActivity extends BaseAppActivity implements BadgeDismissListener, OnTabSelectListener, EasyPermissions.PermissionCallbacks, BLEDataObserver {
 
-    private static final String DYNAMICACTION = "com.example.petter.broadcast.MyDynamicFilter";
+    private static final String DYNAMICACTION = "Filter";
     @Titles
     private static final int[] mTitles = {R.string.tab_home_page,R.string.tab_report,R.string.tab_found,R.string.tab_mine};
     @SeleIcons
@@ -184,6 +184,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         unregisterBroadcast();
         unregisterReceiver(this.bleListenerReceiver);
         readTempuratureTimer.cancel();
+        readTempuratureTimer = null;
     }
 
     @Override
@@ -415,6 +416,17 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     }
 
     @Override
+    public void handleBLEData(int state, int heart, int breath) {
+        Intent intentBroadcast = new Intent();   //定义Intent
+        intentBroadcast.setAction("Filter2");
+        intentBroadcast.putExtra("arg1", state);
+        intentBroadcast.putExtra("arg2", heart);
+        intentBroadcast.putExtra("arg3", breath);
+        intentBroadcast.putExtra("arg0", 0);
+        sendBroadcast(intentBroadcast);
+    }
+
+    @Override
     public void handleBLEData(int battery, int flash, String mac, int version) {
         System.out.println("处理BLE返回的数据 " + battery + " " + flash + " " + mac + " " + version);
         DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
@@ -470,6 +482,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (mTab1 == null) {
                 return;
             }
+            if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                return;
+            }
             int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
             if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                 fastBLEManager.operationManager.write(
@@ -479,6 +494,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             if (mTab1 == null) {
                 return;
             }
+            if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                return;
+            }
             int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
             if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                 fastBLEManager.operationManager.write(
@@ -486,6 +504,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             }
         } else if (flag == 3) { // 读取flash内数据
             if (mTab1 == null) {
+                return;
+            }
+            if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
                 return;
             }
             int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
@@ -555,7 +576,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(DYNAMICACTION)) {    //动作检测
-                System.out.println("检测到用户到绑定设备");
+                //System.out.println("检测到用户到绑定设备");
                 int arg0 = intent.getIntExtra("arg0", 0);
                 if (arg0 == 0) { // 新增设备
                     String result = intent.getStringExtra("result");
@@ -675,6 +696,44 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setOutOfDetectionState(deviceId, bDetection));
                     }
+                } else if (arg0 == 10) { // 退出读取时时数据
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.heartAndBreath(deviceId));
+                    }
+                } else if (arg0 == 11) { // 进入波形图
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        boolean bDetection = intent.getBooleanExtra("value", false);
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.setIntoDynamicWave(deviceId, bDetection));
+                    }
+                } else if (arg0 == 12) { // 退出波形图
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        boolean bDetection = intent.getBooleanExtra("value", false);
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.setOutOfDynamicWave(deviceId, bDetection));
+                    }
                 }
             }
         }
@@ -698,6 +757,13 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     public void refreshTab1() {
         if (mTab1 != null) {
             mTab1.showDeviceList();
+            if (DeviceManager.getInstance().deviceList.size() != 0 && fastBLEManager.macAddress.length() == 0) {
+                String mac = DeviceManager.getInstance().deviceList.get(0).getMac();
+                if (mac.length() == 17) {
+                    fastBLEManager.macAddress = mac;
+                    fastBLEManager.startBLEScan();
+                }
+            }
         }
     }
 

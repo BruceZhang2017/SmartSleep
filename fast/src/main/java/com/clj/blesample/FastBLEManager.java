@@ -131,6 +131,7 @@ public class FastBLEManager implements BLEDataObserver {
                 Log.i(TAG, "[BLE] onConnectFail");
                 currentBleDevice = null;
                 startScanAndConnect(); // 重新开始扫描
+                ObserverManager.getInstance().notifyObserver(2, bleDevice.getMac());
             }
 
             @Override
@@ -143,14 +144,14 @@ public class FastBLEManager implements BLEDataObserver {
                     operationManager.bleDataObserver = FastBLEManager.this;
                 }
                 currentBleDevice = bleDevice;
-                ObserverManager.getInstance().notifyObserver(true, macAddress);
+                ObserverManager.getInstance().notifyObserver(1, bleDevice.getMac());
             }
 
             @Override
             public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
                 operationManager = null;
                 currentBleDevice = null;
-                ObserverManager.getInstance().notifyObserver(false, macAddress);
+                ObserverManager.getInstance().notifyObserver(0, device.getMac());
             }
         });
     }
@@ -183,7 +184,7 @@ public class FastBLEManager implements BLEDataObserver {
         });
     }
 
-    private void checkPermissions() {
+    void checkPermissions() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!bluetoothAdapter.isEnabled()) {
             Toast.makeText(context, context.getResources().getString(R.string.please_open_blue), Toast.LENGTH_LONG).show();
@@ -252,6 +253,13 @@ public class FastBLEManager implements BLEDataObserver {
     public void handleBLEData(int battery, int flash, String mac, int version) {
         if (bleDataObserver != null) {
             bleDataObserver.handleBLEData(battery, flash, mac, version);
+        }
+    }
+
+    @Override
+    public void handleBLEData(int state, int heart, int breath) {
+        if (bleDataObserver != null) {
+            bleDataObserver.handleBLEData(state, heart, breath);
         }
     }
 
