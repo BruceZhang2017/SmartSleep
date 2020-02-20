@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: pl.droidsonroids:relinker:1.3.1@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/cbc05828f868fe75d5e7e78b48691b2b/relinker-1.3.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/cbc05828f868fe75d5e7e78b48691b2b/relinker-1.3.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/0ac7a9d025d72cb0e3deef878b33f46d/relinker-1.3.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/0ac7a9d025d72cb0e3deef878b33f46d/relinker-1.3.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/pl.droidsonroids/relinker/1.3.1/20c51d0b5f3e060b82905547cb1357084212fba0/relinker-1.3.1-javadoc.jar!/" />

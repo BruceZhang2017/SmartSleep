@@ -6,12 +6,20 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5cd3d51-6263-40d2-baf8-c3237e5ac776" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mylhyl_circleDialog_5_0_7_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/CountDownButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_SMSSDK_3_4_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_ShortMessageSDKGUI_3_4_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobCommons_2020_0212_1229_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobTools_2020_0120_1535_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_crashreport_3_1_7_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/BLESearchActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DeviceAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ble_search.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_device.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -25,45 +33,127 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_1_1_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_1_1_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_adapters_3_5_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_adapters_3_5_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_runtime_3_5_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_runtime_3_5_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_core_3_1_0_alpha3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_core_3_1_0_alpha3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_idling_resource_3_1_0_alpha3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_idling_resource_3_1_0_alpha3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_monitor_1_1_0_alpha3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_monitor_1_1_0_alpha3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_runner_1_1_0_alpha3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_runner_1_1_0_alpha3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_ansen_http_okhttpencapsulation_1_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_ansen_http_okhttpencapsulation_1_0_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_bigkoo_alertview_1_0_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_bigkoo_alertview_1_0_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_clj_fastble_FastBleLib_2_3_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_clj_fastble_FastBleLib_2_3_4_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_cysion_ImagePicker_1_0_8_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_cysion_ImagePicker_1_0_8_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_stetho_stetho_1_5_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_facebook_stetho_stetho_1_5_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_getkeepsafe_relinker_relinker_1_2_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_getkeepsafe_relinker_relinker_1_2_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_10_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_10_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_10_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_10_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_chrisbanes_photoview_library_1_2_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_chrisbanes_photoview_library_1_2_4_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_feeeei_CircleSeekbar_v1_1_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_feeeei_CircleSeekbar_v1_1_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_hackware1993_MagicIndicator_1_5_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_hackware1993_MagicIndicator_1_5_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_niniloveyou_StateButton_v1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_niniloveyou_StateButton_v1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_haibin_calendarview_3_6_6_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_haibin_calendarview_3_6_6_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_10_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_10_2_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_runtime_10_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_runtime_10_2_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_just_agentweb_agentweb_4_1_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_just_agentweb_agentweb_4_1_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_kaopiz_kprogresshud_1_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_kaopiz_kprogresshud_1_2_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_king_zxing_zxing_lite_1_1_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_king_zxing_zxing_lite_1_1_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lcodecorex_tkrefreshlayout_1_0_7_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lcodecorex_tkrefreshlayout_1_0_7_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lxj_easyadapter_1_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lxj_easyadapter_1_1_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lxj_xpermission_1_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lxj_xpermission_1_0_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_makeramen_roundedimageview_2_3_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_makeramen_roundedimageview_2_3_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_marshalchen_ultimaterecyclerview_library_0_9_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_marshalchen_ultimaterecyclerview_library_0_9_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mylhyl_circleDialog_5_0_7_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mylhyl_circleDialog_5_0_7_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_shizhefei_ViewPagerIndicator_1_1_9_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_shizhefei_ViewPagerIndicator_1_1_9_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_nativecrashreport_3_7_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_nativecrashreport_3_7_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_core_6_9_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_core_6_9_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_qq_6_9_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_qq_6_9_2_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_sina_6_9_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_sina_6_9_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_wechat_6_9_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_umeng_sdk_share_wechat_6_9_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_uphyca_stetho_realm_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_uphyca_stetho_realm_2_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_yanzhenjie_permission_support_2_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_yanzhenjie_permission_support_2_0_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_youth_banner_banner_1_4_10_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_youth_banner_banner_1_4_10_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__in_srain_cube_ultra_ptr_1_0_11_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__in_srain_cube_ultra_ptr_1_0_11_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_calligraphy3_3_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_calligraphy3_3_1_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_viewpump_2_0_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_viewpump_2_0_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_lizhangqu_coreprogress_1_0_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_lizhangqu_coreprogress_1_0_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_realm_realm_android_library_object_server_4_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_realm_realm_android_library_object_server_4_3_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jp_wasabeef_recyclerview_animators_2_2_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__jp_wasabeef_recyclerview_animators_2_2_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__no_nordicsemi_android_dfu_1_6_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__no_nordicsemi_android_dfu_1_6_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_gif_android_gif_drawable_1_2_19_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_gif_android_gif_drawable_1_2_19_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_relinker_1_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_relinker_1_3_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__pub_devrel_easypermissions_2_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pub_devrel_easypermissions_2_0_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/dfutest/DfuUpdateActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/dfutest/DfuUpdateActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AlarmActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AlarmActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DynamicView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DynamicView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/MainBLETestActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/MainBLETestActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/DeviceManageActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/DeviceManageActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_help_sleep.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_help_sleep.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/home_page_item_linear.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_page_item_linear.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_home_page_header.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_home_page_header.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/compile_library_classes/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/compile_library_classes/debug/classes.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$5.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager$6.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/FastBLEManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/BLEDataObserver.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/BLEDataObserver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/Observable.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/Observable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/Observer.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/Observer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/ObserverManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/comm/ObserverManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/operation/BLEOperation.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/operation/BLEOperation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/operation/OperationManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/javac/debug/classes/com/clj/blesample/operation/OperationManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/runtime_library_classes/debug/classes.jar" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/runtime_library_classes/debug/classes.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/BLEDataObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/BLEDataObserver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observable.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observer.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/ObserverManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/ObserverManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/BLEOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/BLEOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/OperationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/OperationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pickerview/pickerview.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pickerview/pickerview.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +164,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="84B7N15B30000462" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5X_API_28" />
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -85,37 +175,72 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/BLESearchActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6712">
-              <caret line="510" column="13" selection-start-line="510" selection-start-column="13" selection-end-line="510" selection-end-column="13" />
+            <state relative-caret-position="585">
+              <caret line="39" column="53" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#34300#34301#0" expanded="true" />
-                <element signature="e#34365#34366#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5295">
+              <caret line="357" column="80" selection-start-line="357" selection-start-column="80" selection-end-line="357" selection-end-column="80" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_home_page_header.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="191" column="34" selection-start-line="191" selection-start-column="34" selection-end-line="191" selection-end-column="34" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="94">
+              <caret line="84" column="43" selection-start-line="84" selection-start-column="31" selection-end-line="84" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_about_us.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="133" column="62" selection-start-line="133" selection-start-column="62" selection-end-line="133" selection-end-column="62" />
-              <folding>
-                <element signature="e#2242#2243#0" expanded="true" />
-                <element signature="e#2276#2277#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="135">
+              <caret line="45" column="50" selection-start-line="45" selection-start-column="50" selection-end-line="45" selection-end-column="50" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="726" column="80" lean-forward="true" selection-start-line="726" selection-start-column="80" selection-end-line="726" selection-end-column="80" />
+            <state relative-caret-position="8070">
+              <caret line="544" column="41" selection-start-line="544" selection-start-column="33" selection-end-line="544" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -124,61 +249,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DeviceAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="626">
-              <caret line="108" column="26" selection-start-line="108" selection-start-column="26" selection-end-line="108" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="511" column="44" selection-start-line="511" selection-start-column="44" selection-end-line="511" selection-end-column="44" />
+            <state relative-caret-position="1635">
+              <caret line="113" column="74" selection-start-line="113" selection-start-column="74" selection-end-line="113" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#6362#6410#0" expanded="true" />
-                <element signature="e#10078#10104#0" expanded="true" />
-                <element signature="e#11016#11017#0" expanded="true" />
-                <element signature="e#11046#11047#0" expanded="true" />
-                <element signature="e#14321#14349#0" expanded="true" />
-                <element signature="e#20994#21037#0" expanded="true" />
-                <element signature="e#21095#21142#0" expanded="true" />
-                <element signature="e#21158#21212#0" expanded="true" />
-                <element signature="e#21221#21279#0" expanded="true" />
-                <element signature="e#21295#21349#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/FriendRankActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="1076" column="4" selection-start-line="1076" selection-start-column="4" selection-end-line="1083" selection-end-column="6" />
+            <state relative-caret-position="225">
+              <caret line="21" column="47" selection-start-line="20" selection-start-column="8" selection-end-line="21" selection-end-column="47" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_device.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8133">
-              <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
+            <state relative-caret-position="450">
+              <caret line="30" column="48" selection-start-line="30" selection-start-column="48" selection-end-line="30" selection-end-column="48" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="282" selection-start-line="282" selection-end-line="282" />
-            </state>
-          </provider>
+          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
     </leaf>
@@ -196,36 +294,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>checkPermissions</find>
-      <find>refreshTab1()</find>
-      <find>refreshBLEAndDevice</find>
-      <find>saveDeviceListToDB</find>
-      <find>imageview</find>
-      <find>setIntoDetectionState</find>
-      <find>handleBLEData(</find>
-      <find>HelpSleepActivity</find>
-      <find>&quot;com.example.petter.broadcast.MyDynamicFilter&quot;</find>
-      <find>检测到用户到绑定设备</find>
-      <find>离床</find>
-      <find>setIntoDynamicWave</find>
-      <find>setOutOfDynamicWave</find>
-      <find>setOutOfDetectionState</find>
-      <find>onDes</find>
-      <find>timer</find>
-      <find>timer =</find>
-      <find>buttonCountDownTimer =</find>
       <find>buttonCountDownCount =</find>
       <find>connectedState(</find>
       <find>notifyObserver(</find>
       <find>buttonCountDownCount</find>
       <find>tvCount.setVisibility(View.INVISIBLE);</find>
       <find>connectedCurrentDevice：</find>
-      <find>mTimer =</find>
       <find>starttime:</find>
       <find>心</find>
       <find>次</find>
       <find>呼吸率</find>
       <find>tvTip</find>
+      <find>mTimer =</find>
+      <find>chart3</find>
+      <find>simpleRecyclerViewAdapter</find>
+      <find>1.0.0</find>
+      <find>sms</find>
+      <find>SMSSDK.initSDK</find>
+      <find>SMSSDK</find>
+      <find>BLESearchActivity</find>
+      <find>FastBLEManager</find>
+      <find>setScanRule()</find>
+      <find>initialBLE</find>
+      <find>REQUEST_CODE_SCAN</find>
+      <find>handleQRCode</find>
+      <find>&quot;arg0&quot;</find>
+      <find>startLeScan()</find>
+      <find>DYNAMICACTION</find>
+      <find>btn_scan</find>
+      <find>android:background=</find>
+      <find>tvTemprature</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -237,16 +335,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/bottomDialog/build.gradle" />
-        <option value="$PROJECT_DIR$/library/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
-        <option value="$PROJECT_DIR$/bottomDialog/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/bottomDialog/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/bottomDialog/src/main/java/me/curzbin/library/BottomDialog.java" />
-        <option value="$PROJECT_DIR$/bottomDialog/src/main/res/layout/bottom_dialog.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ShareSleepQualityActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/AlarmManagerUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_share_sleep_quality.xml" />
         <option value="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/PlayHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/AlarmTimer.java" />
@@ -261,13 +349,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main_bletest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/ActivityObserver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/TestDataNotification.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/DisplayUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/DB/CacheUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Device/DeviceManager.java" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/CountDownButton.java" />
-        <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/BLEOperation.java" />
         <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/BLEDataObserver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AlarmActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/DeviceManageActivity.java" />
@@ -276,38 +361,67 @@
         <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/OperationManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DynamicView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_help_sleep.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java" />
         <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observable.java" />
         <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observer.java" />
         <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/ObserverManager.java" />
-        <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_tabmain.xml" />
+        <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/BLEOperation.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/home_page_item_linear.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_help_sleep.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_ble_search.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/adapter_device.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DeviceAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/BLESearchActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/layout_home_page_header.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="4" />
-    <option name="y" value="24" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="826" />
+    <option name="height" value="824" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="AndroidView">
         <subPane>
           <expand>
             <path>
               <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
+            </path>
+            <path>
+              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
             </path>
             <path>
               <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
@@ -338,42 +452,21 @@
             <path>
               <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="smartsleep" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="UI" type="462c0819:PsiDirectoryNode" />
+              <item name="Me" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
             </path>
             <path>
               <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-              <item name="strings" type="c431d0b8:AndroidResGroupNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
-              <item name="fast" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
-              <item name="fast" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
-              <item name="fast" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="blesample" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
-              <item name="fast" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="blesample" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="operation" type="462c0819:PsiDirectoryNode" />
+              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="SmartSleep" type="1abcf292:AndroidViewProjectNode" />
@@ -383,53 +476,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmartSleep" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmartSleep" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="res" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -453,6 +500,8 @@
       <recent name="com.zhang.xiaofei.smartsleep.UI.Me" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home" />
       <recent name="$PROJECT_DIR$/bottomDialog/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/app/src/main/assets" />
     </key>
@@ -599,11 +648,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="23" width="1440" height="824" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="824" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49929675" visible="true" weight="0.22460657" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49929675" visible="true" weight="0.22460657" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" sideWeight="0.5007032" side_tool="true" weight="0.22460657" />
       <window_info id="Image Layers" order="4" />
@@ -612,15 +661,15 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="0" weight="0.1480959" />
-      <window_info anchor="bottom" id="Logcat" order="1" weight="0.12976022" />
+      <window_info anchor="bottom" id="Logcat" order="1" weight="0.25246826" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32863188" />
-      <window_info anchor="bottom" id="Android Profiler" order="3" weight="0.32911393" />
+      <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" weight="0.32911393" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.31170663" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.32911393" />
       <window_info anchor="bottom" id="Event Log" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32911393" />
-      <window_info active="true" anchor="bottom" id="Build" order="9" visible="true" weight="0.112834975" />
+      <window_info anchor="bottom" id="Build" order="9" visible="true" weight="0.115655854" />
       <window_info anchor="bottom" id="Find" order="10" weight="0.32911393" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" weight="0.3297568" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
@@ -633,215 +682,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_device_guide.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_homepage_device.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Record/RecordModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MPChartLib/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_about_us.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="39" column="44" lean-forward="true" selection-start-line="9" selection-start-column="4" selection-end-line="39" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="59" column="13" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/BluetoothMonitorReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="39" column="45" selection-start-line="39" selection-start-column="45" selection-end-line="39" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main_bletest.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="60" column="32" lean-forward="true" selection-start-line="60" selection-start-column="32" selection-end-line="60" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/ActivityObserver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="33" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/TestDataNotification.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="26" column="34" lean-forward="true" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/FoundGoods/BasicFunctions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-310">
-          <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/DataObserver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" selection-start-line="2" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/DataOberverManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="38" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/YMApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1410">
-          <caret line="119" column="19" selection-start-line="119" selection-start-column="19" selection-end-line="119" selection-end-column="19" />
-          <folding>
-            <element signature="e#4461#4462#0" expanded="true" />
-            <element signature="e#4491#4492#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Device/DeviceModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="40" column="15" selection-start-line="40" selection-start-column="15" selection-end-line="40" selection-end-column="15" />
-          <folding>
-            <element signature="e#824#825#0" expanded="true" />
-            <element signature="e#857#858#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/io/realm/DeviceModelRealmProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="197" selection-start-line="197" selection-end-line="197" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="49" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="116" column="33" selection-start-line="116" selection-start-column="33" selection-end-line="116" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/DisplayUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1056">
-          <caret line="80" column="23" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Language/SpUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="35" lean-forward="true" selection-start-column="35" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/DB/CacheUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1009#1010#0" expanded="true" />
-            <element signature="e#1057#1058#0" expanded="true" />
-            <element signature="e#1227#1228#0" expanded="true" />
-            <element signature="e#1275#1276#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/nav_icon_sleep_select.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/DB/YMUserInfoManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-19">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3060">
-          <caret line="241" column="29" selection-start-line="241" selection-start-column="29" selection-end-line="241" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="6" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/alarmmanagerclock/build.gradle">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="74" column="54" selection-start-line="74" selection-start-column="43" selection-end-line="74" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.github.niniloveyou/StateButton/v1.0.0/d8ac80f6fb4bb08c3953a8dd58e0bf42b965a15f/StateButton-v1.0.0-sources.jar!/com/deadline/statebutton/StateButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="61" column="4" selection-start-line="61" selection-start-column="4" selection-end-line="68" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/CountDownButton.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -872,20 +712,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/BLEOperation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2100">
-          <caret line="140" column="40" selection-start-line="140" selection-start-column="18" selection-end-line="140" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/OperationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2520">
-          <caret line="186" column="35" selection-start-line="186" selection-start-column="35" selection-end-line="186" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Device/DeviceManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -907,35 +733,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="626">
-          <caret line="108" column="26" selection-start-line="108" selection-start-column="26" selection-end-line="108" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_help_sleep.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="69" column="32" lean-forward="true" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8133">
-          <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="1076" column="4" selection-start-line="1076" selection-start-column="4" selection-end-line="1083" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -943,56 +740,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-en/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="290" column="26" selection-start-line="290" selection-start-column="18" selection-end-line="290" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="290" column="31" selection-start-line="290" selection-start-column="31" selection-end-line="290" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="511" column="44" selection-start-line="511" selection-start-column="44" selection-end-line="511" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6362#6410#0" expanded="true" />
-            <element signature="e#10078#10104#0" expanded="true" />
-            <element signature="e#11016#11017#0" expanded="true" />
-            <element signature="e#11046#11047#0" expanded="true" />
-            <element signature="e#14321#14349#0" expanded="true" />
-            <element signature="e#20994#21037#0" expanded="true" />
-            <element signature="e#21095#21142#0" expanded="true" />
-            <element signature="e#21158#21212#0" expanded="true" />
-            <element signature="e#21221#21279#0" expanded="true" />
-            <element signature="e#21295#21349#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/comm/Observable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="40" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6712">
-          <caret line="510" column="13" selection-start-line="510" selection-start-column="13" selection-end-line="510" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#34300#34301#0" expanded="true" />
-            <element signature="e#34365#34366#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1010,24 +761,314 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="133" column="62" selection-start-line="133" selection-start-column="62" selection-end-line="133" selection-end-column="62" />
+        <state relative-caret-position="301">
+          <caret line="78" column="31" lean-forward="true" selection-start-line="78" selection-start-column="31" selection-end-line="78" selection-end-column="31" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7985">
+          <caret line="51" column="13" selection-start-line="51" selection-start-column="13" selection-end-line="51" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/OperationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2520">
+          <caret line="186" column="35" selection-start-line="186" selection-start-column="35" selection-end-line="186" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="39" column="47" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="101" column="53" lean-forward="true" selection-start-line="101" selection-start-column="53" selection-end-line="101" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_tabmain.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="301" column="47" selection-start-line="301" selection-start-column="47" selection-end-line="301" selection-end-column="47" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="90" column="27" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/operation/BLEOperation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="229" column="18" selection-start-line="229" selection-start-column="18" selection-end-line="229" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab1.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="47" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="47" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/sectionHomePageAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="17" column="84" selection-start-line="17" selection-start-column="84" selection-end-line="17" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/itemHomePageBinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="19" column="60" selection-start-line="19" selection-start-column="60" selection-end-line="19" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/home_page_item_linear.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6930">
+          <caret line="511" column="28" selection-start-line="511" selection-start-column="28" selection-end-line="511" selection-end-column="28" />
           <folding>
-            <element signature="e#2242#2243#0" expanded="true" />
-            <element signature="e#2276#2277#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="37" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="250" column="34" selection-start-line="250" selection-start-column="18" selection-end-line="250" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-en/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="62" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Login/UserInfoModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/YMApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="116" column="16" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="44" />
+          <folding>
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4491#4492#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e1e03a1bc51ee83185adb8ccc804f133/SMSSDK-3.3.6/jars/libs/SMSSDK-3.3.6.jar!/cn/smssdk/SMSSDK.class" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Login/BaseProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/NetworkUtil/NetworkUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginMoreActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="67" column="13" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3165">
+          <caret line="211" column="20" selection-start-line="211" selection-start-column="20" selection-end-line="211" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_help_sleep.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1290">
+          <caret line="86" column="28" selection-start-line="86" selection-start-column="28" selection-end-line="86" selection-end-column="28" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_service.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="134" column="23" selection-start-line="134" selection-start-column="23" selection-end-line="134" selection-end-column="23" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest" />
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.clj.fastble/FastBleLib/2.3.4/7435cb36128174926501a8e2c83eda021622ab43/FastBleLib-2.3.4-sources.jar!/com/clj/fastble/BleManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="66" column="29" selection-start-line="66" selection-start-column="29" selection-end-line="66" selection-end-column="29" />
+          <folding>
+            <element signature="e#2808#2809#0" expanded="true" />
+            <element signature="e#2859#2860#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.ansen.http/okhttpencapsulation/1.0.1/6871d4da4e91a069ae7123cbb89aa75ee043a7e2/okhttpencapsulation-1.0.1-sources.jar!/com/ansen/http/net/HTTPCaller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5570">
+          <caret line="44" column="23" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_ble_search.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="69" column="38" lean-forward="true" selection-start-line="69" selection-start-column="38" selection-end-line="69" selection-end-column="38" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Login/UserModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="35" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/BLESearchActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="39" column="53" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="726" column="80" lean-forward="true" selection-start-line="726" selection-start-column="80" selection-end-line="726" selection-end-column="80" />
+        <state relative-caret-position="5295">
+          <caret line="357" column="80" selection-start-line="357" selection-start-column="80" selection-end-line="357" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_about_us.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="50" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fast/src/main/java/com/clj/blesample/FastBLEManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="45" column="50" selection-start-line="45" selection-start-column="50" selection-end-line="45" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8070">
+          <caret line="544" column="41" selection-start-line="544" selection-start-column="33" selection-end-line="544" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DeviceAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1635">
+          <caret line="113" column="74" selection-start-line="113" selection-start-column="74" selection-end-line="113" selection-end-column="74" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/FriendRankActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="21" column="47" selection-start-line="20" selection-start-column="8" selection-end-line="21" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_device.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="48" selection-start-line="30" selection-start-column="48" selection-end-line="30" selection-end-column="48" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_home_page_header.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="191" column="34" selection-start-line="191" selection-start-column="34" selection-end-line="191" selection-end-column="34" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="84" column="43" selection-start-line="84" selection-start-column="31" selection-end-line="84" selection-end-column="43" />
         </state>
       </provider>
     </entry>

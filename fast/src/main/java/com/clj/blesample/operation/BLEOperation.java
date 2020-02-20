@@ -27,7 +27,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00;//checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -52,7 +52,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00;//checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -67,7 +67,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00;//checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -85,7 +85,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00;//checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -101,7 +101,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -117,7 +117,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -133,7 +133,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -149,7 +149,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -165,7 +165,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -181,7 +181,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -196,7 +196,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }
@@ -211,7 +211,7 @@ public class BLEOperation {
             value[i] = 0x00;
         }
         byte[] checkSum = calculateCheckSum(value);
-        value[18] = checkSum[1];
+        value[18] = 0x00; //checkSum[1];
         value[19] = 0x0a;
         return value;
     }

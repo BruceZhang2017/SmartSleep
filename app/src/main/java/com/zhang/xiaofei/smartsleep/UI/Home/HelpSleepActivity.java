@@ -512,7 +512,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                             if (arg1 == 0) {
                                 tvHeartAndBreath.setText(getResources().getString(R.string.bed_away));
                             } else {
-                                tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + getResources().getString(R.string.common_times_minute) + " " + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + getResources().getString(R.string.common_times_minute));
+                                tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + getResources().getString(R.string.common_times_minute));
                             }
                         }
                     });

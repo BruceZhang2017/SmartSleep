@@ -292,8 +292,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
      * 扫码
      */
     private void startScan(){
-        Intent intent = new Intent(this, EasyCaptureActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_SCAN);
+        //Intent intent = new Intent(this, EasyCaptureActivity.class);
+        //startActivityForResult(intent,REQUEST_CODE_SCAN);
+        Intent intent = new Intent(this, BLESearchActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -733,6 +735,14 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         boolean bDetection = intent.getBooleanExtra("value", false);
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setOutOfDynamicWave(deviceId, bDetection));
+                    }
+                } else if (arg0 == 13) {
+                    if (fastBLEManager != null) {
+                        fastBLEManager.bSearching = true;
+                    }
+                } else if (arg0 == 14) {
+                    if (fastBLEManager != null) {
+                        fastBLEManager.bSearching = false;
                     }
                 }
             }

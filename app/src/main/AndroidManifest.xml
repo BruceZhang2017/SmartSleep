@@ -132,6 +132,8 @@
         <activity
             android:name=".Kit.dfutest.DfuUpdateActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".UI.Home.BLESearchActivity"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

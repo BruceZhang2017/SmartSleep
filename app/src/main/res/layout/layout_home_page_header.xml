@@ -180,11 +180,12 @@
 
     <TextView
         android:id="@+id/tv_temperature_value"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="0℃"
         android:textColor="@color/colorWhite"
         android:textSize="30sp"
+        android:gravity="right"
         app:layout_constraintBottom_toBottomOf="@id/iv_temperature"
         app:layout_constraintRight_toRightOf="@id/iv_temperature"
         android:layout_marginEnd="12dp"
@@ -215,11 +216,12 @@
 
     <TextView
         android:id="@+id/tv_humidity_value"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="0%"
         android:textColor="@color/colorWhite"
         android:textSize="30sp"
+        android:gravity="right"
         app:layout_constraintBottom_toBottomOf="@id/iv_humidity"
         app:layout_constraintRight_toRightOf="@id/iv_humidity"
         android:layout_marginEnd="12dp"

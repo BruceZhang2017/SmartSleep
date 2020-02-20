@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,11 +33,13 @@ import com.clj.fastble.data.BleScanState;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.scan.BleScanRuleConfig;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
-public class FastBLEManager implements BLEDataObserver {
+public class FastBLEManager implements BLEDataObserver{
 
     public Activity context;
     private static final int REQUEST_CODE_OPEN_GPS = 3;
@@ -46,6 +49,7 @@ public class FastBLEManager implements BLEDataObserver {
     public OperationManager operationManager;
     public BLEDataObserver bleDataObserver;
     public BleDevice currentBleDevice;
+    public boolean bSearching = false;
 
     public void onCreate() {
         BleManager.getInstance().init(context.getApplication());
@@ -100,6 +104,9 @@ public class FastBLEManager implements BLEDataObserver {
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
                 Log.i(TAG, "[BLE] onScanFinished");
+                if (bSearching) {
+                    return;
+                }
                 if (scanResultList != null && scanResultList.size() > 0) {
                     connect(scanResultList.get(0));
                 } else {

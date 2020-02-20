@@ -314,7 +314,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private String currentDate(long time) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(time);
-        String str=simpleDateFormat.format(date);
+        String str = simpleDateFormat.format(date);
         return str;
     }
 
