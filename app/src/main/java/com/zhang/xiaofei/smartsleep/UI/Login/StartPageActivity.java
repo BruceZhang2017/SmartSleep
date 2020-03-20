@@ -19,7 +19,7 @@ public class StartPageActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    sleep(1000);//使程序休眠一秒
+                    sleep(2000);//使程序休眠一秒
                     YMUserInfoManager userInfoManager = new YMUserInfoManager(StartPageActivity.this);
                     UserModel userModel = userInfoManager.loadUserInfo();
                     if (userModel != null && userModel.getUserInfo() != null && userModel.getUserInfo().getUserId() > 0) {

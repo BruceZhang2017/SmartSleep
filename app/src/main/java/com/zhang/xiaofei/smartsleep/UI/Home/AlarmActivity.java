@@ -144,6 +144,7 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
 
     }
 
+    // 设置时间选择器上数据
     private void getNoLinkData() {
         for (int i = 0; i < 24; i++) {
             hours.add(i < 10 ? ("0" + i) : (i + ""));
@@ -180,6 +181,8 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         });
         if (alramGetupModel != null) {
             wvMinutes1.setCurrentItem(alramGetupModel.getMinute());
+        } else {
+            wvMinutes1.setCurrentItem(0);
         }
 
         wvMinutes2.setTextSize(40);
@@ -204,6 +207,8 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         });
         if (alramSleepModel != null) {
             wvMinutes2.setCurrentItem(alramSleepModel.getMinute());
+        } else {
+            wvMinutes2.setCurrentItem(0);
         }
 
         wvHours1.setTextSize(40);

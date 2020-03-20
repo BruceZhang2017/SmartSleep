@@ -33,6 +33,7 @@ import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.UI.Home.BLESearchActivity;
 import com.zhang.xiaofei.smartsleep.UI.Home.HomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
@@ -172,27 +173,8 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
      * 扫码
      */
     private void startScan(){
-        Intent intent = new Intent(this, EasyCaptureActivity.class);
-        startActivityForResult(intent,REQUEST_CODE_SCAN);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && data!=null){
-            switch (requestCode){
-                case REQUEST_CODE_SCAN:
-                    String result = data.getStringExtra(Intents.Scan.RESULT);
-                    Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-                    Intent intentBroadcast = new Intent();   //定义Intent
-                    intentBroadcast.setAction(DYNAMICACTION);
-                    intentBroadcast.putExtra("arg0", 0);
-                    intentBroadcast.putExtra("result", result);
-                    sendBroadcast(intentBroadcast);
-                    break;
-            }
-
-        }
+        Intent intent = new Intent(this, BLESearchActivity.class);
+        startActivity(intent);
     }
 
     @Override

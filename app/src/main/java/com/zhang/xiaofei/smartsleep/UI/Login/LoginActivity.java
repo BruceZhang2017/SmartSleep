@@ -11,7 +11,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -57,11 +59,6 @@ public class LoginActivity extends BaseAppActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (!environmentForStore()) {
-//                    Intent intent = new Intent(LoginActivity.this, LoginMoreActivity.class);
-//                    startActivity(intent);
-//                    return;
-//                }
                 String phone = etPhone.getText().toString();
                 String code = etPWD.getText().toString();
                 String area = btnArea.getText().toString();
@@ -109,6 +106,7 @@ public class LoginActivity extends BaseAppActivity {
         spannableBuilder.setSpan(new MyClickableSpan(), agree.length(), text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvAgree.setText(spannableBuilder);
         tvAgree.setMovementMethod(LinkMovementMethod.getInstance());
+
     }
 
     class MyClickableSpan extends ClickableSpan {

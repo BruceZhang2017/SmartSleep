@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: in.srain.cube:ultra-ptr:1.0.11@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ff1dff18a6c91b935c898c2928d80ff8/ultra-ptr-1.0.11/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ff1dff18a6c91b935c898c2928d80ff8/ultra-ptr-1.0.11/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6b8c1fd86fd66b7bdf8ca1670eb26c76/jetified-ultra-ptr-1.0.11/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6b8c1fd86fd66b7bdf8ca1670eb26c76/jetified-ultra-ptr-1.0.11/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/in.srain.cube/ultra-ptr/1.0.11/1191ec111e7de0a08c2194754b3c6f667906e738/ultra-ptr-1.0.11-javadoc.jar!/" />

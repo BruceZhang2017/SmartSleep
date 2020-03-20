@@ -278,9 +278,9 @@ public class FastBLEManager implements BLEDataObserver{
     }
 
     @Override
-    public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm) {
+    public void handleBLEData(String mac, int time, int[] array) {
         if (bleDataObserver != null) {
-            bleDataObserver.handleBLEData(mac, time, temperature, humdity, heartRate, breathRate, breatheStop, outBedAlarm);
+            bleDataObserver.handleBLEData(mac, time, array);
         }
     }
 

@@ -213,7 +213,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_question_desc"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="请描述问题"
+                android:hint="@string/feedback_description_placeholder"
                 android:textColorHint="#555A63"
                 android:textSize="14sp"
                 android:background="@null"

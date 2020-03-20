@@ -65,7 +65,7 @@ public class DisplayUtil {
         return screenMap;
     }
 
-    enum ScreenEnum{
+    public enum ScreenEnum{
         Width,Height,Density,DendityDpi,ScaledDensity
     }
 

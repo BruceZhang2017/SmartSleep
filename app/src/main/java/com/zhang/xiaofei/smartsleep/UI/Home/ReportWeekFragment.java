@@ -62,6 +62,10 @@ public class ReportWeekFragment extends LazyFragment {
     private TextView tvTime4; // 平均心率
     private TextView tvTime5; // 平均呼吸率
     private TextView tvTime6; // 清醒次数
+    private TextView tvSleepTime4;
+    private TextView tvSleepTime5;
+    private ImageView ivSleepTime4;
+    private ImageView ivSleepTime5;
     private ImageButton ibLeftPre;
     private ImageButton ibRightNex;
     private TextView tvSimulationData;
@@ -71,6 +75,8 @@ public class ReportWeekFragment extends LazyFragment {
     LineDataSet set1;
     LineDataSet set2;
     ArrayList<Entry> set1values;
+    private Boolean bBelt = false; // 刷新睡眠带，睡眠纽扣
+
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.layout_preview, container, false);
@@ -198,6 +204,7 @@ public class ReportWeekFragment extends LazyFragment {
     };
 
     private void initialText() {
+        System.out.println("周报初始化UI");
         tvSleepAverageTime = (TextView)findViewById(R.id.tv_sleep_average_time);
         String unit01 = getResources().getString(R.string.common_hour);
         String unit02 = getResources().getString(R.string.common_minute);
@@ -227,6 +234,45 @@ public class ReportWeekFragment extends LazyFragment {
         tvTime5.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
         tvTime6 = (TextView)findViewById(R.id.tv_time_6);
         tvTime6.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+
+        tvSleepTime4 = (TextView)findViewById(R.id.tv_sleep_time_4);
+        tvSleepTime5 = (TextView)findViewById(R.id.tv_sleep_time_5);
+        ivSleepTime4 = (ImageView)findViewById(R.id.iv_time_4);
+        ivSleepTime5 =(ImageView)findViewById(R.id.iv_time_5);
+        if (bBelt == false) {
+            refreshSleepStatistic(false);
+        }
+
+    }
+
+    public void refreshSleepStatistic(boolean isBlet) {
+        System.out.println("周报中刷新UI");
+        bBelt = isBlet;
+        if (tvSleepTime4 == null) {
+            System.out.println("UI控件为空");
+            return;
+        }
+        if (isBlet) {
+            tvSleepTime4.setText(R.string.report_heart_rate);
+            tvSleepTime5.setText(R.string.report_respiratory_rate_aver);
+            String unit4 = getResources().getString(R.string.common_times_minute);
+            String[] array4 = {unit4};
+            String content4 = "00" + unit4;
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            tvTime5.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            ivSleepTime4.setImageResource(R.mipmap.report_icon_heart_rate);
+            ivSleepTime5.setImageResource(R.mipmap.report_icon_respiratory_rate);
+        } else {
+            tvSleepTime4.setText(R.string.common_body_moves);
+            tvSleepTime5.setText(R.string.common_snoring_times);
+            String unit4 = getResources().getString(R.string.common_times);
+            String[] array4 = {unit4};
+            String content4 = "00" + unit4;
+            tvTime4.setText(R.string.common_many);
+            tvTime5.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            ivSleepTime4.setImageResource(R.mipmap.icon_body_movement);
+            ivSleepTime5.setImageResource(R.mipmap.icon_snore);
+        }
     }
 
     private void initializeForChart() {

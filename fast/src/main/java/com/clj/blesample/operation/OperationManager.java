@@ -17,7 +17,10 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
 
+import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class OperationManager {
 
@@ -179,15 +182,17 @@ public class OperationManager {
                 }
             } else if (data[3] == 0x09) { // 时时数据解析
                 System.out.println("数据长度：" + data.length);
-                if (data.length != 155) {
+                if (data.length != 65) {
+                    //timer.schedule(task, 0, 1000);
                     return;
                 }
-                int[] heartRates = new int[50];
-                int[] breathRates = new int[50];
-                for (int i = 0; i < 50; i++) {
-                    heartRates[i] = ((data[4 + i * 2] & 0xff) << 8) + (data[4 + i * 2 + 1] & 0xff);
-                    breathRates[i] = data[4 + 100 + i] & 0xff;
-                    System.out.println("心率：" + heartRates[i] + "呼吸率：" + breathRates[i]);
+                int[] heartRates = new int[25];
+                int[] breathRates = new int[5];
+                for (int i = 0; i < 5; i++) {
+                    breathRates[i] = ((data[4 + i * 2] & 0xff) << 8) + (data[4 + i * 2 + 1] & 0xff);
+                }
+                for (int i = 0; i < 25; i++) {
+                    heartRates[i] = ((data[4 + 10 + i * 2] & 0xff) << 8) + (data[4 + 10 + i * 2 + 1] & 0xff);
                 }
                 DataOberverManager.getInstance().notifyObserver(heartRates, breathRates);
             } else if (data[3] == 0x0c) {
@@ -217,14 +222,57 @@ public class OperationManager {
         int temTime = (int)(calendar.getTimeInMillis() / 1000);
 
         int temperature = data[6] & 0xff;
-        int humdity = data[7] & 0xff;
+        int humdity = data[7] & 0xff; // 湿度
         int heartRate = data[8] & 0xff;
         int breathRate = data[9] & 0xff;
-        boolean breatheStop = (data[10] & 0x01) > 0;
-        boolean outBedAlarm = (data[11] & 0x01) > 0;
+        int bodyMotion = data[10] & 0xff;
+        int getupFlag = data[11] & 0xff;
+        int snore = data[12] & 0xff;
+        int breathStop = data[13] & 0xff;
+        int[] array = new int[8];
+        array[0] = temperature;
+        array[1] = humdity;
+        array[2] = heartRate;
+        array[3] = breathRate;
+        array[4] = bodyMotion;
+        array[5] = getupFlag;
+        array[6] = snore;
+        array[7] = breathStop;
         if (bleDataObserver != null) {
-            bleDataObserver.handleBLEData("", temTime, temperature, humdity, heartRate, breathRate, breatheStop, outBedAlarm);
+            bleDataObserver.handleBLEData("", temTime, array);
         }
     }
 
+
+//    Timer timer = new Timer();
+//    TimerTask task = new TimerTask() {
+//        @Override
+//        public void run() {
+//            try {
+//                createData();
+//            }catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    };
+//
+//    private void createData() {
+//        System.out.print("模拟数据发送");
+//        byte[] data = {(byte)0xEB, 0x60, 0x01, 0x09, 0x04, (byte)0x87, 0x06, 0x75, 0x07, (byte)0xAD, 0x07, (byte)0xBB, 0x06, (byte)0xC1,
+//                0x07, 0x62, 0x07, 0x61,
+//                0x07, (byte)0xE1, 0x08, (byte)0xD0, 0x09, (byte)0xE5, 0x0A, (byte)0xD2, 0x0B, 0x6B, 0x0B, (byte)0xB2, 0x0B, (byte)0xBC,
+//                0x05, (byte)0xE2, 0x04, (byte)0x93, 0x03, (byte)0xFE,
+//                0x03, (byte)0xF4, 0x04, 0x33, 0x04, (byte)0x8D, 0x04, (byte)0xE5, 0x05, 0x2B, 0x05, 0x5F, 0x05, (byte)0x8C, 0x05, (byte)0xCA,
+//                0x06, 0x33, 0x06, (byte)0xCC,
+//                0x07, 0x71, 0x07, (byte)0xE3, 0x07, (byte)0xF3, 0x0A};
+//        int[] heartRates = new int[25];
+//        int[] breathRates = new int[5];
+//        for (int i = 0; i < 5; i++) {
+//            breathRates[i] = ((data[4 + i * 2] & 0xff) << 8) + (data[4 + i * 2 + 1] & 0xff);
+//        }
+//        for (int i = 0; i < 25; i++) {
+//            heartRates[i] = ((data[4 + 10 + i * 2] & 0xff) << 8) + (data[4 + 10 + i * 2 + 1] & 0xff);
+//        }
+//        DataOberverManager.getInstance().notifyObserver(heartRates, breathRates);
+//    }
 }

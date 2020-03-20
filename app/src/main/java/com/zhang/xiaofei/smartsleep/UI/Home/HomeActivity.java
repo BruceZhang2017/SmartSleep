@@ -20,8 +20,11 @@ import androidx.fragment.app.Fragment;
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.NameValuePair;
 import com.ansen.http.net.RequestDataCallback;
+import com.bigkoo.alertview.AlertView;
+import com.bigkoo.alertview.OnItemClickListener;
 import com.clj.blesample.FastBLEManager;
 import com.clj.blesample.comm.BLEDataObserver;
+import com.clj.fastble.utils.HexUtil;
 import com.jpeng.jptabbar.BadgeDismissListener;
 import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
@@ -35,6 +38,7 @@ import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Application.TestDataNotification;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
+import com.zhang.xiaofei.smartsleep.Kit.ReadTXT;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
@@ -44,10 +48,17 @@ import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
+import com.zhang.xiaofei.smartsleep.UI.Me.DeviceManageActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.EasyCaptureActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +98,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
     private Map<String, String> attachValue = new HashMap<String, String>();
     private BluetoothMonitorReceiver bleListenerReceiver;
+    private List<RecordModel> recordModelList = new ArrayList<>(); // 记录将保存于数据库中
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +166,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
             imageView.setImageResource(R.mipmap.nav_icon_sleep);
         }
+
+        //readSimulateData();
     }
 
     @Override
@@ -291,46 +305,24 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     /**
      * 扫码
      */
-    private void startScan(){
+    public void startScan(){
         //Intent intent = new Intent(this, EasyCaptureActivity.class);
         //startActivityForResult(intent,REQUEST_CODE_SCAN);
         Intent intent = new Intent(this, BLESearchActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && data!=null){
-            switch (requestCode){
-                case REQUEST_CODE_SCAN:
-                    String result = data.getStringExtra(Intents.Scan.RESULT);
-                    Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-                    handleQRCode(result);
-                    break;
-            }
-
-        }
-
-        if (requestCode == 3) { // 开始扫描
-            if (fastBLEManager.checkGPSIsOpen()) {
-                //fastBLEManager.setScanRule("");
-                //fastBLEManager.startScanAndConnect();
-            }
-        }
-    }
-
     private void handleQRCode(String result) {
         if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_") || result.startsWith("YMB") ){
             int type = 0;
             String res = "";
-            if (result.startsWith("SLEEPBABY_")) {
+            if (result.startsWith("SLEEPBABY_")) { // 睡眠带
                 res = result.replace("SLEEPBABY_", "");
                 type = 1;
-            } else if (result.startsWith("SLEEPBUTTON_")) {
+            } else if (result.startsWith("SLEEPBUTTON_")) { // 睡眠纽扣
                 res = result.replace("SLEEPBUTTON_", "");
                 type = 2;
-            } else {
+            } else { // 呼吸机
                 res = result;
                 type = 3;
             }
@@ -454,28 +446,69 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         TestDataNotification.getInstance().notifyObserver();
     }
 
-    @Override
-    public void handleBLEData(String mac, int time, int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm) {
+    @Override // int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm
+    public void handleBLEData(String mac, int time, int[] array) {
+        if (array.length < 8) {
+            return;
+        }
         if (mTab1 == null && DeviceManager.getInstance().deviceList.size() > DeviceManager.getInstance().currentDevice) {
             return;
         }
         int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getId();
-        System.out.println("插入数据至数据库");
-        mRealm.executeTransaction(new Realm.Transaction(){
+        System.out.println("将固件端获取到的设备数据插入数据库");
+        RecordModel model = new RecordModel();
+        model.setUserId(userId);
+        model.setDeviceId(deviceId);
+        model.setTime(time);
+        model.setTemperature(array[0]);
+        model.setHumidity(array[1]);
+        model.setHeartRate(array[2]);
+        model.setBreathRate(array[3]);
+        model.setBodyMotion(array[4]);
+        model.setGetupFlag(array[5]);
+        model.setSnore(array[6]);
+        model.setBreatheStop(array[7]);
+        recordModelList.add(model);
+        if (recordModelList.size() < 256) {
+            return;
+        }
+        List<RecordModel> tem = deepCopy(recordModelList);
+        recordModelList.clear();
+
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RecordModel model = realm.createObject(RecordModel.class);
-                model.setUserId(userId);
-                model.setDeviceId(deviceId);
-                model.setTime(time);
-                model.setTemperature(temperature);
-                model.setHumidity(humdity);
-                model.setHeartRate(heartRate);
-                model.setBreathRate(breathRate);
-                model.setBreatheStop(breatheStop);
-                model.setOutBedAlarm(outBedAlarm);
+                realm.copyToRealm(tem);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                System.out.println("数据插入服务器成功");
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                System.out.println("数据插入服务器失败");
             }
         });
+    }
+
+    /// 集合的深Copy，先放置在该处
+    public <E> List<E> deepCopy(List<E> src) {
+        try {
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            out.writeObject(src);
+
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+            ObjectInputStream in = new ObjectInputStream(byteIn);
+            @SuppressWarnings("unchecked")
+            List<E> dest = (List<E>) in.readObject();
+            return dest;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<E>();
+        }
     }
 
     @Override
@@ -530,6 +563,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             return;
         }
         String type = attachValue.get("type");
+        if (checkDBHavenSameTypeDevice(Integer.parseInt(type))) {
+            return;
+        }
         YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
         UserModel userModel = userManager.loadUserInfo();
         com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "multipart/form-data");
@@ -549,6 +585,20 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 postParam,
                 requestDataCallbackB
         );
+    }
+
+    /// 为了保证每个用户只能添加同一个类型，只有一台设备。
+    private boolean checkDBHavenSameTypeDevice(int type) {
+        YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
+        UserModel userModel = userManager.loadUserInfo();
+        int userId = userModel.getUserInfo().getUserId();
+        RealmResults<DeviceModel> userList = mRealm.where(DeviceModel.class).equalTo("userId", userId).equalTo("deviceType", type).findAll();
+        if (userList != null && userList.size() > 0) {
+            System.out.println("数据库已经存在同类型的设备");
+            deleteDevice(userList.get(0).getDeviceSerial(), userList.get(0).getMac());
+            return true;
+        }
+        return false;
     }
 
     private RequestDataCallback requestDataCallbackB = new RequestDataCallback<BaseProtocol>() {
@@ -640,11 +690,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setSleepState(deviceId, true));
-                        ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
-                        imageView.setImageResource(R.mipmap.nav_icon_sleep_select);
-                        CacheUtil.getInstance(HomeActivity.this).putBool("sleep", true);
                     }
-
+                    ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+                    imageView.setImageResource(R.mipmap.nav_icon_sleep_select);
+                    CacheUtil.getInstance(HomeActivity.this).putBool("sleep", true); // 保存睡眠状态
                 } else if (arg0 == 4) { // 起床
                     if (mTab1 == null) {
                         return;
@@ -656,11 +705,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setGetUpState(deviceId, true));
-                        ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
-                        imageView.setImageResource(R.mipmap.nav_icon_sleep);
-                        CacheUtil.getInstance(HomeActivity.this).putBool("sleep", false);
                     }
-
+                    ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
+                    imageView.setImageResource(R.mipmap.nav_icon_sleep);
+                    CacheUtil.getInstance(HomeActivity.this).putBool("sleep", false); // 保存起床状态
                 } else if (arg0 == 5) { // 请求时时数据
                     if (mTab1 == null) {
                         return;
@@ -678,6 +726,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     exchangeDevice(DeviceManager.getInstance().currentDevice);
                 } else if (arg0 == 7) { // 设置闹钟
                     int value = intent.getIntExtra("value", 0);
+                    System.out.println("在" + value + "秒后，闹钟会自动关闭");
                     if (value > 0) {
                         AlarmTimer.getInstance().startTimer(value);
                     } else {
@@ -841,6 +890,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         readTempuratureTimer.schedule(readTempuratureTask, 1000, 5000);
     }
 
+    // 获取设备的文档和湿度
     private void readDeviceTempuratureAndHumidity() {
         runOnUiThread(new Runnable() {
             @Override
@@ -860,6 +910,163 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         });
     }
 
+    // 如果有同系列的设备，则替换当前设备让用户选择
+    // 显示删除按钮
+    public void deleteDevice(String serial, String mac) {
+        new AlertView(
+                getResources().getString(R.string.index_unbinding),
+                getResources().getString(R.string.add_device_same_type_fail_tip),
+                getResources().getString(R.string.middle_quit),
+                new String[]{getResources().getString(R.string.middle_confirm)},
+                null,
+                this, AlertView.Style.Alert, new OnItemClickListener(){
+            public void onItemClick(Object o,int position){
+                deleteDeviceCloud(serial, mac);
+                deleteDeviceFromDB(mac);
+            }
+        }).show();
+    }
+
+    // 删除设备
+    private void deleteDeviceCloud(String serial, String mac) {
+        showHUD();
+        YMUserInfoManager userManager = new YMUserInfoManager( HomeActivity.this);
+        UserModel userModel = userManager.loadUserInfo();
+        com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "multipart/form-data");
+        com.ansen.http.net.Header headerToken = new com.ansen.http.net.Header("token", userModel.getToken());
+        System.out.println("token:" + userModel.getToken());
+        List<NameValuePair> postParam = new ArrayList<>();
+        postParam.add(new NameValuePair("userId",userModel.getUserInfo().getUserId() + ""));
+        postParam.add(new NameValuePair("serial",serial));
+        postParam.add(new NameValuePair("mac",mac));
+        postParam.add(new NameValuePair("version",1 + ""));
+
+        HTTPCaller.getInstance().postFile(
+                BaseProtocol.class,
+                YMApplication.getInstance().domain() + "app/deviceManage/delBindDevice",
+                new com.ansen.http.net.Header[]{header, headerToken},
+                postParam,
+                requestDataCallbackC
+        );
+    }
+
+    private RequestDataCallback requestDataCallbackC = new RequestDataCallback<BaseProtocol>() {
+        @Override
+        public void dataCallback(int status, BaseProtocol user) {
+            hideHUD();
+            System.out.println("网络请求返回的Status:" + status);
+            if(user == null || user.getCode() != 200){
+                if (user != null) {
+                    Toast.makeText(HomeActivity.this, user.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                addDeviceToCloud(); // 将设备添加到Cloud
+            }
+
+        }
+
+        @Override
+        public void dataCallback(BaseProtocol obj) {
+            hideHUD();
+            if (obj == null) {
+                Toast.makeText(HomeActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    private void deleteDeviceFromDB(String mac) {
+        final RealmResults<DeviceModel> deviceList = mRealm.where(DeviceModel.class).equalTo("mac", mac).findAll();
+        if (deviceList != null && deviceList.size() > 0) {
+            String serial = deviceList.get(0).getDeviceSerial();
+            mRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    deviceList.get(0).deleteFromRealm();
+                }
+            });
+        }
+    }
+
+
+    public byte uniteBytes(byte src0, byte src1){
+        byte _b0 = Byte.decode("0x" + new String(new byte[]{src0})).byteValue();
+        _b0 = (byte)(_b0 << 4);
+        byte _b1 = Byte.decode("0x" + new String(new byte[]{src1})).byteValue();
+        byte ret = (byte)(_b0 ^ _b1);
+        return ret;
+    }
+
+    /**
+     * bytes字符串转换为Byte值
+     * @param src Byte字符串，每个Byte之间没有分隔符
+     * @return byte
+     */
+    public byte hexStr2Bytes(String src) {
+        if (src.length() != 2) {
+            System.out.print("长度不为2");
+            return 0x00;
+        }
+        byte[] tmp = src.getBytes();
+        return uniteBytes(tmp[0], tmp[1]);
+    }
+
+    private void readSimulateData() {
+        InputStream inputStream = getResources().openRawResource(R.raw.b);
+        String content = ReadTXT.getString(inputStream);
+        String[] strByte = content.split(" "); // 每次截取
+        int len = strByte.length;
+        int c = len / 229;
+        byte[] data = new byte[229];
+        for (int i = 0; i < c; i++) {
+            for (int j = 0; j < 229; j++) {
+                data[j] = hexStr2Bytes(strByte[i * 229 + j]);
+            }
+            int count = (data.length - 5) / 14;
+            for (int k = 0; k < count; k++) {
+                int index = 4 + k * 14; // 游标位置
+                byte[] subData = new byte[14];
+                for (int n = 0; n < 14; n++) {
+                    subData[n] = data[index + n];
+                }
+                parseFlashData(subData);
+            }
+        }
+    }
+
+    private void parseFlashData(byte[] data) {
+        if (data.length != 14) {
+            return;
+        }
+        System.out.println("解析的值: " + HexUtil.formatHexString(data, true));
+        int year = 2000 + (data[0] & 0xff);
+        int month = data[1];
+        int day = data[2];
+        int hour = data[3];
+        int minute = data[4];
+        int second = data[5];
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day, hour, minute, second);
+        int temTime = (int)(calendar.getTimeInMillis() / 1000);
+
+        int temperature = data[6] & 0xff;
+        int humdity = data[7] & 0xff; // 湿度
+        int heartRate = data[8] & 0xff;
+        int breathRate = data[9] & 0xff;
+        int bodyMotion = data[10] & 0xff;
+        int getupFlag = data[11] & 0xff;
+        int snore = data[12] & 0xff;
+        int breathStop = data[13] & 0xff;
+        int[] array = new int[8];
+        array[0] = temperature;
+        array[1] = humdity;
+        array[2] = heartRate;
+        array[3] = breathRate;
+        array[4] = bodyMotion;
+        array[5] = getupFlag;
+        array[6] = snore;
+        array[7] = breathStop;
+        handleBLEData("", temTime, array);
+    }
 }
 
 

@@ -29,8 +29,6 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private DynamicView dynamicViewHeart;
     private DynamicView dynamicViewBreath;
     private int count = 0;
-    int[] heart;
-    int[] breath;
     private int timeCount = 0;
     private boolean bStart = false;
 
@@ -70,7 +68,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         dynamicViewBreath = (DynamicView)findViewById(R.id.dv_breath);
         dynamicViewBreath.screenWidth = count;
         dynamicViewBreath.initArray(count);
-        dynamicViewBreath.rate = 255.0f / DisplayUtil.dip2px(200, this);
+        dynamicViewBreath.rate = 4096.0f / DisplayUtil.dip2px(200, this);
         dynamicViewBreath.height = DisplayUtil.dip2px(200, this);
         dynamicViewBreath.invalidate();
 
@@ -104,66 +102,40 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     protected void onDestroy() {
         super.onDestroy();
         DataOberverManager.getInstance().deleteObserver(this);
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
     }
 
     @Override
-    public void notifyData(int[] heart, int[] breath) {
-        System.out.println("heart数量：" + heart.length + "breath数量：" + breath.length);
+    public void notifyData(int[] heart, int[] breath) { // 每1秒钟回调一组数据
+        System.out.println("有心跳和呼吸数据发送过来：" + heart.length + "-----" + breath.length);
+        if (heart.length != 25) {
+            return;
+        }
+        if (breath.length != 5) {
+            return;
+        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //addText(tvContent, content);
-                if (dynamicViewHeart.current + 50 >= count - 100) {
-                    dynamicViewHeart.values = new int[count - 100];
-                    dynamicViewHeart.current = 0;
-                    return;
+                if (timeCount >= 10 || timeCount == 0) {
+                    dynamicViewHeart.values = new int[250];
+                    dynamicViewBreath.values = new int[50];
+                    timeCount = 0;
                 }
 
-                if (dynamicViewBreath.current + 50 >= count - 100) {
-                    dynamicViewBreath.values = new int[count - 100];
-                    dynamicViewBreath.current = 0;
-                    return;
+                for (int i = 0; i < heart.length; i++) {
+                    dynamicViewHeart.values[i + timeCount * 25] = heart[i];
                 }
-
-                SmartSleepTestActivity.this.heart = heart;
-                SmartSleepTestActivity.this.breath = breath;
-                timeCount = 0;
-                if (bStart) {
-                    return;
+                for (int i = 0; i < breath.length; i++) {
+                    dynamicViewBreath.values[i + timeCount * 5] = breath[i];
                 }
-                bStart = true;
-                mTimer.schedule(mTask, 0, 40);
+                timeCount += 1;
+                System.out.println("动画次数 timeCount: " + timeCount);
+                dynamicViewHeart.current = timeCount;
+                dynamicViewHeart.startAnimator();
+                dynamicViewBreath.current = timeCount;
+                dynamicViewBreath.startAnimator();
             }
         });
     }
-
-    // 定时器
-    private Timer mTimer = new Timer();
-    // 定时任务
-    private TimerTask mTask = new TimerTask() {
-        @Override
-        public void run() {
-            // 要做的事情
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (timeCount >= 50) {
-                        return;
-                    }
-                    dynamicViewHeart.values[dynamicViewHeart.current] = heart[timeCount];
-                    dynamicViewBreath.values[dynamicViewBreath.current] = breath[timeCount] > 0 ? breath[timeCount] : 1;
-                    dynamicViewHeart.current += 1;
-                    dynamicViewBreath.current += 1;
-                    dynamicViewBreath.invalidate();
-                    dynamicViewHeart.invalidate();
-                    timeCount++;
-                }
-            });
-        }
-    };
 
 }

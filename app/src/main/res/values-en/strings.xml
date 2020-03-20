@@ -289,4 +289,10 @@
     <string name="sleep_report">Sleep Report</string>
 
     <string name="bed_away">Bed Away</string>
+    <string name="feedback_description_placeholder">Please describe the problem</string>
+    <string name="add_device_same_type_fail_tip">Only one device can be bound to the same account in app. Do you need to replace it?</string>
+    <string name="weixin">WeChat</string>
+    <string name="weixin_circle">Moments</string>
+    <string name="sina">Weibo</string>
+    <string name="poster">Poster</string>
 </resources>

@@ -109,6 +109,9 @@
             android:textSize="14sp"
             android:textColor="@color/colorWhite"
             android:background="@null"
+            android:cursorVisible="true"
+            android:paddingLeft="2dp"
+            android:textCursorDrawable="@null"
             android:inputType="number"/>
 
         <ImageView
@@ -159,6 +162,9 @@
             android:textSize="14sp"
             android:textColor="@color/colorWhite"
             android:background="@null"
+            android:cursorVisible="true"
+            android:paddingLeft="2dp"
+            android:textCursorDrawable="@null"
             android:inputType="number"/>
 
         <Button

@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bigkoo.pickerview.utils.BottomNavigationHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +83,10 @@ public class BottomDialog {
 
     public void show() {
         customDialog.show();
+    }
+
+    public void dismiss() {
+        customDialog.dismiss();
     }
 
     private final class CustomDialog extends Dialog {

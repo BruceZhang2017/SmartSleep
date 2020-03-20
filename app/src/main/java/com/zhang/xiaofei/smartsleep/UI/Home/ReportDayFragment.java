@@ -5,12 +5,14 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -32,11 +34,13 @@ import com.github.mikephil.charting.utils.Utils;
 import com.haibin.calendarview.CalendarView;
 import com.shizhefei.fragment.LazyFragment;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
+import com.zhang.xiaofei.smartsleep.Kit.ReadTXT;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,6 +81,10 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private TextView tvTime4; // 平均心率
     private TextView tvTime5; // 清醒时间
     private TextView tvTime6; // 平均心率
+    private TextView tvSleepTime3; // 平均心率、体动 二选一
+    private TextView tvSleepTime4; // 平均呼吸率、鼾声 二选一
+    private ImageView ivSleepTime3;
+    private ImageView ivSleepTime4;
     private TextView tvSimulationData;
     private TextView tvSleepBottomCount1;
     private TextView tvSleepBottomCount2;
@@ -206,7 +214,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
         }
 
-        System.out.println( " 开始时间：" + (sleepTime + currentTime) + "结束时间：" + (currentTime + getupTime) + "获取到的数据量：" + list.size());
+        System.out.println( " 开始时间：" + (sleepTime + currentTime) + " 结束时间：" + (currentTime + getupTime) + " 获取到的数据量：" + list.size());
         initializeForChart(); // 睡眠质量初始化
         initializeForChart2();
         initializeForChart3();
@@ -218,9 +226,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             @Override
             public void onClick(View v) {
                 currentTime -= 24 * 60 * 60;
-                grade -= 1;
                 tvSimulationData.setText(currentDate((long)currentTime * 1000));
-                circlePercentView.setCurProcess(grade);
                 refreshGrade();
                 refreshData(isBlet);
             }
@@ -230,9 +236,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             @Override
             public void onClick(View v) {
                 currentTime += 24 * 60 * 60;
-                grade += 1;
                 tvSimulationData.setText(currentDate((long)currentTime * 1000));
-                circlePercentView.setCurProcess(grade);
                 refreshGrade();
                 refreshData(isBlet);
             }
@@ -268,6 +272,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         cl6 = (ConstraintLayout)findViewById(R.id.cl_6);
         cl11 = (ConstraintLayout)findViewById(R.id.cl_11);
         cl11.setVisibility(View.GONE);
+
     }
 
     private void initialText() {
@@ -302,6 +307,35 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String content6 = "00" + unit6;
         tvTime6 = (TextView)findViewById(R.id.tv_time_6);
         tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
+
+        tvSleepTime3 = (TextView)findViewById(R.id.tv_sleep_time_3);
+        tvSleepTime4 = (TextView)findViewById(R.id.tv_sleep_time_4);
+        ivSleepTime3 = (ImageView)findViewById(R.id.iv_time_3);
+        ivSleepTime4 = (ImageView)findViewById(R.id.iv_time_4);
+    }
+
+    private void refreshSleepStatistic(boolean isBlet) {
+        if (isBlet) {
+            tvSleepTime3.setText(R.string.report_heart_rate);
+            tvSleepTime4.setText(R.string.report_respiratory_rate_aver);
+            String unit4 = getResources().getString(R.string.common_times_minute);
+            String[] array4 = {unit4};
+            String content4 = "00" + unit4;
+            tvTime3.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            ivSleepTime3.setImageResource(R.mipmap.report_icon_heart_rate);
+            ivSleepTime4.setImageResource(R.mipmap.report_icon_respiratory_rate);
+        } else {
+            tvSleepTime3.setText(R.string.common_body_moves);
+            tvSleepTime4.setText(R.string.common_snoring_times);
+            String unit4 = getResources().getString(R.string.common_times);
+            String[] array4 = {unit4};
+            String content4 = "00" + unit4;
+            tvTime3.setText(R.string.common_many);
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            ivSleepTime3.setImageResource(R.mipmap.icon_body_movement);
+            ivSleepTime4.setImageResource(R.mipmap.icon_snore);
+        }
     }
 
     private void refreshGrade() {
@@ -347,31 +381,27 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     // 初始化第一个表格
     private void initializeForChart() {
-        {   // // Chart Style // //
-            chart = findViewById(R.id.chart1);
-            // background color
-            chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-            // disable description text
-            chart.getDescription().setEnabled(false);
-            // enable touch gestures
-            chart.setTouchEnabled(true);
-            // set listeners
-            //chart.setOnChartValueSelectedListener(this);
-            chart.setDrawGridBackground(false);
-            // enable scaling and dragging
-            chart.setDragEnabled(true);
-            chart.setScaleEnabled(true);
-            // chart.setScaleXEnabled(true);
-            // chart.setScaleYEnabled(true);
-            // force pinch zoom along both axis
-            chart.setPinchZoom(false);
-        }
+        chart = findViewById(R.id.chart1);
+        // background color
+        chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+        // disable description text
+        chart.getDescription().setEnabled(false);
+        // enable touch gestures
+        chart.setTouchEnabled(true);
+        // set listeners
+        //chart.setOnChartValueSelectedListener(this);
+        chart.setDrawGridBackground(false);
+        // enable scaling and dragging
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        // chart.setScaleXEnabled(true);
+        // chart.setScaleYEnabled(true);
+        // force pinch zoom along both axis
+        chart.setPinchZoom(false);
 
-        XAxis xAxis;
-        {   // // X-Axis Style // //
-            xAxis = chart.getXAxis();
-            xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-            xAxis.setValueFormatter(new ValueFormatter() {
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+        xAxis.setValueFormatter(new ValueFormatter() {
             private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
             @Override
             public String getFormattedValue(float value) {
@@ -384,32 +414,25 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 return mFormat.format(new Date(millis));
             }
         });
-            xAxis.setGranularityEnabled(true);
-            xAxis.setLabelCount(tableRowCount,true);
-            int min = (sleepTime) / 60;
-            xAxis.setAxisMinimum(min);
-            int max = (sleepTime + tableRowDuration * tableRowCount) / 60;
-            System.out.println("当前列的时间值为：min " + min + " max " + max);
-            xAxis.setAxisMaximum(max);
-            //xAxis.setAvoidFirstLastClipping(true);
-            xAxis.setDrawLabels(true);
-        }
+        xAxis.setGranularityEnabled(true);
+        xAxis.setLabelCount(tableRowCount,true);
+        xAxis.setAxisMinimum((sleepTime) / 60);
+        xAxis.setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
+        //xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setDrawLabels(true);
 
-        YAxis yAxis;
-        {   // // Y-Axis Style // //
-            yAxis = chart.getAxisLeft();
-            // disable dual axis (only use LEFT axis)
-            chart.getAxisRight().setEnabled(false);
-            yAxis.setTextColor(getResources().getColor(R.color.tranparencyColor));
-            yAxis.setAxisMaximum(5f);
-            yAxis.setAxisMinimum(0f);
-            yAxis.setSpaceTop(0);
-            yAxis.setSpaceBottom(0);
-            yAxis.setLabelCount(5, true);
-            yAxis.setGranularityEnabled(true);
-            yAxis.setGranularity(1f);
-            yAxis.setDrawAxisLine(false);
-        }
+        YAxis yAxis = chart.getAxisLeft();
+        // disable dual axis (only use LEFT axis)
+        chart.getAxisRight().setEnabled(false);
+        yAxis.setTextColor(getResources().getColor(R.color.tranparencyColor));
+        yAxis.setAxisMaximum(5f);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setSpaceTop(0);
+        yAxis.setSpaceBottom(0);
+        yAxis.setLabelCount(5, true);
+        yAxis.setGranularityEnabled(true);
+        yAxis.setGranularity(1f);
+        yAxis.setDrawAxisLine(false);
 
         xAxis.setDrawLimitLinesBehindData(false);
         xAxis.setDrawLimitLinesBehindData(false);
@@ -423,7 +446,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     // 开始设置数据部分
     private void setCharData(float range) {
-
+        System.out.println("模拟最终的结论数据");
         ArrayList<Entry> values = new ArrayList<>();
         int now = sleepTime / 60;
         int end = (sleepTime + tableRowDuration * tableRowCount) / 60;
@@ -470,7 +493,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             set1.setValueTextSize(9f);
             set1.setDrawCircles(false);
             // draw selection line as dashed
-            //set1.enableDashedHighlightLine(10f, 5f, 0f);
+            set1.enableDashedHighlightLine(10f, 5f, 0f);
 
             // set the filled area
             set1.setDrawFilled(true);
@@ -567,7 +590,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         leftAxis.setDrawAxisLine(false);
         leftAxis.setGranularityEnabled(true);
         leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(300f);
+        leftAxis.setAxisMaximum(150f);
         leftAxis.setLabelCount(6, true);
         leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -581,7 +604,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData2() {
-
         chart2Values = new ArrayList<>();
 
         for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
@@ -592,10 +614,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             chart2Values.add(new Entry(entry.getKey() - currentTime / 60, heart / entry.getValue().size()));
         }
         Collections.sort(chart2Values, comparatorByX);
-
-//        for (int i = 0; i < 100; i++) {
-//            chart2Values.add(new Entry(i - 100, i + 50));
-//        }
 
 
         if (bChart2) {
@@ -833,13 +851,14 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
         chart4Values = new ArrayList<>();
 
-//        for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
-//            float heart = 0;
-//            for (RecordModel model: entry.getValue()) {
-//                heart += model.getBreathRate();
-//            }
-//            chart4Values.add(new Entry(entry.getKey(), heart / entry.getValue().size()));
-//        }
+        for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
+            float bodyMotion = 0;
+            for (RecordModel model: entry.getValue()) {
+                bodyMotion += model.getBodyMotion();
+            }
+            chart4Values.add(new Entry(entry.getKey() - currentTime / 60, bodyMotion / entry.getValue().size()));
+        }
+        Collections.sort(chart4Values, comparatorByX);
 
         if (bChart4) {
             set4 = (LineDataSet) chart4.getData().getDataSetByIndex(0);
@@ -1072,6 +1091,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         chart3.invalidate();
         setData4();
         chart4.invalidate();
+
+        refreshSleepStatistic(isBlet);
     }
 
     Comparator<Entry> comparatorByX = new Comparator<Entry>() {
@@ -1082,5 +1103,93 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             return -1;
         }
     };
+
+//    private void refreshHeartChart() {
+//        chart2Values = new ArrayList<>();
+//
+//        for (int i = 0; i < heartDatas.length; i++) {
+//            chart2Values.add(new Entry(sleepTime / 60 + i, heartDatas[i]));
+//        }
+//    }
+//
+//    private void refreshBreathChart() {
+//        chart3Values = new ArrayList<>();
+//
+//        for (int i = 0; i < breathDatas.length; i++) {
+//            chart3Values.add(new Entry(sleepTime / 60 + i, breathDatas[i]));
+//        }
+//    }
+
+//    private LineChart initializeForChart(int id, int minX, int maxX, int minY, int maxY) {
+//        LineChart chart = findViewById(id);
+//        // no description text
+//        chart.getDescription().setEnabled(false);
+//        // enable touch gestures
+//        chart.setTouchEnabled(true);
+//        chart.setDragDecelerationFrictionCoef(0.9f);
+//        // enable scaling and dragging
+//        chart.setDragEnabled(true);
+//        chart.setScaleEnabled(true);
+//        chart.setDrawGridBackground(false);
+//        chart.setHighlightPerDragEnabled(false);
+//        chart.setPinchZoom(false);
+//        chart.setScaleYEnabled(false);
+//        chart.setDoubleTapToZoomEnabled(false);
+//        // set an alternative background color
+//        chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+//        //chart3.setViewPortOffsets(10f, 0f, 0f, 0f);
+//        // get the legend (only possible after setting data)
+//        Legend l = chart.getLegend();
+//        l.setEnabled(false);
+//
+//        XAxis xAxis = chart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.TOP);
+//        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
+//        xAxis.enableGridDashedLine(10f, 10f, 0f);
+//        xAxis.setTextSize(10f);
+//        xAxis.setTextColor(Color.argb(0,0,0,0));
+//        xAxis.setDrawAxisLine(false);
+//        xAxis.setDrawGridLines(true);
+//        xAxis.setCenterAxisLabels(false);
+//        xAxis.setLabelCount(tableRowCount, true);
+//        xAxis.setGranularityEnabled(true);
+//        xAxis.setAxisMinimum( minX);
+//        xAxis.setAxisMaximum(maxX);
+//        xAxis.setValueFormatter(new ValueFormatter() {
+//
+//            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+//
+//            @Override
+//            public String getFormattedValue(float value) {
+//                long millis = 0;
+//                if (value < 0) {
+//                    millis = TimeUnit.MINUTES.toMillis((long) value + 24 * 60 + 16 * 60);
+//                } else {
+//                    millis = TimeUnit.MINUTES.toMillis((long) value + 16 * 60);
+//                }
+//                return mFormat.format(new Date(millis));
+//            }
+//        });
+//
+//        YAxis leftAxis = chart.getAxisLeft();
+//        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+//        //leftAxis.setTypeface(tfLight);
+//        leftAxis.setDrawGridLines(true);
+//        leftAxis.setDrawAxisLine(false);
+//        leftAxis.setGranularityEnabled(true);
+//        leftAxis.setAxisMinimum(minX);
+//        leftAxis.setAxisMaximum(maxY);
+//        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+//        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
+//        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
+//
+//        YAxis rightAxis = chart.getAxisRight();
+//        rightAxis.setEnabled(false);
+//
+//        leftAxis.setDrawLimitLinesBehindData(false);
+//        xAxis.setDrawLimitLinesBehindData(false);
+//
+//        return chart;
+//    }
 
 }

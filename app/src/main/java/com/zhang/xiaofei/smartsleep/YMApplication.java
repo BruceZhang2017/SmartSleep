@@ -9,8 +9,10 @@ import android.util.Log;
 import com.facebook.stetho.Stetho;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import com.sunofbeaches.himalaya.IComponentApplication;
+import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 
@@ -45,16 +47,16 @@ public class YMApplication extends Application {
                                 .build()))
                 .build());
         Log.i("Application", "YMApplication 初始化");
-//        PlatformConfig.setWeixin("你的微信APPID", "你的微信AppSecret");//微信APPID和AppSecret
+        PlatformConfig.setWeixin("你的微信APPID", "你的微信AppSecret");//微信APPID和AppSecret
 //        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
-//        PlatformConfig.setSinaWeibo("你的微博APPID", "你的微博APPSecret","微博的后台配置回调地址");//微博
+        PlatformConfig.setSinaWeibo("30910805", "375e1761984e8ff4c55074d1f8daa312","http://www.yamind.cn");//微博
         UMConfigure.setLogEnabled(true);
         UMConfigure.init(this,"5db6902d4ca357d29c00074e","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
 
         //Module类的APP初始化
         modulesApplicationInit();
 
-        CrashReport.initCrashReport(getApplicationContext(), "c0232e0b86", false);
+        CrashReport.initCrashReport(getApplicationContext(), "c0232e0b86", false); // bugly初始化
 
         /**
          * 对于7.0以下，需要在Application创建的时候进行语言切换
@@ -75,6 +77,9 @@ public class YMApplication extends Application {
 
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bleOpen = bluetoothAdapter.isEnabled();
+
+        LogcatHelper.getInstance(this).start();
+
     }
 
     private void modulesApplicationInit(){

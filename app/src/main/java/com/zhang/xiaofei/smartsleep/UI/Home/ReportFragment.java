@@ -1,6 +1,7 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -37,6 +38,11 @@ import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
@@ -96,6 +102,8 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 	private String startDate = "";
 	private String endDate = "";
 	public String serialId = "";
+	private boolean bDevicePopShow = false; // 设备选择弹框是否可见
+	private BottomDialog bottomDialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -116,46 +124,27 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		View vHeader = view.findViewById(R.id.include_title);
 		tvTitle = (TextView)view.findViewById(R.id.tv_title);
 		tvTitle.setText(R.string.report_sleep_belt);
+		tvTitle.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (bDevicePopShow) {
+					return;
+				}
+				bDevicePopShow = true;
+				selectDevice(vHeader);
+			}
+		});
 		ImageButton ibArrow = (ImageButton)view.findViewById(R.id.ib_arrow);
 		ibArrow.setVisibility(View.VISIBLE);
 		ibArrow.setImageResource(R.mipmap.report_icon_open);
 		ibArrow.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				Context context =  (Context) getActivity();
-				new XPopup.Builder(context)
-						.atView(vHeader)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-						.popupAnimation(PopupAnimation.TranslateAlphaFromTop)
-						.asCustom(new CustomAttachPopup(getActivity())
-								.bindItemLayout(R.layout.xpopup_adapger_m_text)
-								.setStringData(new String[]{
-										getResources().getString(R.string.report_sleep_belt),
-												getResources().getString(R.string.report_sleep_button),
-												getResources().getString(R.string.homepage_breathing)},
-								null).setOnSelectListener(new OnSelectListener() {
-							@Override
-							public void onSelect(int position, String text) {
-										if (position == 0) {
-											tvTitle.setText(R.string.report_sleep_belt);
-											dayFragment.refreshData(true);
-											scrollView.setVisibility(View.INVISIBLE);
-											viewPager.setVisibility(View.VISIBLE);
-											indicator.setVisibility(View.VISIBLE);
-										} else if (position == 1) {
-											tvTitle.setText(R.string.report_sleep_button);
-											dayFragment.refreshData(false);
-											scrollView.setVisibility(View.INVISIBLE);
-											viewPager.setVisibility(View.VISIBLE);
-											indicator.setVisibility(View.VISIBLE);
-										} else {
-											tvTitle.setText(R.string.homepage_breathing);
-											scrollView.setVisibility(View.VISIBLE);
-											viewPager.setVisibility(View.INVISIBLE);
-											indicator.setVisibility(View.INVISIBLE);
-										}
-							}
-						}))
-						.show();
+			public void onClick(View v) { // 切换不同的设备
+				if (bDevicePopShow) {
+					return;
+				}
+				bDevicePopShow = true;
+				selectDevice(vHeader);
 			}
 		});
 
@@ -165,15 +154,29 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		btnRight.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new BottomDialog(getActivity())
+				bottomDialog = new BottomDialog(getActivity())
 						.orientation(BottomDialog.HORIZONTAL)
 						.inflateMenu(R.menu.menu_main, new OnItemClickListener() {
 							@Override
 							public void click(Item item) {
-
+								if (item.getId() == R.id.action_content_add) {
+									UMImage image = new UMImage(ReportFragment.this.getActivity(), R.mipmap.ic_launcher);//分享图标
+									final UMWeb web = new UMWeb("http://www.yamind.cn"); //切记切记 这里分享的链接必须是http开头
+									web.setTitle("睡眠带");//标题
+									web.setThumb(image);  //缩略图
+									web.setDescription("日报告");//描述
+									new ShareAction(ReportFragment.this.getActivity()).setPlatform(SHARE_MEDIA.SINA)
+											.withMedia(web)
+											.setCallback(umShareListener)
+											.share();
+								} else if (item.getId() == R.id.ic_github) {
+									Intent intent = new Intent(getActivity(), ShareSleepQualityActivity.class);
+									getActivity().startActivity(intent);
+								}
+								bottomDialog.dismiss();
 							}
-						})
-						.show();
+						});
+				bottomDialog.show();
 			}
 		});
 
@@ -267,10 +270,56 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		calendarView.setOnMonthChangeListener(this);
 	}
 
+	private void dismissDialog() {
+
+	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d("cccc", "Fragment 所在的Activity onDestroy " + this);
+	}
+
+	/// 切换设备
+	private void selectDevice(View view) {
+		Context context =  (Context) getActivity();
+		new XPopup.Builder(context)
+				.atView(view)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
+				.popupAnimation(PopupAnimation.TranslateAlphaFromTop)
+				.asCustom(new CustomAttachPopup(getActivity())
+						.bindItemLayout(R.layout.xpopup_adapger_m_text)
+						.setStringData(new String[]{
+										getResources().getString(R.string.report_sleep_belt),
+										getResources().getString(R.string.report_sleep_button),
+										getResources().getString(R.string.homepage_breathing)},
+								null).setOnSelectListener(new OnSelectListener() {
+							@Override
+							public void onSelect(int position, String text) {
+								if (position == 0) {
+									tvTitle.setText(R.string.report_sleep_belt);
+									dayFragment.refreshData(true);
+									weekFragment.refreshSleepStatistic(true);
+									monthFragment.refreshSleepStatistic(true);
+									scrollView.setVisibility(View.INVISIBLE);
+									viewPager.setVisibility(View.VISIBLE);
+									indicator.setVisibility(View.VISIBLE);
+								} else if (position == 1) {
+									tvTitle.setText(R.string.report_sleep_button);
+									dayFragment.refreshData(false);
+									weekFragment.refreshSleepStatistic(false);
+									monthFragment.refreshSleepStatistic(false);
+									scrollView.setVisibility(View.INVISIBLE);
+									viewPager.setVisibility(View.VISIBLE);
+									indicator.setVisibility(View.VISIBLE);
+								} else {
+									tvTitle.setText(R.string.homepage_breathing);
+									scrollView.setVisibility(View.VISIBLE);
+									viewPager.setVisibility(View.INVISIBLE);
+									indicator.setVisibility(View.INVISIBLE);
+								}
+							}
+						}))
+				.show();
 	}
 
 	private String currentDate(long time) {
@@ -335,6 +384,13 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		@Override
 		protected int getPopupLayoutId() {
 			return R.layout.xpopup_attch_popup_m_view;
+		}
+
+		@Override
+		protected void onDismiss() {
+			super.onDismiss();
+			System.out.println("自定义弹框消失");
+			bDevicePopShow = false;  // 避免多次弹框，使用标示符。当弹框消失时，标志符重置。
 		}
 	}
 
@@ -482,5 +538,27 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
     	this.serialId = serialId;
 		requestBreathData(startDate, endDate);
 	}
+
+	UMShareListener umShareListener = new UMShareListener() {
+		@Override
+		public void onStart(SHARE_MEDIA platform) {
+			// 分享开始的回调
+		}
+
+		@Override
+		public void onResult(SHARE_MEDIA platform) {
+			Toast.makeText(ReportFragment.this.getActivity(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SHARE_MEDIA platform, Throwable t) {
+			Toast.makeText(ReportFragment.this.getActivity(),platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onCancel(SHARE_MEDIA platform) {
+			Toast.makeText(ReportFragment.this.getActivity(),platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+		}
+	};
 
 }

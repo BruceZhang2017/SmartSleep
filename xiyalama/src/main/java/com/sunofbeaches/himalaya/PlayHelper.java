@@ -3,6 +3,7 @@ package com.sunofbeaches.himalaya;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.sunofbeaches.himalaya.interfaces.IPlayerCallback;
@@ -141,7 +142,9 @@ public class PlayHelper implements IPlayerCallback, IRecommendViewCallback {
 
     @Override
     public void onPlayError() {
-
+        if (playHelperCallback != null) {
+            playHelperCallback.playFail();
+        }
     }
 
     @Override
@@ -201,21 +204,22 @@ public class PlayHelper implements IPlayerCallback, IRecommendViewCallback {
     public void onRecommendListLoaded(List<Album> result) {
         System.out.println("下载中");
         if (playHelperCallback != null) {
-            playHelperCallback.callbackHideHUD();
+            playHelperCallback.callbackHideHUD(false);
         }
     }
 
     @Override
     public void onNetworkError() {
+        System.out.println("网络故障");
         if (playHelperCallback != null) {
-            playHelperCallback.callbackHideHUD();
+            playHelperCallback.callbackHideHUD(true);
         }
     }
 
     @Override
     public void onEmpty() {
         if (playHelperCallback != null) {
-            playHelperCallback.callbackHideHUD();
+            playHelperCallback.callbackHideHUD(false);
         }
     }
 

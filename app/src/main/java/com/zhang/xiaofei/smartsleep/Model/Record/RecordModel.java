@@ -10,8 +10,10 @@ public class RecordModel extends RealmObject {
     int humidity;
     int heartRate;
     int breathRate;
-    Boolean breatheStop;
-    Boolean outBedAlarm;
+    int bodyMotion;
+    int getupFlag;
+    int snore;
+    int breatheStop;
 
     public int getUserId() {
         return userId;
@@ -61,27 +63,43 @@ public class RecordModel extends RealmObject {
         this.breathRate = breathRate;
     }
 
-    public Boolean getBreatheStop() {
-        return breatheStop;
-    }
-
-    public void setBreatheStop(Boolean breatheStop) {
-        this.breatheStop = breatheStop;
-    }
-
-    public Boolean getOutBedAlarm() {
-        return outBedAlarm;
-    }
-
-    public void setOutBedAlarm(Boolean outBedAlarm) {
-        this.outBedAlarm = outBedAlarm;
-    }
-
     public int getHeartRate() {
         return heartRate;
     }
 
     public void setHeartRate(int heartRate) {
         this.heartRate = heartRate;
+    }
+
+    public int getBodyMotion() {
+        return bodyMotion;
+    }
+
+    public void setBodyMotion(int bodyMotion) {
+        this.bodyMotion = bodyMotion;
+    }
+
+    public int getGetupFlag() {
+        return getupFlag;
+    }
+
+    public void setGetupFlag(int getupFlag) {
+        this.getupFlag = getupFlag;
+    }
+
+    public int getSnore() {
+        return snore;
+    }
+
+    public void setSnore(int snore) {
+        this.snore = snore;
+    }
+
+    public int getBreatheStop() {
+        return breatheStop;
+    }
+
+    public void setBreatheStop(int breatheStop) {
+        this.breatheStop = breatheStop;
     }
 }

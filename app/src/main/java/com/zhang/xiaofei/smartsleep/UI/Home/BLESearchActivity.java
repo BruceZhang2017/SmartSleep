@@ -1,32 +1,39 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.clj.blesample.FastBLEManager;
+import androidx.core.app.ActivityCompat;
+
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.scan.BleScanRuleConfig;
-import com.king.zxing.Intents;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 
 public class BLESearchActivity extends BaseAppActivity implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_OPEN_GPS = 3;
     private static final String TAG = BLESearchActivity.class.getSimpleName();
-    private Button btn_scan;
+    private TextView tvRight;
     private DeviceAdapter mDeviceAdapter;
     private ImageButton ibLeft;
     private TextView tvTitle;
@@ -47,24 +54,64 @@ public class BLESearchActivity extends BaseAppActivity implements View.OnClickLi
                 finish();
             }
         });
+        tvRight = (TextView)findViewById(R.id.tv_r);
+        tvRight.setVisibility(View.VISIBLE);
+        tvRight.setText(R.string.start_scan);
+        tvRight.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_scan:
-                if (btn_scan.getText().equals(getString(R.string.start_scan))) {
-                    Intent intentBroadcast = new Intent();   //定义Intent
-                    intentBroadcast.setAction("Filter");
-                    intentBroadcast.putExtra("arg0", 13);
-                    sendBroadcast(intentBroadcast);
-                    setScanRule();
-                    startScan();
-                } else if (btn_scan.getText().equals(getString(R.string.stop_scan))) {
-                    BleManager.getInstance().cancelScan();
-                }
-                break;
+        if (tvRight.getText().equals(getString(R.string.start_scan))) {
+            if (YMApplication.getInstance().getBLEOpen() == false) {
+                Toast.makeText(this, getResources().getString(R.string.please_open_blue), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && (!checkGPSIsOpen() || !checkPermissionGranted())) {
+                new AlertDialog.Builder(this)
+                        .setTitle(com.clj.blesample.R.string.notifyTitle)
+                        .setMessage(com.clj.blesample.R.string.gpsNotifyMsg)
+                        .setNegativeButton(com.clj.blesample.R.string.cancel,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                        .setPositiveButton(com.clj.blesample.R.string.setting,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                        startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+                                    }
+                                })
+
+                        .setCancelable(false)
+                        .show();
+                return;
+            }
+            Intent intentBroadcast = new Intent();   //定义Intent
+            intentBroadcast.setAction("Filter");
+            intentBroadcast.putExtra("arg0", 13);
+            sendBroadcast(intentBroadcast);
+            setScanRule();
+            startScan();
+        } else if (tvRight.getText().equals(getString(R.string.stop_scan))) {
+            BleManager.getInstance().cancelScan();
         }
+    }
+
+    public boolean checkGPSIsOpen() {
+        LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null)
+            return false;
+        Boolean value = locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
+        return value;
+    }
+
+    private boolean checkPermissionGranted() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) >= 0;
     }
 
     @Override
@@ -77,11 +124,6 @@ public class BLESearchActivity extends BaseAppActivity implements View.OnClickLi
     }
 
     private void initView() {
-
-        btn_scan = (Button) findViewById(R.id.btn_scan);
-        btn_scan.setText(getString(R.string.start_scan));
-        btn_scan.setOnClickListener(this);
-
         mDeviceAdapter = new DeviceAdapter(this);
         mDeviceAdapter.setOnDeviceClickListener(new DeviceAdapter.OnDeviceClickListener() {
             @Override
@@ -131,7 +173,7 @@ public class BLESearchActivity extends BaseAppActivity implements View.OnClickLi
             public void onScanStarted(boolean success) {
                 mDeviceAdapter.clearScanDevice();
                 mDeviceAdapter.notifyDataSetChanged();
-                btn_scan.setText(getString(R.string.stop_scan));
+                tvRight.setText(getString(R.string.stop_scan));
             }
 
             @Override
@@ -147,7 +189,7 @@ public class BLESearchActivity extends BaseAppActivity implements View.OnClickLi
 
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
-                btn_scan.setText(getString(R.string.start_scan));
+                tvRight.setText(getString(R.string.start_scan));
             }
         });
     }

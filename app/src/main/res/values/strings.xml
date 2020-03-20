@@ -289,4 +289,11 @@
     <string name="sleep_report">睡眠报告</string>
 
     <string name="bed_away">离床</string>
+    <string name="feedback_description_placeholder">请描述问题</string>
+    <string name="add_device_same_type_fail_tip">APP内同一账号每种设备只能绑定一个，需要替换吗？</string>
+    
+    <string name="weixin">微信</string>
+    <string name="weixin_circle">朋友圈</string>
+    <string name="sina">微博</string>
+    <string name="poster">生成海报</string>
 </resources>

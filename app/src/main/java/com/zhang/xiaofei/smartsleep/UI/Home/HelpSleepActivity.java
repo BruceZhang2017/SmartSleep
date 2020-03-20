@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
@@ -127,6 +128,9 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         tvTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (tvTip.getText().toString().length() <= 0) {
+                    return;
+                }
                 Intent intentB = new Intent(HelpSleepActivity.this, SmartSleepTestActivity.class);
                 startActivity(intentB);
             }
@@ -141,6 +145,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         tvSoundTitle = (TextView)findViewById(R.id.textView3);
 
         switch1 = (Switch)findViewById(R.id.switch1);
+        switch1.setChecked(AlarmTimer.getInstance().bStart);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -184,7 +189,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 }
             }
         });
-        switch1.setChecked(AlarmTimer.getInstance().bStart);
         AlarmTimer.getInstance().list.add(this);
 
         btnSleep = (CountDownButton) findViewById(R.id.btn_sleep);
@@ -383,8 +387,11 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     }
 
     @Override
-    public void callbackHideHUD() {
+    public void callbackHideHUD(boolean isShowToast) {
         hideHUD();
+        if (isShowToast) {
+            Toast.makeText(this, R.string.common_check_network, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -402,42 +409,14 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     }
                     roundedImageView.setVisibility(View.VISIBLE);
                     tvCount.setVisibility(View.VISIBLE);
-                    buttonCountDownTimer = new Timer();
+                    buttonCountDownTimer = new Timer(); // 按钮按下去时，定时器
                     buttonCountDownTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    buttonCountDownCount++;
-                                    if (buttonCountDownCount >= 3) {
-                                        buttonCountDownTimer.cancel();
-                                        buttonCountDownTimer = null;
-                                        buttonCountDownCount = 0;
-                                        roundedImageView.setVisibility(View.INVISIBLE);
-                                        tvCount.setVisibility(View.INVISIBLE);
-                                        tvCount.setText("" + 3);
-                                        if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
-                                            bSleep = true;
-                                            btnSleep.setText(R.string.common_get_up);
-                                            Intent intentBroadcast = new Intent();   //定义Intent
-                                            intentBroadcast.setAction(DYNAMICACTION);
-                                            intentBroadcast.putExtra("arg0", 3);
-                                            sendBroadcast(intentBroadcast);
-                                        } else {
-                                            bSleep = false;
-                                            btnSleep.setText(R.string.alarm_sleep);
-                                            Intent intentBroadcast = new Intent();   //定义Intent
-                                            intentBroadcast.setAction(DYNAMICACTION);
-                                            intentBroadcast.putExtra("arg0", 4);
-                                            sendBroadcast(intentBroadcast);
-                                        }
-
-                                        refreshMonitorValue();
-
-                                        return;
-                                    }
-                                    tvCount.setText("" + (3 - buttonCountDownCount));
+                                    handleSleepOrGetupEvent();
                                 }
                             });
                         }
@@ -464,6 +443,38 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             }
         };
     };
+
+    private void handleSleepOrGetupEvent() {
+        buttonCountDownCount++;
+        if (buttonCountDownCount >= 3) {
+            buttonCountDownTimer.cancel();
+            buttonCountDownTimer = null;
+            buttonCountDownCount = 0;
+            roundedImageView.setVisibility(View.INVISIBLE);
+            tvCount.setVisibility(View.INVISIBLE);
+            tvCount.setText("" + 3);
+            if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
+                bSleep = true;
+                btnSleep.setText(R.string.common_get_up);
+                Intent intentBroadcast = new Intent();   //定义Intent
+                intentBroadcast.setAction(DYNAMICACTION);
+                intentBroadcast.putExtra("arg0", 3);
+                sendBroadcast(intentBroadcast);
+            } else {
+                bSleep = false;
+                btnSleep.setText(R.string.alarm_sleep);
+                Intent intentBroadcast = new Intent();   //定义Intent
+                intentBroadcast.setAction(DYNAMICACTION);
+                intentBroadcast.putExtra("arg0", 4);
+                sendBroadcast(intentBroadcast);
+            }
+
+            refreshMonitorValue();
+
+            return;
+        }
+        tvCount.setText("" + (3 - buttonCountDownCount));
+    }
 
     // 读取离床、心率和呼吸率
     private Timer readHeartAndHealthTimer = new Timer();
@@ -512,7 +523,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                             if (arg1 == 0) {
                                 tvHeartAndBreath.setText(getResources().getString(R.string.bed_away));
                             } else {
-                                tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + getResources().getString(R.string.common_times_minute));
+                                tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + " " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + " " + getResources().getString(R.string.common_times_minute));
                             }
                         }
                     });
@@ -520,6 +531,16 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
 
                 }
             }
+        }
+    }
+
+    @Override
+    public void playFail() {
+        Toast.makeText(this, R.string.common_check_network, Toast.LENGTH_SHORT).show();
+        if (playHelper.isPlaying()) {
+            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
+        } else {
+            ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
         }
     }
 }

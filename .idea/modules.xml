@@ -2,18 +2,18 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SmartSleep.iml" filepath="$PROJECT_DIR$/SmartSleep.iml" />
-      <module fileurl="file://$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" filepath="$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bottomDialog/bottomDialog.iml" filepath="$PROJECT_DIR$/bottomDialog/bottomDialog.iml" />
-      <module fileurl="file://$PROJECT_DIR$/esptouch/esptouch.iml" filepath="$PROJECT_DIR$/esptouch/esptouch.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fast/fast.iml" filepath="$PROJECT_DIR$/fast/fast.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/pickerview/pickerview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/wheelview/wheelview.iml" filepath="$PROJECT_DIR$/wheelview/wheelview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xiyalama/xiyalama.iml" filepath="$PROJECT_DIR$/xiyalama/xiyalama.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xpopup/xpopup.iml" filepath="$PROJECT_DIR$/xpopup/xpopup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" group="SmartSleep/MPChartLib" />
+      <module fileurl="file://$PROJECT_DIR$/SmartSleep.iml" filepath="$PROJECT_DIR$/SmartSleep.iml" group="SmartSleep" />
+      <module fileurl="file://$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" filepath="$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" group="SmartSleep/alarmmanagerclock" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="SmartSleep/app" />
+      <module fileurl="file://$PROJECT_DIR$/bottomDialog/bottomDialog.iml" filepath="$PROJECT_DIR$/bottomDialog/bottomDialog.iml" group="SmartSleep/bottomDialog" />
+      <module fileurl="file://$PROJECT_DIR$/esptouch/esptouch.iml" filepath="$PROJECT_DIR$/esptouch/esptouch.iml" group="SmartSleep/esptouch" />
+      <module fileurl="file://$PROJECT_DIR$/fast/fast.iml" filepath="$PROJECT_DIR$/fast/fast.iml" group="SmartSleep/fast" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" group="SmartSleep/library" />
+      <module fileurl="file://$PROJECT_DIR$/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/pickerview/pickerview.iml" group="SmartSleep/pickerview" />
+      <module fileurl="file://$PROJECT_DIR$/wheelview/wheelview.iml" filepath="$PROJECT_DIR$/wheelview/wheelview.iml" group="SmartSleep/wheelview" />
+      <module fileurl="file://$PROJECT_DIR$/xiyalama/xiyalama.iml" filepath="$PROJECT_DIR$/xiyalama/xiyalama.iml" group="SmartSleep/xiyalama" />
+      <module fileurl="file://$PROJECT_DIR$/xpopup/xpopup.iml" filepath="$PROJECT_DIR$/xpopup/xpopup.iml" group="SmartSleep/xpopup" />
     </modules>
   </component>
 </project>

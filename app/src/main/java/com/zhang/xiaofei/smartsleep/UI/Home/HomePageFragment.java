@@ -155,7 +155,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_bind_device:
                 HomeActivity activity = (HomeActivity)getActivity();
-                activity.checkCameraPermissions();
+                //activity.checkCameraPermissions();
+                activity.startScan();
                 break;
             case R.id.ib_help_sleep:
                 Intent intentB = new Intent(getActivity(), MainActivity.class);
@@ -191,7 +192,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         tvDeviceTitle.setVisibility(value ? View.INVISIBLE : View.VISIBLE);
         tvNoDeviceTip.setVisibility(value ? View.INVISIBLE : View.VISIBLE);
         btnBindDevice.setVisibility(value ? View.INVISIBLE : View.VISIBLE);
-        btnIgnore.setVisibility(value ? View.INVISIBLE : View.VISIBLE);
+        //btnIgnore.setVisibility(value ? View.INVISIBLE : View.VISIBLE);
     }
 
     private void hideAdvertisement() {
@@ -230,7 +231,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                                     showDialog();
                                 } else {
                                     HomeActivity activity = (HomeActivity)getActivity();
-                                    activity.checkCameraPermissions();
+                                    //activity.checkCameraPermissions();
+                                    activity.startScan(); // 开始扫描
                                 }
                             }
                         })
@@ -318,17 +320,18 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     @Override
     protected void doURV(UltimateRecyclerView urv) {
-        //  ultimateRecyclerView.setInflater(LayoutInflater.from(getApplicationContext()));
         ultimateRecyclerView.setHasFixedSize(true);
         ultimateRecyclerView.setClipToPadding(false);
         ArrayList<String> list = new ArrayList<>();
-        list.add("one");
+        for (int i = 0; i < 7; i++) {
+            list.add("one");
+        }
         simpleRecyclerViewAdapter = new sectionHomePageAdapter(list);
         simpleRecyclerViewAdapter.context = getActivity();
         configLinearLayoutManager(ultimateRecyclerView);
         //enableParallaxHeader();
         enableEmptyViewPolicy();
-        enableLoadMore();
+        //enableLoadMore();
         ultimateRecyclerView.setRecylerViewBackgroundColor(getResources().getColor(R.color.tranparencyColor));
         enableRefresh();
         // enableScrollControl();
@@ -548,7 +551,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                     tvBodyMove.setText(0 + " h");
                     tvDotValue.setText(0 + " h");
                 }
-            } else {
+            } else if (type == 2) {
                 tvDot1.setText(R.string.middle_fall_asleep);
                 tvDot2.setText(R.string.report_sleep_hour);
                 tvDot3.setText(R.string.common_body_moves);
@@ -584,6 +587,43 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit21 + (m > 9 ? ("" + m) : ("0" + m)) + unit22);
                 tvBodyMove.setText(R.string.common_many);
                 tvDotValue.setText(0 + "" + getResources().getString(R.string.common_times));
+            } else {
+                tvDot1.setText(R.string.middle_fall_asleep);
+                tvDot2.setText(R.string.report_sleep_hour);
+                tvDot3.setText(R.string.report_heart_rate);
+                tvDot4.setText(R.string.report_respiratory_rate_aver);
+                String unit21 = getResources().getString(R.string.common_hour);
+                String unit22 = getResources().getString(R.string.common_minute);
+                String content2 = (sleepH > 9 ? ("" + sleepH) : ("0" + sleepH)) + unit21 + (sleepM > 9 ? ("" + sleepM) : ("0" + sleepM)) + unit22;
+                tvSleepTime.setText(content2);
+                int h = 0;
+                int m = 0;
+                if (getupH > sleepH) {
+                    if (getupM >= sleepM) {
+                        h = getupH - sleepH;
+                        m = getupM - sleepM;
+                    }else {
+                        h = getupH - sleepH - 1;
+                        m = getupM - sleepM + 60;
+                    }
+                } else if (getupH == sleepH) {
+                    if (getupM >= sleepM) {
+                        m = getupM - sleepM;
+                    }
+                } else {
+                    if (getupM >= sleepM) {
+                        h = getupH + 24 - sleepH;
+                        m = getupM - sleepM;
+                    } else {
+                        h = getupH + 24 - sleepH - 1;
+                        m = getupM - sleepM + 60;
+                    }
+                }
+                //System.out.println("h: " + h + "m :" + m);
+                tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit21 + (m > 9 ? ("" + m) : ("0" + m)) + unit22);
+                String unit3 = getResources().getString(R.string.common_times_minute);
+                tvBodyMove.setText(0 + "" + unit3);
+                tvDotValue.setText(0 + "" + unit3);
             }
 
             return convertView;
@@ -667,8 +707,16 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             refreshDevice(false);
             return;
         }
+        setIBHelpSleepLayout();
+        refreshDevice(true);
+    }
+
+    private void setIBHelpSleepLayout() {
+        Integer dpi = DisplayUtil.getScreenMsg(getActivity()).get(DisplayUtil.ScreenEnum.DendityDpi);
+        int value = dpi <= 320 ? 10 : 40;
+        int tem = DisplayUtil.dip2px(value, getActivity());
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)viewPager.getLayoutParams();
-        params.height = (ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(40, getActivity())) * 681 / 960;
+        params.height = (ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(40, getActivity())) * 681 / 960 - tem;
         viewPager.setLayoutParams(params);
         ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         paramsB.leftToLeft = R.id.cl_main;
@@ -676,7 +724,6 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         paramsB.leftMargin = DisplayUtil.dip2px(40, getActivity());
         paramsB.topMargin = DisplayUtil.dip2px(20, getActivity());
         ibHelpSleep.setLayoutParams(paramsB);
-        refreshDevice(true);
     }
 
     // 设备卡片页
@@ -689,6 +736,9 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         hideNoDevice(value);
         if (value) {
             adapter.notifyDataSetChanged();
+        }
+        if (value) {
+            setIBHelpSleepLayout();
         }
     }
 
