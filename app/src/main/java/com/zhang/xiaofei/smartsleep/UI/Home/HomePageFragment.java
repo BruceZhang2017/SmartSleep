@@ -141,7 +141,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        // 读取
+        System.out.println("HomePage Fragment OnResume");
     }
 
     @Override

@@ -53,6 +53,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLContext;
+
 import io.feeeei.circleseekbar.CircleSeekBar;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -146,75 +148,9 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         circleSleep4.setProgressColor(getResources().getColor(R.color.color_61D088));
 
         initialCurrentTime();
-        mRealm = Realm.getDefaultInstance();
-        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
-        if (userList != null && userList.size() > 0) {
-            for (AlarmModel model: userList) {
-                if (model.getType() == 0) {
-                    getupTime = model.getHour() * 60 * 60 + model.getMinute() * 60;
-                } else {
-                    if (model.getHour() < 12) {
-                        sleepTime = model.getHour() * 60 * 60 + model.getMinute() * 60;
-                    } else {
-                        sleepTime = (model.getHour() * 60 * 60 + model.getMinute() * 60) - 24 * 60 * 60;
-                    }
-                }
-            }
-        }
+        readAlarmData(); // 读取闹钟信息
 
-        int total = getupTime - sleepTime;
-        int[] min = new int[5];
-        if (total % 6 == 0) {
-            tableRowCount = 6;
-            tableRowDuration = total / 6;
-            min[0] = total % 6;
-        } else if (total % 7 == 0) {
-            tableRowCount = 7;
-            tableRowDuration = total / 7;
-            min[1] = total % 7;
-        } else if (total % 8 == 0) {
-            tableRowCount = 8;
-            tableRowDuration = total / 8;
-            min[2] = total % 8;
-        } else if (total % 9 == 0) {
-            tableRowCount = 9;
-            tableRowDuration = total / 9;
-            min[3] = total % 9;
-        } else if (total % 10 == 0) {
-            tableRowCount = 10;
-            tableRowDuration = total / 10;
-            min[4] = total % 10;
-        } else {
-            int max = 0;
-            int index = 0;
-            for (int j = 0; j < 5; j++) {
-                if (min[j] < max) {
-                    max = min[j];
-                    index = j;
-                }
-            }
-            tableRowCount = index + 6;
-            tableRowDuration = (total + max) / (index + 6);
-        }
-
-        mMap.clear();
-        RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
-                .greaterThan("time", currentTime + sleepTime)
-                .lessThan("time", currentTime + getupTime)
-                .findAll().sort("time", Sort.ASCENDING);
-        for (RecordModel model: list) {
-            if (mMap.containsKey((Integer) (model.getTime() / 60))) {
-                List<RecordModel> temlist = mMap.get((Integer) (model.getTime() / 60));
-                temlist.add(model);
-                mMap.put((Integer) (model.getTime() / 60), temlist);
-            } else {
-                List<RecordModel> temlist = new ArrayList<RecordModel>();
-                temlist.add(model);
-                mMap.put((Integer) (model.getTime() / 60), temlist);
-            }
-        }
-
-        System.out.println( " 开始时间：" + (sleepTime + currentTime) + " 结束时间：" + (currentTime + getupTime) + " 获取到的数据量：" + list.size());
+        readDataFromDB();
         initializeForChart(); // 睡眠质量初始化
         initializeForChart2();
         initializeForChart3();
@@ -253,21 +189,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
         });
 
-        tvSleepBottomCount1 = (TextView)findViewById(R.id.tv_sleep_bottom_count_1);
-        tvSleepBottomCount2 = (TextView)findViewById(R.id.tv_sleep_bottom_count_2);
-        tvSleepBottomCount3 = (TextView)findViewById(R.id.tv_sleep_bottom_count_3);
-        String content1 = "00 " + getResources().getString(R.string.common_times_minute);
-        String unit1 = getResources().getString(R.string.common_times_minute);
-        tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, unit1));
-        String content2 = "00 " + getResources().getString(R.string.common_times_minute);
-        String unit2 = getResources().getString(R.string.common_times_minute);
-        tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, unit2));
-        String content = "0 " + getResources().getString(R.string.common_times);
-        String unit = getResources().getString(R.string.common_times);
-        tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
-
-        System.out.println("当前的时间端：" + (currentTime + sleepTime) + " " + (currentTime + getupTime));
-
         cl5 = (ConstraintLayout)findViewById(R.id.cl_5);
         cl6 = (ConstraintLayout)findViewById(R.id.cl_6);
         cl11 = (ConstraintLayout)findViewById(R.id.cl_11);
@@ -275,45 +196,30 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     }
 
+    // 初始化UI
     private void initialText() {
         tvSleepReviewValue = (TextView)findViewById(R.id.tv_sleep_review_value);
         refreshGrade();
         tvTime1 = (TextView)findViewById(R.id.tv_time_1);
-        String unit11 = getResources().getString(R.string.common_hour2);
-        String unit12 = getResources().getString(R.string.common_minute3);
-        String[] array1 = {unit11, unit12};
-        String content1 = "00" + unit11 + "00" + unit12;
-        tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         tvTime2 = (TextView)findViewById(R.id.tv_time_2);
-        String unit21 = getResources().getString(R.string.common_hour);
-        String unit22 = getResources().getString(R.string.common_minute);
-        String[] array2 = {unit21, unit22};
-        String content2 = "00" + unit21 + "00" + unit22;
-        tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         tvTime3 = (TextView)findViewById(R.id.tv_time_3);
         tvTime4 = (TextView)findViewById(R.id.tv_time_4);
-        String unit4 = getResources().getString(R.string.common_times_minute);
-        String[] array4 = {unit4};
-        String content4 = "00" + unit4;
-        tvTime3.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
-        tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
-        String unit5 = "℃";
-        String[] array5 = {unit5};
-        String content5 = "00" + unit5;
         tvTime5 = (TextView)findViewById(R.id.tv_time_5);
-        tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array5));
-        String unit6 = "%";
-        String[] array6 = {unit6};
-        String content6 = "00" + unit6;
         tvTime6 = (TextView)findViewById(R.id.tv_time_6);
-        tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
 
         tvSleepTime3 = (TextView)findViewById(R.id.tv_sleep_time_3);
         tvSleepTime4 = (TextView)findViewById(R.id.tv_sleep_time_4);
         ivSleepTime3 = (ImageView)findViewById(R.id.iv_time_3);
         ivSleepTime4 = (ImageView)findViewById(R.id.iv_time_4);
+
+        tvSleepBottomCount1 = (TextView)findViewById(R.id.tv_sleep_bottom_count_1);
+        tvSleepBottomCount2 = (TextView)findViewById(R.id.tv_sleep_bottom_count_2);
+        tvSleepBottomCount3 = (TextView)findViewById(R.id.tv_sleep_bottom_count_3);
+
+        refreshSleepStatisticsUI();
     }
 
+    // 刷新静态数据
     private void refreshSleepStatistic(boolean isBlet) {
         if (isBlet) {
             tvSleepTime3.setText(R.string.report_heart_rate);
@@ -352,6 +258,12 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         return str;
     }
 
+    private String timeToHourMinute(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        String str = simpleDateFormat.format(new Date(time + 0));
+        return str;
+    }
+
     private void initialCurrentTime() {
         String str = currentDate(System.currentTimeMillis());
         String[] array = str.split("-");
@@ -359,6 +271,12 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         calendar.set(Integer.parseInt(array[0]), Integer.parseInt(array[1]) - 1, Integer.parseInt(array[2]),0,0,0);
         currentTime = (int)(calendar.getTimeInMillis() / 1000);
         System.out.println("当前时间：" + currentTime);
+    }
+
+    @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+        System.out.println("Report Day Fragment resume lazy");
     }
 
     @Override
@@ -493,7 +411,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             set1.setValueTextSize(9f);
             set1.setDrawCircles(false);
             // draw selection line as dashed
-            set1.enableDashedHighlightLine(10f, 5f, 0f);
+            //set1.enableDashedHighlightLine(10f, 5f, 0f);
 
             // set the filled area
             set1.setDrawFilled(true);
@@ -629,7 +547,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
         set2.setColor(getResources().getColor(R.color.color_6EE1CA));
         set2.setValueTextColor(ColorTemplate.getHoloBlue());
-        set2.setLineWidth(1.5f);
+        set2.setLineWidth(0.5f);
         set2.setDrawCircles(false);
         set2.setDrawValues(false);
         set2.setFillAlpha(65);
@@ -752,7 +670,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set3.setAxisDependency(YAxis.AxisDependency.LEFT);
         set3.setColor(getResources().getColor(R.color.color_6EE1CA));
         set3.setValueTextColor(ColorTemplate.getHoloBlue());
-        set3.setLineWidth(1.5f);
+        set3.setLineWidth(0.5f);
         set3.setDrawCircles(false);
         set3.setDrawValues(false);
         set3.setFillAlpha(65);
@@ -874,7 +792,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set4.setAxisDependency(YAxis.AxisDependency.LEFT);
         set4.setColor(getResources().getColor(R.color.color_6EE1CA));
         set4.setValueTextColor(ColorTemplate.getHoloBlue());
-        set4.setLineWidth(1.5f);
+        set4.setLineWidth(0.5f);
         set4.setDrawCircles(false);
         set4.setDrawValues(false);
         set4.setFillAlpha(65);
@@ -998,7 +916,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set5.setAxisDependency(YAxis.AxisDependency.LEFT);
         set5.setColor(getResources().getColor(R.color.color_6EE1CA));
         set5.setValueTextColor(ColorTemplate.getHoloBlue());
-        set5.setLineWidth(1.5f);
+        set5.setLineWidth(0.5f);
         set5.setDrawCircles(false);
         set5.setDrawValues(false);
         set5.setFillAlpha(65);
@@ -1062,12 +980,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         }
     }
 
-    public void refreshData(boolean isBlet) {
-        this.isBlet = isBlet;
-        cl5.setVisibility(isBlet ? View.VISIBLE : View.GONE);
-        cl6.setVisibility(isBlet ? View.VISIBLE : View.GONE);
-        cl11.setVisibility(isBlet ? View.GONE : View.VISIBLE);
-
+    private void readDataFromDB() {
         mMap.clear();
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
                 .greaterThan("time", currentTime + sleepTime)
@@ -1084,7 +997,17 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 mMap.put((Integer) (model.getTime() / 60), temlist);
             }
         }
-        System.out.println( " 开始时间：" + (sleepTime + currentTime) + "结束时间：" + (currentTime + getupTime) + "获取到的数据量：" + list.size());
+        System.out.println( " 开始时间：" + (sleepTime + currentTime) + "结束时间：" + (currentTime + getupTime) +
+                "获取到的数据量：" + list.size());
+    }
+
+    public void refreshData(boolean isBlet) {
+        this.isBlet = isBlet;
+        cl5.setVisibility(isBlet ? View.VISIBLE : View.GONE);
+        cl6.setVisibility(isBlet ? View.VISIBLE : View.GONE);
+        cl11.setVisibility(isBlet ? View.GONE : View.VISIBLE);
+
+        readDataFromDB();
         setData2();
         chart2.invalidate();
         setData3();
@@ -1093,6 +1016,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         chart4.invalidate();
 
         refreshSleepStatistic(isBlet);
+        refreshSleepStatisticsUI();
     }
 
     Comparator<Entry> comparatorByX = new Comparator<Entry>() {
@@ -1191,5 +1115,196 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 //
 //        return chart;
 //    }
+
+    // 刷新统计时间相关数据UI
+    private void refreshSleepStatisticsUI() {
+
+        Integer minTime = 0;
+        Integer maxTime = 0;
+        long averageHeart = 0;
+        long averageBreath = 0;
+        long averageTemp = 0;
+        long averageHumidity = 0;
+        Integer count = 0;
+        Integer bodyMotion = 0;
+        if (mMap.size() > 0) {
+            for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
+                for (RecordModel model: entry.getValue()) {
+                    averageHeart += model.getHeartRate();
+                    averageBreath += model.getBreathRate();
+                    averageTemp += model.getTemperature();
+                    averageHumidity += model.getHumidity();
+                    bodyMotion += model.getBodyMotion();
+                }
+                count += entry.getValue().size();
+                if (minTime == 0) {
+                    minTime = entry.getKey();
+                }
+                if (entry.getKey() < minTime) {
+                    minTime = entry.getKey();
+                }
+                if (maxTime == 0) {
+                    maxTime = entry.getKey();
+                }
+                if (entry.getKey() > maxTime) {
+                    maxTime = entry.getKey();
+                }
+            }
+        }
+        System.out.println("minTime: " + minTime + " maxTime: " + maxTime);
+        String unit11 = getResources().getString(R.string.common_hour2);
+        String unit12 = getResources().getString(R.string.common_minute3);
+        String[] array1 = {unit11, unit12};
+        if (minTime <= 0) {
+            String content1 = "00" + unit11 + "00" + unit12;
+            tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+        } else {
+            String hourAndMinute = timeToHourMinute((long)minTime * 60 * 1000);
+            System.out.println("hourAndMinute: " + hourAndMinute);
+            String[] array = hourAndMinute.split(":");
+            if (array.length == 2) {
+                String content1 = array[0] + unit11 + array[1] + unit12;
+                tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+            }
+        }
+
+        String unit21 = getResources().getString(R.string.common_hour);
+        String unit22 = getResources().getString(R.string.common_minute);
+        String[] array2 = {unit21, unit22};
+        String hour = (maxTime - minTime) / 60 > 9 ? ("" + (maxTime - minTime) / 60) : ("0" + (maxTime - minTime) / 60);
+        String minute =  (maxTime - minTime) % 60 > 9 ? ("" + (maxTime - minTime) % 60) : ("0" + (maxTime - minTime) % 60);
+        String content2 = hour + unit21 + minute + unit22;
+        if (minTime <= 0) {
+            content2 = "00" + unit21 + "00" + unit22;
+        }
+        tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+
+        String unit4 = getResources().getString(R.string.common_times_minute);
+        String[] array4 = {unit4};
+        if (count > 0) {
+            String content3 = averageHeart / count + unit4;
+            tvTime3.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, array4));
+            String unit1 = getResources().getString(R.string.common_times_minute);
+            tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, unit1));
+        } else {
+            String content3 = "00" + unit4;
+            tvTime3.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, array4));
+            String unit1 = getResources().getString(R.string.common_times_minute);
+            tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, unit1));
+        }
+        if (count > 0) {
+            String content4 = averageBreath / count + unit4;
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            String unit2 = getResources().getString(R.string.common_times_minute);
+            tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, unit2));
+        } else {
+            String content4 = "00" + unit4;
+            String unit2 = getResources().getString(R.string.common_times_minute);
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, content4));
+            tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, unit2));
+        }
+        String unit5 = "℃";
+        String[] array5 = {unit5};
+        if (count > 0) {
+            String content5 = averageTemp / count + unit5;
+            tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array5));
+        } else {
+            String content5 = "00" + unit5;
+            tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array5));
+        }
+        String unit6 = "%";
+        String[] array6 = {unit6};
+        if (count > 0) {
+            String content6 = averageHumidity / count + unit6;
+            tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
+        } else {
+            String content6 = "00" + unit6;
+            tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
+        }
+
+        String unit = getResources().getString(R.string.common_times);
+        if (count > 0) {
+            String content = bodyMotion / count + getResources().getString(R.string.common_times);
+            tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
+        } else {
+            String content = "0 " + getResources().getString(R.string.common_times);
+            tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
+        }
+
+
+    }
+
+    private void readAlarmData() {
+        mRealm = Realm.getDefaultInstance();
+        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
+        if (userList != null && userList.size() > 0) {
+            for (AlarmModel model: userList) {
+                if (model.getType() == 0) {
+                    getupTime = model.getHour() * 60 * 60 + model.getMinute() * 60;
+                } else {
+                    if (model.getHour() < 12) {
+                        sleepTime = model.getHour() * 60 * 60 + model.getMinute() * 60;
+                    } else {
+                        sleepTime = (model.getHour() * 60 * 60 + model.getMinute() * 60) - 24 * 60 * 60;
+                    }
+                }
+            }
+        }
+
+        int total = getupTime - sleepTime;
+        int[] min = new int[5];
+        if (total % 6 == 0) {
+            tableRowCount = 6;
+            tableRowDuration = total / 6;
+            min[0] = total % 6;
+        } else if (total % 7 == 0) {
+            tableRowCount = 7;
+            tableRowDuration = total / 7;
+            min[1] = total % 7;
+        } else if (total % 8 == 0) {
+            tableRowCount = 8;
+            tableRowDuration = total / 8;
+            min[2] = total % 8;
+        } else if (total % 9 == 0) {
+            tableRowCount = 9;
+            tableRowDuration = total / 9;
+            min[3] = total % 9;
+        } else if (total % 10 == 0) {
+            tableRowCount = 10;
+            tableRowDuration = total / 10;
+            min[4] = total % 10;
+        } else {
+            int max = 0;
+            int index = 0;
+            for (int j = 0; j < 5; j++) {
+                if (min[j] < max) {
+                    max = min[j];
+                    index = j;
+                }
+            }
+            tableRowCount = index + 6;
+            tableRowDuration = (total + max) / (index + 6);
+        }
+    }
+
+
+    // 重新刷新日报
+    public void refreshDayReport() {
+        readAlarmData();
+        refreshX(chart);
+        refreshX(chart2);
+        refreshX(chart3);
+        refreshX(chart4);
+        refreshX(chart5);
+        refreshData(isBlet);
+        setCharData(4);
+        chart.invalidate();
+    }
+
+    private void refreshX(LineChart chart) {
+        chart.getXAxis().setLabelCount(tableRowCount,true);
+        chart.getXAxis().setAxisMinimum(sleepTime / 60);
+        chart.getXAxis().setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
+    }
 
 }

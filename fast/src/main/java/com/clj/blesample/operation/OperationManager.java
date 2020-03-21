@@ -154,7 +154,7 @@ public class OperationManager {
                     bleDataObserver.handleBLEData(battery, flash, strMac, version);
                 }
                 bleDataObserver.handleBLEWrite(2); // 读取温度和湿度
-                if (flash > 0) { // 读取设备里数据
+                if (flash >= 0) { // 读取设备里数据
                     bleDataObserver.handleBLEWrite(3); // 读取flash内数据
                 }
 

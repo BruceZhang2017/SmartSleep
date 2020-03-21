@@ -295,4 +295,7 @@
     <string name="weixin_circle">Moments</string>
     <string name="sina">Weibo</string>
     <string name="poster">Poster</string>
+
+    <string name="heart_name">Heartbeat</string>
+    <string name="breath_name">Respiratory</string>
 </resources>

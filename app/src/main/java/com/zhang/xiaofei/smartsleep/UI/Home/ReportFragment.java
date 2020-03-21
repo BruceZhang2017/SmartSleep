@@ -275,6 +275,29 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		System.out.println("Report Fragment OnResume");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		System.out.println("Report Fragment onPause");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		System.out.println("Report Fragment onStop");
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d("cccc", "Fragment 所在的Activity onDestroy " + this);
@@ -561,4 +584,8 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		}
 	};
 
+    // 重新刷新日报
+	public void refreshDayReport() {
+		dayFragment.refreshDayReport();
+	}
 }

@@ -166,8 +166,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             ImageView imageView = mTabbar.getMiddleView().findViewById(R.id.iv_middle);
             imageView.setImageResource(R.mipmap.nav_icon_sleep);
         }
-
-        //readSimulateData();
     }
 
     @Override
@@ -179,6 +177,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     @Override
     public void onTabSelect(int index) {
         // 底部Tab选中的index
+        System.out.println("HomeActivity ontab select: " + index);
+        if (index == 1) {
+            mTab2.refreshDayReport();
+        }
     }
 
     @Override
@@ -451,11 +453,15 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (array.length < 8) {
             return;
         }
-        if (mTab1 == null && DeviceManager.getInstance().deviceList.size() > DeviceManager.getInstance().currentDevice) {
+        if (DeviceManager.getInstance().deviceList.size() == 0) {
             return;
         }
-        int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getId();
-        System.out.println("将固件端获取到的设备数据插入数据库");
+        int current = DeviceManager.getInstance().currentDevice;
+        if (mTab1 == null && DeviceManager.getInstance().deviceList.size() > current) {
+            return;
+        }
+        int deviceId = DeviceManager.getInstance().deviceList.get(current).getId();
+
         RecordModel model = new RecordModel();
         model.setUserId(userId);
         model.setDeviceId(deviceId);
@@ -469,16 +475,19 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         model.setSnore(array[6]);
         model.setBreatheStop(array[7]);
         recordModelList.add(model);
-        if (recordModelList.size() < 256) {
+        if (recordModelList.size() < 42) { // 刚才默认为256条
             return;
         }
-        List<RecordModel> tem = deepCopy(recordModelList);
+        List<RecordModel> tem = new ArrayList<>();
+        for (int i = 0; i < recordModelList.size(); i++) {
+            tem.add(recordModelList.get(i));
+        }
         recordModelList.clear();
-
+        System.out.println("保存数据的数量为: " + tem.size() + "原始数据：" + recordModelList.size());
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.copyToRealm(tem);
+                realm.copyToRealmOrUpdate(tem);
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
@@ -493,23 +502,24 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         });
     }
 
-    /// 集合的深Copy，先放置在该处
-    public <E> List<E> deepCopy(List<E> src) {
-        try {
-            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(byteOut);
-            out.writeObject(src);
-
-            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-            ObjectInputStream in = new ObjectInputStream(byteIn);
-            @SuppressWarnings("unchecked")
-            List<E> dest = (List<E>) in.readObject();
-            return dest;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<E>();
-        }
-    }
+//    /// 集合的深Copy，先放置在该处
+//    public <E> List<E> deepCopy(List<E> src) {
+//        try {
+//            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+//            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+//            out.writeObject(src);
+//
+//            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+//            ObjectInputStream in = new ObjectInputStream(byteIn);
+//            @SuppressWarnings("unchecked")
+//            List<E> dest = (List<E>) in.readObject();
+//            return dest;
+//        } catch (Exception e) {
+//            System.out.println("深度Copy报错");
+//            e.printStackTrace();
+//            return new ArrayList<E>();
+//        }
+//    }
 
     @Override
     public void handleBLEWrite(int flag) {
@@ -1048,24 +1058,24 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         calendar.set(year, month - 1, day, hour, minute, second);
         int temTime = (int)(calendar.getTimeInMillis() / 1000);
 
-        int temperature = data[6] & 0xff;
-        int humdity = data[7] & 0xff; // 湿度
-        int heartRate = data[8] & 0xff;
-        int breathRate = data[9] & 0xff;
-        int bodyMotion = data[10] & 0xff;
-        int getupFlag = data[11] & 0xff;
-        int snore = data[12] & 0xff;
-        int breathStop = data[13] & 0xff;
-        int[] array = new int[8];
-        array[0] = temperature;
-        array[1] = humdity;
-        array[2] = heartRate;
-        array[3] = breathRate;
-        array[4] = bodyMotion;
-        array[5] = getupFlag;
-        array[6] = snore;
-        array[7] = breathStop;
-        handleBLEData("", temTime, array);
+//        int temperature = data[6] & 0xff;
+//        int humdity = data[7] & 0xff; // 湿度
+//        int heartRate = data[8] & 0xff;
+//        int breathRate = data[9] & 0xff;
+//        int bodyMotion = data[10] & 0xff;
+//        int getupFlag = data[11] & 0xff;
+//        int snore = data[12] & 0xff;
+//        int breathStop = data[13] & 0xff;
+//        int[] array = new int[8];
+//        array[0] = temperature;
+//        array[1] = humdity;
+//        array[2] = heartRate;
+//        array[3] = breathRate;
+//        array[4] = bodyMotion;
+//        array[5] = getupFlag;
+//        array[6] = snore;
+//        array[7] = breathStop;
+//        handleBLEData("", temTime, array);
     }
 }
 

@@ -296,4 +296,8 @@
     <string name="weixin_circle">朋友圈</string>
     <string name="sina">微博</string>
     <string name="poster">生成海报</string>
+
+    <string name="heart_name">心跳</string>
+    <string name="breath_name">呼吸</string>
+
 </resources>
