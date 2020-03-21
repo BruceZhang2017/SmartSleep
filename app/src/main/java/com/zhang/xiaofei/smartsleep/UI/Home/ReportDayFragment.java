@@ -444,81 +444,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     // 初始化第二个表格
     private void initializeForChart2() {
-        chart2 = findViewById(R.id.chart2);
-
-        // no description text
-        chart2.getDescription().setEnabled(false);
-
-        // enable touch gestures
-        chart2.setTouchEnabled(true);
-
-        chart2.setDragDecelerationFrictionCoef(0.9f);
-
-        // enable scaling and dragging
-        chart2.setDragEnabled(true);
-        chart2.setScaleEnabled(true);
-        chart2.setDrawGridBackground(false);
-        chart2.setHighlightPerDragEnabled(false);
-        chart2.setPinchZoom(false);
-        chart2.setScaleYEnabled(false);
-        chart2.setDoubleTapToZoomEnabled(false);
-
-        // set an alternative background color
-        chart2.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-        //chart2.setViewPortOffsets(0f, 0f, 0f, 0f); // 设置上下左右偏移
-
-        // get the legend (only possible after setting data)
-        Legend l = chart2.getLegend();
-        l.setEnabled(false);
-
-        XAxis xAxis = chart2.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.TOP);
-        //xAxis.setTypeface(tfLight);
-        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-        xAxis.setTextSize(10f);
-        xAxis.setTextColor(Color.argb(0,0,0,0));
-        xAxis.enableGridDashedLine(10f, 10f, 0f);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(true);
-        xAxis.setCenterAxisLabels(false);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setLabelCount(tableRowCount,true);
-        xAxis.setAxisMinimum(sleepTime / 60);
-        xAxis.setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
-        System.out.println("starttime: " + sleepTime / 60 + " endtime:" + ((sleepTime + tableRowDuration * tableRowCount) / 60));
-        xAxis.setValueFormatter(new ValueFormatter() {
-
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-
-            @Override
-            public String getFormattedValue(float value) {
-                long millis = 0;
-                if (value < 0) {
-                    millis = TimeUnit.MINUTES.toMillis((long) value + 24 * 60 + 16 * 60);
-                } else {
-                    millis = TimeUnit.MINUTES.toMillis((long) value + 16 * 60);
-                }
-                return mFormat.format(new Date(millis));
-            }
-        });
-
-        YAxis leftAxis = chart2.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setDrawAxisLine(false);
-        leftAxis.setGranularityEnabled(true);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(150f);
-        leftAxis.setLabelCount(6, true);
-        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        YAxis rightAxis = chart2.getAxisRight();
-        rightAxis.setEnabled(false);
-
-        leftAxis.setDrawLimitLinesBehindData(false);
-        xAxis.setDrawLimitLinesBehindData(false);
+        chart2 = initializeForChart(R.id.chart2, (sleepTime) / 60, (sleepTime + tableRowDuration * tableRowCount) / 60, 0f, 150f);
+        chart2.getAxisLeft().setLabelCount(6, true);
 
         setData2();
     }
@@ -569,79 +496,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void initializeForChart3() {
-        chart3 = findViewById(R.id.chart3);
-
-        // no description text
-        chart3.getDescription().setEnabled(false);
-
-        // enable touch gestures
-        chart3.setTouchEnabled(true);
-
-        chart3.setDragDecelerationFrictionCoef(0.9f);
-
-        // enable scaling and dragging
-        chart3.setDragEnabled(true);
-        chart3.setScaleEnabled(true);
-        chart3.setDrawGridBackground(false);
-        chart3.setHighlightPerDragEnabled(false);
-        chart3.setPinchZoom(false);
-        chart3.setScaleYEnabled(false);
-        chart3.setDoubleTapToZoomEnabled(false);
-        // set an alternative background color
-        chart3.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-        //chart3.setViewPortOffsets(10f, 0f, 0f, 0f);
-
-        // get the legend (only possible after setting data)
-        Legend l = chart3.getLegend();
-        l.setEnabled(false);
-
-        XAxis xAxis = chart3.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.TOP);
-        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-        xAxis.enableGridDashedLine(10f, 10f, 0f);
-        xAxis.setTextSize(10f);
-        xAxis.setTextColor(Color.argb(0,0,0,0));
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(true);
-        xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(tableRowCount, true);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setAxisMinimum( sleepTime / 60);
-        xAxis.setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
-        xAxis.setValueFormatter(new ValueFormatter() {
-
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-
-            @Override
-            public String getFormattedValue(float value) {
-                long millis = 0;
-                if (value < 0) {
-                    millis = TimeUnit.MINUTES.toMillis((long) value + 24 * 60 + 16 * 60);
-                } else {
-                    millis = TimeUnit.MINUTES.toMillis((long) value + 16 * 60);
-                }
-                return mFormat.format(new Date(millis));
-            }
-        });
-
-        YAxis leftAxis = chart3.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        //leftAxis.setTypeface(tfLight);
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setDrawAxisLine(false);
-        leftAxis.setGranularityEnabled(true);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(40f);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
-
-        YAxis rightAxis = chart3.getAxisRight();
-        rightAxis.setEnabled(false);
-
-        leftAxis.setDrawLimitLinesBehindData(false);
-        xAxis.setDrawLimitLinesBehindData(false);
-
+        chart3 = initializeForChart(R.id.chart3, (sleepTime) / 60, (sleepTime + tableRowDuration * tableRowCount) / 60, 0f, 40f);
         setData3();
     }
 
@@ -814,72 +669,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void initializeForChart5() {
-        chart5 = findViewById(R.id.chart5);
-
-        // no description text
-        chart5.getDescription().setEnabled(false);
-
-        // enable touch gestures
-        chart5.setTouchEnabled(true);
-
-        chart5.setDragDecelerationFrictionCoef(0.9f);
-
-        // enable scaling and dragging
-        chart5.setDragEnabled(true);
-        chart5.setScaleEnabled(true);
-        chart5.setDrawGridBackground(false);
-        chart5.setHighlightPerDragEnabled(false);
-        chart5.setPinchZoom(false);
-        chart5.setScaleYEnabled(false);
-        chart5.setDoubleTapToZoomEnabled(false);
-        // set an alternative background color
-        chart5.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-        //chart4.setViewPortOffsets(0f, 0f, 0f, 0f);
-
-        // get the legend (only possible after setting data)
-        Legend l = chart5.getLegend();
-        l.setEnabled(false);
-
-        XAxis xAxis = chart5.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.TOP);
-        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-        xAxis.enableGridDashedLine(10f, 10f, 0f);
-        xAxis.setTextSize(10f);
-        xAxis.setTextColor(Color.argb(0,0,0,0));
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(true);
-        xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(tableRowCount, true);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setAxisMinimum((sleepTime) / 60);
-        xAxis.setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
-        xAxis.setValueFormatter(new ValueFormatter() {
-
-            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-
-            @Override
-            public String getFormattedValue(float value) {
-                long millis = 0;
-                if (value < 0) {
-                    millis = TimeUnit.MINUTES.toMillis((long) value + 24 * 60 + 16 * 60);
-                } else {
-                    millis = TimeUnit.MINUTES.toMillis((long) value + 16 * 60);
-                }
-                return mFormat.format(new Date(millis));
-            }
-        });
-
-        YAxis leftAxis = chart5.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setDrawAxisLine(false);
-        leftAxis.setGranularityEnabled(true);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(5f);
-        leftAxis.setValueFormatter(new ValueFormatter() {
+        chart5 = initializeForChart(R.id.chart5, (sleepTime) / 60, (sleepTime + tableRowDuration * tableRowCount) / 60, 0f, 5f);
+        chart5.getAxisLeft().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 if (value == 0) {
@@ -890,13 +681,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 return "";
             }
         });
-        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
-
-        YAxis rightAxis = chart5.getAxisRight();
-        rightAxis.setEnabled(false);
-
-        leftAxis.setDrawLimitLinesBehindData(false);
-        xAxis.setDrawLimitLinesBehindData(false);
 
         setData5();
     }
@@ -1046,77 +830,77 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 //        }
 //    }
 
-//    private LineChart initializeForChart(int id, int minX, int maxX, int minY, int maxY) {
-//        LineChart chart = findViewById(id);
-//        // no description text
-//        chart.getDescription().setEnabled(false);
-//        // enable touch gestures
-//        chart.setTouchEnabled(true);
-//        chart.setDragDecelerationFrictionCoef(0.9f);
-//        // enable scaling and dragging
-//        chart.setDragEnabled(true);
-//        chart.setScaleEnabled(true);
-//        chart.setDrawGridBackground(false);
-//        chart.setHighlightPerDragEnabled(false);
-//        chart.setPinchZoom(false);
-//        chart.setScaleYEnabled(false);
-//        chart.setDoubleTapToZoomEnabled(false);
-//        // set an alternative background color
-//        chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-//        //chart3.setViewPortOffsets(10f, 0f, 0f, 0f);
-//        // get the legend (only possible after setting data)
-//        Legend l = chart.getLegend();
-//        l.setEnabled(false);
-//
-//        XAxis xAxis = chart.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.TOP);
-//        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-//        xAxis.enableGridDashedLine(10f, 10f, 0f);
-//        xAxis.setTextSize(10f);
-//        xAxis.setTextColor(Color.argb(0,0,0,0));
-//        xAxis.setDrawAxisLine(false);
-//        xAxis.setDrawGridLines(true);
-//        xAxis.setCenterAxisLabels(false);
-//        xAxis.setLabelCount(tableRowCount, true);
-//        xAxis.setGranularityEnabled(true);
-//        xAxis.setAxisMinimum( minX);
-//        xAxis.setAxisMaximum(maxX);
-//        xAxis.setValueFormatter(new ValueFormatter() {
-//
-//            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-//
-//            @Override
-//            public String getFormattedValue(float value) {
-//                long millis = 0;
-//                if (value < 0) {
-//                    millis = TimeUnit.MINUTES.toMillis((long) value + 24 * 60 + 16 * 60);
-//                } else {
-//                    millis = TimeUnit.MINUTES.toMillis((long) value + 16 * 60);
-//                }
-//                return mFormat.format(new Date(millis));
-//            }
-//        });
-//
-//        YAxis leftAxis = chart.getAxisLeft();
-//        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-//        //leftAxis.setTypeface(tfLight);
-//        leftAxis.setDrawGridLines(true);
-//        leftAxis.setDrawAxisLine(false);
-//        leftAxis.setGranularityEnabled(true);
-//        leftAxis.setAxisMinimum(minX);
-//        leftAxis.setAxisMaximum(maxY);
-//        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-//        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
-//        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
-//
-//        YAxis rightAxis = chart.getAxisRight();
-//        rightAxis.setEnabled(false);
-//
-//        leftAxis.setDrawLimitLinesBehindData(false);
-//        xAxis.setDrawLimitLinesBehindData(false);
-//
-//        return chart;
-//    }
+    private LineChart initializeForChart(int id, float minX, float maxX, float minY, float maxY) {
+        LineChart chart = findViewById(id);
+        // no description text
+        chart.getDescription().setEnabled(false);
+        // enable touch gestures
+        chart.setTouchEnabled(true);
+        chart.setDragDecelerationFrictionCoef(0.9f);
+        // enable scaling and dragging
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setDrawGridBackground(false);
+        chart.setHighlightPerDragEnabled(false);
+        chart.setPinchZoom(false);
+        chart.setScaleYEnabled(false);
+        chart.setDoubleTapToZoomEnabled(false);
+        // set an alternative background color
+        chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+        //chart3.setViewPortOffsets(10f, 0f, 0f, 0f);
+        // get the legend (only possible after setting data)
+        Legend l = chart.getLegend();
+        l.setEnabled(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.TOP);
+        xAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(Color.argb(0,0,0,0));
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(true);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setLabelCount(tableRowCount, true);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setAxisMinimum( minX);
+        xAxis.setAxisMaximum(maxX);
+        xAxis.setValueFormatter(new ValueFormatter() {
+
+            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+
+            @Override
+            public String getFormattedValue(float value) {
+                long millis = 0;
+                if (value < 0) {
+                    millis = TimeUnit.MINUTES.toMillis((long) value + 24 * 60 + 16 * 60);
+                } else {
+                    millis = TimeUnit.MINUTES.toMillis((long) value + 16 * 60);
+                }
+                return mFormat.format(new Date(millis));
+            }
+        });
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        //leftAxis.setTypeface(tfLight);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawAxisLine(false);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setAxisMinimum(minY);
+        leftAxis.setAxisMaximum(maxY);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setAxisLineDashedLine(new DashPathEffect(new float[]{5f, 5f}, 0f));
+        leftAxis.setTextColor(getResources().getColor(R.color.color_FFC858));
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        leftAxis.setDrawLimitLinesBehindData(false);
+        xAxis.setDrawLimitLinesBehindData(false);
+
+        return chart;
+    }
 
     // 刷新统计时间相关数据UI
     private void refreshSleepStatisticsUI() {
