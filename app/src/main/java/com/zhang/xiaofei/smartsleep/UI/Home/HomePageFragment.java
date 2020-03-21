@@ -498,7 +498,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
             String unit = getResources().getString(R.string.common_minute2);
             String[] array = {unit};
-            String content = 83 + "" + unit;
+            String content = 0 + "" + unit;
             TextView tvGrade = (TextView)convertView.findViewById(R.id.tv_sleep_review_value);
             tvGrade.setText(content);
 
@@ -698,7 +698,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             return;
         }
         if (DeviceManager.getInstance().deviceList.size() == 0) {
-            ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
             paramsB.leftToLeft = R.id.cl_main;
             paramsB.topToBottom = R.id.btn_bind_device;
             paramsB.leftMargin = DisplayUtil.dip2px(40, getActivity());
@@ -713,12 +714,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private void setIBHelpSleepLayout() {
         Integer dpi = DisplayUtil.getScreenMsg(getActivity()).get(DisplayUtil.ScreenEnum.DendityDpi);
-        int value = dpi <= 320 ? 10 : 40;
+        int value = 10 * dpi / 320;
         int tem = DisplayUtil.dip2px(value, getActivity());
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)viewPager.getLayoutParams();
         params.height = (ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(40, getActivity())) * 681 / 960 - tem;
         viewPager.setLayoutParams(params);
-        ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        ConstraintLayout.LayoutParams paramsB = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         paramsB.leftToLeft = R.id.cl_main;
         paramsB.topToBottom = R.id.guide_indicator;
         paramsB.leftMargin = DisplayUtil.dip2px(40, getActivity());

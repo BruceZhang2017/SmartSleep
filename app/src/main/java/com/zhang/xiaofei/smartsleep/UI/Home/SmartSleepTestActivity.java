@@ -29,7 +29,6 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private DynamicView dynamicViewHeart;
     private DynamicView dynamicViewBreath;
     private int count = 0;
-    private int timeCount = 0;
     private boolean bStart = false;
 
     @Override
@@ -91,6 +90,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     @Override
     protected void onStop() {
         super.onStop();
+        System.out.println("SmartSleepTestAcitivty onStop");
         Intent intentBroadcast = new Intent();   //定义Intent
         intentBroadcast.setAction("Filter");
         intentBroadcast.putExtra("arg0", 12);
@@ -101,6 +101,8 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dynamicViewHeart.clearAnimator();
+        dynamicViewBreath.clearAnimator();
         DataOberverManager.getInstance().deleteObserver(this);
     }
 
@@ -116,23 +118,24 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (timeCount >= 10 || timeCount == 0) {
+                if (dynamicViewHeart.current == 0) {
                     dynamicViewHeart.values = new int[250];
                     dynamicViewBreath.values = new int[50];
-                    timeCount = 0;
+                }
+
+                if (dynamicViewHeart.current >= 10) {
+                    return;
                 }
 
                 for (int i = 0; i < heart.length; i++) {
-                    dynamicViewHeart.values[i + timeCount * 25] = heart[i];
+                    dynamicViewHeart.values[i + dynamicViewHeart.current * 25] = heart[i];
                 }
                 for (int i = 0; i < breath.length; i++) {
-                    dynamicViewBreath.values[i + timeCount * 5] = breath[i];
+                    dynamicViewBreath.values[i + dynamicViewHeart.current * 5] = breath[i];
                 }
-                timeCount += 1;
-                System.out.println("动画次数 timeCount: " + timeCount);
-                dynamicViewHeart.current = timeCount;
+                dynamicViewHeart.current += 1;
+                dynamicViewBreath.current += 1;
                 dynamicViewHeart.startAnimator();
-                dynamicViewBreath.current = timeCount;
                 dynamicViewBreath.startAnimator();
             }
         });

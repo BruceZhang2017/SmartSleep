@@ -32,6 +32,7 @@ import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
+import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Home.BLESearchActivity;
 import com.zhang.xiaofei.smartsleep.UI.Home.HomeActivity;
@@ -215,6 +216,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
                 }
             });
         }
+        //deleteRecordDataFromDB(); // TODO: - 删除数据库里面的数据
     }
 
     private void deleteDeviceNotify(String serial, String mac) {
@@ -224,6 +226,17 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
         intentBroadcast.putExtra("serial", serial);
         intentBroadcast.putExtra("mac", mac);
         sendBroadcast(intentBroadcast);
+    }
+
+    // 删除数据库中所有的数据
+    private void deleteRecordDataFromDB() {
+        RealmResults<RecordModel> results = mRealm.where(RecordModel.class).findAll();
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                results.deleteAllFromRealm();
+            }
+        });
     }
 
     // 删除设备

@@ -169,6 +169,7 @@ public class ScreenInfoUtils {
      */
     public static void printScreenInfo(Context context) {
         Log.d(TAG, getScreenInfo(context));
+        System.out.println(getScreenInfo(context));
     }
 }
 

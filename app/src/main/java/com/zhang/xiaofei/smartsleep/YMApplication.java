@@ -13,6 +13,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import com.sunofbeaches.himalaya.IComponentApplication;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
+import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 
@@ -39,6 +40,7 @@ public class YMApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instante = this;
+        ScreenInfoUtils.printScreenInfo(this);
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(new CalligraphyInterceptor(
                         new CalligraphyConfig.Builder()

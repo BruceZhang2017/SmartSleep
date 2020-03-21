@@ -26,14 +26,14 @@ public class DynamicView extends View {
 
     Paint mPaint;
     public int current = 0;
+    public int currentFinished = 0;
     public float rate = 0;
     public int[] values;
     public int screenWidth = 0;
     public int height = 0;
-    public boolean bPoint = true;
     public ValueAnimator valueAnimator;
     public float currentValue;
-    public Boolean isAnimating;
+    public Boolean isAnimating = false;
     public Path animatorPath;
 
     public DynamicView(Context context) {
@@ -94,61 +94,63 @@ public class DynamicView extends View {
     }
 
     private void drawCurveStatic(Canvas canvas) {
-        if (current <= 0) {
+        if (currentFinished <= 0) {
             return;
         }
         if (values.length == 50) {
             int step = (screenWidth - 50) / 50;
-            if (current > 1 || currentValue == 1f) {
-                Path path = new Path();
-                Point pre = new Point();
-                pre.set(50, (int)(height - values[0] / rate));
-                path.moveTo(pre.x, pre.y);
-                int max = currentValue == 1f ? (current * 5 - 1) : (current * 5 - 5);
-                for (int i = 1; i <= max; i++) {
-                    Point next = new Point();
-                    next.set(50 + step * i, (int)(height - values[i] / rate));
-
-                    int cW = pre.x + step / 2;
-
-                    Point p1 = new Point();//控制点1
-                    p1.set(cW, pre.y);
-
-                    Point p2 = new Point();//控制点2
-                    p2.set(cW, next.y);
-
-                    path.cubicTo(p1.x, p1.y, p2.x, p2.y, next.x, next.y);//创建三阶贝塞尔曲线
-
-                    pre = next;
-                }
-                canvas.drawPath(path, mPaint);
+            Path path = new Path();
+            Point pre = new Point();
+            pre.set(50, (int)(height - values[0] / rate));
+            path.moveTo(pre.x, pre.y);
+            int max = currentFinished * 5;
+            if (current > currentFinished) {
+                max += 1;
             }
+            for (int i = 1; i < max; i++) {
+                Point next = new Point();
+                next.set(50 + step * i, (int)(height - values[i] / rate));
+
+                int cW = pre.x + step / 2;
+
+                Point p1 = new Point();//控制点1
+                p1.set(cW, pre.y);
+
+                Point p2 = new Point();//控制点2
+                p2.set(cW, next.y);
+
+                path.cubicTo(p1.x, p1.y, p2.x, p2.y, next.x, next.y);//创建三阶贝塞尔曲线
+
+                pre = next;
+            }
+            canvas.drawPath(path, mPaint);
 
         } else {
             int step = (screenWidth - 50) / 250;
-            if (current > 1) {
-                Path path = new Path();
-                Point pre = new Point();
-                pre.set(50, (int)(height - values[0] / rate));
-                path.moveTo(pre.x, pre.y);
-                int max = currentValue == 1f ? (current * 25 - 1) : (current * 25 - 25);
-                for (int i = 1; i <= max; i++) {
-                    Point next = new Point();
-                    next.set(50 + step * i, (int)(height - values[i] / rate));
-                    int cW = pre.x + step / 2;
-
-                    Point p1 = new Point();//控制点1
-                    p1.set(cW, pre.y);
-
-                    Point p2 = new Point();//控制点2
-                    p2.set(cW, next.y);
-
-                    path.cubicTo(p1.x, p1.y, p2.x, p2.y, next.x, next.y);//创建三阶贝塞尔曲线
-
-                    pre = next;
-                }
-                canvas.drawPath(path, mPaint);
+            Path path = new Path();
+            Point pre = new Point();
+            pre.set(50, (int)(height - values[0] / rate));
+            path.moveTo(pre.x, pre.y);
+            int max = currentFinished * 25;
+            if (current > currentFinished) {
+                max += 1;
             }
+            for (int i = 1; i < max; i++) {
+                Point next = new Point();
+                next.set(50 + step * i, (int)(height - values[i] / rate));
+                int cW = pre.x + step / 2;
+
+                Point p1 = new Point();//控制点1
+                p1.set(cW, pre.y);
+
+                Point p2 = new Point();//控制点2
+                p2.set(cW, next.y);
+
+                path.cubicTo(p1.x, p1.y, p2.x, p2.y, next.x, next.y);//创建三阶贝塞尔曲线
+
+                pre = next;
+            }
+            canvas.drawPath(path, mPaint);
         }
     }
 
@@ -160,13 +162,16 @@ public class DynamicView extends View {
     }
 
     public void startAnimator() {
+        if (isAnimating) {
+            return;
+        }
         initAnimator();
         valueAnimator.start();
     }
 
     private void initAnimator() {
         createAnimatorPath();
-        valueAnimator = ValueAnimator.ofFloat(0f, 1f).setDuration(900);
+        valueAnimator = ValueAnimator.ofFloat(0f, 1f).setDuration(1010);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -190,7 +195,17 @@ public class DynamicView extends View {
                 currentValue = 1f;
                 isAnimating = false;
                 animatorPath = null;
+                currentFinished += 1; // 完成动画
                 postInvalidate();
+                valueAnimator = null;
+                if (currentFinished < 10) {
+                    if (currentFinished + 1 <= current) {
+                        startAnimator();
+                    }
+                } else {
+                    current = 0;
+                    currentFinished = 0;
+                }
             }
         });
         valueAnimator.setStartDelay(0);
@@ -201,12 +216,12 @@ public class DynamicView extends View {
             int step = (screenWidth - 50) / 50;
             if (animatorPath == null) {
                 animatorPath = new Path();
-                int index = current * 5 - 5;
+                int index = currentFinished * 5;
                 Point pre = new Point();
                 pre.set(50 + step * index, (int)(height - values[index] / rate));
                 animatorPath.moveTo(pre.x, pre.y);
                 System.out.println("动画起点：" + pre.x + " current: " + current);
-                for (int i = index + 1; i < current * 5; i++) {
+                for (int i = index + 1; i < (currentFinished + 1) * 5; i++) {
                     Point next = new Point();
                     next.set(50 + step * i, (int)(height - values[i] / rate));
 
@@ -227,11 +242,11 @@ public class DynamicView extends View {
             int step = (screenWidth - 50) / 250;
             if (animatorPath == null) {
                 animatorPath = new Path();
-                int index = current * 25 - 25;
+                int index = currentFinished * 25;
                 Point pre = new Point();
                 pre.set(50 + step * index, (int)(height - values[index] / rate));
                 animatorPath.moveTo(pre.x, pre.y);
-                for (int i = index + 1; i < current * 25; i++) {
+                for (int i = index + 1; i < (currentFinished + 1) * 25; i++) {
                     Point next = new Point();
                     next.set(50 + step * i, (int)(height - values[i] / rate));
 
@@ -248,6 +263,13 @@ public class DynamicView extends View {
                     pre = next;
                 }
             }
+        }
+    }
+
+    public void clearAnimator() {
+        if (valueAnimator != null) {
+            valueAnimator.cancel();
+            valueAnimator = null;
         }
     }
 }

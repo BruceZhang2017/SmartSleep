@@ -475,7 +475,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         model.setSnore(array[6]);
         model.setBreatheStop(array[7]);
         recordModelList.add(model);
-        if (recordModelList.size() < 42) { // 刚才默认为256条
+        if (recordModelList.size() < 16) { // 刚才默认为256条
             return;
         }
         List<RecordModel> tem = new ArrayList<>();

@@ -62,12 +62,15 @@ import io.realm.Sort;
 
 public class ReportDayFragment extends LazyFragment { // 日报告
 
-    private TextView textView;
     private CircleSeekBar circlePercentView;
     private CirclePercentView circleSleep1;
     private CirclePercentView circleSleep2;
     private CirclePercentView circleSleep3;
     private CirclePercentView circleSleep4;
+    private TextView tvCircleSleep1;
+    private TextView tvCircleSleep2;
+    private TextView tvCircleSleep3;
+    private TextView tvCircleSleep4;
     private LineChart chart; // 睡眠质量分析
     private LineChart chart2; // 翻身
     private LineChart chart3; // 心率
@@ -96,7 +99,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private ConstraintLayout cl11;
     private Realm mRealm;
     private int currentTime = 0;
-    private int grade = 83;
+    private int grade = 0;
     ArrayList<Entry> chart2Values;
     ArrayList<Entry> chart3Values;
     ArrayList<Entry> chart4Values;
@@ -128,22 +131,22 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         super.onCreateViewLazy(savedInstanceState);
 
         setContentView(R.layout.fragment_tabmain_item);
+        tvCircleSleep1 = (TextView)findViewById(R.id.tv_sleep_1);
+        tvCircleSleep2 = (TextView)findViewById(R.id.tv_sleep_2);
+        tvCircleSleep3 = (TextView)findViewById(R.id.tv_sleep_3);
+        tvCircleSleep4 = (TextView)findViewById(R.id.tv_sleep_4);
         circlePercentView = (CircleSeekBar)findViewById(R.id.circle_percent_progress);
         circlePercentView.setCurProcess(grade);
         circleSleep1 = (CirclePercentView)findViewById(R.id.circle_sleep_1);
-        circleSleep1.setPercentage(6);
         circleSleep1.setBgColor(getResources().getColor(R.color.color_33315FEE));
         circleSleep1.setProgressColor(getResources().getColor(R.color.color_315FEE));
         circleSleep2 = (CirclePercentView)findViewById(R.id.circle_sleep_2);
-        circleSleep2.setPercentage(55);
         circleSleep2.setBgColor(getResources().getColor(R.color.color_33499BE5));
         circleSleep2.setProgressColor(getResources().getColor(R.color.color_499BE5));
         circleSleep3 = (CirclePercentView)findViewById(R.id.circle_sleep_3);
-        circleSleep3.setPercentage(23);
         circleSleep3.setBgColor(getResources().getColor(R.color.color_3367D9F1));
         circleSleep3.setProgressColor(getResources().getColor(R.color.color_67D9F1));
         circleSleep4 = (CirclePercentView)findViewById(R.id.circle_sleep_4);
-        circleSleep4.setPercentage(34);
         circleSleep4.setBgColor(getResources().getColor(R.color.color_3361D088));
         circleSleep4.setProgressColor(getResources().getColor(R.color.color_61D088));
 
@@ -290,7 +293,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
-            textView.setVisibility(View.VISIBLE);
+            //textView.setVisibility(View.VISIBLE);
             //progressBar.setVisibility(View.GONE);
         }
 
@@ -364,7 +367,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     // 开始设置数据部分
     private void setCharData(float range) {
-        System.out.println("模拟最终的结论数据");
         ArrayList<Entry> values = new ArrayList<>();
         int now = sleepTime / 60;
         int end = (sleepTime + tableRowDuration * tableRowCount) / 60;
@@ -1200,7 +1202,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         } else {
             String content4 = "00" + unit4;
             String unit2 = getResources().getString(R.string.common_times_minute);
-            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, content4));
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
             tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, unit2));
         }
         String unit5 = "℃";
@@ -1231,7 +1233,19 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
         }
 
+        if (count > 0) {
+            grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+            grade = Math.min(90, grade);
+            grade = Math.max(70, grade);
+            refreshGrade();
+            circlePercentView.setCurProcess(grade);
+        } else {
+            grade = 0;
+            refreshGrade();
+            circlePercentView.setCurProcess(grade);
+        }
 
+        calculateSleepValue();
     }
 
     private void readAlarmData() {
@@ -1307,4 +1321,74 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         chart.getXAxis().setAxisMaximum((sleepTime + tableRowDuration * tableRowCount) / 60);
     }
 
+    // 计算熟睡、中睡，浅睡、清醒
+    private void calculateSleepValue() {
+        if (mMap.size() > 0) {
+            int deepSleep = 0;
+            int middleSleep = 0;
+            int cheapSleep = 0;
+            int getup = 0;
+            int time = 0;
+            int bodyMotionCount = 0;
+            int getupCount = 0;
+            for (Map.Entry<Integer, List<RecordModel>> entry : mMap.entrySet()) {
+                if (time == 0) {
+                    time = entry.getKey() + 5;
+                }
+                if (entry.getKey() <= time) {
+
+                } else {
+                    time += 5;
+                    if (getupCount > 0) {
+                        getup += 1;
+                    } else {
+                        if (bodyMotionCount > 6) {
+                            getup += 1;
+                        } else if (bodyMotionCount >= 3) {
+                            cheapSleep += 1;
+                        } else if (bodyMotionCount >= 1) {
+                            middleSleep += 1;
+                        } else {
+                            deepSleep += 1;
+                        }
+                    }
+                    getupCount = 0;
+                    bodyMotionCount = 0;
+                }
+
+                for (RecordModel model : entry.getValue()) {
+                    int a = model.getGetupFlag();
+                    int b = model.getBodyMotion();
+                    if (a == 0) {
+                        getupCount += 1;
+                    }
+                    if (b > 0) {
+                        bodyMotionCount += 1;
+                    }
+                }
+
+            }
+            int c = deepSleep + middleSleep + cheapSleep + getup;
+            if (c > 0) {
+                circleSleep1.setPercentage(deepSleep / c * 100);
+                circleSleep2.setPercentage(middleSleep / c * 100);
+                circleSleep3.setPercentage(cheapSleep / c * 100);
+                circleSleep4.setPercentage(getup / c * 100);
+                tvCircleSleep1.setText(deepSleep / c * 100 + "%");
+                tvCircleSleep2.setText(middleSleep / c * 100 + "%");
+                tvCircleSleep3.setText(cheapSleep / c * 100 + "%");
+                tvCircleSleep4.setText(getup / c * 100 + "%");
+            }
+        } else {
+            circleSleep1.setPercentage(0);
+            circleSleep2.setPercentage(0);
+            circleSleep3.setPercentage(0);
+            circleSleep4.setPercentage(0);
+            tvCircleSleep1.setText("0%");
+            tvCircleSleep2.setText("0%");
+            tvCircleSleep3.setText("0%");
+            tvCircleSleep4.setText("0%");
+        }
+
+    }
 }
