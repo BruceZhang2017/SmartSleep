@@ -117,7 +117,7 @@ public class MarkerView extends RelativeLayout implements IMarker {
 
     @Override
     public void draw(Canvas canvas, float posX, float posY) {
-
+        System.out.println("绘画标志: " + posX + " " + posY);
         MPPointF offset = getOffsetForDrawingAtPoint(posX, posY);
 
         int saveId = canvas.save();

@@ -394,12 +394,13 @@ public class ReportWeekFragment extends LazyFragment {
 
             // black lines and points
             set1.setColor(getResources().getColor(R.color.colorWhite));
-            set1.setCircleColor(0xFF5DF2FF);
-
+            set1.setCircleColors(0xFF5DF2FF, 0x626AEA, 0xFF499BE5, 0xFFF3D032, 0xFFE92C2C);
+            // 6EE1CA 100分 / 499BE5 80分 / 626AEA 60分 / F3D032 40分 / E92C2C 20分
             // line thickness and point size
             set1.setLineWidth(1f);
             // draw points as solid circles
             set1.setDrawCircleHole(false);
+            set1.setCircleRadius(3f);
 
             // customize legend entry
             set1.setFormLineWidth(1f);
@@ -407,7 +408,7 @@ public class ReportWeekFragment extends LazyFragment {
             set1.setDrawValues(false);
             // text size of values
             set1.setValueTextSize(9f);
-            set1.setDrawCircles(false);
+            set1.setDrawCircles(true);
 
             // set the filled area
             set1.setDrawFilled(false);
@@ -659,23 +660,23 @@ public class ReportWeekFragment extends LazyFragment {
             System.out.println("width: " + dpWidth + "left: " + left);
             int icon = 0;
             int drawable = 0;
-            if (i == 0) {
-                icon = R.mipmap.report_icon_score_1;
-                drawable = R.drawable.score_1;
-            } else if (i == 1) {
-                icon = R.mipmap.report_icon_score_2;
-                drawable = R.drawable.score_2;
-            } else if (i == 2) {
-                icon = R.mipmap.report_icon_score_3;
-                drawable = R.drawable.score_3;
-            } else if (i == 3) {
-                icon = R.mipmap.report_icon_score_4;
-                drawable = R.drawable.score_4;
-            } else if (i == 4) {
-                icon = R.mipmap.report_icon_score_5;
-                drawable = R.drawable.score_5;
-            }
-            dynamicAddCircleDot(icon, (int)entry.getY(), drawable, left, top, i);
+//            if (i == 0) {
+//                icon = R.mipmap.report_icon_score_1;
+//                drawable = R.drawable.score_1;
+//            } else if (i == 1) {
+//                icon = R.mipmap.report_icon_score_2;
+//                drawable = R.drawable.score_2;
+//            } else if (i == 2) {
+//                icon = R.mipmap.report_icon_score_3;
+//                drawable = R.drawable.score_3;
+//            } else if (i == 3) {
+//                icon = R.mipmap.report_icon_score_4;
+//                drawable = R.drawable.score_4;
+//            } else if (i == 4) {
+//                icon = R.mipmap.report_icon_score_5;
+//                drawable = R.drawable.score_5;
+//            }
+//            dynamicAddCircleDot(icon, (int)entry.getY(), drawable, left, top, i);
 
         }
 

@@ -298,4 +298,7 @@
 
     <string name="heart_name">Heartbeat</string>
     <string name="breath_name">Respiratory</string>
+
+    <string name="ota_updating">OTA Updating...</string>
+    <string name="ota_updata_success">OTA Update Success</string>
 </resources>

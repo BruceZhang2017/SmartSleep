@@ -58,12 +58,14 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
     private ProgressBar progressBar;
     private TextView tvTitle;
     private ImageButton ibLeft;
+    private StateButton stateButton;
     String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dfu_update);
+        stateButton = (StateButton)findViewById(R.id.startDfu);
         tvTitle = (TextView)findViewById(R.id.tv_title);
         tvTitle.setText("OTA");
         ibLeft = (ImageButton)findViewById(R.id.im_l);
@@ -319,18 +321,21 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
             intentBroadcast.setAction("Filter");
             intentBroadcast.putExtra("arg0", 6);
             sendBroadcast(intentBroadcast);
+            stateButton.setText(R.string.ota_updata_success);
         }
 
         @Override
         public void onDfuAborted(String deviceAddress) {
             Log.i("TEST", "onDfuAborted: " + deviceAddress);
             progressBar.setVisibility(View.GONE);
+            stateButton.setText(R.string.start);
         }
 
         @Override
         public void onError(String deviceAddress, int error, int errorType, String message) {
             Log.i("TEST", "onError: " + deviceAddress + ",message:" + message);
             progressBar.setVisibility(View.GONE);
+            stateButton.setText(R.string.start);
         }
     };
 
@@ -424,6 +429,9 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startDfu:
+                if (!stateButton.getText().toString().equals(getResources().getString(R.string.start))) {
+                    return;
+                }
 //                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 //                //intent.setType(“image/*”);//选择图片
 //                //intent.setType(“audio/*”); //选择音频
@@ -443,7 +451,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
                 starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
                 starter.setZip(uri, saveFilePath);
                 final DfuServiceController controller = starter.start(this, DfuService.class);
-
+                stateButton.setText(R.string.ota_updating);
                 break;
 
         }

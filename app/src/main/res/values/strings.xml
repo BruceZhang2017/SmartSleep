@@ -299,5 +299,8 @@
 
     <string name="heart_name">心跳</string>
     <string name="breath_name">呼吸</string>
+    
+    <string name="ota_updating">OTA升级中...</string>
+    <string name="ota_updata_success">OTA升级成功</string>
 
 </resources>

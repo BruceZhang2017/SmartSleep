@@ -6,7 +6,6 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="01 09" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -16,11 +15,32 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.4/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MPChartLib/src/main/java/com/github/mikephil/charting/components/MarkerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/MPChartLib/src/main/java/com/github/mikephil/charting/components/MarkerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/dfutest/DfuUpdateActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/dfutest/DfuUpdateActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DynamicView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/DynamicView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/DeviceManageActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/DeviceManageActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/ItemGridCellBinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/ItemGridCellBinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bottomDialog/bottomDialog.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bottomDialog/bottomDialog.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/esptouch/esptouch.iml" beforeDir="false" afterPath="$PROJECT_DIR$/esptouch/esptouch.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fast/fast.iml" beforeDir="false" afterPath="$PROJECT_DIR$/fast/fast.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/library.iml" beforeDir="false" afterPath="$PROJECT_DIR$/library/library.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pickerview/pickerview.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pickerview/pickerview.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelview/wheelview.iml" beforeDir="false" afterPath="$PROJECT_DIR$/wheelview/wheelview.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/xiyalama.iml" beforeDir="false" afterPath="$PROJECT_DIR$/xiyalama/xiyalama.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xpopup/xpopup.iml" beforeDir="false" afterPath="$PROJECT_DIR$/xpopup/xpopup.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +48,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="84B7N15B30000462" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="10.1.112.170:5555" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -49,17 +69,6 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="SmartSleep" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="SmartSleep" type="f1a62948:ProjectNode" />
-                <item name="SmartSleep" type="2d1252cf:ModuleNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="SmartSleep" type="f1a62948:ProjectNode" />
-                <item name="SmartSleep" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -118,7 +127,7 @@
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="$PROJECT_DIR$/../Library/Android/sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Suggestions" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />

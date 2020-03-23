@@ -200,6 +200,9 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
                 deleteDeviceFromDB(model.getMac());
                 team.remove(index);
                 mGridAdapter.notifyDataSetChanged();
+                if (team.size() == 0) {
+                    tvRight.setText(" ");
+                }
             }
         }).show();
     }

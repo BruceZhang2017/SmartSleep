@@ -34,7 +34,7 @@ public class ItemGridCellBinder extends UltimateRecyclerviewViewHolder {
                 @Override
                 public void run() {
                     int width = imageViewSample.getWidth();
-                    int height = width * 224 / 320;
+                    int height = width * 230 / 320;
                     imageViewSample.setLayoutParams(new RelativeLayout.LayoutParams(width , height));
                 }
             });
