@@ -159,17 +159,13 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 						.inflateMenu(R.menu.menu_main, new OnItemClickListener() {
 							@Override
 							public void click(Item item) {
-								if (item.getId() == R.id.action_content_add) {
-									UMImage image = new UMImage(ReportFragment.this.getActivity(), R.mipmap.ic_launcher);//分享图标
-									final UMWeb web = new UMWeb("http://www.yamind.cn"); //切记切记 这里分享的链接必须是http开头
-									web.setTitle("睡眠带");//标题
-									web.setThumb(image);  //缩略图
-									web.setDescription("日报告");//描述
-									new ShareAction(ReportFragment.this.getActivity()).setPlatform(SHARE_MEDIA.SINA)
-											.withMedia(web)
-											.setCallback(umShareListener)
-											.share();
-								} else if (item.getId() == R.id.ic_github) {
+								if (item.getId() == R.id.action_weibo_share) {
+									weiboShare(); // 微博分享
+								} else if (item.getId() == R.id.action_weixin_share) {
+									weixinShare(); // 微信分享
+								} else if (item.getId() == R.id.action_pengyouquan_share) {
+
+								}else if (item.getId() == R.id.ic_github) {
 									Intent intent = new Intent(getActivity(), ShareSleepQualityActivity.class);
 									getActivity().startActivity(intent);
 								}
@@ -562,6 +558,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		requestBreathData(startDate, endDate);
 	}
 
+	// 微博分享
 	UMShareListener umShareListener = new UMShareListener() {
 		@Override
 		public void onStart(SHARE_MEDIA platform) {
@@ -586,6 +583,46 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 
     // 重新刷新日报
 	public void refreshDayReport() {
+		if (dayFragment == null) {
+			return;
+		}
 		dayFragment.refreshDayReport();
+	}
+
+	// 微博分享事件
+	private void weiboShare() {
+		UMImage image = new UMImage(ReportFragment.this.getActivity(), R.mipmap.ic_launcher);//分享图标
+		final UMWeb web = new UMWeb("http://www.yamind.cn"); //切记切记 这里分享的链接必须是http开头
+		web.setTitle("睡眠带");//标题
+		web.setThumb(image);  //缩略图
+		web.setDescription("日报告");//描述
+		new ShareAction(ReportFragment.this.getActivity()).setPlatform(SHARE_MEDIA.SINA)
+				.withMedia(web)
+				.setCallback(umShareListener)
+				.share();
+	}
+
+	private void weixinShare() {
+		UMImage image = new UMImage(ReportFragment.this.getActivity(), R.mipmap.ic_launcher);//分享图标
+		final UMWeb web = new UMWeb("http://www.yamind.cn"); //切记切记 这里分享的链接必须是http开头
+		web.setTitle("睡眠带");//标题
+		web.setThumb(image);  //缩略图
+		web.setDescription("日报告");//描述
+		new ShareAction(ReportFragment.this.getActivity()).setPlatform(SHARE_MEDIA.WEIXIN)
+				.withMedia(web)
+				.setCallback(umShareListener)
+				.share();
+	}
+
+	private void pengyouquanShare() {
+		UMImage image = new UMImage(ReportFragment.this.getActivity(), R.mipmap.ic_launcher);//分享图标
+		final UMWeb web = new UMWeb("http://www.yamind.cn"); //切记切记 这里分享的链接必须是http开头
+		web.setTitle("睡眠带");//标题
+		web.setThumb(image);  //缩略图
+		web.setDescription("日报告");//描述
+		new ShareAction(ReportFragment.this.getActivity()).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+				.withMedia(web)
+				.setCallback(umShareListener)
+				.share();
 	}
 }

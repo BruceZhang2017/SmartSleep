@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.ansen.http.net.HTTPCaller;
@@ -21,6 +22,7 @@ import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
+import com.mylhyl.circledialog.CircleDialog;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Kit.ImagePicker.PicassoImageLoader;
@@ -45,12 +47,16 @@ public class FeedbackActivity extends BaseAppActivity {
     private StateButton sbOperation;
     private StateButton sbProduct;
     private StateButton sbAdvice;
-    private ImageView ibAddPiture;
     private int type = 0;
     private static final int IMAGE_PICKER = 100;
     private ImagePicker imagePicker;
     private int imageCount = 0;
-    private ImageView ivPiture;
+    private ImageView ivPicture;
+    private ImageView ivPicture2;
+    private ImageView ivPicture3;
+    private ImageView ivPictureDelete;
+    private ImageView ivPictureDelete2;
+    private ImageView ivPictureDelete3;
     private ConstraintLayout constraintLayout;
     private List<String> imageFiles = new ArrayList<String>();
 
@@ -97,8 +103,15 @@ public class FeedbackActivity extends BaseAppActivity {
         });
         initQuestionType();
         initialImagePicker();
-        ibAddPiture = (ImageView)findViewById(R.id.ib_picture);
-        ibAddPiture.setOnClickListener(clickListener);
+        ivPicture = (ImageView)findViewById(R.id.ib_picture);
+        ivPicture.setOnClickListener(clickListener);
+        ivPicture2 = (ImageView)findViewById(R.id.ib_picture2);
+        ivPicture2.setOnClickListener(clickListener);
+        ivPicture3 = (ImageView)findViewById(R.id.ib_picture3);
+        ivPicture3.setOnClickListener(clickListener);
+        ivPictureDelete = (ImageView)findViewById(R.id.iv_delete);
+        ivPictureDelete2 = (ImageView)findViewById(R.id.iv_delete2);
+        ivPictureDelete3 = (ImageView)findViewById(R.id.iv_delete3);
         constraintLayout = (ConstraintLayout)findViewById(R.id.cl_feedback);
     }
 
@@ -156,11 +169,11 @@ public class FeedbackActivity extends BaseAppActivity {
         System.out.println("token:" + userModel.getToken());
         List<NameValuePair> postParam = new ArrayList<>();
         postParam.add(new NameValuePair("userName",username));
-        postParam.add(new NameValuePair("phone",phone));
+        postParam.add(new NameValuePair("userPhone",phone));
         postParam.add(new NameValuePair("userId",userModel.getUserInfo().getUserId() + ""));
-        postParam.add(new NameValuePair("time",(System.currentTimeMillis() / 1000) + ""));
+        postParam.add(new NameValuePair("createTime",(System.currentTimeMillis() / 1000) + ""));
         postParam.add(new NameValuePair("content",content));
-        postParam.add(new NameValuePair("type",type + ""));
+        postParam.add(new NameValuePair("ideaType",type + ""));
         if (imageFiles.size() > 0) {
             for (String file:
                  imageFiles) {
@@ -213,9 +226,7 @@ public class FeedbackActivity extends BaseAppActivity {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 if (images.size() > 0) {
                     imageFiles.add(images.get(0).path);
-                    imagePicker.getImageLoader().displayImage(FeedbackActivity.this, images.get(0).path, ivPiture, 96, 96);
-                    imageCount++;
-                    addImageView();
+                    refreshImages();
                 }
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
@@ -242,12 +253,99 @@ public class FeedbackActivity extends BaseAppActivity {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ivPiture = (ImageView) v;
+            if (v.getId() == R.id.ib_picture) {
+                if (ivPictureDelete.getVisibility() == View.VISIBLE) {
+                    showConfirmDialogIfDeleteImage(0);
+                    return;
+                }
+            }
+            if (v.getId() == R.id.ib_picture2) {
+                if (ivPictureDelete2.getVisibility() == View.VISIBLE) {
+                    showConfirmDialogIfDeleteImage(1);
+                    return;
+                }
+            }
+            if (v.getId() == R.id.ib_picture3) {
+                if (ivPictureDelete3.getVisibility() == View.VISIBLE) {
+                    showConfirmDialogIfDeleteImage(2);
+                    return;
+                }
+            }
             Intent intentC = new Intent(FeedbackActivity.this, ImageGridActivity.class);
             intentC.putExtra(ImageGridActivity.EXTRAS_IMAGES,images);
             startActivityForResult(intentC, IMAGE_PICKER);
         }
     };
+
+    private void showConfirmDialogIfDeleteImage(int tag) {
+        new CircleDialog.Builder()
+                .setTitle(getResources().getString(R.string.dialog_delete_image_title))
+                //标题字体颜值 0x909090 or Color.parseColor("#909090")
+                .setPositive(getResources().getString(R.string.middle_confirm), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        imageFiles.remove(tag);
+                        refreshImages();
+                    }
+                })
+                .setNegative(getResources().getString(R.string.middle_quit), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .show(getSupportFragmentManager());
+    }
+
+    private void refreshImages() {
+        if (imageFiles.size() == 0) {
+            ivPicture.setImageResource(R.mipmap.suggest_icon_photo);
+            ivPicture2.setImageResource(R.mipmap.suggest_icon_photo);
+            ivPicture3.setImageResource(R.mipmap.suggest_icon_photo);
+            ivPicture.setVisibility(View.VISIBLE);
+            ivPictureDelete.setVisibility(View.INVISIBLE);
+            ivPicture2.setVisibility(View.INVISIBLE);
+            ivPictureDelete2.setVisibility(View.INVISIBLE);
+            ivPicture3.setVisibility(View.INVISIBLE);
+            ivPictureDelete3.setVisibility(View.INVISIBLE);
+        } else if (imageFiles.size() == 1) {
+            imagePicker.getImageLoader().displayImage(
+                    FeedbackActivity.this, imageFiles.get(0), ivPicture, 96, 96);
+            ivPicture2.setImageResource(R.mipmap.suggest_icon_photo);
+            ivPicture3.setImageResource(R.mipmap.suggest_icon_photo);
+            ivPicture.setVisibility(View.VISIBLE);
+            ivPictureDelete.setVisibility(View.VISIBLE);
+            ivPicture2.setVisibility(View.VISIBLE);
+            ivPictureDelete2.setVisibility(View.INVISIBLE);
+            ivPicture3.setVisibility(View.INVISIBLE);
+            ivPictureDelete3.setVisibility(View.INVISIBLE);
+        } else if (imageFiles.size() == 2) {
+            imagePicker.getImageLoader().displayImage(
+                    FeedbackActivity.this, imageFiles.get(0), ivPicture, 96, 96);
+            imagePicker.getImageLoader().displayImage(
+                    FeedbackActivity.this, imageFiles.get(1), ivPicture2, 96, 96);
+            ivPicture3.setImageResource(R.mipmap.suggest_icon_photo);
+            ivPicture.setVisibility(View.VISIBLE);
+            ivPictureDelete.setVisibility(View.VISIBLE);
+            ivPicture2.setVisibility(View.VISIBLE);
+            ivPictureDelete2.setVisibility(View.VISIBLE);
+            ivPicture3.setVisibility(View.VISIBLE);
+            ivPictureDelete3.setVisibility(View.INVISIBLE);
+        } else {
+            imagePicker.getImageLoader().displayImage(
+                    FeedbackActivity.this, imageFiles.get(0), ivPicture, 96, 96);
+            imagePicker.getImageLoader().displayImage(
+                    FeedbackActivity.this, imageFiles.get(1), ivPicture2, 96, 96);
+            imagePicker.getImageLoader().displayImage(
+                    FeedbackActivity.this, imageFiles.get(2), ivPicture3, 96, 96);
+            ivPicture.setVisibility(View.VISIBLE);
+            ivPictureDelete.setVisibility(View.VISIBLE);
+            ivPicture2.setVisibility(View.VISIBLE);
+            ivPictureDelete2.setVisibility(View.VISIBLE);
+            ivPicture3.setVisibility(View.VISIBLE);
+            ivPictureDelete3.setVisibility(View.VISIBLE);
+        }
+    }
 
     // 添加图片后，动态修改图片的约束
     private void addImageView() {
@@ -269,4 +367,5 @@ public class FeedbackActivity extends BaseAppActivity {
         ivLeft.setOnClickListener(clickListener);
         constraintLayout.addView(ivLeft);
     }
+
 }

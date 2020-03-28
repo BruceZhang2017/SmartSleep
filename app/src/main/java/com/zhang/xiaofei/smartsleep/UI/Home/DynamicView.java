@@ -180,8 +180,10 @@ public class DynamicView extends View {
     private void finishAnimator() {
         animatorPath = null;
         currentFinished += 1; // 完成动画
-        valueAnimator.cancel();
-        valueAnimator = null;
+        if (valueAnimator != null) {
+            valueAnimator.cancel();
+            valueAnimator = null;
+        }
         if (currentFinished < 10) {
             if (currentFinished + 1 <= current) {
                 startAnimator();

@@ -38,6 +38,7 @@ public class DeviceManager {
     public List<DeviceModel> deviceList = new ArrayList<DeviceModel>();
     public int currentDevice = 0;
     public int connectedCurrentDevice = 0;
+    public int scaningCurrentDevice = 0;
     public Context context;
 
     public void readDB() {

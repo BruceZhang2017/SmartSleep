@@ -111,7 +111,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_contact_phone"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="@string/login_contact_name_hint"
+                android:hint="@string/login_contact_phone_hint"
                 android:textColorHint="#555A63"
                 android:textSize="14sp"
                 android:background="@null"
@@ -239,6 +239,53 @@
                 android:src="@mipmap/suggest_icon_photo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_line" />
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toTopOf="@id/ib_picture"
+                app:layout_constraintRight_toRightOf="@id/ib_picture"
+                android:src="@mipmap/suggest_icon_delete"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/ib_picture2"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/suggest_icon_photo"
+                app:layout_constraintLeft_toRightOf="@id/ib_picture"
+                app:layout_constraintTop_toBottomOf="@id/iv_line"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/iv_delete2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toTopOf="@id/ib_picture2"
+                app:layout_constraintRight_toRightOf="@id/ib_picture2"
+                android:src="@mipmap/suggest_icon_delete"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/ib_picture3"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/suggest_icon_photo"
+                app:layout_constraintLeft_toRightOf="@id/ib_picture2"
+                app:layout_constraintTop_toBottomOf="@id/iv_line"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/iv_delete3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toTopOf="@id/ib_picture3"
+                app:layout_constraintRight_toRightOf="@id/ib_picture3"
+                android:src="@mipmap/suggest_icon_delete"
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/btn_submit"

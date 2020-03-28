@@ -303,4 +303,12 @@
     <string name="ota_updating">OTA升级中...</string>
     <string name="ota_updata_success">OTA升级成功</string>
 
+    <string name="dialog_delete_image_title">确定删除图片？</string>
+    <string name="bt_disconnect_success_tip">蓝牙连接已断开</string>
+    <string name="bt_connect_success_tip">蓝牙连接已成功</string>
+    <string name="bt_reconnect_tip">搜索或连接失败，请重新</string>
+    <string name="bt_scan">蓝牙扫描</string>
+    <string name="code_scan">二微码扫描</string>
+    <string name="code_bt_scan">二微码扫描，或者蓝牙扫描？</string>
+
 </resources>

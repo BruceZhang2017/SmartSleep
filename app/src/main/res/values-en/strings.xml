@@ -301,4 +301,13 @@
 
     <string name="ota_updating">OTA Updating...</string>
     <string name="ota_updata_success">OTA Update Success</string>
+
+    <string name="dialog_delete_image_title">Delete the picture?</string>
+
+    <string name="bt_disconnect_success_tip">Bluetooth connection is disconnected</string>
+    <string name="bt_connect_success_tip">Bluetooth connection is connected</string>
+    <string name="bt_reconnect_tip">Scan or connection failed, please retrying</string>
+    <string name="bt_scan">Bluetooth Scan</string>
+    <string name="code_scan">Code Scan</string>
+    <string name="code_bt_scan">Code Scan，or Bluetooth Scan？</string>
 </resources>

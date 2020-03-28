@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.umeng.sdk:share-wechat:6.9.2@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d75ce4692ffa1cd9fc5fe6018abc9d7b/jetified-share-wechat-6.9.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d75ce4692ffa1cd9fc5fe6018abc9d7b/jetified-share-wechat-6.9.2/res" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d75ce4692ffa1cd9fc5fe6018abc9d7b/jetified-share-wechat-6.9.2/jars/libs/wechat-sdk-android-without-mta-5.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/36bf5c2efe55d88df4752517da1780ea/jetified-share-wechat-6.9.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/36bf5c2efe55d88df4752517da1780ea/jetified-share-wechat-6.9.2/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/36bf5c2efe55d88df4752517da1780ea/jetified-share-wechat-6.9.2/jars/libs/wechat-sdk-android-without-mta-5.1.4.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.umeng.sdk/share-wechat/6.9.2/fdcea7db3cff238ea101d8790d581fe96b8c872/share-wechat-6.9.2-javadoc.jar!/" />

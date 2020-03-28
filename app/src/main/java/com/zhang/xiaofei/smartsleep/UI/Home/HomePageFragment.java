@@ -32,6 +32,7 @@ import com.jpeng.jptabbar.JPTabBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.mylhyl.circledialog.CircleDialog;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.sunofbeaches.himalaya.MainActivity;
@@ -95,10 +96,10 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private ViewPager viewPager;
     private FixedIndicatorView indicator;
-    int getupH = 0;
-    int getupM = 0;
-    int sleepH = 0;
-    int sleepM = 0;
+    private int getupH = 0;
+    private int getupM = 0;
+    private int sleepH = 0;
+    private int sleepM = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -154,9 +155,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_bind_device:
-                HomeActivity activity = (HomeActivity)getActivity();
-                //activity.checkCameraPermissions();
-                activity.startScan();
+                showDialogBLEScanOrCodeScan();
                 break;
             case R.id.ib_help_sleep:
                 Intent intentB = new Intent(getActivity(), MainActivity.class);
@@ -230,13 +229,38 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                                 } else if (position == 1) {
                                     showDialog();
                                 } else {
-                                    HomeActivity activity = (HomeActivity)getActivity();
-                                    //activity.checkCameraPermissions();
-                                    activity.startScan(); // 开始扫描
+                                    showDialogBLEScanOrCodeScan();
                                 }
                             }
                         })
                 .show();
+    }
+
+    private void showDialogBLEScanOrCodeScan() {
+        new CircleDialog.Builder()
+                .setTitle(getResources().getString(R.string.code_bt_scan))
+                //标题字体颜值 0x909090 or Color.parseColor("#909090")
+                .setPositive(getResources().getString(R.string.bt_scan), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HomeActivity activity = (HomeActivity)getActivity();
+                        activity.startScan(); // 开始扫描
+                    }
+                })
+                .setNeutral(getResources().getString(R.string.code_scan), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HomeActivity activity = (HomeActivity)getActivity();
+                        activity.checkCameraPermissions();
+                    }
+                })
+                .setNegative(getResources().getString(R.string.middle_quit), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .show(this.getFragmentManager());
     }
 
     @Override
@@ -423,7 +447,6 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         UserModel userModel = userManager.loadUserInfo();
         com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "application/x-www-form-urlencoded");
         com.ansen.http.net.Header headerToken = new com.ansen.http.net.Header("token", userModel.getToken());
-        HomeActivity activity = (HomeActivity)getActivity();
         HTTPCaller.getInstance().post(
                 Goods.class,
                 YMApplication.getInstance().domain() + "app/advert/homeAdvert",
@@ -511,19 +534,32 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             TextView tvDotValue = (TextView)convertView.findViewById(R.id.tv_dot_value);
 
             ImageView ivBluetooth = (ImageView)convertView.findViewById(R.id.iv_bluetooth);
-            System.out.println("刷新蓝牙图表");
+            ivBluetooth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (((DeviceManager.getInstance().scaningCurrentDevice >> position) & 0x01) > 0) {
+                        ((HomeActivity)getActivity()).scanDevice();
+                    }
+                }
+            });
             if (type == 3) {
                 ivBluetooth.setVisibility(View.INVISIBLE);
             } else {
                 ivBluetooth.setVisibility(View.VISIBLE);
                 if (YMApplication.getInstance().getBLEOpen()) {
-                    if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
-                        ivBluetooth.setImageResource(R.mipmap.bluetooth2);
+                    if (((DeviceManager.getInstance().scaningCurrentDevice >> position) & 0x01) > 0) {
+                        ivBluetooth.setImageResource(R.mipmap.btscan);
                         removeShineAnimation(ivBluetooth);
                     } else {
-                        ivBluetooth.setImageResource(R.mipmap.bluetooth1);
-                        addShineAnimation(ivBluetooth);
+                        if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
+                            ivBluetooth.setImageResource(R.mipmap.bluetooth2);
+                            removeShineAnimation(ivBluetooth);
+                        } else {
+                            ivBluetooth.setImageResource(R.mipmap.bluetooth1);
+                            addShineAnimation(ivBluetooth);
+                        }
                     }
+
                 } else {
                     ivBluetooth.setImageResource(R.mipmap.bluetooth3);
                     removeShineAnimation(ivBluetooth);
@@ -712,6 +748,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         refreshDevice(true);
     }
 
+    // 设置睡眠布局约束
     private void setIBHelpSleepLayout() {
         Integer dpi = DisplayUtil.getScreenMsg(getActivity()).get(DisplayUtil.ScreenEnum.DendityDpi);
         int value = 10 * dpi / 320;
@@ -759,8 +796,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         System.out.println("收到蓝牙变化的通知：" + connectState + " " + mac);
         for (int i = 0; i < DeviceManager.getInstance().deviceList.size(); i++) {
             if (DeviceManager.getInstance().deviceList.get(i).getMac().equals(mac)) {
-                DeviceManager.getInstance().connectedCurrentDevice = (((DeviceManager.getInstance().connectedCurrentDevice >> (i + 1)) << 1) + (connectState == 1 ? 1 : 0)) << i;
-                System.out.println("connectedCurrentDevice：" + DeviceManager.getInstance().connectedCurrentDevice);
+                if (connectState >= 3) {
+                    DeviceManager.getInstance().scaningCurrentDevice = (((DeviceManager.getInstance().scaningCurrentDevice >> (i + 1)) << 1) + (connectState == 4 ? 1 : 0)) << i;
+                    System.out.println("scaningCurrentDevice：" + DeviceManager.getInstance().scaningCurrentDevice);
+                } else {
+                    DeviceManager.getInstance().connectedCurrentDevice = (((DeviceManager.getInstance().connectedCurrentDevice >> (i + 1)) << 1) + (connectState == 1 ? 1 : 0)) << i;
+                    System.out.println("connectedCurrentDevice：" + DeviceManager.getInstance().connectedCurrentDevice);
+                }
                 adapter.notifyDataSetChanged();
                 break;
             }
@@ -776,14 +818,15 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
         }
         if (connectState == 0) {
-            Toast.makeText(getActivity(), "蓝牙连接已断开", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.bt_disconnect_success_tip, Toast.LENGTH_SHORT).show();
         } else if (connectState == 1) {
-            Toast.makeText(getActivity(), "蓝牙连接已成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.bt_connect_success_tip, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getActivity(), "蓝牙连接失败，正在重新尝试", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), R.string.bt_reconnect_tip, Toast.LENGTH_SHORT).show();
         }
     }
 
+    // 刷新设备列表，由于蓝牙状态变更
     public void refreshDeviceWithBLEStateChanged() {
         adapter.notifyDataSetChanged();
     }

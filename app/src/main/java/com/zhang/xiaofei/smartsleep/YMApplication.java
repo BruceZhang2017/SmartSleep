@@ -49,7 +49,7 @@ public class YMApplication extends Application {
                                 .build()))
                 .build());
         Log.i("Application", "YMApplication 初始化");
-        PlatformConfig.setWeixin("你的微信APPID", "你的微信AppSecret");//微信APPID和AppSecret
+        PlatformConfig.setWeixin("wxa4dbc47c00500034", "6a223a6a98d76525f73fadb374d14e5f");//微信APPID和AppSecret
 //        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
         PlatformConfig.setSinaWeibo("30910805", "375e1761984e8ff4c55074d1f8daa312","http://www.yamind.cn");//微博
         UMConfigure.setLogEnabled(true);

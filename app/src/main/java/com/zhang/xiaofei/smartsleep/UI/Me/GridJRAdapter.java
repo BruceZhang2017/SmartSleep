@@ -109,7 +109,7 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
                         }
                         deviceActivity.pushToOTA(position);
                     } else {
-                        deviceActivity.checkCameraPermissions();
+                        deviceActivity.showDialogBLEScanOrCodeScan();
                     }
 
                 }

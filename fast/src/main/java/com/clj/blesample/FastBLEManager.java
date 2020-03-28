@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,17 +25,14 @@ import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleMtuChangedCallback;
 import com.clj.fastble.callback.BleRssiCallback;
-import com.clj.fastble.callback.BleScanAndConnectCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.data.BleScanState;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.scan.BleScanRuleConfig;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 public class FastBLEManager implements BLEDataObserver{
@@ -91,7 +87,7 @@ public class FastBLEManager implements BLEDataObserver{
         String[] names = new String[]{"SLEEP_BABY", "Sleep_Baby", "SLEEP_BUTTON", "Sleep_Button", "sleep_baby", "sleep_button","Sleep_button"};
         BleScanRuleConfig.Builder builder = new BleScanRuleConfig.Builder()
                 .setDeviceName(true, names)   // 只扫描指定广播名的设备，可选
-                .setScanTimeOut(1000);             // 扫描超时时间，可选，默认2秒
+                .setScanTimeOut(5000);             // 扫描超时时间，可选，默认5秒
         if (macAddress != null && macAddress.length() > 0) {
            builder.setDeviceMac(macAddress);
         }
@@ -100,6 +96,7 @@ public class FastBLEManager implements BLEDataObserver{
     }
 
     public void startScanAndConnect() {
+
         BleManager.getInstance().scan(new BleScanCallback() {
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
@@ -110,13 +107,15 @@ public class FastBLEManager implements BLEDataObserver{
                 if (scanResultList != null && scanResultList.size() > 0) {
                     connect(scanResultList.get(0));
                 } else {
-                    startScanAndConnect(); // 重新开始扫描
+                    //startScanAndConnect(); // 重新开始扫描
+                    ObserverManager.getInstance().notifyObserver(4, macAddress);
                 }
             }
 
             @Override
             public void onScanStarted(boolean success) {
                 Log.i(TAG, "[BLE] onScanStarted");
+                ObserverManager.getInstance().notifyObserver(3, macAddress);
             }
 
             @Override

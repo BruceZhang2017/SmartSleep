@@ -128,4 +128,5 @@ dependencies {
     implementation 'io.github.inflationx:viewpump:2.0.3'
 
     implementation 'com.mylhyl:circleDialog:5.0.7' // Dialog扩展
+    //implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 }

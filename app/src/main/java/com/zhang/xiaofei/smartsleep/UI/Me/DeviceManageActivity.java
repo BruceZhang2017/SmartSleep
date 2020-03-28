@@ -26,6 +26,7 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.king.zxing.Intents;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.grid.BasicGridLayoutManager;
+import com.mylhyl.circledialog.CircleDialog;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceListModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
@@ -155,10 +156,10 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
      * 检测拍摄权限
      */
     @AfterPermissionGranted(RC_CAMERA)
-    public void checkCameraPermissions(){
+    private void checkCameraPermissions(){
         String[] perms = {Manifest.permission.CAMERA};
         if (EasyPermissions.hasPermissions(this, perms)) {//有权限
-            startScan();
+            startCodeScan();
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, "请至设置里打开相机权限。",
@@ -176,6 +177,36 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
     private void startScan(){
         Intent intent = new Intent(this, BLESearchActivity.class);
         startActivity(intent);
+    }
+
+    private void startCodeScan() {
+        Intent intent = new Intent(this, EasyCaptureActivity.class);
+        startActivityForResult(intent,REQUEST_CODE_SCAN);
+    }
+
+    public void showDialogBLEScanOrCodeScan() {
+        new CircleDialog.Builder()
+                .setTitle(getResources().getString(R.string.code_bt_scan))
+                //标题字体颜值 0x909090 or Color.parseColor("#909090")
+                .setPositive(getResources().getString(R.string.bt_scan), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startScan(); // 开始扫描
+                    }
+                })
+                .setNeutral(getResources().getString(R.string.code_scan), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        checkCameraPermissions();
+                    }
+                })
+                .setNegative(getResources().getString(R.string.middle_quit), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -207,7 +238,26 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
         }).show();
     }
 
-    private void deleteDeviceFromDB(String mac) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case REQUEST_CODE_SCAN:
+                    String result = data.getStringExtra(Intents.Scan.RESULT);
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+                    Intent intentBroadcast = new Intent();   //定义Intent
+                    intentBroadcast.setAction(DYNAMICACTION);
+                    intentBroadcast.putExtra("arg0", 0);
+                    intentBroadcast.putExtra("result", result);
+                    sendBroadcast(intentBroadcast);
+                    break;
+            }
+
+        }
+    }
+
+        private void deleteDeviceFromDB(String mac) {
         final RealmResults<DeviceModel> deviceList = mRealm.where(DeviceModel.class).equalTo("mac", mac).findAll();
         if (deviceList != null && deviceList.size() > 0) {
             String serial = deviceList.get(0).getDeviceSerial();

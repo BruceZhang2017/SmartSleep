@@ -292,7 +292,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     public void checkCameraPermissions(){
         String[] perms = {Manifest.permission.CAMERA};
         if (EasyPermissions.hasPermissions(this, perms)) {//有权限
-            startScan();
+            startCodeScan();
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, "请至设置打开相机权限",
@@ -308,11 +308,38 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
      * 扫码
      */
     public void startScan(){
-        //Intent intent = new Intent(this, EasyCaptureActivity.class);
-        //startActivityForResult(intent,REQUEST_CODE_SCAN);
         Intent intent = new Intent(this, BLESearchActivity.class);
         startActivity(intent);
     }
+
+    private void startCodeScan() {
+        Intent intent = new Intent(this, EasyCaptureActivity.class);
+        startActivityForResult(intent,REQUEST_CODE_SCAN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && data!=null){
+            switch (requestCode){
+                case REQUEST_CODE_SCAN:
+                    String result = data.getStringExtra(Intents.Scan.RESULT);
+                    Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
+                    handleQRCode(result);
+                    break;
+            }
+
+        }
+
+        if (requestCode == 3) { // 开始扫描
+            if (fastBLEManager.checkGPSIsOpen()) {
+                //fastBLEManager.setScanRule("");
+                //fastBLEManager.startScanAndConnect();
+            }
+        }
+    }
+
+
 
     private void handleQRCode(String result) {
         if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_") || result.startsWith("YMB") ){
@@ -400,7 +427,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             String mac = DeviceManager.getInstance().deviceList.get(0).getMac();
             if (mac.length() == 17) {
                 fastBLEManager.macAddress = mac;
-                fastBLEManager.startBLEScan(); // 重新刷列表
+                scanDevice(); // 重新刷列表
             }
         }
         if (mTab1 != null) {
@@ -409,6 +436,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (mTab2 != null && type == 3) {
             mTab2.refreshData(serialId);
         }
+    }
+
+    public void scanDevice() {
+        fastBLEManager.startBLEScan(); // 重新刷列表
     }
 
     @Override
