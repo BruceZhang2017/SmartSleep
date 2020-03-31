@@ -88,7 +88,7 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
             }
 
             if (jRitem.getDeviceType() > 2) {
-                b.textViewVersion.setText("V0.0");
+                b.textViewVersion.setText("V0.1");
             } else {
                 b.textViewVersion.setText("V1." + jRitem.getVersion());
             }
@@ -104,9 +104,9 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
                     }
                 } else {
                     if (b.textViewSample.getText().toString().length() > 0) {
-                        if (b.textViewVersion.getText().toString().equals("V0.0")) {
-                            return;
-                        }
+//                        if (b.textViewVersion.getText().toString().equals("V0.1")) {
+//                            return;
+//                        }
                         deviceActivity.pushToOTA(position);
                     } else {
                         deviceActivity.showDialogBLEScanOrCodeScan();

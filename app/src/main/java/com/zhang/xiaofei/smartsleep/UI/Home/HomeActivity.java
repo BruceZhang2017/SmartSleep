@@ -59,6 +59,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -356,9 +357,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 type = 3;
             }
             String[] array = res.split(",");
-            if (array.length == 2) {
+            if (array.length == 2 || (array.length == 1 && type == 3)) {
                 System.out.println("开始添加设备");
-                attachValue.put("mac", array[1].replace("-", ":"));
+                attachValue.put("mac", type == 3 ? "1" : array[1].replace("-", ":"));
                 attachValue.put("serial", array[0]);
                 attachValue.put("type", type + "");
                 addDeviceToCloud();
@@ -384,8 +385,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             System.out.println("数据库已经存在同样的设备");
             return;
         }
-        RealmResults<DeviceModel> userListB = mRealm.where(DeviceModel.class).findAll();
-        int size = userListB.size();
+        RealmResults<DeviceModel> devices = mRealm.where(DeviceModel.class).findAll();
+        int size = devices.size();
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -393,7 +394,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 model.setUserId(userId);
                 model.setMac(mac);
                 model.setDeviceType(type);
-                model.setBindTime("");
+                model.setBindTime("" + System.currentTimeMillis());
                 model.setDeviceSerial(serial);
                 model.setVersion(1 + "");
                 model.setId(1 + size);
@@ -419,11 +420,8 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     // 刷新设备列表并扫描第一个设备
     private void refreshBLEAndDevice() {
         DeviceManager.getInstance().readDB();
-        String serialId = "";
-        int type = 0;
-        if (DeviceManager.getInstance().deviceList.size() > 0) {
-            serialId = DeviceManager.getInstance().deviceList.get(0).getDeviceSerial();
-            type = DeviceManager.getInstance().deviceList.get(0).getDeviceType();
+        int size = DeviceManager.getInstance().deviceList.size();
+        if (size > 0) {
             String mac = DeviceManager.getInstance().deviceList.get(0).getMac();
             if (mac.length() == 17) {
                 fastBLEManager.macAddress = mac;
@@ -433,8 +431,18 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (mTab1 != null) {
             mTab1.showDeviceList();
         }
-        if (mTab2 != null && type == 3) {
-            mTab2.refreshData(serialId);
+
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                int type = DeviceManager.getInstance().deviceList.get(i).getDeviceType();
+                if (type == 3) {
+                    String serialId = DeviceManager.getInstance().deviceList.get(i).getDeviceSerial();
+                    if (mTab2 != null) {
+                        mTab2.refreshData(serialId);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -506,7 +514,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         model.setSnore(array[6]);
         model.setBreatheStop(array[7]);
         recordModelList.add(model);
-        if (recordModelList.size() < 16) { // 刚才默认为256条
+        if (recordModelList.size() < 32) { // 刚才默认为256条
             return;
         }
         List<RecordModel> tem = new ArrayList<>();
@@ -846,7 +854,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             fastBLEManager.stopBLEScan();
             fastBLEManager.onDisConnect();
             String mac = DeviceManager.getInstance().deviceList.get(current).getMac();
-            if (mac.length() == 17) {
+            if (mac.length() == 17 && !mac.equals("00:00:00:00:00:00")) {
                 fastBLEManager.macAddress = mac;
                 fastBLEManager.startBLEScan();
             }

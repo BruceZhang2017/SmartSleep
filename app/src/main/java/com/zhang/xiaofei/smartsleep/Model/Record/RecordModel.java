@@ -14,6 +14,7 @@ public class RecordModel extends RealmObject {
     int getupFlag;
     int snore;
     int breatheStop;
+    boolean isSyncCloud;
 
     public int getUserId() {
         return userId;
@@ -101,5 +102,13 @@ public class RecordModel extends RealmObject {
 
     public void setBreatheStop(int breatheStop) {
         this.breatheStop = breatheStop;
+    }
+
+    public boolean isSyncCloud() {
+        return isSyncCloud;
+    }
+
+    public void setSyncCloud(boolean syncCloud) {
+        isSyncCloud = syncCloud;
     }
 }

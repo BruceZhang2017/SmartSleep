@@ -22,6 +22,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+import static io.realm.Sort.ASCENDING;
+import static io.realm.Sort.DESCENDING;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class DeviceManager {
@@ -49,7 +51,10 @@ public class DeviceManager {
             return;
         }
         Realm mRealm = Realm.getDefaultInstance();
-        RealmResults<DeviceModel> userList = mRealm.where(DeviceModel.class).equalTo("userId", userModel.getUserInfo().getUserId()).findAll();
+        RealmResults<DeviceModel> userList = mRealm.where(DeviceModel.class)
+                .equalTo("userId", userModel.getUserInfo().getUserId())
+                .sort("bindTime", ASCENDING)
+                .findAll();
         if (userList != null && userList.size() > 0) {
             for (DeviceModel model: userList) {
                 deviceList.add(model);

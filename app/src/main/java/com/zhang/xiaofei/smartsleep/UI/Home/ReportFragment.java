@@ -30,6 +30,7 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupAnimation;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.impl.AttachListPopupView;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.shizhefei.view.indicator.FixedIndicatorView;
@@ -104,6 +105,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 	public String serialId = "";
 	private boolean bDevicePopShow = false; // 设备选择弹框是否可见
 	private BottomDialog bottomDialog;
+	private ImageView ivnull;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -122,6 +124,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		colorBar.getSlideView().setBackground(getResources().getDrawable(R.drawable.block_half_corner_white));
 		indicator.setScrollBar(colorBar);
 		View vHeader = view.findViewById(R.id.include_title);
+		ivnull = view.findViewById(R.id.iv_null);
 		tvTitle = (TextView)view.findViewById(R.id.tv_title);
 		tvTitle.setText(R.string.report_sleep_belt);
 		tvTitle.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +134,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 					return;
 				}
 				bDevicePopShow = true;
-				selectDevice(vHeader);
+				selectDevice(ivnull);
 			}
 		});
 		ImageButton ibArrow = (ImageButton)view.findViewById(R.id.ib_arrow);
@@ -144,7 +147,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 					return;
 				}
 				bDevicePopShow = true;
-				selectDevice(vHeader);
+				selectDevice(ivnull);
 			}
 		});
 
@@ -304,7 +307,8 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 		Context context =  (Context) getActivity();
 		new XPopup.Builder(context)
 				.atView(view)  // 依附于所点击的View，内部会自动判断在上方或者下方显示
-				.popupAnimation(PopupAnimation.TranslateAlphaFromTop)
+				.offsetY(150)
+				.popupAnimation(PopupAnimation.TranslateAlphaFromBottom)
 				.asCustom(new CustomAttachPopup(getActivity())
 						.bindItemLayout(R.layout.xpopup_adapger_m_text)
 						.setStringData(new String[]{

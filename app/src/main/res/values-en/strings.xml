@@ -310,4 +310,7 @@
     <string name="bt_scan">Bluetooth Scan</string>
     <string name="code_scan">Code Scan</string>
     <string name="code_bt_scan">Code Scan，or Bluetooth Scan？</string>
+
+    <string name="submit_success">Submit Success</string>
+    <string name="submit_fail">Submit Fail</string>
 </resources>

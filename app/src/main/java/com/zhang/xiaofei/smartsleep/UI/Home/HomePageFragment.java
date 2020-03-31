@@ -813,7 +813,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
             HomeActivity activity = (HomeActivity)getActivity();
             String macAddress = activity.fastBLEManager.macAddress;
-            if (macAddress.equals(mac)) {
+            if (macAddress.equals(mac) && macAddress.length() == 17 && !macAddress.equals("00:00:00:00:00:00")) {
+                if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                    return;
+                }
+                if (DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType() >= 3) {
+                    return;
+                }
                 activity.fastBLEManager.startScanAndConnect();
             }
         }

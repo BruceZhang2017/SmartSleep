@@ -59,7 +59,12 @@ public class OTAActivity extends BaseAppActivity {
         List<OTAInfo> appNames = new ArrayList<>();
         appNames.add(new OTAInfo(getResources().getString(R.string.device_name), deviceName));
         appNames.add(new OTAInfo(getResources().getString(R.string.index_serial_no), deviceSerial));
-        appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V1." + deviceVersion));
+        if (mac.equals("00:00:00:00:00:00")) {
+            appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V0.1"));
+        } else {
+            appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V1." + deviceVersion));
+        }
+
         //适配adapter
         listView.setAdapter(new AppListAdapter(appNames));
         tvTip = (TextView)findViewById(R.id.tv_tip);
@@ -75,7 +80,9 @@ public class OTAActivity extends BaseAppActivity {
             }
         });
 
-        downloadOTA();
+        if (!mac.equals("00:00:00:00:00:00")) {
+            downloadOTA();
+        }
     }
 
     public class AppListAdapter extends BaseAdapter {

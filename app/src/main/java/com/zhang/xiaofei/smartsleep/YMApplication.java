@@ -12,6 +12,7 @@ import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import com.sunofbeaches.himalaya.IComponentApplication;
+import com.zhang.xiaofei.smartsleep.Kit.Application.CustomMigration;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
@@ -25,6 +26,7 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.calligraphy3.FontMapper;
 import io.github.inflationx.viewpump.ViewPump;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class YMApplication extends Application {
 
@@ -48,7 +50,6 @@ public class YMApplication extends Application {
                                 .setFontAttrId(R.attr.fontPath)
                                 .build()))
                 .build());
-        Log.i("Application", "YMApplication 初始化");
         PlatformConfig.setWeixin("wxa4dbc47c00500034", "6a223a6a98d76525f73fadb374d14e5f");//微信APPID和AppSecret
 //        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
         PlatformConfig.setSinaWeibo("30910805", "375e1761984e8ff4c55074d1f8daa312","http://www.yamind.cn");//微博
@@ -71,6 +72,13 @@ public class YMApplication extends Application {
         initialOKHttp3();
 
         Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("myrealm.realm") //文件名
+                .schemaVersion(1)
+                .migration(new CustomMigration())//升级数据库
+                .build();
+        Realm.setDefaultConfiguration(config);
+
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))

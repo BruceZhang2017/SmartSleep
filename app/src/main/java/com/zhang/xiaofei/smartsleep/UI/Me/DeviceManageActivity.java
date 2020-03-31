@@ -69,6 +69,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
     private static final String DYNAMICACTION = "Filter";
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
     private DeviceReceiver dynamicReceiver;
+    private int currentDeleteIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,21 +219,23 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
 
     // 显示删除按钮
     public void deleteDevice(int index) {
+        String mac = team.get(index).getMac();
+        if (mac.length() != 17) {
+            mac = team.get(index).getDeviceSerial();
+        }
         new AlertView(
                 getResources().getString(R.string.index_unbinding),
-                team.get(index).getDeviceSerial(),
+                mac,
                 getResources().getString(R.string.middle_quit),
                 new String[]{getResources().getString(R.string.middle_confirm)},
                 null,
                 this, AlertView.Style.Alert, new OnItemClickListener(){
             public void onItemClick(Object o,int position){
-                DeviceModel model = team.get(index);
-                deleteDevice(model.getDeviceSerial(), model.getMac());
-                deleteDeviceFromDB(model.getMac());
-                team.remove(index);
-                mGridAdapter.notifyDataSetChanged();
-                if (team.size() == 0) {
-                    tvRight.setText(" ");
+                System.out.println("将要删除的序号为：" + position);
+                if (position == 0) {
+                    currentDeleteIndex = index;
+                    DeviceModel model = team.get(index);
+                    deleteDevice(model.getDeviceSerial(), model.getMac());
                 }
             }
         }).show();
@@ -294,6 +297,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
 
     // 删除设备
     private void deleteDevice(String serial, String mac) {
+        System.out.println("网络请求返回的serial:" + serial);
         showHUD();
         YMUserInfoManager userManager = new YMUserInfoManager( DeviceManageActivity.this);
         UserModel userModel = userManager.loadUserInfo();
@@ -320,12 +324,23 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
         public void dataCallback(int status, BaseProtocol user) {
             hideHUD();
             System.out.println("网络请求返回的Status:" + status);
-            if(user==null || user.getCode() != 200){
-                if (user != null) {
-                    Toast.makeText(DeviceManageActivity.this, user.getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }else{
+            if(user==null){
 
+            }else{
+                if (user != null) {
+                    System.out.println("网络请求返回的Code:" + user.getCode());
+                    if (user.getCode() == 200) {
+                        Toast.makeText(DeviceManageActivity.this, R.string.index_unbinding_success, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                if (status == 200) {
+                    deleteDeviceFromDB(team.get(currentDeleteIndex).getMac());
+                    team.remove(currentDeleteIndex);
+                    mGridAdapter.notifyDataSetChanged();
+                    if (team.size() == 0) {
+                        tvRight.setText(" ");
+                    }
+                }
             }
 
         }
@@ -371,10 +386,16 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
     // 跳转至OTA
     public void pushToOTA(int postion) {
         Intent intent = new Intent(DeviceManageActivity.this, OTAActivity.class);
-        intent.putExtra("name", team.get(postion).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
         intent.putExtra("serial", team.get(postion).getDeviceSerial());
-        intent.putExtra("version", team.get(postion).getVersion());
-        intent.putExtra("mac", team.get(postion).getMac());
+        if (team.get(postion).getDeviceType() == 3) {
+            intent.putExtra("name", getResources().getString(R.string.homepage_breathing_machine));
+            intent.putExtra("version", "1");
+            intent.putExtra("mac", "00:00:00:00:00:00");
+        } else {
+            intent.putExtra("name", team.get(postion).getDeviceType() == 1 ? getResources().getString(R.string.report_yamy_sleep_belt) : getResources().getString(R.string.report_yamy_sleep_button));
+            intent.putExtra("version", team.get(postion).getVersion());
+            intent.putExtra("mac", team.get(postion).getMac());
+        }
         startActivity(intent);
     }
 }

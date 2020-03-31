@@ -311,4 +311,7 @@
     <string name="code_scan">二微码扫描</string>
     <string name="code_bt_scan">二微码扫描，或者蓝牙扫描？</string>
 
+    <string name="submit_success">提交成功</string>
+    <string name="submit_fail">提交失败</string>
+
 </resources>
