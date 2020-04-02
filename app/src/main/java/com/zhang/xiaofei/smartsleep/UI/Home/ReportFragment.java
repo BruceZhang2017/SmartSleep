@@ -26,6 +26,8 @@ import androidx.fragment.app.FragmentManager;
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.NameValuePair;
 import com.ansen.http.net.RequestDataCallback;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 import com.lxj.xpopup.XPopup;
@@ -49,20 +51,36 @@ import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.BreathRecordManger;
 import com.zhang.xiaofei.smartsleep.Model.Record.BreathRecordModel;
+import com.zhang.xiaofei.smartsleep.Model.Record.HistoryBreath;
+import com.zhang.xiaofei.smartsleep.Model.Record.HistoryBreathData;
+import com.zhang.xiaofei.smartsleep.Model.Record.HistoryBreathList;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.LoginActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.LoginMoreActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.FeedbackActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import me.curzbin.library.BottomDialog;
 import me.curzbin.library.Item;
 import me.curzbin.library.OnItemClickListener;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ReportFragment extends Fragment implements CalendarView.OnCalendarRangeSelectListener,
         CalendarView.OnMonthChangeListener {
@@ -503,9 +521,9 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 			BreathRecordManger.getInstance().deleteRecordModel();
 			HomeActivity activity = (HomeActivity)getActivity();
 			activity.refreshTab1();
-			startDate = calendar.getYear() + "" + (calendar.getMonth() > 9 ? ("" + calendar.getMonth()) : ("0" + calendar.getMonth())) + "" + (calendar.getDay() > 9 ? ("" + calendar.getDay()) : ("0" + calendar.getDay()));
+			startDate = calendar.getYear() + "-" + (calendar.getMonth() > 9 ? ("" + calendar.getMonth()) : ("0" + calendar.getMonth())) + "-" + (calendar.getDay() > 9 ? ("" + calendar.getDay()) : ("0" + calendar.getDay()));
         } else {
-			endDate = calendar.getYear() + "" + (calendar.getMonth() > 9 ? ("" + calendar.getMonth()) : ("0" + calendar.getMonth())) + "" + (calendar.getDay() > 9 ? ("" + calendar.getDay()) : ("0" + calendar.getDay()));
+			endDate = calendar.getYear() + "-" + (calendar.getMonth() > 9 ? ("" + calendar.getMonth()) : ("0" + calendar.getMonth())) + "-" + (calendar.getDay() > 9 ? ("" + calendar.getDay()) : ("0" + calendar.getDay()));
 			requestBreathData(startDate, endDate);
 
         }
@@ -542,9 +560,9 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 			tvBreath6.setText(model.getInhaleStressNice() + "");
 			tvBreath7.setText(model.getMaxAvg().getHqylpjz() + "");
 			tvBreath8.setText(model.getExhaleStressNice() + "");
-			tvBreath9.setText(model.getMaxAvg().getAipjz() + "");
-			tvBreath10.setText(model.getMaxAvg().getHipjz() + "");
-			tvBreath11.setText(model.getMaxAvg().getPjahi() + "");
+			tvBreath9.setText(model.getAvgAi() + "");
+			tvBreath10.setText(model.getAvgHi() + "");
+			tvBreath11.setText(model.getAvgAHI() + "");
 			tvBreath12.setText(model.getMaxAvg().getCqlpjz() + "");
 			tvBreath13.setText(model.getTidalVolume() + "");
 			tvBreath14.setText(model.getTidalVolumeNice() + "");
@@ -560,6 +578,8 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 	public void refreshData(String serialId) {
     	this.serialId = serialId;
 		requestBreathData(startDate, endDate);
+		//getHuxijiData(1);
+		requestData();
 	}
 
 	// 微博分享
@@ -628,5 +648,186 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 				.withMedia(web)
 				.setCallback(umShareListener)
 				.share();
+	}
+
+	// 获取呼吸机那些日期有数据
+	private void getHuxijiData(int page) {
+		System.out.println("获取数据库数据：" + page);
+		if (serialId == null || serialId.length() == 0) {
+			return;
+		}
+		YMUserInfoManager userManager = new YMUserInfoManager(getActivity());
+		UserModel userModel = userManager.loadUserInfo();
+		com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "application/json; charset=utf-8");
+		com.ansen.http.net.Header headerToken = new com.ansen.http.net.Header("token", userModel.getToken());
+		List<NameValuePair> postParam = new ArrayList<>();
+		postParam.add(new NameValuePair("sortOrder","asc"));
+		postParam.add(new NameValuePair("pageSize",1000 + ""));
+		postParam.add(new NameValuePair("pageNumber",page + ""));
+		postParam.add(new NameValuePair("serialId",serialId));
+		HTTPCaller.getInstance().post(
+				HistoryBreathList.class,
+				YMApplication.getInstance().domain() + "app/deviceManage/getHistorySetData",
+				new com.ansen.http.net.Header[]{header, headerToken},
+				postParam,
+				requestHistoryDataCallback
+		);
+	}
+
+	private class History {
+		String sortOrder;
+		int pageSize;
+		int pageNumber;
+		String serialId;
+
+		public String getSortOrder() {
+			return sortOrder;
+		}
+
+		public void setSortOrder(String sortOrder) {
+			this.sortOrder = sortOrder;
+		}
+
+		public int getPageSize() {
+			return pageSize;
+		}
+
+		public void setPageSize(int pageSize) {
+			this.pageSize = pageSize;
+		}
+
+		public int getPageNumber() {
+			return pageNumber;
+		}
+
+		public void setPageNumber(int pageNumber) {
+			this.pageNumber = pageNumber;
+		}
+
+		public String getSerialId() {
+			return serialId;
+		}
+
+		public void setSerialId(String serialId) {
+			this.serialId = serialId;
+		}
+	}
+
+	private RequestDataCallback requestHistoryDataCallback = new RequestDataCallback<HistoryBreathList>() {
+		@Override
+		public void dataCallback(int status, HistoryBreathList list) {
+			System.out.println("网络请求返回的Status:" + status);
+			if(list==null || list.getCode() != 200){
+				if (list.getCode() == 500 ) {
+					Toast.makeText(getActivity(), list.getMsg(), Toast.LENGTH_SHORT).show();
+				}
+			}else{
+				if (list.getCode() == 200) {
+					refreshCalendarViewWithHasData(list);
+				}
+			}
+
+		}
+
+		@Override
+		public void dataCallback(HistoryBreathList obj) {
+			HomeActivity activity = (HomeActivity)getActivity();
+			if (obj == null) {
+				Toast.makeText(getActivity(), getActivity().getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
+
+	private void refreshCalendarViewWithHasData(HistoryBreathList list) {
+		if (list.getData() == null) {
+			return;
+		}
+		HistoryBreathData data = list.getData();
+		if (data.getRows() == null) {
+			return;
+		}
+		if (data.getRows().length <= 0) {
+			return;
+		}
+		Map<String, Calendar> map = new HashMap<>();
+		for (HistoryBreath breath : data.getRows()) {
+			String date = breath.getUseDate();
+			if (date.length() == 10) {
+				String[] array = date.split("-");
+				if (array.length == 3) {
+					int year = Integer.parseInt(array[0]);
+					int month = Integer.parseInt(array[1]);
+					int day = Integer.parseInt(array[2]);
+					map.put(getSchemeCalendar(year, month, day, 0xFF40db25).toString(),
+							getSchemeCalendar(year, month, day, 0xFF40db25));
+				}
+			}
+		}
+		if (map.size() > 0) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					calendarView.setSchemeDate(map);
+				}
+			});
+		}
+	}
+
+	private Calendar getSchemeCalendar(int year, int month, int day, int color) {
+		Calendar calendar = new Calendar();
+		calendar.setYear(year);
+		calendar.setMonth(month);
+		calendar.setDay(day);
+		calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
+		return calendar;
+	}
+
+	private void requestData() {
+		if (serialId == null || serialId.length() == 0) {
+			return;
+		}
+		OkHttpClient okHttpClient  = new OkHttpClient.Builder()
+				.connectTimeout(10, TimeUnit.SECONDS)
+				.writeTimeout(10,TimeUnit.SECONDS)
+				.readTimeout(20, TimeUnit.SECONDS)
+				.build();
+
+		History history = new History();
+		history.setSortOrder("asc");
+		history.setPageSize(1000);
+		history.setPageNumber(1);
+		history.setSerialId(serialId);
+		//使用Gson 添加 依赖 compile 'com.google.code.gson:gson:2.8.1'
+		Gson gson = new Gson();
+		//使用Gson将对象转换为json字符串
+		String json = gson.toJson(history);
+
+		//MediaType  设置Content-Type 标头中包含的媒体类型值
+		RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+				, json);
+		YMUserInfoManager userManager = new YMUserInfoManager(getActivity());
+		UserModel userModel = userManager.loadUserInfo();
+		Request request = new Request.Builder()
+				.url(YMApplication.getInstance().domain() + "app/deviceManage/getHistorySetData")//请求的url
+				.addHeader("token", userModel.getToken())
+				.post(requestBody)
+				.build();
+
+		//创建/Call
+		Call call = okHttpClient.newCall(request);
+		//加入队列 异步操作
+		call.enqueue(new Callback() {
+			//请求错误回调方法
+			@Override
+			public void onFailure(Call call, IOException e) {
+				System.out.println("连接失败");
+			}
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				Type type = new TypeToken<HistoryBreathList>() {}.getType();
+				HistoryBreathList list = gson.fromJson(response.body().string(), type);
+				refreshCalendarViewWithHasData(list);
+			}
+		});
 	}
 }

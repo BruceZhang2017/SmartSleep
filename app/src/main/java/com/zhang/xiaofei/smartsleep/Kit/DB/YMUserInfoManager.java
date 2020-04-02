@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.zhang.xiaofei.smartsleep.Model.Login.UserInfoModel;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
 public class YMUserInfoManager {
 
@@ -15,7 +16,7 @@ public class YMUserInfoManager {
     }
 
     public void saveUserInfo(UserModel userModel) {
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences preferences = YMApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("expire", userModel.getExpire());
         editor.putInt("userId", userModel.getUserInfo().getUserId());
@@ -49,7 +50,7 @@ public class YMUserInfoManager {
     }
 
     public UserModel loadUserInfo() {
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences preferences = YMApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         String expire = preferences.getString("expire", "");
         if (expire.length() == 0) {
             return null;
@@ -78,7 +79,7 @@ public class YMUserInfoManager {
     }
 
     public void clearUserInfo() {
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences preferences = YMApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.clear();
         editor.commit();

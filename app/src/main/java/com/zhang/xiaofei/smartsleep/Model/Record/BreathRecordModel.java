@@ -24,6 +24,9 @@ public class BreathRecordModel extends BaseProtocol implements Serializable {
     BreathMaxAvg maxAvg;
     String startDate = "";
     String endDate = "";
+    float avgAi;
+    float avgHi;
+    float avgAHI;
 
     public float getExhaleStressNice() {
         return exhaleStressNice;
@@ -175,5 +178,29 @@ public class BreathRecordModel extends BaseProtocol implements Serializable {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public float getAvgAi() {
+        return avgAi;
+    }
+
+    public void setAvgAi(float avgAi) {
+        this.avgAi = avgAi;
+    }
+
+    public float getAvgHi() {
+        return avgHi;
+    }
+
+    public void setAvgHi(float avgHi) {
+        this.avgHi = avgHi;
+    }
+
+    public float getAvgAHI() {
+        return avgAHI;
+    }
+
+    public void setAvgAHI(float avgAHI) {
+        this.avgAHI = avgAHI;
     }
 }
