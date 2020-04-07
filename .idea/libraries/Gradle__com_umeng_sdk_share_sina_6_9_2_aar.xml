@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.umeng.sdk:share-sina:6.9.2@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4186bedc632890a92b2b37476eae4546/jetified-share-sina-6.9.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4186bedc632890a92b2b37476eae4546/jetified-share-sina-6.9.2/res" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4186bedc632890a92b2b37476eae4546/jetified-share-sina-6.9.2/jars/libs/weiboSDKCore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/cbe9ea060fb391c819347561ef6335e9/jetified-share-sina-6.9.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/cbe9ea060fb391c819347561ef6335e9/jetified-share-sina-6.9.2/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/cbe9ea060fb391c819347561ef6335e9/jetified-share-sina-6.9.2/jars/libs/weiboSDKCore.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.umeng.sdk/share-sina/6.9.2/fdcea7db3cff238ea101d8790d581fe96b8c872/share-sina-6.9.2-javadoc.jar!/" />

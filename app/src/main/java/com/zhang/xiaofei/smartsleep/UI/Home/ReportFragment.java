@@ -611,6 +611,14 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 			return;
 		}
 		dayFragment.refreshDayReport();
+		if (weekFragment == null) {
+			return;
+		}
+		weekFragment.refreshAllUI();
+		if (monthFragment == null) {
+			return;
+		}
+		monthFragment.refreshAllUI();
 	}
 
 	// 微博分享事件

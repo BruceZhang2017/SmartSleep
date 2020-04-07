@@ -69,6 +69,7 @@ public class ReportWeekFragment extends LazyFragment {
     private ImageButton ibLeftPre;
     private ImageButton ibRightNex;
     private TextView tvSimulationData;
+    private TextView tvSleepRank;
     private Realm mRealm;
     private int currentTime = 0;
     Map<Integer, List<RecordModel>> mMap = new HashMap<Integer, List<RecordModel>>();
@@ -76,6 +77,10 @@ public class ReportWeekFragment extends LazyFragment {
     LineDataSet set2;
     ArrayList<Entry> set1values;
     private Boolean bBelt = false; // 刷新睡眠带，睡眠纽扣
+    int[] scores = new int[7]; // 得分
+    int[] sleepOneDayTimes = new int[7]; // 深睡眠时长
+    int nosleepTimeTotal = 0; // 清醒时长
+    int noSleepMinuteCount = 0; // 清醒次数
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -90,20 +95,12 @@ public class ReportWeekFragment extends LazyFragment {
         initializeForChart(); // 睡眠质量初始化
         initializeForChart2();
         tvSleepValue = (TextView)findViewById(R.id.tv_sleep_value);
-        String unit = getResources().getString(R.string.common_minute2);
-        String[] array = {unit};
-        String content = "00" + unit;
-        tvSleepValue.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 30, array));
+        tvSleepRank = (TextView)findViewById(R.id.tv_sleep_week_value);
         tvSleepAverageTime = (TextView)findViewById(R.id.tv_sleep_average_time);
-        String unit01 = getResources().getString(R.string.common_hour);
-        String unit02 = getResources().getString(R.string.common_minute);
-        String[] array1 = {unit01, unit02};
-        String content1 = "17" + unit01 + "30" + unit02;
-        tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+
         initialText();
 
         initialCurrentTime();
-        mRealm = Realm.getDefaultInstance();
         getDayData(currentTime);
         System.out.println("当前周有的数据为：" + mMap.size());
 
@@ -159,6 +156,7 @@ public class ReportWeekFragment extends LazyFragment {
 
     private void getDayData(int startTime) {
         mMap.clear();
+        mRealm = Realm.getDefaultInstance();
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
                 .greaterThan("time", startTime)
                 .lessThan("time", startTime + 24 * 60 * 60 * 7)
@@ -174,6 +172,7 @@ public class ReportWeekFragment extends LazyFragment {
                 mMap.put((Integer) (model.getTime() / 60), temlist);
             }
         }
+        refreshSleepStatisticsUI();
     }
 
     private String getTextValue() {
@@ -212,28 +211,11 @@ public class ReportWeekFragment extends LazyFragment {
         String content = "00" + unit01 + "00" + unit02;
         tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 20, array));
         tvTime1 = (TextView)findViewById(R.id.tv_time_1);
-        String unit11 = getResources().getString(R.string.common_hour2);
-        String unit12 = getResources().getString(R.string.common_minute3);
-        String[] array1 = {unit11, unit12};
-        String content1 = "00" + unit11 + "00" + unit12;
-        tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         tvTime2 = (TextView)findViewById(R.id.tv_time_2);
-        String unit21 = getResources().getString(R.string.common_hour);
-        String unit22 = getResources().getString(R.string.common_minute);
-        String[] array2 = {unit21, unit22};
-        String content2 = "00" + unit21 + "00" + unit22;
-        tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         tvTime3 = (TextView)findViewById(R.id.tv_time_3);
-        tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         tvTime4 = (TextView)findViewById(R.id.tv_time_4);
-        String unit4 = getResources().getString(R.string.common_times_minute);
-        String[] array4 = {unit4};
-        String content4 = "00" + unit4;
-        tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
         tvTime5 = (TextView)findViewById(R.id.tv_time_5);
-        tvTime5.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
         tvTime6 = (TextView)findViewById(R.id.tv_time_6);
-        tvTime6.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
 
         tvSleepTime4 = (TextView)findViewById(R.id.tv_sleep_time_4);
         tvSleepTime5 = (TextView)findViewById(R.id.tv_sleep_time_5);
@@ -296,71 +278,62 @@ public class ReportWeekFragment extends LazyFragment {
             chart.setPinchZoom(false);
         }
 
-        XAxis xAxis;
-        {   // // X-Axis Style // //
-            xAxis = chart.getXAxis();
-            xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-            xAxis.setAxisMaximum(8f);
-            xAxis.setAxisMinimum(0f);
-            xAxis.setLabelCount(8);
-            xAxis.setGranularityEnabled(true);
-            xAxis.setGranularity(1f);
-            xAxis.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    switch ((int)value) {
-                        case 1:
-                            return getResources().getString(R.string.middle_mon);
-                        case 2:
-                            return getResources().getString(R.string.middle_tue);
-                        case 3:
-                            return getResources().getString(R.string.middle_wed);
-                        case 4:
-                            return getResources().getString(R.string.middle_thu);
-                        case 5:
-                            return getResources().getString(R.string.middle_fri);
-                        case 6:
-                            return getResources().getString(R.string.middle_sat);
-                        case 7:
-                            return getResources().getString(R.string.middle_sun);
-                        default:
-                            return "";
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+        xAxis.setAxisMaximum(8f);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setLabelCount(8);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                switch ((int)value) {
+                    case 1:
+                        return getResources().getString(R.string.middle_mon);
+                    case 2:
+                        return getResources().getString(R.string.middle_tue);
+                    case 3:
+                        return getResources().getString(R.string.middle_wed);
+                    case 4:
+                        return getResources().getString(R.string.middle_thu);
+                    case 5:
+                        return getResources().getString(R.string.middle_fri);
+                    case 6:
+                        return getResources().getString(R.string.middle_sat);
+                    case 7:
+                        return getResources().getString(R.string.middle_sun);
+                    default:
+                        return "";
 
-                    }
                 }
-            });
-        }
+            }
+        });
 
-        YAxis yAxis;
-        {   // // Y-Axis Style // //
-            yAxis = chart.getAxisLeft();
-            // disable dual axis (only use LEFT axis)
-            chart.getAxisRight().setEnabled(false);
-            // horizontal grid lines
-            //yAxis.enableGridDashedLine(10f, 10f, 0f);
-            // axis range
-            yAxis.setAxisMaximum(120f);
-            yAxis.setAxisMinimum(0f);
-            yAxis.setLabelCount(6);
-            yAxis.setGranularityEnabled(true);
-            yAxis.setGranularity(20f);
-            yAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-            yAxis.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    if (value <= 100) {
-                        return "" + (int)value;
-                    }
-                    return "";
+        YAxis yAxis = chart.getAxisLeft();
+        // disable dual axis (only use LEFT axis)
+        chart.getAxisRight().setEnabled(false);
+        // horizontal grid lines
+        //yAxis.enableGridDashedLine(10f, 10f, 0f);
+        // axis range
+        yAxis.setAxisMaximum(120f);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setLabelCount(6);
+        yAxis.setGranularityEnabled(true);
+        yAxis.setGranularity(20f);
+        yAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+        yAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if (value <= 100) {
+                    return "" + (int)value;
                 }
-            });
-        }
+                return "";
+            }
+        });
 
-        {
-            // draw limit lines behind data instead of on top
-            yAxis.setDrawLimitLinesBehindData(false);
-            xAxis.setDrawLimitLinesBehindData(false);
-        }
+        yAxis.setDrawLimitLinesBehindData(false);
+        xAxis.setDrawLimitLinesBehindData(false);
 
         setCharData();
 
@@ -372,10 +345,13 @@ public class ReportWeekFragment extends LazyFragment {
     private void setCharData() {
         set1values = new ArrayList<>();
 
-        set1values.add(new Entry(1, 60));
-        set1values.add(new Entry(2, 80));
-        set1values.add(new Entry(3, 100));
-        set1values.add(new Entry(4, 40));
+        if (scores.length > 0) {
+            for (int i = 0; i < scores.length; i++) {
+                if (scores[i] > 0) {
+                    set1values.add(new Entry(i,scores[i]));
+                }
+            }
+        }
 
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
@@ -521,18 +497,21 @@ public class ReportWeekFragment extends LazyFragment {
 
         }
 
-        setCharData2(7, 15);
+        setCharData2();
 
         // get the legend (only possible after setting data)
         Legend l = chart2.getLegend();
         l.setEnabled(false);
     }
 
-    private void setCharData2(int count, float range) {
+    private void setCharData2() {
         ArrayList<Entry> values = new ArrayList<>();
 
-        values.add(new Entry(1, 6));
-        values.add(new Entry(2, 8));
+        for (int i = 0; i < sleepOneDayTimes.length; i++) {
+            if (sleepOneDayTimes[i] > 0) {
+                values.add(new Entry(i, sleepOneDayTimes[i] / 60));
+            }
+        }
 
         if (chart2.getData() != null &&
                 chart2.getData().getDataSetCount() > 0) {
@@ -678,6 +657,524 @@ public class ReportWeekFragment extends LazyFragment {
 //            }
 //            dynamicAddCircleDot(icon, (int)entry.getY(), drawable, left, top, i);
 
+        }
+
+    }
+
+    // 刷新统计时间相关数据UI
+    private void refreshSleepStatisticsUI() {
+        Integer minTime = 0;
+        Integer maxTime = 0;
+        long averageHeart = 0;
+        long averageBreath = 0;
+        Integer count = 0;
+        Integer bodyMotion = 0;
+        if (mMap.size() > 0) {
+            for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
+                if (entry.getKey() < currentTime / 60 + 24 * 60) {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[0] == 0) {
+                            scores[0] = grade;
+                        } else {
+                            scores[0] = (scores[0] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                } else if (entry.getKey() < currentTime / 60 + 2 * 24 * 60) {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[1] == 0) {
+                            scores[1] = grade;
+                        } else {
+                            scores[1] = (scores[1] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                } else if (entry.getKey() < currentTime / 60 + 3 * 24 * 60) {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[2] == 0) {
+                            scores[2] = grade;
+                        } else {
+                            scores[2] = (scores[2] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                } else if (entry.getKey() < currentTime / 60 + 4 * 24 * 60) {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[3] == 0) {
+                            scores[3] = grade;
+                        } else {
+                            scores[3] = (scores[3] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                } else if (entry.getKey() < currentTime / 60 + 5 * 24 * 60) {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[4] == 0) {
+                            scores[4] = grade;
+                        } else {
+                            scores[4] = (scores[4] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                } else if (entry.getKey() < currentTime / 60 + 6 * 24 * 60) {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[5] == 0) {
+                            scores[5] = grade;
+                        } else {
+                            scores[5] = (scores[5] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                } else {
+                    for (RecordModel model: entry.getValue()) {
+                        bodyMotion += model.getBodyMotion();
+                        int grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
+                        grade = Math.min(90, grade);
+                        grade = Math.max(70, grade);
+                        if (scores[6] == 0) {
+                            scores[6] = grade;
+                        } else {
+                            scores[6] = (scores[6] + grade) / 2;
+                        }
+                        if (averageHeart == 0) {
+                            averageHeart = model.getHeartRate();
+                        } else {
+                            averageHeart = (averageHeart + model.getHeartRate()) / 2;
+                        }
+                        if (averageBreath == 0) {
+                            averageBreath = model.getBreathRate();
+                        } else {
+                            averageBreath = (averageBreath + model.getBreathRate()) / 2;
+                        }
+                    }
+                }
+            }
+        }
+        if (tvTime4 != null && tvTime5 != null) {
+            String unit4 = getResources().getString(R.string.common_times_minute);
+            String[] array4 = {unit4};
+            String content4 = averageHeart > 9 ? "" + averageHeart : "0" + averageHeart  + unit4;
+            tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
+            String content5 = averageBreath > 9 ? "" + averageBreath : "0" + averageBreath  + unit4;
+            tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array4));
+        }
+        if (tvTime2 != null) {
+            String unit21 = getResources().getString(R.string.common_hour);
+            String unit22 = getResources().getString(R.string.common_minute);
+            String[] array2 = {unit21, unit22};
+            int hour = mMap.size() / 60;
+            int minute = mMap.size() % 60;
+            String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
+            tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+        }
+
+        refreshStartOrEndSleepUI();
+        if (chart == null) {
+            return;
+        }
+        setCharData();
+
+        int score = 0;
+        for (int i = 0; i < scores.length; i++) {
+            score += scores[i];
+        }
+        score = score / 7;
+        String unit = getResources().getString(R.string.common_minute2);
+        String[] array = {unit};
+        String content = score + unit;
+        tvSleepValue.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 30, array));
+        if (score >= 85) {
+            tvSleepRank.setText(R.string.common_very_good);
+        } else if (score >= 75) {
+            tvSleepRank.setText(R.string.common_Awesome);
+        } else {
+            tvSleepRank.setText(R.string.common_so_so);
+        }
+
+        calculateSleepValue();
+    }
+
+    private void refreshStartOrEndSleepUI() {
+        if (tvTime1 == null) {
+            return;
+        }
+        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
+        if (userList != null && userList.size() > 0) {
+            int sleepH = 0, sleepM = 0;
+            for (AlarmModel model : userList) {
+                if (model.getType() == 0) {
+
+                } else {
+                    sleepH = model.getHour();
+                    sleepM = model.getMinute();
+                }
+            }
+            String unit11 = getResources().getString(R.string.common_hour2);
+            String unit12 = getResources().getString(R.string.common_minute3);
+            String[] array1 = {unit11, unit12};
+            if (sleepH <= 0 && sleepM <= 0) {
+                String content1 = "00" + unit11 + "00" + unit12;
+                tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+            } else {
+                String content1 = (sleepH > 9 ? "" + sleepH : "0" + sleepH) + unit11 + (sleepM > 9 ? "" + sleepM : "0" + sleepM) + unit12;
+                tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+            }
+        }
+    }
+
+    // 供外表调用，刷新UI
+    public void refreshAllUI() {
+        getDayData(currentTime);
+    }
+
+
+    // 计算熟睡、中睡，浅睡、清醒
+    private void calculateSleepValue() {
+        if (mMap.size() > 0) {
+            int deepSleep = 0;
+            int middleSleep = 0;
+            int cheapSleep = 0;
+            int getup = 0;
+            int time = 0, time2 = 0, time3 = 0, time4 = 0, time5 = 0, time6 = 0, time7 = 0;
+            int bodyMotionCount = 0;
+            int getupCount = 0;
+            for (Map.Entry<Integer, List<RecordModel>> entry : mMap.entrySet()) {
+                if (entry.getKey() < currentTime / 60 + 24 * 60) {
+                    if (time == 0) { // 如果时间没赋过值，则将第一个数据赋值给它
+                        deepSleep = 0;
+                        time = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time) {
+
+                    } else {
+                        time += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[0] = deepSleep * 5;
+                } else if (entry.getKey() < currentTime / 60 + 24 * 60 * 2) {
+                    if (time2 == 0) {
+                        deepSleep = 0;
+                        time2 = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time2) {
+
+                    } else {
+                        time2 += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[1] = deepSleep * 5;
+                } else if (entry.getKey() < currentTime / 60 + 24 * 60 * 3) {
+                    if (time3 == 0) {
+                        deepSleep = 0;
+                        time3 = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time3) {
+
+                    } else {
+                        time3 += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[2] = deepSleep * 5;
+                } else if (entry.getKey() < currentTime / 60 + 24 * 60 * 4) {
+                    if (time4 == 0) {
+                        deepSleep = 0;
+                        time4 = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time4) {
+
+                    } else {
+                        time4 += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[3] = deepSleep * 5;
+                } else if (entry.getKey() < currentTime / 60 + 24 * 60 * 5) {
+                    if (time5 == 0) {
+                        deepSleep = 0;
+                        time5 = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time5) {
+
+                    } else {
+                        time5 += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[4] = deepSleep * 5;
+                } else if (entry.getKey() < currentTime / 60 + 24 * 60 * 6) {
+                    if (time6 == 0) {
+                        deepSleep = 0;
+                        time6 = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time6) {
+
+                    } else {
+                        time6 += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[5] = deepSleep * 5;
+                } else {
+                    if (time7 == 0) {
+                        deepSleep = 0;
+                        time7 = entry.getKey() + 5;
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    if (entry.getKey() <= time7) {
+
+                    } else {
+                        time7 += 5;
+                        if (getupCount > 0) {
+                            getup += 1;
+                        } else {
+                            if (bodyMotionCount > 6) {
+                                getup += 1;
+                            } else if (bodyMotionCount >= 3) {
+                                cheapSleep += 1;
+                            } else if (bodyMotionCount >= 1) {
+                                middleSleep += 1;
+                            } else {
+                                deepSleep += 1;
+                            }
+                        }
+                        getupCount = 0;
+                        bodyMotionCount = 0;
+                    }
+                    sleepOneDayTimes[6] = deepSleep * 5;
+                }
+
+                for (RecordModel model : entry.getValue()) {
+                    int a = model.getGetupFlag();
+                    int b = model.getBodyMotion();
+                    if (a == 0) {
+                        getupCount += 1;
+                    }
+                    if (b > 0) {
+                        bodyMotionCount += 1;
+                    }
+                }
+
+            }
+            nosleepTimeTotal = getup * 5;
+            nosleepTimeTotal = getup;
+
+            if (tvSleepAverageTime != null) {
+                int deepSleepAvg = 0;
+                for (int i = 0; i < sleepOneDayTimes.length; i++) {
+                    deepSleepAvg += sleepOneDayTimes[i];
+                }
+                String unit01 = getResources().getString(R.string.common_hour);
+                String unit02 = getResources().getString(R.string.common_minute);
+                String[] array1 = {unit01, unit02};
+                int hour = deepSleepAvg / 7 / 60;
+                int minute = deepSleepAvg / 7 % 60;
+                String content1 = (hour > 9 ? "" + hour : "0" + hour) + unit01 + (minute > 9 ? "" + minute : "0" + minute) + unit02;
+                tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+            }
+
+            if (tvTime3 != null && tvTime6 != null) {
+                String unit21 = getResources().getString(R.string.common_hour);
+                String unit22 = getResources().getString(R.string.common_minute);
+                String[] array2 = {unit21, unit22};
+                int hour = nosleepTimeTotal / 60;
+                int minute = nosleepTimeTotal % 60;
+                String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
+                tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+                String unit6 = getResources().getString(R.string.common_times);
+                String[] array6 = {unit6};
+                String content6 = noSleepMinuteCount > 9 ? "" + noSleepMinuteCount : "0" + noSleepMinuteCount + unit6;
+                tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
+            }
+
+            if (chart2 == null) {
+                return;
+            }
+            setCharData2();
+
+        } else {
+            if (tvTime3 != null && tvTime6 != null) {
+                String unit21 = getResources().getString(R.string.common_hour);
+                String unit22 = getResources().getString(R.string.common_minute);
+                String[] array2 = {unit21, unit22};
+                String content2 = "00" + unit21 + "00" + unit22;
+                tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+                String unit6 = getResources().getString(R.string.common_times);
+                String[] array6 = {unit6};
+                String content6 = "00" + unit6;
+                tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
+            }
         }
 
     }

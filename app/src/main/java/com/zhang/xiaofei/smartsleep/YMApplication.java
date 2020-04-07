@@ -20,6 +20,7 @@ import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 
 import com.ansen.http.entity.HttpConfig;
 import com.ansen.http.net.HTTPCaller;
+import com.zhang.xiaofei.smartsleep.UI.Home.SleepDataUploadManager;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -89,7 +90,8 @@ public class YMApplication extends Application {
         bleOpen = bluetoothAdapter.isEnabled();
 
         LogcatHelper.getInstance(this).start();
-
+        SleepDataUploadManager uploadManager = new SleepDataUploadManager();
+        uploadManager.uploadSleepData();
     }
 
     private void modulesApplicationInit(){

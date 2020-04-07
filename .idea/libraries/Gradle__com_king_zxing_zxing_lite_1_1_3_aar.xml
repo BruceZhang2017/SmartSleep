@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.king.zxing:zxing-lite:1.1.3@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/aa07faa3ac3f30a2e9ce1870c3c1f0aa/jetified-zxing-lite-1.1.3/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/aa07faa3ac3f30a2e9ce1870c3c1f0aa/jetified-zxing-lite-1.1.3/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6b735cf2b3834979d171b4caca58b93a/jetified-zxing-lite-1.1.3/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6b735cf2b3834979d171b4caca58b93a/jetified-zxing-lite-1.1.3/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.king.zxing/zxing-lite/1.1.3/84ff4803773dabec1efc1bf050f36445125277e1/zxing-lite-1.1.3-javadoc.jar!/" />

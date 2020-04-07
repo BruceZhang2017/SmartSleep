@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.ansen.http:okhttpencapsulation:1.0.1@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/f097dd3f9249d238b8b64c91ee34b938/jetified-okhttpencapsulation-1.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/f097dd3f9249d238b8b64c91ee34b938/jetified-okhttpencapsulation-1.0.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3cd8f913716f26d57acc1aa17d39ad78/jetified-okhttpencapsulation-1.0.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3cd8f913716f26d57acc1aa17d39ad78/jetified-okhttpencapsulation-1.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.ansen.http/okhttpencapsulation/1.0.1/727c1366b6dc94f0e0e4a53d8f827493cfcfccc/okhttpencapsulation-1.0.1-javadoc.jar!/" />

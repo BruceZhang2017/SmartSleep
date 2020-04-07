@@ -904,7 +904,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     // 刷新统计时间相关数据UI
     private void refreshSleepStatisticsUI() {
-
         Integer minTime = 0;
         Integer maxTime = 0;
         long averageHeart = 0;
@@ -1140,7 +1139,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                     bodyMotionCount = 0;
                 }
 
-                for (RecordModel model : entry.getValue()) {
+                for (RecordModel model : entry.getValue()) { // 计算清醒和体动
                     int a = model.getGetupFlag();
                     int b = model.getBodyMotion();
                     if (a == 0) {
