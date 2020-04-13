@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.clj.fastble:FastBleLib:2.3.4@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/472abb6e0f603ed0cd6ff1d885d318b5/jetified-FastBleLib-2.3.4/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/472abb6e0f603ed0cd6ff1d885d318b5/jetified-FastBleLib-2.3.4/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3c9e09548c372a7f4931939e60ed8fa8/jetified-FastBleLib-2.3.4/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3c9e09548c372a7f4931939e60ed8fa8/jetified-FastBleLib-2.3.4/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.clj.fastble/FastBleLib/2.3.4/ce54344d6826b2e32f0d3d6c0f1a97c30ac7bd6d/FastBleLib-2.3.4-javadoc.jar!/" />

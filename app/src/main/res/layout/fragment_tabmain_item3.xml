@@ -108,6 +108,15 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_sleep_week_average"
                 android:layout_marginTop="30dp"/>
 
+            <View
+                android:id="@+id/v_calendarview_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintLeft_toLeftOf="@id/calendarView"
+                app:layout_constraintRight_toRightOf="@id/calendarView"
+                app:layout_constraintTop_toTopOf="@id/calendarView"
+                app:layout_constraintBottom_toBottomOf="@id/calendarView"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_10"
                 android:layout_width="0dp"

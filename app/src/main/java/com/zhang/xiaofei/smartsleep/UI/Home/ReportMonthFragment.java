@@ -35,6 +35,7 @@ import com.shizhefei.fragment.LazyFragment;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
+import com.zhang.xiaofei.smartsleep.Model.Record.HistoryBreath;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 
@@ -70,6 +71,7 @@ public class ReportMonthFragment extends LazyFragment {
     private ImageButton ibLeftPre;
     private ImageButton ibRightNex;
     private TextView tvSimulationData;
+    private View vCalendarViewCover;
     private Realm mRealm;
     private int currentTime = 0;
     private int year = 0;
@@ -77,6 +79,7 @@ public class ReportMonthFragment extends LazyFragment {
     private int days = 0;
     private Boolean bBelt = true; // 刷新睡眠带，睡眠纽扣
     int[] sleepOneDayTimes = new int[31]; // 深睡眠时长
+    int[] scores = new int[31];
     int nosleepTimeTotal = 0; // 清醒时长
     int noSleepMinuteCount = 0; // 清醒次数
     Map<Integer, List<RecordModel>> mMap = new HashMap<Integer, List<RecordModel>>();
@@ -90,6 +93,13 @@ public class ReportMonthFragment extends LazyFragment {
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         setContentView(R.layout.fragment_tabmain_item3);
+        vCalendarViewCover = findViewById(R.id.v_calendarview_cover);
+        vCalendarViewCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         initializeForChart(); // 睡眠质量初始化
         initialText();
         initialCalendarView();
@@ -133,6 +143,13 @@ public class ReportMonthFragment extends LazyFragment {
 
     private String currentDate(long time) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date(time);
+        String str = simpleDateFormat.format(date);
+        return str;
+    }
+
+    private String currentDateTime(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(time);
         String str = simpleDateFormat.format(date);
         return str;
@@ -347,12 +364,16 @@ public class ReportMonthFragment extends LazyFragment {
         calendarView.clearSchemeDate();
         calendarView.clearSingleSelect();
         calendarView.getMonthViewPager().setClickable(false);
+        calendarView.getMonthViewPager().setLongClickable(false);
         calendarView.setClickable(false);
         calendarView.setOnClickListener(null);
         calendarView.getMonthViewPager().setOnClickListener(null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             calendarView.getMonthViewPager().setOnContextClickListener(null);
         }
+        calendarView.setOnTouchListener(null);
+        calendarView.setLongClickable(false);
+        calendarView.setTouchDelegate(null);
     }
 
     public void refreshSleepStatistic(boolean isBlet) {
@@ -429,6 +450,7 @@ public class ReportMonthFragment extends LazyFragment {
         setCharData();
 
         calculateSleepValue();
+        refreshCalenderView();
     }
 
     private void refreshStartOrEndSleepUI() {
@@ -501,6 +523,14 @@ public class ReportMonthFragment extends LazyFragment {
                                     deepSleep += 1;
                                 }
                             }
+                            int grade = 90 - (bodyMotionCount / 100) * 20; // 计算当前日期的得分
+                            grade = Math.min(90, grade);
+                            grade = Math.max(70, grade);
+                            if (scores[i] == 0) {
+                                scores[i] = grade;
+                            } else {
+                                scores[i] = (scores[i] + grade) / 2;
+                            }
                             getupCount = 0;
                             bodyMotionCount = 0;
                         }
@@ -565,5 +595,49 @@ public class ReportMonthFragment extends LazyFragment {
             }
         }
 
+    }
+
+    private void refreshCalenderView() {
+        if (mMap.size() > 0) {
+            Map<String, com.haibin.calendarview.Calendar> map = new HashMap<>();
+            for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
+                if (scores[i] >= 70) {
+                    String date = currentDateTime((long)(currentTime + i * 24 * 60 * 60) * 1000);
+                    String[] array = date.split("-");
+                    if (array.length == 3) {
+                        int year = Integer.parseInt(array[0]);
+                        int month = Integer.parseInt(array[1]);
+                        int day = Integer.parseInt(array[2]);
+                        int color = 0;
+                        if (scores[i] >= 85) {
+                            color = 0xFF6EE1CA;
+                        } else if (scores[i] >= 75) {
+                            color = 0xFF499BE5;
+                        } else {
+                            color = 0xFF626AEA;
+                        }
+                        map.put(getSchemeCalendar(year, month, day, color).toString(),
+                                getSchemeCalendar(year, month, day, color));
+                    }
+                }
+            }
+            if (map.size() > 0) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        calendarView.setSchemeDate(map);
+                    }
+                });
+            }
+        }
+    }
+
+    private com.haibin.calendarview.Calendar getSchemeCalendar(int year, int month, int day, int color) {
+        com.haibin.calendarview.Calendar calendar = new com.haibin.calendarview.Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
+        return calendar;
     }
 }

@@ -44,11 +44,6 @@ public class SleepDataUploadManager {
         });
     }
 
-    // 从服务器下载睡眠睡眠
-    public void downloadSleepData() {
-
-    }
-
     private class ReportItem {
         String userId;
         String serial;
@@ -171,6 +166,7 @@ public class SleepDataUploadManager {
                 uploadCloud(serial, dateTimeIntToString(entry.getKey()), json, deviceId);
             }
         }
+        downloadSleepDataFromCloud(serial); // 将该需要的数据下载下来
     }
 
     private void updateDataFromDB(String serial, String dateTime, int deviceId) {
@@ -217,5 +213,73 @@ public class SleepDataUploadManager {
             // TODO Auto-generated catch block e.printStackTrace();
         }
         return 0;
+    }
+
+    class SleepItem {
+        String userId;
+        String serial;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getSerial() {
+            return serial;
+        }
+
+        public void setSerial(String serial) {
+            this.serial = serial;
+        }
+    }
+
+
+    // 下载服务器端数据
+    private void downloadSleepDataFromCloud(String serial) {
+        YMUserInfoManager userInfoManager = new YMUserInfoManager(YMApplication.getContext());
+        UserModel model = userInfoManager.loadUserInfo();
+        if (model == null) {
+            return;
+        }
+        OkHttpClient okHttpClient  = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
+        SleepItem item = new SleepItem();
+        item.setUserId(item.getUserId());
+        item.setSerial(serial);
+        Gson gson = new Gson();
+        String json = gson.toJson(item);
+
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , json);
+        Request request = new Request.Builder()
+                .url(YMApplication.getInstance().domain() + "app/sleep/listForUserSleepData")//请求的url
+                .addHeader("token", model.getToken())
+                .post(requestBody)
+                .build();
+
+        //创建/Call
+        Call call = okHttpClient.newCall(request);
+        //加入队列 异步操作
+        call.enqueue(new Callback() {
+            //请求错误回调方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("网络请求失败");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.code() == 200) {
+
+                }
+            }
+        });
     }
 }
