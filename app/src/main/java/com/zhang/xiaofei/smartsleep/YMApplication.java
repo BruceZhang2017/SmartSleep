@@ -4,27 +4,24 @@ import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
+import com.ansen.http.entity.HttpConfig;
+import com.ansen.http.net.HTTPCaller;
 import com.facebook.stetho.Stetho;
+import com.sunofbeaches.himalaya.IComponentApplication;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-import com.sunofbeaches.himalaya.IComponentApplication;
 import com.zhang.xiaofei.smartsleep.Kit.Application.CustomMigration;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
-
-import com.ansen.http.entity.HttpConfig;
-import com.ansen.http.net.HTTPCaller;
 import com.zhang.xiaofei.smartsleep.UI.Home.SleepDataUploadManager;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
-import io.github.inflationx.calligraphy3.FontMapper;
 import io.github.inflationx.viewpump.ViewPump;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

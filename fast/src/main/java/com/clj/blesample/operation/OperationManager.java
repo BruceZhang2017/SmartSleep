@@ -242,37 +242,4 @@ public class OperationManager {
             bleDataObserver.handleBLEData("", temTime, array);
         }
     }
-
-
-//    Timer timer = new Timer();
-//    TimerTask task = new TimerTask() {
-//        @Override
-//        public void run() {
-//            try {
-//                createData();
-//            }catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    };
-//
-//    private void createData() {
-//        System.out.print("模拟数据发送");
-//        byte[] data = {(byte)0xEB, 0x60, 0x01, 0x09, 0x04, (byte)0x87, 0x06, 0x75, 0x07, (byte)0xAD, 0x07, (byte)0xBB, 0x06, (byte)0xC1,
-//                0x07, 0x62, 0x07, 0x61,
-//                0x07, (byte)0xE1, 0x08, (byte)0xD0, 0x09, (byte)0xE5, 0x0A, (byte)0xD2, 0x0B, 0x6B, 0x0B, (byte)0xB2, 0x0B, (byte)0xBC,
-//                0x05, (byte)0xE2, 0x04, (byte)0x93, 0x03, (byte)0xFE,
-//                0x03, (byte)0xF4, 0x04, 0x33, 0x04, (byte)0x8D, 0x04, (byte)0xE5, 0x05, 0x2B, 0x05, 0x5F, 0x05, (byte)0x8C, 0x05, (byte)0xCA,
-//                0x06, 0x33, 0x06, (byte)0xCC,
-//                0x07, 0x71, 0x07, (byte)0xE3, 0x07, (byte)0xF3, 0x0A};
-//        int[] heartRates = new int[25];
-//        int[] breathRates = new int[5];
-//        for (int i = 0; i < 5; i++) {
-//            breathRates[i] = ((data[4 + i * 2] & 0xff) << 8) + (data[4 + i * 2 + 1] & 0xff);
-//        }
-//        for (int i = 0; i < 25; i++) {
-//            heartRates[i] = ((data[4 + 10 + i * 2] & 0xff) << 8) + (data[4 + 10 + i * 2 + 1] & 0xff);
-//        }
-//        DataOberverManager.getInstance().notifyObserver(heartRates, breathRates);
-//    }
 }
