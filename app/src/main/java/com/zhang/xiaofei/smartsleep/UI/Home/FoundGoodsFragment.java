@@ -1,10 +1,12 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,8 @@ import java.util.List;
 public class FoundGoodsFragment extends BasicFunctions {
 
     JPTabBar mTabBar;
+    ImageView ivNull;
+    TextView tvNull;
     private GoodsAdapter simpleRecyclerViewAdapter = null;
     private TextView tvLeft;
     private List<GoodsItem> list = new ArrayList<>();
@@ -53,7 +57,14 @@ public class FoundGoodsFragment extends BasicFunctions {
         tvLeft = (TextView)layout.findViewById(R.id.tv_left_title);
         tvLeft.setVisibility(View.VISIBLE);
         tvLeft.setText(R.string.tab_finding);
+        ivNull = (ImageView)layout.findViewById(R.id.iv_null);
+        tvNull = (TextView)layout.findViewById(R.id.tv_null);
+    }
 
+    private void showNullView(boolean value) {
+        ivNull.setVisibility(value ? View.VISIBLE : View.INVISIBLE);
+        tvNull.setVisibility(value ? View.VISIBLE : View.INVISIBLE);
+        ultimateRecyclerView.setVisibility(value ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
@@ -133,11 +144,7 @@ public class FoundGoodsFragment extends BasicFunctions {
             //activity.hideHUD();
             System.out.println("网络请求返回的Status:" + status);
             if(goods==null || goods.getCode() != 200){
-                if (goods == null) {
-                    Toast.makeText(getActivity(), "服务器异常", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), goods.getMsg(), Toast.LENGTH_SHORT).show();
-                }
+                showNullView(true);
             }else{
                 System.out.println("获取到的数据count: " + goods.getData().length);
                 list.clear();

@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.haibin:calendarview:3.6.6@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/20d0c7031870d64ae5b2d9b29b3d2ce8/jetified-calendarview-3.6.6/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/20d0c7031870d64ae5b2d9b29b3d2ce8/jetified-calendarview-3.6.6/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/803e9267089bc2943b109acb767333a2/jetified-calendarview-3.6.6/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/803e9267089bc2943b109acb767333a2/jetified-calendarview-3.6.6/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.haibin/calendarview/3.6.6/1728ff86b13992278929af453fdc1c3124b7d69b/calendarview-3.6.6-javadoc.jar!/" />

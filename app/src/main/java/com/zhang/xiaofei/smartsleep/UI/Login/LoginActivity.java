@@ -72,7 +72,7 @@ public class LoginActivity extends BaseAppActivity {
                 Log.i(TAG, "Phone:" + phone + " area:" + area + " code:" + code);
                 showHUD();
                 //SMSSDK.submitVerificationCode(area, phone, code);
-                login(phone, code);
+                login(phone, code, area);
             }
         });
 
@@ -93,7 +93,8 @@ public class LoginActivity extends BaseAppActivity {
                     return;
                 }
                 showHUD();
-                SMSSDK.getVerificationCode(btnArea.getText().toString(), phone);
+                String zone = btnArea.getText().toString().replace("+", "");
+                SMSSDK.getVerificationCode(zone, phone);
             }
         });
 
@@ -201,11 +202,12 @@ public class LoginActivity extends BaseAppActivity {
         }
     };
 
-    private void login(String phone, String code) {
+    private void login(String phone, String code, String zone) {
         com.ansen.http.net.Header header = new com.ansen.http.net.Header("Content-Type", "application/x-www-form-urlencoded");
         List<NameValuePair> postParam = new ArrayList<>();
         postParam.add(new NameValuePair("phone",phone.trim()));
         postParam.add(new NameValuePair("code",code.trim()));
+        postParam.add(new NameValuePair("zone", zone.trim().replace("+", "")));
         HTTPCaller.getInstance().post(
                 UserModel.class,
                 YMApplication.getInstance().domain() + "app/login/verifySmsCode",

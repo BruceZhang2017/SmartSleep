@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.lcodecorex:tkrefreshlayout:1.0.7@aar">
     <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/2119b936a14f1a0b606de71b4f2f0e87/jetified-tkrefreshlayout-1.0.7/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9404f5c324dc86a606078001f33a7e16/jetified-tkrefreshlayout-1.0.7/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/2119b936a14f1a0b606de71b4f2f0e87/jetified-tkrefreshlayout-1.0.7/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/2119b936a14f1a0b606de71b4f2f0e87/jetified-tkrefreshlayout-1.0.7/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9404f5c324dc86a606078001f33a7e16/jetified-tkrefreshlayout-1.0.7/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9404f5c324dc86a606078001f33a7e16/jetified-tkrefreshlayout-1.0.7/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.lcodecorex/tkrefreshlayout/1.0.7/6fc1e3c8a06655bced9f61e453c7842b65b3bfca/tkrefreshlayout-1.0.7-javadoc.jar!/" />
