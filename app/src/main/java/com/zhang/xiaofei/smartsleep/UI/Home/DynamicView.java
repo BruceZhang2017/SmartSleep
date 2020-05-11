@@ -26,7 +26,7 @@ public class DynamicView extends View {
 
     Paint mPaint;
     public int current = 0;
-    public int currentFinished = 0;
+    private int currentFinished = 0;
     public float rate = 0;
     public int[] values;
     public int screenWidth = 0;

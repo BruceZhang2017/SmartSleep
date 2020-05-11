@@ -796,7 +796,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setOutOfDetectionState(deviceId, bDetection));
                     }
-                } else if (arg0 == 10) { // 退出读取时时数据
+                } else if (arg0 == 10) {
                     if (mTab1 == null) {
                         return;
                     }

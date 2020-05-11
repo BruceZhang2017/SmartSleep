@@ -54,7 +54,6 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class ReportMonthFragment extends LazyFragment {
-
     private LineChart chart; // 睡眠质量分析
     private TextView tvSleepAverageTime;
     private TextView tvTime1; // 上床时间
@@ -83,6 +82,8 @@ public class ReportMonthFragment extends LazyFragment {
     int nosleepTimeTotal = 0; // 清醒时长
     int noSleepMinuteCount = 0; // 清醒次数
     Map<Integer, List<RecordModel>> mMap = new HashMap<Integer, List<RecordModel>>();
+    LineDataSet set1;
+    boolean bChart = false;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -296,61 +297,57 @@ public class ReportMonthFragment extends LazyFragment {
                 values.add(new Entry(i, sleepOneDayTimes[i] / 60));
             }
         }
-
-        LineDataSet set1;
-
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+        System.out.println("当前月数据：" + values.size());
+        if (bChart) {
             set1.setValues(values);
             set1.notifyDataSetChanged();
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(values, "");
-
-            set1.setDrawIcons(false);
-            set1.setDrawHorizontalHighlightIndicator(false);
-            set1.setDrawVerticalHighlightIndicator(false);
-
-            // black lines and points
-            set1.setColor(getResources().getColor(R.color.colorWhite));
-            set1.setCircleColor(getResources().getColor(R.color.color_5DF2FF));
-
-            // line thickness and point size
-            set1.setLineWidth(1f);
-            set1.setCircleRadius(3f);
-
-            // draw points as solid circles
-            set1.setDrawCircleHole(false);
-
-            // customize legend entry
-            set1.setFormLineWidth(1f);
-            set1.setFormSize(15.f);
-            set1.setDrawValues(false);
-            // text size of values
-            set1.setValueTextSize(9f); // 值大小
-            set1.setDrawCircles(true);
-
-            // set the filled area
-            set1.setDrawFilled(false); // 提充背景色
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return chart.getAxisLeft().getAxisMinimum();
-                }
-            });
-
-            set1.setMode(LineDataSet.Mode.LINEAR);
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the data sets
-
-            // create a data object with the data sets
-            LineData data = new LineData(dataSets);
-            // set data
-            chart.setData(data);
+            return;
         }
+        bChart = true;
+        set1 = new LineDataSet(values, "");
+
+        set1.setDrawIcons(false);
+        set1.setDrawHorizontalHighlightIndicator(false);
+        set1.setDrawVerticalHighlightIndicator(false);
+
+        // black lines and points
+        set1.setColor(getResources().getColor(R.color.colorWhite));
+        set1.setCircleColor(getResources().getColor(R.color.color_5DF2FF));
+
+        // line thickness and point size
+        set1.setLineWidth(1f);
+        set1.setCircleRadius(3f);
+
+        // draw points as solid circles
+        set1.setDrawCircleHole(false);
+
+        // customize legend entry
+        set1.setFormLineWidth(1f);
+        set1.setFormSize(15.f);
+        set1.setDrawValues(false);
+        // text size of values
+        set1.setValueTextSize(9f); // 值大小
+        set1.setDrawCircles(true);
+
+        // set the filled area
+        set1.setDrawFilled(false); // 提充背景色
+        set1.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return chart.getAxisLeft().getAxisMinimum();
+            }
+        });
+
+        set1.setMode(LineDataSet.Mode.LINEAR);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+
+        // create a data object with the data sets
+        LineData data = new LineData(dataSets);
+        // set data
+        chart.setData(data);
     }
 
     private void initialCalendarView() {
@@ -428,9 +425,9 @@ public class ReportMonthFragment extends LazyFragment {
         if (tvTime4 != null && tvTime5 != null) {
             String unit4 = getResources().getString(R.string.common_times_minute);
             String[] array4 = {unit4};
-            String content4 = averageHeart > 9 ? "" + averageHeart : "0" + averageHeart  + unit4;
+            String content4 = (averageHeart > 9 ? "" + averageHeart : "0" + averageHeart)  + unit4;
             tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
-            String content5 = averageBreath > 9 ? "" + averageBreath : "0" + averageBreath  + unit4;
+            String content5 = (averageBreath > 9 ? "" + averageBreath : "0" + averageBreath)  + unit4;
             tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array4));
         }
         if (tvTime2 != null) {
@@ -448,7 +445,7 @@ public class ReportMonthFragment extends LazyFragment {
             return;
         }
         setCharData();
-
+        chart.invalidate();
         calculateSleepValue();
         refreshCalenderView();
     }
@@ -523,13 +520,15 @@ public class ReportMonthFragment extends LazyFragment {
                                     deepSleep += 1;
                                 }
                             }
-                            int grade = 90 - (bodyMotionCount / 100) * 20; // 计算当前日期的得分
-                            grade = Math.min(90, grade);
-                            grade = Math.max(70, grade);
-                            if (scores[i] == 0) {
-                                scores[i] = grade;
-                            } else {
-                                scores[i] = (scores[i] + grade) / 2;
+                            if (bodyMotionCount > 0) {
+                                int grade = 90 - (bodyMotionCount / 100) * 20; // 计算当前日期的得分
+                                grade = Math.min(90, grade);
+                                grade = Math.max(70, grade);
+                                if (scores[i] == 0) {
+                                    scores[i] = grade;
+                                } else {
+                                    scores[i] = (scores[i] + grade) / 2;
+                                }
                             }
                             getupCount = 0;
                             bodyMotionCount = 0;

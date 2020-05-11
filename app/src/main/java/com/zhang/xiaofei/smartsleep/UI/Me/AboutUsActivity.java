@@ -84,7 +84,7 @@ public class AboutUsActivity extends BaseAppActivity {
             textView.setText(mAppNames.get(position));
             TextView tvValue = convertView.findViewById(R.id.tv_value);
             if (position == 0) {
-                tvValue.setText("V1.0.21");
+                tvValue.setText("V1.0.22");
             } else {
                 tvValue.setText("");
             }

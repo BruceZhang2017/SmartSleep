@@ -17,6 +17,9 @@ public class BigSmallFontManager {
     // 生成大小字体不一样的内容 小时 分
     public static SpannableString createTimeValue(String content, Activity activity, float fontSize, String[] array) {
         SpannableString spannableString = new SpannableString(content);
+        if (content.length() <= 0) {
+            return spannableString;
+        }
         for (String item: array) {
             spannableString.setSpan(new AbsoluteSizeSpan(DisplayUtil.sp2px(fontSize, activity))
                     , content.indexOf(item)

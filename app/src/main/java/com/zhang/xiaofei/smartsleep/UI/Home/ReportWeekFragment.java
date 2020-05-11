@@ -81,6 +81,8 @@ public class ReportWeekFragment extends LazyFragment {
     int[] sleepOneDayTimes = new int[7]; // 深睡眠时长
     int nosleepTimeTotal = 0; // 清醒时长
     int noSleepMinuteCount = 0; // 清醒次数
+    boolean bChart = false; //
+    boolean bChart2 = false;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -189,6 +191,12 @@ public class ReportWeekFragment extends LazyFragment {
     }
 
     @Override
+    protected void onPauseLazy() {
+        super.onPauseLazy();
+        System.out.println("Report Week OnPause");
+    }
+
+    @Override
     protected void onDestroyViewLazy() {
         super.onDestroyViewLazy();
         handler.removeMessages(1);
@@ -258,25 +266,23 @@ public class ReportWeekFragment extends LazyFragment {
     }
 
     private void initializeForChart() {
-        {   // // Chart Style // //
-            chart = findViewById(R.id.chart1);
-            // background color
-            chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-            // disable description text
-            chart.getDescription().setEnabled(false);
-            // enable touch gestures
-            chart.setTouchEnabled(false);
-            // set listeners
-            //chart.setOnChartValueSelectedListener(this);
-            chart.setDrawGridBackground(false);
-            // enable scaling and dragging
-            chart.setDragEnabled(false);
-            chart.setScaleEnabled(false);
-            // chart.setScaleXEnabled(true);
-            // chart.setScaleYEnabled(true);
-            // force pinch zoom along both axis
-            chart.setPinchZoom(false);
-        }
+        chart = findViewById(R.id.chart1);
+        // background color
+        chart.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+        // disable description text
+        chart.getDescription().setEnabled(false);
+        // enable touch gestures
+        chart.setTouchEnabled(false);
+        // set listeners
+        //chart.setOnChartValueSelectedListener(this);
+        chart.setDrawGridBackground(false);
+        // enable scaling and dragging
+        chart.setDragEnabled(false);
+        chart.setScaleEnabled(false);
+        // chart.setScaleXEnabled(true);
+        // chart.setScaleYEnabled(true);
+        // force pinch zoom along both axis
+        chart.setPinchZoom(false);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
@@ -346,156 +352,145 @@ public class ReportWeekFragment extends LazyFragment {
         set1values = new ArrayList<>();
 
         if (scores.length > 0) {
+            int value = 0;
             for (int i = 0; i < scores.length; i++) {
                 if (scores[i] > 0) {
+                    value = scores[i];
                     set1values.add(new Entry(i,scores[i]));
                 }
             }
+            System.out.println("获取到数据的数量为：" + set1values.size() + " " + value);
         }
 
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+        if (bChart) {
             set1.setValues(set1values);
             set1.notifyDataSetChanged();
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(set1values, "");
-
-            set1.setDrawIcons(false);
-            set1.setDrawHorizontalHighlightIndicator(false);
-            set1.setDrawVerticalHighlightIndicator(false);
-
-            // black lines and points
-            set1.setColor(getResources().getColor(R.color.colorWhite));
-            set1.setCircleColors(0xFF5DF2FF, 0x626AEA, 0xFF499BE5, 0xFFF3D032, 0xFFE92C2C);
-            // 6EE1CA 100分 / 499BE5 80分 / 626AEA 60分 / F3D032 40分 / E92C2C 20分
-            // line thickness and point size
-            set1.setLineWidth(1f);
-            // draw points as solid circles
-            set1.setDrawCircleHole(false);
-            set1.setCircleRadius(3f);
-
-            // customize legend entry
-            set1.setFormLineWidth(1f);
-            set1.setFormSize(15.f);
-            set1.setDrawValues(false);
-            // text size of values
-            set1.setValueTextSize(9f);
-            set1.setDrawCircles(true);
-
-            // set the filled area
-            set1.setDrawFilled(false);
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return chart.getAxisLeft().getAxisMinimum();
-                }
-            });
-
-            set1.setMode(LineDataSet.Mode.LINEAR);
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the data sets
-
-            // create a data object with the data sets
-            LineData data = new LineData(dataSets);
-            // set data
-            chart.setData(data);
+            return;
         }
+        bChart = true;
+        // create a dataset and give it a type
+        set1 = new LineDataSet(set1values, "");
+
+        set1.setDrawIcons(false);
+        set1.setDrawHorizontalHighlightIndicator(false);
+        set1.setDrawVerticalHighlightIndicator(false);
+
+        // black lines and points
+        set1.setColor(getResources().getColor(R.color.colorWhite));
+        set1.setCircleColor(0xFF5DF2FF);
+        //set1.setCircleColors(0xFF5DF2FF, 0x626AEA, 0xFF499BE5, 0xFFF3D032, 0xFFE92C2C);
+        // 6EE1CA 100分 / 499BE5 80分 / 626AEA 60分 / F3D032 40分 / E92C2C 20分
+        // line thickness and point size
+        set1.setLineWidth(1f);
+        // draw points as solid circles
+        set1.setDrawCircleHole(false);
+        set1.setCircleRadius(3f);
+
+        // customize legend entry
+        set1.setFormLineWidth(1f);
+        set1.setFormSize(15.f);
+        set1.setDrawValues(false);
+        // text size of values
+        set1.setValueTextSize(9f);
+        set1.setDrawCircles(true);
+
+        // set the filled area
+        set1.setDrawFilled(false);
+        set1.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return chart.getAxisLeft().getAxisMinimum();
+            }
+        });
+
+        set1.setMode(LineDataSet.Mode.LINEAR);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+
+        // create a data object with the data sets
+        LineData data = new LineData(dataSets);
+        // set data
+        chart.setData(data);
     }
 
     private void initializeForChart2() {
-        {   // // Chart Style // //
-            chart2 = findViewById(R.id.chart2);
-            // background color
-            chart2.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
-            // disable description text
-            chart2.getDescription().setEnabled(false);
-            // enable touch gestures
-            chart2.setTouchEnabled(true);
-            // set listeners
-            //chart.setOnChartValueSelectedListener(this);
-            chart2.setDrawGridBackground(false);
-            // enable scaling and dragging
-            chart2.setDragEnabled(false);
-            chart2.setScaleEnabled(false);
-            // chart.setScaleXEnabled(true);
-            // chart.setScaleYEnabled(true);
-            // force pinch zoom along both axis
-            chart2.setPinchZoom(false);
+        chart2 = findViewById(R.id.chart2);
+        // background color
+        chart2.setBackgroundColor(getResources().getColor(R.color.tranparencyColor));
+        // disable description text
+        chart2.getDescription().setEnabled(false);
+        // enable touch gestures
+        chart2.setTouchEnabled(true);
+        // set listeners
+        //chart.setOnChartValueSelectedListener(this);
+        chart2.setDrawGridBackground(false);
+        // enable scaling and dragging
+        chart2.setDragEnabled(false);
+        chart2.setScaleEnabled(false);
+        // chart.setScaleXEnabled(true);
+        // chart.setScaleYEnabled(true);
+        // force pinch zoom along both axis
+        chart2.setPinchZoom(false);
 
-            MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.layout_customb_mark_view);
-            mv.setChartView(chart2); // For bounds control
-            chart2.setMarker(mv); // Set the marker to the chart
-        }
+        MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.layout_customb_mark_view);
+        mv.setChartView(chart2); // For bounds control
+        chart2.setMarker(mv); // Set the marker to the chart
 
-        XAxis xAxis;
-        {   // // X-Axis Style // //
-            xAxis = chart2.getXAxis();
-            xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-            xAxis.setAxisMaximum(8f);
-            xAxis.setAxisMinimum(0f);
-            xAxis.setLabelCount(8);
-            xAxis.setGranularityEnabled(true);
-            xAxis.setGranularity(1f);
-            xAxis.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    switch ((int)value) {
-                        case 1:
-                            return getResources().getString(R.string.middle_mon);
-                        case 2:
-                            return getResources().getString(R.string.middle_tue);
-                        case 3:
-                            return getResources().getString(R.string.middle_wed);
-                        case 4:
-                            return getResources().getString(R.string.middle_thu);
-                        case 5:
-                            return getResources().getString(R.string.middle_fri);
-                        case 6:
-                            return getResources().getString(R.string.middle_sat);
-                        case 7:
-                            return getResources().getString(R.string.middle_sun);
-                        default:
-                            return "";
+        XAxis xAxis = chart2.getXAxis();
+        xAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+        xAxis.setAxisMaximum(8f);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setLabelCount(8);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                switch ((int)value) {
+                    case 1:
+                        return getResources().getString(R.string.middle_mon);
+                    case 2:
+                        return getResources().getString(R.string.middle_tue);
+                    case 3:
+                        return getResources().getString(R.string.middle_wed);
+                    case 4:
+                        return getResources().getString(R.string.middle_thu);
+                    case 5:
+                        return getResources().getString(R.string.middle_fri);
+                    case 6:
+                        return getResources().getString(R.string.middle_sat);
+                    case 7:
+                        return getResources().getString(R.string.middle_sun);
+                    default:
+                        return "";
 
-                    }
                 }
-            });
-        }
+            }
+        });
 
-        YAxis yAxis;
-        {   // // Y-Axis Style // //
-            yAxis = chart2.getAxisLeft();
-            // disable dual axis (only use LEFT axis)
-            chart2.getAxisRight().setEnabled(false);
-            yAxis.setAxisMaximum(18f);
-            yAxis.setAxisMinimum(0f);
-            yAxis.setLabelCount(6);
-            yAxis.setGranularityEnabled(true);
-            yAxis.setGranularity(3f);
-            yAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-            yAxis.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    if (value <= 15) {
-                        return "" + (int)value;
-                    }
-                    return "";
+        YAxis yAxis = chart2.getAxisLeft();
+        // disable dual axis (only use LEFT axis)
+        chart2.getAxisRight().setEnabled(false);
+        yAxis.setAxisMaximum(18f);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setLabelCount(6);
+        yAxis.setGranularityEnabled(true);
+        yAxis.setGranularity(3f);
+        yAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+        yAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if (value <= 15) {
+                    return "" + (int)value;
                 }
-            });
-            yAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
-        }
-
-
-        {
-            // draw limit lines behind data instead of on top
-            yAxis.setDrawLimitLinesBehindData(true);
-            xAxis.setDrawLimitLinesBehindData(true);
-
-        }
+                return "";
+            }
+        });
+        yAxis.setTextColor(getResources().getColor(R.color.color_B2C1E0));
+        yAxis.setDrawLimitLinesBehindData(true);
+        xAxis.setDrawLimitLinesBehindData(true);
 
         setCharData2();
 
@@ -513,60 +508,59 @@ public class ReportWeekFragment extends LazyFragment {
             }
         }
 
-        if (chart2.getData() != null &&
-                chart2.getData().getDataSetCount() > 0) {
-            set2 = (LineDataSet) chart2.getData().getDataSetByIndex(0);
+        if (bChart2) {
             set2.setValues(values);
             set2.notifyDataSetChanged();
             chart2.getData().notifyDataChanged();
             chart2.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set2 = new LineDataSet(values, "");
-
-            set2.setDrawIcons(false);
-            set2.setDrawHorizontalHighlightIndicator(false);
-            set2.setDrawVerticalHighlightIndicator(false);
-
-            // black lines and points
-            set2.setColor(getResources().getColor(R.color.colorWhite));
-            set2.setCircleColor(0xFF5DF2FF);
-
-            // line thickness and point size
-            set2.setLineWidth(1f);
-            set2.setCircleRadius(3f);
-
-            // draw points as solid circles
-            set2.setDrawCircleHole(false);
-
-            // customize legend entry
-            set2.setFormLineWidth(1f);
-            set2.setFormSize(15.f);
-            set2.setDrawValues(false);
-            // text size of values
-            set2.setValueTextSize(9f);
-            set2.setDrawCircles(true);
-            // draw selection line as dashed
-            //set1.enableDashedHighlightLine(10f, 5f, 0f);
-
-            // set the filled area
-            set2.setDrawFilled(false);
-            set2.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return chart.getAxisLeft().getAxisMinimum();
-                }
-            });
-
-            set2.setMode(LineDataSet.Mode.LINEAR);
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set2); // add the data sets
-
-            // create a data object with the data sets
-            LineData data = new LineData(dataSets);
-            // set data
-            chart2.setData(data);
+            return;
         }
+        bChart2 = true;
+        // create a dataset and give it a type
+        set2 = new LineDataSet(values, "");
+
+        set2.setDrawIcons(false);
+        set2.setDrawHorizontalHighlightIndicator(false);
+        set2.setDrawVerticalHighlightIndicator(false);
+
+        // black lines and points
+        set2.setColor(getResources().getColor(R.color.colorWhite));
+        set2.setCircleColor(0xFF5DF2FF);
+
+        // line thickness and point size
+        set2.setLineWidth(1f);
+        set2.setCircleRadius(3f);
+
+        // draw points as solid circles
+        set2.setDrawCircleHole(false);
+
+        // customize legend entry
+        set2.setFormLineWidth(1f);
+        set2.setFormSize(15.f);
+        set2.setDrawValues(false);
+        // text size of values
+        set2.setValueTextSize(9f);
+        set2.setDrawCircles(true);
+        // draw selection line as dashed
+        //set1.enableDashedHighlightLine(10f, 5f, 0f);
+
+        // set the filled area
+        set2.setDrawFilled(false);
+        set2.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return chart2.getAxisLeft().getAxisMinimum();
+            }
+        });
+
+        set2.setMode(LineDataSet.Mode.LINEAR);
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set2); // add the data sets
+
+        // create a data object with the data sets
+        LineData data = new LineData(dataSets);
+        // set data
+        chart2.setData(data);
     }
 
     public void dynamicAddCircleDot(int drawable, int value, int color, float left, float top, int id) {
@@ -831,9 +825,9 @@ public class ReportWeekFragment extends LazyFragment {
         if (tvTime4 != null && tvTime5 != null) {
             String unit4 = getResources().getString(R.string.common_times_minute);
             String[] array4 = {unit4};
-            String content4 = averageHeart > 9 ? "" + averageHeart : "0" + averageHeart  + unit4;
+            String content4 = (averageHeart > 9 ? "" + averageHeart : "0" + averageHeart)  + unit4;
             tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
-            String content5 = averageBreath > 9 ? "" + averageBreath : "0" + averageBreath  + unit4;
+            String content5 = (averageBreath > 9 ? "" + averageBreath : "0" + averageBreath)  + unit4;
             tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array4));
         }
         if (tvTime2 != null) {
@@ -851,6 +845,7 @@ public class ReportWeekFragment extends LazyFragment {
             return;
         }
         setCharData();
+        chart.invalidate();
 
         int score = 0;
         for (int i = 0; i < scores.length; i++) {
@@ -1162,7 +1157,7 @@ public class ReportWeekFragment extends LazyFragment {
                 return;
             }
             setCharData2();
-
+            chart2.invalidate();
         } else {
             if (tvTime3 != null && tvTime6 != null) {
                 String unit21 = getResources().getString(R.string.common_hour);

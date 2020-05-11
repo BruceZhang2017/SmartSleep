@@ -191,7 +191,7 @@ public class LoginActivity extends BaseAppActivity {
                 }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
                     //返回支持发送验证码的国家列表
                 }
-            }else{
+            } else {
                 ((Throwable)data).printStackTrace();
                 if (NetworkUtils.isNetWorkAvailable(LoginActivity.this)) {
                     Toast.makeText(LoginActivity.this, getResources().getText(R.string.mobile_error_tip), Toast.LENGTH_SHORT).show();
