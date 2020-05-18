@@ -1,24 +1,30 @@
 package com.zhang.xiaofei.smartsleep.UI.Me;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.Vendor.EsptouchDemoActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +42,7 @@ public class AboutUsActivity extends BaseAppActivity {
         List<String> appNames = new ArrayList<>();
         appNames.add(getResources().getString(R.string.mine_checking_update));
         appNames.add(getResources().getString(R.string.login_term_for_usage));
+        appNames.add(getResources().getString(R.string.upload_log));
         //适配adapter
         listView.setAdapter(new AboutUsActivity.AppListAdapter(appNames));
 
@@ -97,10 +104,72 @@ public class AboutUsActivity extends BaseAppActivity {
                         Intent intent = new Intent(AboutUsActivity.this, WebActivity.class);
                         intent.putExtra("url", "https://www.baidu.com");
                         AboutUsActivity.this.startActivity(intent);
+                    } else {
+                        showLogDialog(LogcatHelper.FILE_LOG_PATH);
                     }
                 }
             });
             return convertView;
         }
+    }
+
+    private boolean checkLogFileIfExsit(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void uploadLog(String filePath) {
+        if (!checkLogFileIfExsit(filePath)) {
+            Toast.makeText(AboutUsActivity.this, "App不存在log文件，请开启相应权限", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent email = new Intent(android.content.Intent.ACTION_SEND);
+// 附件
+        File file = new File(filePath);
+//邮件发送类型：带附件的邮件
+        email.setType("application/octet-stream");
+        //邮件接收者（数组，可以是多位接收者）
+        String[] emailReciver = new String[]{"liangzhihao@yamind.com.cn","bruce.zhang@anker.com"};
+
+        String  emailTitle = "日志文件";
+        String emailContent = "附件里有日志文件";
+//设置邮件地址
+        email.putExtra(android.content.Intent.EXTRA_EMAIL, emailReciver);
+//设置邮件标题
+        email.putExtra(android.content.Intent.EXTRA_SUBJECT, emailTitle);
+//设置发送的内容
+        email.putExtra(android.content.Intent.EXTRA_TEXT, emailContent);
+//附件
+        email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        //调用系统的邮件系统
+        startActivity(Intent.createChooser(email, "请选择邮件发送软件"));
+    }
+
+    private void showLogDialog(String logpath) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("请输入");    //设置对话框标题
+        final EditText edit = new EditText(this);
+        edit.setText(logpath);
+        builder.setView(edit);
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String filePath = edit.getText().toString();
+                uploadLog(filePath);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setCancelable(true);    //设置按钮是否可以按返回键取消,false则不可以取消
+        AlertDialog dialog = builder.create();  //创建对话框
+        dialog.setCanceledOnTouchOutside(true); //设置弹出框失去焦点是否隐藏,即点击屏蔽其它地方是否隐藏
+        dialog.show();
     }
 }

@@ -21,6 +21,7 @@ public class LogcatHelper {
     private static String PATH_LOGCAT;
     private LogDumper mLogDumper = null;
     private int mPId;
+    public static String FILE_LOG_PATH;
 
     /**
      *
@@ -80,10 +81,15 @@ public class LogcatHelper {
         public LogDumper(String pid, String dir) {
             mPID = pid;
             try {
+                System.out.println("输出日志路径：" + dir + "/" + "log-"
+                        + getFileName() + ".txt");
+                FILE_LOG_PATH = dir + "/" + "log-"
+                        + getFileName() + ".txt";
                 out = new FileOutputStream(new File(dir, "log-"
-                        + getFileName() + ".log"));
+                        + getFileName() + ".txt"));
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
+                System.out.println("输入日志异常");
                 e.printStackTrace();
             }
 

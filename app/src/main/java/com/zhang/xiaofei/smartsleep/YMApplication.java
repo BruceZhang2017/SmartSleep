@@ -18,6 +18,7 @@ import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
+import com.zhang.xiaofei.smartsleep.UI.Home.SleepAndGetupTimeManager;
 import com.zhang.xiaofei.smartsleep.UI.Home.SleepDataUploadManager;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
@@ -76,6 +77,7 @@ public class YMApplication extends Application {
                 .migration(new CustomMigration())//升级数据库
                 .build();
         Realm.setDefaultConfiguration(config);
+        System.out.println("数据库位置：" + Realm.getDefaultInstance().getPath());
 
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
@@ -89,6 +91,8 @@ public class YMApplication extends Application {
         LogcatHelper.getInstance(this).start();
         SleepDataUploadManager uploadManager = new SleepDataUploadManager();
         uploadManager.uploadSleepData();
+
+        SleepAndGetupTimeManager.getHashMapData();
     }
 
     private void modulesApplicationInit(){
@@ -128,7 +132,7 @@ public class YMApplication extends Application {
     }
 
     public String domain() {
-        return "http://cloud.yamind.cn:9999/"; //test/zips/20191022/dfufile.zip
+        return "https://cloud.yamind.cn/"; //test/zips/20191022/dfufile.zip
     }
 
     public boolean getBLEOpen() {

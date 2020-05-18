@@ -489,8 +489,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
     @Override // int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm
     public void handleBLEData(String mac, int time, int[] array) {
-        if (array.length < 8) {
-            return;
+        boolean bSaveDataToDBNow = false;
+        if (array.length < 8 && time == 0) {
+            bSaveDataToDBNow = true;
         }
         if (DeviceManager.getInstance().deviceList.size() == 0) {
             return;
@@ -501,37 +502,38 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         }
         int deviceId = DeviceManager.getInstance().deviceList.get(current).getId();
 
-        RecordModel model = new RecordModel();
-        model.setUserId(userId);
-        model.setDeviceId(deviceId);
-        model.setTime(time);
-        model.setTemperature(array[0]);
-        model.setHumidity(array[1]);
-        model.setHeartRate(array[2]);
-        model.setBreathRate(array[3]);
-        model.setBodyMotion(array[4]);
-        model.setGetupFlag(array[5]);
-        model.setSnore(array[6]);
-        model.setBreatheStop(array[7]);
-        recordModelList.add(model);
-        if (recordModelList.size() < 32) { // 刚才默认为256条
+        if (bSaveDataToDBNow) {
+            if (recordModelList.size() == 0) {
+                return;
+            }
+        } else {
+            RecordModel model = new RecordModel();
+            model.setUserId(userId);
+            model.setDeviceId(deviceId);
+            model.setTime(time);
+            model.setTemperature(array[0]);
+            model.setHumidity(array[1]);
+            model.setHeartRate(array[2]);
+            model.setBreathRate(array[3]);
+            model.setBodyMotion(array[4]);
+            model.setGetupFlag(array[5]);
+            model.setSnore(array[6]);
+            model.setBreatheStop(array[7]);
+            recordModelList.add(model);
             return;
         }
-        List<RecordModel> tem = new ArrayList<>();
-        for (int i = 0; i < recordModelList.size(); i++) {
-            tem.add(recordModelList.get(i));
-        }
-        recordModelList.clear();
-        System.out.println("保存数据的数量为: " + tem.size() + "原始数据：" + recordModelList.size());
+
+        System.out.println("保存数据的数量为: " + recordModelList.size());
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(tem);
+                realm.copyToRealmOrUpdate(recordModelList);
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
                 System.out.println("数据插入服务器成功");
+                recordModelList.clear();
             }
         }, new Realm.Transaction.OnError() {
             @Override
@@ -796,7 +798,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setOutOfDetectionState(deviceId, bDetection));
                     }
-                } else if (arg0 == 10) {
+                } else if (arg0 == 10) { // 定时读取心跳和呼吸率
                     if (mTab1 == null) {
                         return;
                     }
@@ -841,6 +843,18 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 } else if (arg0 == 14) {
                     if (fastBLEManager != null) {
                         fastBLEManager.bSearching = false;
+                    }
+                } else if (arg0 == 15) { // 发送读取Flash data
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
                     }
                 }
             }

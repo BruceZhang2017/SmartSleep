@@ -30,12 +30,15 @@ import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.Tools.SendCMDToHomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,7 +62,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     TextView tvHeartAndBreath;
     Switch switch1;
     CountDownButton btnSleep;
-    private static final String DYNAMICACTION = "Filter";
     private static final String HELPSLEEPDYNAMICACTION = "Filter2";
     Realm mRealm;
     int currentTime;
@@ -74,6 +76,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     private int buttonCountDownCount = 0; // 点击按钮有3秒过渡动画
     private boolean bSleep = false;
     private DynamicReceiver dynamicReceiver;
+    private String sleepStartTime = ""; // 睡觉开始时间
+    private String sleepEndTime = ""; // 睡觉结束时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,19 +177,12 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                                             } else {
                                                 time = 90 * 60;
                                             }
-                                            Intent intentBroadcast = new Intent();   //定义Intent
-                                            intentBroadcast.setAction(DYNAMICACTION);
-                                            intentBroadcast.putExtra("arg0", 7);
-                                            intentBroadcast.putExtra("value", time);
-                                            sendBroadcast(intentBroadcast);
+                                            SendCMDToHomeActivity.send(7, HelpSleepActivity.this);
                                         }
                                     })
                             .show();
                 } else {
-                    Intent intentBroadcast = new Intent();   //定义Intent
-                    intentBroadcast.setAction(DYNAMICACTION);
-                    intentBroadcast.putExtra("arg0", 7);
-                    sendBroadcast(intentBroadcast);
+                    SendCMDToHomeActivity.send(7, HelpSleepActivity.this);
                 }
             }
         });
@@ -456,17 +453,14 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
                 bSleep = true;
                 btnSleep.setText(R.string.common_get_up);
-                Intent intentBroadcast = new Intent();   //定义Intent
-                intentBroadcast.setAction(DYNAMICACTION);
-                intentBroadcast.putExtra("arg0", 3);
-                sendBroadcast(intentBroadcast);
+                SendCMDToHomeActivity.send(3, this); // 发送睡觉通知
+                saveSleepStartTime();
             } else {
                 bSleep = false;
                 btnSleep.setText(R.string.alarm_sleep);
-                Intent intentBroadcast = new Intent();   //定义Intent
-                intentBroadcast.setAction(DYNAMICACTION);
-                intentBroadcast.putExtra("arg0", 4);
-                sendBroadcast(intentBroadcast);
+                SendCMDToHomeActivity.send(4, this); // 发送起床通知
+                saveSleepEndTime();
+                SendCMDToHomeActivity.send(15, this); // 读取Flash data
             }
 
             refreshMonitorValue();
@@ -474,6 +468,34 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             return;
         }
         tvCount.setText("" + (3 - buttonCountDownCount));
+    }
+
+    private void saveSleepStartTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+        String str = simpleDateFormat.format(date);
+        sleepStartTime = str;
+        CacheUtil.getInstance(HelpSleepActivity.this).putString("SleepStart", sleepStartTime);
+    }
+
+    private void saveSleepEndTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = new Date();
+        String str = simpleDateFormat.format(date);
+        sleepEndTime = str;
+        if (sleepStartTime.length() == 0) {
+            sleepStartTime = CacheUtil.getInstance(HelpSleepActivity.this).getString("SleepStart");
+        }
+        if (sleepStartTime.length() == 0) {
+            return;
+        }
+        List<String> arrayList = SleepAndGetupTimeManager.times.get(sleepEndTime.substring(0, 10));
+        if (arrayList == null) {
+            arrayList = new ArrayList<>();
+        }
+        arrayList.add(sleepStartTime + "&" + sleepEndTime);
+        SleepAndGetupTimeManager.times.put(sleepEndTime.substring(0, 10), arrayList);
+        SleepAndGetupTimeManager.putHashMapData();
     }
 
     // 读取离床、心率和呼吸率

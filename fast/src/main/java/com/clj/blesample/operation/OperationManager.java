@@ -165,7 +165,10 @@ public class OperationManager {
                     bleDataObserver.handleBLEData("",temprature, humdity);
                 }
             } else if (data[3] == 0x0b) { // Flash数据解析
-                if ((data[4] & 0xff) == 0) {
+                if ((data[4] & 0xff) == 0 && (data[5] & 0xff) == 0 && (data[6] & 0xff) == 0) {
+                    if (bleDataObserver != null) {
+                        bleDataObserver.handleBLEData("", 0, new int[0]);
+                    }
                     return;
                 }
                 if (data.length < 20) {
@@ -211,6 +214,12 @@ public class OperationManager {
             return;
         }
         System.out.println("解析的值: " + HexUtil.formatHexString(data, true));
+        if ((data[4] & 0xff) == 0 && (data[5] & 0xff) == 0 && (data[6] & 0xff) == 0) {
+            if (bleDataObserver != null) {
+                bleDataObserver.handleBLEData("", 0, new int[0]);
+            }
+            return;
+        }
         int year = 2000 + (data[0] & 0xff);
         int month = data[1];
         int day = data[2];

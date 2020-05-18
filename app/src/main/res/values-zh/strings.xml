@@ -313,5 +313,7 @@
 
     <string name="submit_success">提交成功</string>
     <string name="submit_fail">提交失败</string>
+    <string name="upload_log">上传日志</string>
+    <string name="current_date_no_date">该日期没有数据</string>
 
 </resources>

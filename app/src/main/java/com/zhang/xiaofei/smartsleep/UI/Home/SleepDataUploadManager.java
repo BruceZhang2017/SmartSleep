@@ -239,6 +239,7 @@ public class SleepDataUploadManager {
 
     // 下载服务器端数据
     private void downloadSleepDataFromCloud(String serial) {
+        System.out.println("从服务器端下载数据");
         YMUserInfoManager userInfoManager = new YMUserInfoManager(YMApplication.getContext());
         UserModel model = userInfoManager.loadUserInfo();
         if (model == null) {
@@ -277,7 +278,7 @@ public class SleepDataUploadManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.code() == 200) {
-
+                    System.out.println("从服务器端下载数据成功");
                 }
             }
         });

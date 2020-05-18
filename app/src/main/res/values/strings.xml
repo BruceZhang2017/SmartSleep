@@ -313,6 +313,7 @@
 
     <string name="submit_success">Submit Success</string>
     <string name="submit_fail">Submit Fail</string>
-
+    <string name="upload_log">Upload log</string>
+    <string name="current_date_no_date">No data for this date</string>
 
 </resources>
