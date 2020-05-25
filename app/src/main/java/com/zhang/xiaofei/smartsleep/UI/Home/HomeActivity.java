@@ -100,6 +100,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     private Map<String, String> attachValue = new HashMap<String, String>();
     private BluetoothMonitorReceiver bleListenerReceiver;
     private List<RecordModel> recordModelList = new ArrayList<>(); // 记录将保存于数据库中
+    private boolean bInsertingDB = false; //数据正在插入数据库
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -487,10 +488,52 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         TestDataNotification.getInstance().notifyObserver();
     }
 
+    // 初始化定时器
+    Timer dbTimer = null;
+    TimerTask dbTimerTask = null;
+
+    private void startTimer() {
+        stopTimer();
+        dbTimer = new Timer();
+        dbTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                HomeActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("启动插入数据至数据库2");
+                        saveFlashDataToDB();
+                    }
+                });
+                stopTimer();
+            }
+        };
+        dbTimer.schedule(dbTimerTask, 0, 3000);
+    }
+
+    // 停止定时器
+    private void stopTimer() {
+        if(dbTimer != null){
+            dbTimer.cancel();
+            dbTimer = null;
+        }
+        if (dbTimerTask != null) {
+            dbTimerTask.cancel();
+            dbTimerTask = null;
+        }
+    }
+
+
+
     @Override // int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm
     public void handleBLEData(String mac, int time, int[] array) {
+        stopTimer();
         boolean bSaveDataToDBNow = false;
         if (array.length < 8 && time == 0) {
+            if (bInsertingDB) {
+                return;
+            }
             bSaveDataToDBNow = true;
         }
         if (DeviceManager.getInstance().deviceList.size() == 0) {
@@ -520,9 +563,21 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             model.setSnore(array[6]);
             model.setBreatheStop(array[7]);
             recordModelList.add(model);
+            startTimer();
             return;
         }
+        System.out.println("启动插入数据至数据库1");
+        saveFlashDataToDB();
+    }
 
+    private void saveFlashDataToDB() {
+        if (recordModelList.size() == 0) {
+            return;
+        }
+        if (bInsertingDB) {
+            return;
+        }
+        bInsertingDB = true;
         System.out.println("保存数据的数量为: " + recordModelList.size());
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
@@ -534,33 +589,16 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             public void onSuccess() {
                 System.out.println("数据插入服务器成功");
                 recordModelList.clear();
+                bInsertingDB = false;
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
                 System.out.println("数据插入服务器失败");
+                bInsertingDB = false;
             }
         });
     }
-
-//    /// 集合的深Copy，先放置在该处
-//    public <E> List<E> deepCopy(List<E> src) {
-//        try {
-//            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-//            ObjectOutputStream out = new ObjectOutputStream(byteOut);
-//            out.writeObject(src);
-//
-//            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-//            ObjectInputStream in = new ObjectInputStream(byteIn);
-//            @SuppressWarnings("unchecked")
-//            List<E> dest = (List<E>) in.readObject();
-//            return dest;
-//        } catch (Exception e) {
-//            System.out.println("深度Copy报错");
-//            e.printStackTrace();
-//            return new ArrayList<E>();
-//        }
-//    }
 
     @Override
     public void handleBLEWrite(int flag) {
@@ -836,7 +874,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.setOutOfDynamicWave(deviceId, bDetection));
                     }
-                } else if (arg0 == 13) {
+                } else if (arg0 == 13) { // 搜索设备
                     if (fastBLEManager != null) {
                         fastBLEManager.bSearching = true;
                     }
@@ -856,6 +894,13 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         fastBLEManager.operationManager.write(
                                 fastBLEManager.operationManager.bleOperation.syncDataToFlash(deviceId));
                     }
+                } else if (arg0 == 16) { // 断开当前设备
+                    if (fastBLEManager == null) {
+                        return;
+                    }
+                    fastBLEManager.macAddress = "";
+                    fastBLEManager.stopBLEScan();
+                    fastBLEManager.onDisConnect();
                 }
             }
         }

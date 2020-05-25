@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: io.realm:realm-android-library-object-server:4.3.1@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/de31dcb12049d0248f1af972a52ddd42/jetified-realm-android-library-object-server-4.3.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/de31dcb12049d0248f1af972a52ddd42/jetified-realm-android-library-object-server-4.3.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5a83fd8e40184b38eb660296c2bfbf6d/jetified-realm-android-library-object-server-4.3.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5a83fd8e40184b38eb660296c2bfbf6d/jetified-realm-android-library-object-server-4.3.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/io.realm/realm-android-library-object-server/4.3.1/528f4f97acbbb100ebe0f54565c22516158149c2/realm-android-library-object-server-4.3.1-javadoc.jar!/" />

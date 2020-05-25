@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.umeng.sdk:share-core:6.9.2@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6179d351b42f111eb051ceeddf4f6435/jetified-share-core-6.9.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6179d351b42f111eb051ceeddf4f6435/jetified-share-core-6.9.2/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4f7348c0d63e0cd65a8414c7c96c5e14/jetified-share-core-6.9.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4f7348c0d63e0cd65a8414c7c96c5e14/jetified-share-core-6.9.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.umeng.sdk/share-core/6.9.2/fdcea7db3cff238ea101d8790d581fe96b8c872/share-core-6.9.2-javadoc.jar!/" />
