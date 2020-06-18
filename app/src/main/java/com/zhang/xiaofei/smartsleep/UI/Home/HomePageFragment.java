@@ -63,6 +63,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.feeeei.circleseekbar.CircleSeekBar;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -96,16 +97,11 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private ViewPager viewPager;
     private FixedIndicatorView indicator;
-    private int getupH = 0;
-    private int getupM = 0;
-    private int sleepH = 0;
-    private int sleepM = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.tab1, null);
         ButterKnife.bind(this, layout);
-        readAlarmInfo();
         init(layout);
         showDeviceList();
         return layout;
@@ -214,20 +210,16 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 .asAttachList(
                         new String[]{
                                 getResources().getString(R.string.index_binding_device),
-                                getResources().getString(R.string.index_search_device),
                                 getResources().getString(R.string.mine_feedback)},
                         new int[]{
                                 R.mipmap.home_icon_more_binding,
-                                R.mipmap.home_icon_more_search,
                                 R.mipmap.home_icon_more_suggest},
                         new OnSelectListener() {
                             @Override
                             public void onSelect(int position, String text) {
-                                if (position == 2) {
+                                if (position == 1) {
                                     Intent intent = new Intent(getActivity(), FeedbackActivity.class);
                                     startActivity(intent);
-                                } else if (position == 1) {
-                                    showDialog();
                                 } else {
                                     showDialogBLEScanOrCodeScan();
                                 }
@@ -524,7 +516,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             String content = 0 + "" + unit;
             TextView tvGrade = (TextView)convertView.findViewById(R.id.tv_sleep_review_value);
             tvGrade.setText(content);
-
+            CircleSeekBar circlePercentView = (CircleSeekBar)convertView.findViewById(R.id.circle_percent_progress);
+            TextView tvSleepReviewValue = (TextView)convertView.findViewById(R.id.tv_sleep_review_value);
             TextView tvSleepTime = (TextView)convertView.findViewById(R.id.tv_sleep_time);
 
             TextView tvSleepDuration = (TextView)convertView.findViewById(R.id.tv_sleep_duration);
@@ -587,6 +580,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                     tvBodyMove.setText(0 + " h");
                     tvDotValue.setText(0 + " h");
                 }
+                circlePercentView.setCurProcess(0);
+                tvSleepReviewValue.setText(0 + getResources().getString(R.string.common_minute3));
             } else if (type == 2) {
                 tvDot1.setText(R.string.middle_fall_asleep);
                 tvDot2.setText(R.string.report_sleep_hour);
@@ -594,35 +589,20 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvDot4.setText(R.string.common_snoring_times);
                 String unit21 = getResources().getString(R.string.common_hour);
                 String unit22 = getResources().getString(R.string.common_minute);
+                int[] arraySleepbelt = YMApplication.getInstance().getSleepbeltValue();
+                int sleepTime = arraySleepbelt[1];
+                int sleepH = sleepTime / 100;
+                int sleepM = sleepTime % 100;
                 String content2 = (sleepH > 9 ? ("" + sleepH) : ("0" + sleepH)) + unit21 + (sleepM > 9 ? ("" + sleepM) : ("0" + sleepM)) + unit22;
                 tvSleepTime.setText(content2);
-                int h = 0;
-                int m = 0;
-                if (getupH > sleepH) {
-                    if (getupM >= sleepM) {
-                        h = getupH - sleepH;
-                        m = getupM - sleepM;
-                    }else {
-                        h = getupH - sleepH - 1;
-                        m = getupM - sleepM + 60;
-                    }
-                } else if (getupH == sleepH) {
-                    if (getupM >= sleepM) {
-                        m = getupM - sleepM;
-                    }
-                } else {
-                    if (getupM >= sleepM) {
-                        h = getupH + 24 - sleepH;
-                        m = getupM - sleepM;
-                    } else {
-                        h = getupH + 24 - sleepH - 1;
-                        m = getupM - sleepM + 60;
-                    }
-                }
+                int h = arraySleepbelt[2] / 100;
+                int m = arraySleepbelt[2] % 100;
                 //System.out.println("h: " + h + "m :" + m);
                 tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit21 + (m > 9 ? ("" + m) : ("0" + m)) + unit22);
                 tvBodyMove.setText(R.string.common_many);
                 tvDotValue.setText(0 + "" + getResources().getString(R.string.common_times));
+                circlePercentView.setCurProcess(arraySleepbelt[0]);
+                tvSleepReviewValue.setText(arraySleepbelt[0] + getResources().getString(R.string.common_minute3));
             } else {
                 tvDot1.setText(R.string.middle_fall_asleep);
                 tvDot2.setText(R.string.report_sleep_hour);
@@ -630,36 +610,21 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvDot4.setText(R.string.report_respiratory_rate_aver);
                 String unit21 = getResources().getString(R.string.common_hour);
                 String unit22 = getResources().getString(R.string.common_minute);
+                int[] arraySleepbelt = YMApplication.getInstance().getSleepbeltValue();
+                int sleepTime = arraySleepbelt[1];
+                int sleepH = sleepTime / 100;
+                int sleepM = sleepTime % 100;
                 String content2 = (sleepH > 9 ? ("" + sleepH) : ("0" + sleepH)) + unit21 + (sleepM > 9 ? ("" + sleepM) : ("0" + sleepM)) + unit22;
                 tvSleepTime.setText(content2);
-                int h = 0;
-                int m = 0;
-                if (getupH > sleepH) {
-                    if (getupM >= sleepM) {
-                        h = getupH - sleepH;
-                        m = getupM - sleepM;
-                    }else {
-                        h = getupH - sleepH - 1;
-                        m = getupM - sleepM + 60;
-                    }
-                } else if (getupH == sleepH) {
-                    if (getupM >= sleepM) {
-                        m = getupM - sleepM;
-                    }
-                } else {
-                    if (getupM >= sleepM) {
-                        h = getupH + 24 - sleepH;
-                        m = getupM - sleepM;
-                    } else {
-                        h = getupH + 24 - sleepH - 1;
-                        m = getupM - sleepM + 60;
-                    }
-                }
+                int h = arraySleepbelt[2] / 100;
+                int m = arraySleepbelt[2] % 100;
                 //System.out.println("h: " + h + "m :" + m);
                 tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit21 + (m > 9 ? ("" + m) : ("0" + m)) + unit22);
                 String unit3 = getResources().getString(R.string.common_times_minute);
-                tvBodyMove.setText(0 + "" + unit3);
-                tvDotValue.setText(0 + "" + unit3);
+                tvBodyMove.setText(arraySleepbelt[3] + "" + unit3);
+                tvDotValue.setText(arraySleepbelt[4] + "" + unit3);
+                circlePercentView.setCurProcess(arraySleepbelt[0]);
+                tvSleepReviewValue.setText(arraySleepbelt[0] + getResources().getString(R.string.common_minute3));
             }
 
             return convertView;
@@ -690,23 +655,6 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private void removeShineAnimation(ImageView iv) {
         iv.clearAnimation();
-    }
-
-    private void readAlarmInfo() {
-        Realm mRealm = Realm.getDefaultInstance();
-        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
-        if (userList != null && userList.size() > 0) {
-            System.out.println("已经制定过闹钟信息");
-            for (AlarmModel model : userList) {
-                if (model.getType() == 0) {
-                    getupH = model.getHour();
-                    getupM = model.getMinute();
-                } else {
-                    sleepH = model.getHour();
-                    sleepM = model.getMinute();
-                }
-            }
-        }
     }
 
     // 初始化顶部设备UI

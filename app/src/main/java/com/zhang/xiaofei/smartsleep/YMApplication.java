@@ -21,6 +21,9 @@ import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.UI.Home.SleepAndGetupTimeManager;
 import com.zhang.xiaofei.smartsleep.UI.Home.SleepDataUploadManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
@@ -36,6 +39,8 @@ public class YMApplication extends Application {
     public static final String[] MODULESLIST =
             {"com.sunofbeaches.himalaya.base.TingApplication"};
     private boolean bleOpen = false; // 保存蓝牙是否开启
+    private int[] sleepbeltValue = new int[5]; // 得分， 入睡，睡眠时长，心率，呼吸率
+    public Map<String, Integer> deviceBatteryMap = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -143,6 +148,13 @@ public class YMApplication extends Application {
         bleOpen = value;
     }
 
+    public int[] getSleepbeltValue() {
+        return sleepbeltValue;
+    }
+
+    public void setSleepbeltValue(int[] sleepbeltValue) {
+        this.sleepbeltValue = sleepbeltValue;
+    }
 }
 
 

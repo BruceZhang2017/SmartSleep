@@ -120,4 +120,20 @@ public class AlarmModel extends RealmObject {
     public void setOpen(boolean open) {
         this.open = open;
     }
+
+    public boolean isEqual(AlarmModel model) {
+        if (hour == model.hour &&
+                minute == model.minute &&
+                monday == model.monday &&
+                tuesday == model.tuesday &&
+                wednesday == model.wednesday &&
+                thursday == model.thursday &&
+                firday == model.firday &&
+                saturday == model.saturday &&
+                sunday == model.sunday &&
+                type == model.type) {
+            return true;
+        }
+        return false;
+    }
 }

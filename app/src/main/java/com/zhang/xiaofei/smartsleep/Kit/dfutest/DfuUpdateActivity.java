@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -275,8 +276,6 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
 //          progressBar.setIndeterminate(true);
 //          mTextPercentage.setText(R.string.dfu_status_starting);
             Log.i("TEST", "onDfuProcessStarting: " + deviceAddress);
-
-
         }
 
         @Override
@@ -329,6 +328,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
             Log.i("TEST", "onDfuAborted: " + deviceAddress);
             progressBar.setVisibility(View.GONE);
             stateButton.setText(R.string.start);
+            Toast.makeText(DfuUpdateActivity.this, R.string.ota_fail, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -336,6 +336,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
             Log.i("TEST", "onError: " + deviceAddress + ",message:" + message);
             progressBar.setVisibility(View.GONE);
             stateButton.setText(R.string.start);
+            Toast.makeText(DfuUpdateActivity.this, R.string.ota_fail, Toast.LENGTH_SHORT).show();
         }
     };
 

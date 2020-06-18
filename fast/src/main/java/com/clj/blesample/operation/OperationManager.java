@@ -141,7 +141,7 @@ public class OperationManager {
         if (data[0] == (byte)0xeb && data[1] == (byte)0x60) {
             if (data[3] == 0x01) {
                 int battery = (int)(data[4] & 0xff);
-                int version = (int)(data[17] & 0xff);
+                int version = (int)(data[17] & 0xff) + ((int)(data[16] & 0xff) << 8);
                 byte[] mac = new byte[6];
                 for (int i = 11; i < 17; i++) {
                     mac[i - 11] = data[i];

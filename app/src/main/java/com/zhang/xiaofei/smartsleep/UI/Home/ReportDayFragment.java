@@ -40,6 +40,7 @@ import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -115,9 +116,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     LineDataSet set3;
     LineDataSet set4;
     LineDataSet set5;
-    int tableRowCount = 0;
-    int tableRowDuration = 0;
-    Map<Integer, List<RecordModel>> mMap = new HashMap<Integer, List<RecordModel>>();
+    List<RecordModel> mlist = new ArrayList<>();
     boolean isBlet = true;
     boolean bChart1 = false;
     boolean bChart2 = false;
@@ -125,6 +124,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     boolean bChart4 = false;
     boolean bChart5 = false;
     int[] cursor = new int[2];
+    private boolean bSleepBletValueRead = false; // 睡眠带值是否有值
+    private int[] sleepbeltValue = new int[5]; // 得分， 入睡，睡眠时长，心率，呼吸率
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -202,7 +203,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         cl5 = (ConstraintLayout)findViewById(R.id.cl_5);
         cl6 = (ConstraintLayout)findViewById(R.id.cl_6);
         cl11 = (ConstraintLayout)findViewById(R.id.cl_11);
-        cl11.setVisibility(View.GONE);
 
     }
 
@@ -373,7 +373,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
         });
         xAxis.setGranularityEnabled(true);
-        xAxis.setLabelCount(tableRowCount,true);
+        xAxis.setLabelCount(6,true);
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
@@ -465,7 +465,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
         });
 
-        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setMode(LineDataSet.Mode.LINEAR);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the data sets
 
@@ -490,13 +490,27 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     private void setData2() {
         chart2Values = new ArrayList<>();
-
-        for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
-            float heart = 0;
-            for (RecordModel model: entry.getValue()) {
-                heart += model.getHeartRate();
+        int time = 0;
+        int heart = 0;
+        int count = 0;
+        int total = 0;
+        for (RecordModel model: mlist) {
+            int t = hourMinuteToInt(timeToDate(model.getTime()));
+            if (time == 0) {
+                time = t;
+            } else if (time != t) {
+                chart2Values.add(new Entry(time, heart / count));
+                time = 0;
+                heart = 0;
+                count = 0;
             }
-            chart2Values.add(new Entry(hourMinuteToInt(timeToDate(entry.getKey() * 60)), heart / entry.getValue().size()));
+
+            heart += model.getHeartRate();
+            count += 1;
+            total += 1;
+            if (total == mlist.size() && time != 0) {
+                chart2Values.add(new Entry(time, heart / count));
+            }
         }
         Collections.sort(chart2Values, comparatorByX);
 
@@ -523,7 +537,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set2.setDrawCircleHole(true);
 
         // create a data object with the data sets
-        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set2.setMode(LineDataSet.Mode.LINEAR);
         LineData data = new LineData(set2);
         data.setValueTextColor(Color.WHITE);
         data.setHighlightEnabled(false);
@@ -544,15 +558,28 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData3() {
-
         chart3Values = new ArrayList<>();
-
-        for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
-            float heart = 0;
-            for (RecordModel model: entry.getValue()) {
-                heart += model.getBreathRate();
+        int time = 0;
+        int breath = 0;
+        int count = 0;
+        int total = 0;
+        for (RecordModel model: mlist) {
+            int t = hourMinuteToInt(timeToDate(model.getTime()));
+            if (time == 0) {
+                time = t;
+            } else if (time != t) {
+                chart3Values.add(new Entry(time, breath / count));
+                time = 0;
+                breath = 0;
+                count = 0;
             }
-            chart3Values.add(new Entry(hourMinuteToInt(timeToDate(entry.getKey() * 60)), heart / entry.getValue().size()));
+
+            breath += model.getBreathRate();
+            count += 1;
+            total += 1;
+            if (total == mlist.size() && time != 0) {
+                chart3Values.add(new Entry(time, breath / count));
+            }
         }
         Collections.sort(chart3Values, comparatorByX);
 
@@ -577,7 +604,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set3.setFillColor(ColorTemplate.getHoloBlue());
         set3.setHighLightColor(Color.rgb(244, 117, 117));
         set3.setDrawCircleHole(false);
-        set3.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set3.setMode(LineDataSet.Mode.LINEAR);
         // create a data object with the data sets
         LineData data = new LineData(set3);
         data.setValueTextColor(Color.WHITE);
@@ -624,7 +651,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(tableRowCount, true);
+        xAxis.setLabelCount(6, true);
         xAxis.setGranularityEnabled(true);
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
@@ -671,15 +698,25 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData4() {
-
         chart4Values = new ArrayList<>();
-
-        for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
-            float bodyMotion = 0;
-            for (RecordModel model: entry.getValue()) {
-                bodyMotion += model.getBodyMotion();
+        int time = 0;
+        int bodyMotion = 0;
+        int total = 0;
+        for (RecordModel model: mlist) {
+            int t = hourMinuteToInt(timeToDate(model.getTime()));
+            if (time == 0) {
+                time = t;
+            } else if (time != t) {
+                chart4Values.add(new Entry(time, bodyMotion));
+                time = 0;
+                bodyMotion = 0;
             }
-            chart4Values.add(new Entry(hourMinuteToInt(timeToDate(entry.getKey() * 60)), bodyMotion / entry.getValue().size()));
+
+            bodyMotion += model.getBodyMotion();
+            total += 1;
+            if (total == mlist.size() && time != 0) {
+                chart4Values.add(new Entry(time, bodyMotion));
+            }
         }
         Collections.sort(chart4Values, comparatorByX);
 
@@ -705,7 +742,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set4.setDrawCircleHole(false);
         set4.setDrawVerticalHighlightIndicator(false);
         set4.setDrawHorizontalHighlightIndicator(false);
-        set4.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set4.setMode(LineDataSet.Mode.LINEAR);
         // create a data object with the data sets
         LineData data = new LineData(set4);
         data.setValueTextColor(Color.WHITE);
@@ -739,8 +776,27 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData5() {
-
         chart5Values = new ArrayList<>();
+        int time = 0;
+        int snore = 0;
+        int total = 0;
+        for (RecordModel model: mlist) {
+            int t = hourMinuteToInt(timeToDate(model.getTime()));
+            if (time == 0) {
+                time = t;
+            } else if (time != t) {
+                chart5Values.add(new Entry(time, snore));
+                time = 0;
+                snore = 0;
+            }
+
+            snore += model.getSnore();
+            total += 1;
+            if (total == mlist.size() && time != 0) {
+                chart5Values.add(new Entry(time, snore));
+            }
+        }
+        Collections.sort(chart5Values, comparatorByX);
         if (bChart5) {
             set5 = (LineDataSet) chart5.getData().getDataSetByIndex(0);
             set5.setValues(chart5Values);
@@ -763,7 +819,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         set5.setDrawCircleHole(false);
         set5.setDrawVerticalHighlightIndicator(false);
         set5.setDrawHorizontalHighlightIndicator(false);
-        set5.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set5.setMode(LineDataSet.Mode.LINEAR);
         // create a data object with the data sets
         LineData data = new LineData(set5);
         data.setValueTextColor(Color.WHITE);
@@ -822,22 +878,14 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void readDataFromDB() {
-        mMap.clear();
+        mlist.clear();
         mRealm = Realm.getDefaultInstance();
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
                 .greaterThan("time", timeToLong(sleepTime))
                 .lessThan("time", timeToLong(getupTime))
                 .findAll().sort("time", Sort.ASCENDING);
         for (RecordModel model: list) {
-            if (mMap.containsKey((Integer) (model.getTime() / 60))) {
-                List<RecordModel> temlist = mMap.get((Integer) (model.getTime() / 60));
-                temlist.add(model);
-                mMap.put((Integer) (model.getTime() / 60), temlist);
-            } else {
-                List<RecordModel> temlist = new ArrayList<RecordModel>();
-                temlist.add(model);
-                mMap.put((Integer) (model.getTime() / 60), temlist);
-            }
+            mlist.add(model);
         }
         System.out.println( " 开始时间：" + sleepTime + "结束时间：" + getupTime + "获取到的数据量：" + list.size());
     }
@@ -846,7 +894,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         this.isBlet = isBlet;
         cl5.setVisibility(isBlet ? View.VISIBLE : View.GONE);
         cl6.setVisibility(isBlet ? View.VISIBLE : View.GONE);
-        cl11.setVisibility(isBlet ? View.GONE : View.VISIBLE);
 
         readDataFromDB();
         setData2();
@@ -900,7 +947,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setLabelCount(tableRowCount, true);
+        xAxis.setLabelCount(6, true);
         xAxis.setGranularityEnabled(true);
         xAxis.setAxisMinimum(minX);
         xAxis.setAxisMaximum(maxX);
@@ -943,65 +990,57 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
     // 刷新统计时间相关数据UI
     private void refreshSleepStatisticsUI() {
-        Integer minTime = 0;
-        Integer maxTime = 0;
         long averageHeart = 0;
         long averageBreath = 0;
         long averageTemp = 0;
         long averageHumidity = 0;
         Integer count = 0;
         Integer bodyMotion = 0;
-        if (mMap.size() > 0) {
-            for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
-                for (RecordModel model: entry.getValue()) {
-                    averageHeart += model.getHeartRate();
-                    averageBreath += model.getBreathRate();
-                    averageTemp += model.getTemperature();
-                    averageHumidity += model.getHumidity();
-                    bodyMotion += model.getBodyMotion();
-                }
-                count += entry.getValue().size();
-                if (minTime == 0) {
-                    minTime = entry.getKey();
-                }
-                if (entry.getKey() < minTime) {
-                    minTime = entry.getKey();
-                }
-                if (maxTime == 0) {
-                    maxTime = entry.getKey();
-                }
-                if (entry.getKey() > maxTime) {
-                    maxTime = entry.getKey();
-                }
+        if (mlist.size() > 0) {
+            for (RecordModel model: mlist) {
+                averageHeart += model.getHeartRate();
+                averageBreath += model.getBreathRate();
+                averageTemp += model.getTemperature();
+                averageHumidity += model.getHumidity();
+                bodyMotion += model.getBodyMotion();
             }
+            count += mlist.size();
         }
-        System.out.println("minTime: " + minTime + " maxTime: " + maxTime);
         String unit11 = getResources().getString(R.string.common_hour2);
         String unit12 = getResources().getString(R.string.common_minute3);
         String[] array1 = {unit11, unit12};
-        if (minTime <= 0) {
+        if (sleepTime.length() == 0) {
             String content1 = "00" + unit11 + "00" + unit12;
             tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         } else {
-            String hourAndMinute = timeToHourMinute((long)minTime * 60 * 1000);
+            String hourAndMinute = sleepTime.substring(11, 16);
             System.out.println("hourAndMinute: " + hourAndMinute);
             String[] array = hourAndMinute.split(":");
             if (array.length == 2) {
                 String content1 = array[0] + unit11 + array[1] + unit12;
                 tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+                sleepbeltValue[1] = Integer.parseInt(array[0]) * 100 + Integer.parseInt(array[1]);
             }
         }
 
         String unit21 = getResources().getString(R.string.common_hour);
         String unit22 = getResources().getString(R.string.common_minute);
         String[] array2 = {unit21, unit22};
-        String hour = (maxTime - minTime) / 60 > 9 ? ("" + (maxTime - minTime) / 60) : ("0" + (maxTime - minTime) / 60);
-        String minute =  (maxTime - minTime) % 60 > 9 ? ("" + (maxTime - minTime) % 60) : ("0" + (maxTime - minTime) % 60);
-        String content2 = hour + unit21 + minute + unit22;
-        if (minTime <= 0) {
-            content2 = "00" + unit21 + "00" + unit22;
+        if (sleepTime.length() == 0) {
+            String content2 = "00" + unit21 + "00" + unit22;
+            tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+        } else {
+            int sleep = hourMinuteToInt(sleepTime);
+            int getup = hourMinuteToInt(getupTime);
+            if (sleep > getup) {
+                sleep = 24 * 60 - sleep;
+            }
+            String hour = (getup - sleep) / 60 > 9 ? ("" + (getup - sleep) / 60) : ("0" + (getup - sleep) / 60);
+            String minute =  (getup - sleep) % 60 > 9 ? ("" + (getup - sleep) % 60) : ("0" + (getup - sleep) % 60);
+            String content2 = hour + unit21 + minute + unit22;
+            tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+            sleepbeltValue[2] = Integer.parseInt(hour) * 100 + Integer.parseInt(minute);
         }
-        tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
 
         String unit4 = getResources().getString(R.string.common_times_minute);
         String[] array4 = {unit4};
@@ -1010,6 +1049,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             tvTime3.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, array4));
             String unit1 = getResources().getString(R.string.common_times_minute);
             tvSleepBottomCount1.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, unit1));
+            sleepbeltValue[3] = (int)(averageHeart / count);
         } else {
             String content3 = "00" + unit4;
             tvTime3.setText(BigSmallFontManager.createTimeValue(content3, getActivity(), 13, array4));
@@ -1021,6 +1061,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
             String unit2 = getResources().getString(R.string.common_times_minute);
             tvSleepBottomCount2.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, unit2));
+            sleepbeltValue[4] = (int)(averageBreath / count);
         } else {
             String content4 = "00" + unit4;
             String unit2 = getResources().getString(R.string.common_times_minute);
@@ -1054,19 +1095,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             String content = "0 " + getResources().getString(R.string.common_times);
             tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
         }
-
-        if (count > 0) {
-            grade = 90 - (bodyMotion / 100) * 20; // 计算当前日期的得分
-            grade = Math.min(90, grade);
-            grade = Math.max(70, grade);
-            refreshGrade();
-            circlePercentView.setCurProcess(grade);
-        } else {
-            grade = 0;
-            refreshGrade();
-            circlePercentView.setCurProcess(grade);
-        }
-        System.out.println("计算得到的最终得分为：" + grade);
         calculateSleepValue();
     }
 
@@ -1083,13 +1111,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(items.size() - 1);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
-        int sleep = hourMinuteToInt(sleepTime);
-        int getup = hourMinuteToInt(getupTime);
-        if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
-        }
-        tableRowCount = 6;
-        tableRowDuration = (getup - sleep) / 6;
     }
 
     private void preSleepAndGetupData() {
@@ -1111,13 +1132,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(cursor[1]);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
-        int sleep = hourMinuteToInt(sleepTime);
-        int getup = hourMinuteToInt(getupTime);
-        if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
-        }
-        tableRowCount = 6;
-        tableRowDuration = (getup - sleep) / 6;
     }
 
     private void nextSleepAndGetupData() {
@@ -1140,13 +1154,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(cursor[1]);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
-        int sleep = hourMinuteToInt(sleepTime);
-        int getup = hourMinuteToInt(getupTime);
-        if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
-        }
-        tableRowCount = 6;
-        tableRowDuration = (getup - sleep) / 6;
     }
 
     private void currentSleepAndGetupData(String day) {
@@ -1173,13 +1180,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(cursor[1]);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
-        int sleep = hourMinuteToInt(sleepTime);
-        int getup = hourMinuteToInt(getupTime);
-        if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
-        }
-        tableRowCount = 6;
-        tableRowDuration = (getup - sleep) / 6;
         refreshDateTimeData();
     }
 
@@ -1205,7 +1205,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         if (sleep > getup) {
             sleep = 24 * 60 - sleep;
         }
-        chart.getXAxis().setLabelCount(tableRowCount,true);
+        chart.getXAxis().setLabelCount(6,true);
         chart.getXAxis().setAxisMinimum(sleep);
         chart.getXAxis().setAxisMaximum(getup);
     }
@@ -1218,84 +1218,83 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             chart1Values.clear();
         }
 
-        if (mMap.size() > 0) {
+        if (mlist.size() > 0) {
             int deepSleep = 0;
             int middleSleep = 0;
             int cheapSleep = 0;
             int getup = 0;
-            int time = 0;
-            int bodyMotionCount = 0;
             int getupCount = 0;
+            int bodyMotionCount = 0;
+            int startTime = 0; // 开始计算的时间
             int i = 0;
-            System.out.println("计算的次数C为：" + mMap.size());
-            for (Map.Entry<Integer, List<RecordModel>> entry : mMap.entrySet()) { // 5分钟计算一次
-                i += 1;
-                if (time == 0) {
-                    time = entry.getKey() + 5;
+            for (RecordModel model : mlist) { // 计算清醒和体动
+                i++;
+                if (startTime == 0) {
+                    startTime = model.getTime();
                 }
-                if (entry.getKey() <= time) {
-                    if (i == mMap.size()) {
-                        System.out.println("计算的次数B为：" + i);
-                        time += 5;
-                        if (getupCount > 0) {
-                            getup += 1;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 1));
-                        } else {
-                            if (bodyMotionCount > 6) {
-                                getup += 1;
-                                chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 1));
-                            } else if (bodyMotionCount >= 3) {
-                                cheapSleep += 1;
-                                chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 2));
-                            } else if (bodyMotionCount >= 1) {
-                                middleSleep += 1;
-                                chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 3));
-                            } else {
-                                deepSleep += 1;
-                                chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 4));
-                            }
-                        }
-                        break;
+
+                int a = model.getGetupFlag(); // 离床 在床
+                int b = model.getBodyMotion(); // 体动
+                if (a == 0) { // 离床，清醒
+                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),1));
+                    if (startTime > 0) {
+                        getup += model.getTime() - startTime;
+                        startTime = model.getTime();
                     }
-                } else {
-                    System.out.println("计算的次数A为：" + i);
-                    time += 5;
-                    if (getupCount > 0) {
-                        getup += 1;
-                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 1));
-                    } else {
-                        if (bodyMotionCount > 6) {
-                            getup += 1;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 1));
-                        } else if (bodyMotionCount >= 3) {
-                            cheapSleep += 1;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 2));
-                        } else if (bodyMotionCount >= 1) {
-                            middleSleep += 1;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 3));
-                        } else {
-                            deepSleep += 1;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate((time - 10) * 60)), 4));
-                        }
-                    }
-                    getupCount = 0;
+                    getupCount += 1;
+                    continue;
+                }
+                if (model.getTime() - startTime >= 60 && bodyMotionCount >= 5) {
+                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),2));
+                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),2));
+                    cheapSleep += model.getTime() - startTime;
                     bodyMotionCount = 0;
+                    startTime = model.getTime();
+                    continue;
                 }
-
-                for (RecordModel model : entry.getValue()) { // 计算清醒和体动
-                    int a = model.getGetupFlag();
-                    int b = model.getBodyMotion();
-                    if (a == 0) {
-                        getupCount += 1;
+                if (model.getTime() - startTime >= 3 * 60 && bodyMotionCount > 0) {
+                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
+                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+                    middleSleep += model.getTime() - startTime;
+                    bodyMotionCount = 0;
+                    startTime = model.getTime();
+                    continue;
+                }
+                if (model.getTime() - startTime >= 5 * 60) {
+                    if (bodyMotionCount > 0) {
+                        middleSleep += model.getTime() - startTime;
+                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
+                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+                    } else {
+                        deepSleep += model.getTime() - startTime;
+                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),4));
+                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),4));
                     }
-                    if (b > 0) {
-                        bodyMotionCount += 1;
+                    bodyMotionCount = 0;
+                    startTime = model.getTime();
+                    continue;
+                }
+                if (i == mlist.size()) {
+                    if (model.getTime() - startTime <= 3 * 60) {
+                        if (bodyMotionCount > 5) {
+                            cheapSleep += model.getTime() - startTime;
+                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),1));
+                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),1));
+                        }else if (bodyMotionCount > 0) {
+                            middleSleep += model.getTime() - startTime;
+                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),2));
+                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),2));
+                        } else {
+                            deepSleep += model.getTime() - startTime;
+                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
+                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+                        }
                     }
                 }
-
+                bodyMotionCount += b;
+                continue;
             }
             int c = deepSleep + middleSleep + cheapSleep + getup;
-            System.out.println("计算获得的睡觉值：深睡-" + deepSleep + "中睡-" + middleSleep + "浅睡-" + cheapSleep + "清醒-" + getup);
             if (c > 0) {
                 circleSleep1.setPercentage(deepSleep * 100 / c);
                 circleSleep2.setPercentage(middleSleep * 100 / c);
@@ -1305,6 +1304,13 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 tvCircleSleep2.setText(middleSleep * 100 / c + "%");
                 tvCircleSleep3.setText(cheapSleep * 100 / c + "%");
                 tvCircleSleep4.setText(getup * 100 / c + "%");
+                if (c > 10 * 60 * 60) {
+                    grade = 100 * deepSleep / c;
+                } else if (c < 7 * 60 * 60) {
+                    grade = 90 * deepSleep / c;
+                } else {
+                    grade = Math.min(120 * deepSleep / c, 100);
+                }
             } else {
                 circleSleep1.setPercentage(0);
                 circleSleep2.setPercentage(0);
@@ -1326,6 +1332,14 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             tvCircleSleep3.setText("0%");
             tvCircleSleep4.setText("0%");
         }
+        refreshGrade();
+        circlePercentView.setCurProcess(grade);
+        System.out.println("计算得到的最终得分为：" + grade);
+        sleepbeltValue[0] = grade;
+        if (!bSleepBletValueRead) {
+            YMApplication.getInstance().setSleepbeltValue(sleepbeltValue);
+        }
+        bSleepBletValueRead = true;
         setCharData();
         chart.invalidate();
     }

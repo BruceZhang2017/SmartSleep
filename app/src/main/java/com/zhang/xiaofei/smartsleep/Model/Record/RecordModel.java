@@ -10,10 +10,10 @@ public class RecordModel extends RealmObject {
     int humidity;
     int heartRate;
     int breathRate;
-    int bodyMotion;
-    int getupFlag;
-    int snore;
-    int breatheStop;
+    int bodyMotion; // 体动
+    int getupFlag; // 离床和在床
+    int snore; // 打鼾
+    int breatheStop; // 呼吸停止
     boolean isSyncCloud;
 
     public int getUserId() {

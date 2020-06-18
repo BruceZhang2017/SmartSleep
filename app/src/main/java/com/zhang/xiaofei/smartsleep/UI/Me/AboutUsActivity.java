@@ -2,11 +2,13 @@ package com.zhang.xiaofei.smartsleep.UI.Me;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
+import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.Vendor.EsptouchDemoActivity;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -91,7 +95,7 @@ public class AboutUsActivity extends BaseAppActivity {
             textView.setText(mAppNames.get(position));
             TextView tvValue = convertView.findViewById(R.id.tv_value);
             if (position == 0) {
-                tvValue.setText("V1.0.22");
+                tvValue.setText("V1.0.23");
             } else {
                 tvValue.setText("");
             }
@@ -101,8 +105,15 @@ public class AboutUsActivity extends BaseAppActivity {
                     if (position == 0) {
                         Toast.makeText(AboutUsActivity.this, "已经是最新版本", Toast.LENGTH_SHORT).show();
                     } else if (position == 1) {
+                        String language = SpUtil.getInstance(YMApplication.getContext()).getString(SpUtil.LANGUAGE);
+                        String url = "";
+                        if (language.equals("en")) {
+                            url = "http://test2.5811.com.cn/fanqie/dayayiliao/agree/agree_en.html";
+                        } else {
+                            url = "http://test2.5811.com.cn/fanqie/dayayiliao/agree/yamind_agree.html";
+                        }
                         Intent intent = new Intent(AboutUsActivity.this, WebActivity.class);
-                        intent.putExtra("url", "https://www.baidu.com");
+                        intent.putExtra("url", url);
                         AboutUsActivity.this.startActivity(intent);
                     } else {
                         showLogDialog(LogcatHelper.FILE_LOG_PATH);
@@ -143,7 +154,14 @@ public class AboutUsActivity extends BaseAppActivity {
 //设置发送的内容
         email.putExtra(android.content.Intent.EXTRA_TEXT, emailContent);
 //附件
-        email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        Uri uri;
+        uri = Uri.fromFile(file);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(this,"com.manage_system.fileProvider", file);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        email.putExtra(Intent.EXTRA_STREAM, uri);
         //调用系统的邮件系统
         startActivity(Intent.createChooser(email, "请选择邮件发送软件"));
     }

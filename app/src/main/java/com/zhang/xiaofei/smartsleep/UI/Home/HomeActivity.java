@@ -341,8 +341,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         }
     }
 
-
-
+    // 处理扫描回来的二维码
     private void handleQRCode(String result) {
         if (result.startsWith("SLEEPBABY_") || result.startsWith("SLEEPBUTTON_") || result.startsWith("YMB") ){
             int type = 0;
@@ -465,14 +464,23 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     @Override
     public void handleBLEData(int battery, int flash, String mac, int version) {
         System.out.println("处理BLE返回的数据 " + battery + " " + flash + " " + mac + " " + version);
-        DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
+        if (fastBLEManager == null) {
+            return;
+        }
+        String macAddress = fastBLEManager.macAddress;
+        if (macAddress.length() == 0) {
+            return;
+        }
+        YMApplication.getInstance().deviceBatteryMap.put(macAddress, battery);
+        System.out.println("当前需要更新的设备：" + macAddress);
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 //先查找后得到DeviceModel对象
-                DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
+                DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", macAddress).findFirst();
                 if (deviceModel != null) {
                     deviceModel.setVersion(version + "");
+                    System.out.println("更新设备的版本号信息：" + version);
                 }
             }
         });
@@ -523,8 +531,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             dbTimerTask = null;
         }
     }
-
-
 
     @Override // int temperature, int humdity, int heartRate, int breathRate, Boolean breatheStop, Boolean outBedAlarm
     public void handleBLEData(String mac, int time, int[] array) {
@@ -684,7 +690,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         RealmResults<DeviceModel> userList = mRealm.where(DeviceModel.class).equalTo("userId", userId).equalTo("deviceType", type).findAll();
         if (userList != null && userList.size() > 0) {
             System.out.println("数据库已经存在同类型的设备");
-            deleteDevice(userList.get(0).getDeviceSerial(), userList.get(0).getMac());
+            Toast.makeText(HomeActivity.this, R.string.alert_db_same_type_exist, Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;

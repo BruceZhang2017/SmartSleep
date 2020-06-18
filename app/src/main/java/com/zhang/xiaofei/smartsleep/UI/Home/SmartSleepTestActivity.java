@@ -131,7 +131,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
                     dynamicViewHeart.values[i + dynamicViewHeart.current * 25] = heart[i];
                 }
                 for (int i = 0; i < breath.length; i++) {
-                    dynamicViewBreath.values[i + dynamicViewHeart.current * 5] = breath[i];
+                    dynamicViewBreath.values[i + dynamicViewBreath.current * 5] = breath[i];
                 }
                 dynamicViewHeart.current += 1;
                 dynamicViewBreath.current += 1;

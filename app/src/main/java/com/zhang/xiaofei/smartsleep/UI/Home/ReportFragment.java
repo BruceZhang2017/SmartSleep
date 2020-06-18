@@ -171,7 +171,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 
 		btnRight = (ImageButton)view.findViewById(R.id.im_r);
 		btnRight.setImageResource(R.mipmap.report_icon_share);
-		btnRight.setVisibility(View.VISIBLE);
+		btnRight.setVisibility(View.INVISIBLE);
 		btnRight.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

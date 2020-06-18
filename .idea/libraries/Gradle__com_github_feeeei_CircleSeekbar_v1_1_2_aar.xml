@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.feeeei:CircleSeekbar:v1.1.2@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/7529f1dff7bf41d6d3edeb427224da76/jetified-CircleSeekbar-v1.1.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/7529f1dff7bf41d6d3edeb427224da76/jetified-CircleSeekbar-v1.1.2/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d65534f1e76c92bcd60f5169b3d0ad9d/jetified-CircleSeekbar-v1.1.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d65534f1e76c92bcd60f5169b3d0ad9d/jetified-CircleSeekbar-v1.1.2/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

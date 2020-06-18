@@ -86,15 +86,19 @@ public class FeedbackActivity extends BaseAppActivity {
                 String phone = etPhone.getText().toString();
                 String desc = etQuestionDesc.getText().toString();
                 if (contact == null || contact.length() == 0) {
+                    Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_contact, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (phone == null || phone.length() == 0 || !ValidateHelper.isPhoneNumber(phone)){
+                if (phone == null || phone.length() == 0 || !ValidateHelper.isPhoneNumberB(phone)){
+                    Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_telephone, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (type == 0) {
+                    Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_problem_type, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (desc == null || desc.length() == 0) {
+                    Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_problem_desc, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 showHUD();
@@ -194,14 +198,14 @@ public class FeedbackActivity extends BaseAppActivity {
         public void dataCallback(int status, BaseProtocol user) {
             hideHUD();
             System.out.println("网络请求返回的Status:" + status);
-            if(user==null || user.getCode() != 200){
+            if(user==null || user.getCode() != 200){ // TODO: - CODE是不是200
                 if (user == null) {
-                    Toast.makeText(FeedbackActivity.this, "提交失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_network, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(FeedbackActivity.this, user.getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }else{
-                Toast.makeText(FeedbackActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FeedbackActivity.this, R.string.feedback_success, Toast.LENGTH_SHORT).show();
                 FeedbackActivity.this.finish();
             }
 
@@ -211,7 +215,7 @@ public class FeedbackActivity extends BaseAppActivity {
         public void dataCallback(BaseProtocol obj) {
             hideHUD();
             if (obj == null) {
-                Toast.makeText(FeedbackActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FeedbackActivity.this, getResources().getText(R.string.feedback_fail_network), Toast.LENGTH_SHORT).show();
             }
         }
     };

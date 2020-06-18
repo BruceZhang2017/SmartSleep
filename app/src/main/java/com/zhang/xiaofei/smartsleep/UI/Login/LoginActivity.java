@@ -23,6 +23,7 @@ import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.NameValuePair;
 import com.ansen.http.net.RequestDataCallback;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
+import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.Kit.NetworkUtil.NetworkUtils;
 import com.zhang.xiaofei.smartsleep.Kit.ValidateHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
@@ -123,8 +124,15 @@ public class LoginActivity extends BaseAppActivity {
 
         @Override
         public void onClick(View view) {
+            String language = SpUtil.getInstance(YMApplication.getContext()).getString(SpUtil.LANGUAGE);
+            String url = "";
+            if (language.equals("en")) {
+                url = "http://test2.5811.com.cn/fanqie/dayayiliao/agree/agree_en.html";
+            } else {
+                url = "http://test2.5811.com.cn/fanqie/dayayiliao/agree/yamind_agree.html";
+            }
             Intent intent = new Intent(LoginActivity.this, WebActivity.class);
-            intent.putExtra("url", "https://www.baidu.com");
+            intent.putExtra("url", url);
             startActivity(intent);
         }
     }

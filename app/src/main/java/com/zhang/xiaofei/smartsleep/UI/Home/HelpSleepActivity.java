@@ -177,12 +177,12 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                                             } else {
                                                 time = 90 * 60;
                                             }
-                                            SendCMDToHomeActivity.send(7, HelpSleepActivity.this);
+                                            SendCMDToHomeActivity.send(7, time, HelpSleepActivity.this);
                                         }
                                     })
                             .show();
                 } else {
-                    SendCMDToHomeActivity.send(7, HelpSleepActivity.this);
+                    SendCMDToHomeActivity.send(7, 0, HelpSleepActivity.this);
                 }
             }
         });
@@ -453,14 +453,14 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
                 bSleep = true;
                 btnSleep.setText(R.string.common_get_up);
-                SendCMDToHomeActivity.send(3, this); // 发送睡觉通知
+                SendCMDToHomeActivity.send(3, 0, this); // 发送睡觉通知
                 saveSleepStartTime();
             } else {
                 bSleep = false;
                 btnSleep.setText(R.string.alarm_sleep);
-                SendCMDToHomeActivity.send(4, this); // 发送起床通知
+                SendCMDToHomeActivity.send(4,0, this); // 发送起床通知
                 saveSleepEndTime();
-                SendCMDToHomeActivity.send(15, this); // 读取Flash data
+                SendCMDToHomeActivity.send(15, 0,this); // 读取Flash data
             }
 
             refreshMonitorValue();

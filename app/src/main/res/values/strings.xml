@@ -315,5 +315,17 @@
     <string name="submit_fail">Submit Fail</string>
     <string name="upload_log">Upload log</string>
     <string name="current_date_no_date">No data for this date</string>
-
+    <string name="alert_db_same_type_exist">You have added devices of the same type. Please remove them before adding them.</string>
+    <string name="ota_fail">OTA fail, please try again!</string>
+    <string name="feedback_fail_contact">Submit fail, please fill in the contact</string>
+    <string name="feedback_fail_telephone">Submit fail, please fill in the telephone</string>
+    <string name="feedback_fail_problem_desc">Submit fail, please fill in the problem description</string>
+    <string name="feedback_fail_network">Submit fail, please check the network</string>
+    <string name="feedback_fail_problem_type">Submit failed, please select the type of question</string>
+    <string name="feedback_success">Submit success</string>
+    <string name="alarm_clock_dismiss_tip">The alarm clock is turned off, you need to manually delete the set alarm clock in the alarm center</string>
+    <string name="device_info_battery">Battery</string>
+    <string name="getup_alarm_clock_setup_instruction">Wake up alarm has been set and synchronized to the alarm center</string>
+    <string name="sleep_alarm_clock_setup_instruction">Sleep alarm has been set and synchronized to the alarm center</string>
+    <string name="alarm_clock_setup_instruction">If you need to modify the alarm, please delete the alarm first. Otherwise the alarm will not take effect.</string>
 </resources>

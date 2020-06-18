@@ -2,6 +2,7 @@ package com.loonggg.lib.alarmmanager.clock;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -130,16 +131,7 @@ public class AlarmManagerUtil {
     }
 
 
-    public static void createAlarm(Context context, String message, int hour, int minutes, int resId, ArrayList<Integer> days) {
-//        ArrayList<Integer> testDays = new ArrayList<>();
-//        testDays.add(Calendar.MONDAY);//周一
-//        testDays.add(Calendar.TUESDAY);//周二
-//        testDays.add(Calendar.FRIDAY);//周五
-//        testDays.add(Calendar.SUNDAY);
-
-        String packageName = context.getPackageName();
-        //Uri ringtoneUri = Uri.parse("android.resource://" + packageName + "/" + resId);
-        //action为AlarmClock.ACTION_SET_ALARM
+    public static void createAlarm(Context context, String message, int hour, int minutes, ArrayList<Integer> days) {
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
                 //闹钟的小时
                 .putExtra(AlarmClock.EXTRA_HOUR, hour)
@@ -158,6 +150,13 @@ public class AlarmManagerUtil {
                 .putExtra(AlarmClock.EXTRA_DAYS, days)
                 //如果为true，则调用startActivity()不会进入手机的闹钟设置界面
                 .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+        }
+    }
+
+    public static void dismissAlarm(Context context) {
+        Intent intent = new Intent(AlarmClock.ACTION_DISMISS_ALARM);
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
         }

@@ -19,8 +19,8 @@ android {
         applicationId "com.zhang.xiaofei.smartsleep"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.0.22"
+        versionCode 9
+        versionName "1.0.23"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             // 设置支持的SO库架构

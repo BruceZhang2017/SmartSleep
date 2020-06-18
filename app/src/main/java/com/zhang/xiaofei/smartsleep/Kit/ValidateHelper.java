@@ -9,6 +9,12 @@ public class ValidateHelper {
         return p.matches(regex, input);//如果不是号码，则返回false，是号码则返回true
     }
 
+    public static boolean isPhoneNumberB(String input) {// 判断手机号码是否规则
+        String regex = "^\\d*[-\\+]*[0-9]{11}$";
+        Pattern p = Pattern.compile(regex);
+        return p.matches(regex, input);//如果不是号码，则返回false，是号码则返回true
+    }
+
     public static boolean isCode(String input) {
         return  input.length() != 4 || input.length() != 6;
     }

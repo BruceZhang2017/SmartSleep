@@ -39,8 +39,10 @@ import com.zhang.xiaofei.smartsleep.Model.Record.HistoryBreath;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,19 +73,22 @@ public class ReportMonthFragment extends LazyFragment {
     private ImageButton ibRightNex;
     private TextView tvSimulationData;
     private View vCalendarViewCover;
-    private Realm mRealm;
     private int currentTime = 0;
     private int year = 0;
     private int month = 0;
-    private int days = 0;
     private Boolean bBelt = true; // 刷新睡眠带，睡眠纽扣
     int[] sleepOneDayTimes = new int[31]; // 深睡眠时长
     int[] scores = new int[31];
     int nosleepTimeTotal = 0; // 清醒时长
     int noSleepMinuteCount = 0; // 清醒次数
-    Map<Integer, List<RecordModel>> mMap = new HashMap<Integer, List<RecordModel>>();
+    int startSleepTime = 0; // 开始入睡
+    int sleepTotalTime = 0; // 睡眠总时长
+    int heartAvarage = 0; // 平均心跳
+    int breathAvarage = 0; // 平均呼吸率
     LineDataSet set1;
     boolean bChart = false;
+    List<List<String>> sleepTimes = new ArrayList<>() ;
+    ReportDataCalculater calculater = new ReportDataCalculater();
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -107,12 +112,15 @@ public class ReportMonthFragment extends LazyFragment {
         year = calendarView.getCurYear();
         month = calendarView.getCurMonth();
         initialCurrentTime();
-        getDayData(currentTime);
+        readSleepAndGetupData();
+        getMonthData();
         ibLeftPre = (ImageButton)findViewById(R.id.ib_left_pre);
         ibLeftPre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calendarView.scrollToPre();
+                calendarView.clearSchemeDate();
+                calendarView.clearSingleSelect();
                 if (month > 1) {
                     month--;
                 } else {
@@ -121,6 +129,8 @@ public class ReportMonthFragment extends LazyFragment {
                 }
                 tvSimulationData.setText(year + "-" + (month > 9 ? ("" + month) : ("0" + month)));
                 initialCurrentTime();
+                readSleepAndGetupData();
+                getMonthData();
             }
         });
         ibRightNex = (ImageButton)findViewById(R.id.ib_right_next);
@@ -128,6 +138,8 @@ public class ReportMonthFragment extends LazyFragment {
             @Override
             public void onClick(View v) {
                 calendarView.scrollToNext();
+                calendarView.clearSchemeDate();
+                calendarView.clearSingleSelect();
                 if (month < 11) {
                     month++;
                 } else {
@@ -136,6 +148,8 @@ public class ReportMonthFragment extends LazyFragment {
                 }
                 tvSimulationData.setText(year + "-" + (month > 9 ? ("" + month) : ("0" + month)));
                 initialCurrentTime();
+                readSleepAndGetupData();
+                getMonthData();
             }
         });
         tvSimulationData = (TextView)findViewById(R.id.tv_simulation_data);
@@ -156,6 +170,40 @@ public class ReportMonthFragment extends LazyFragment {
         return str;
     }
 
+    // 将时间转换为秒制
+    private long timeToLong(String value) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = simpleDateFormat.parse(value);
+            return date.getTime() / 1000;
+        } catch (ParseException exception) {
+
+        }
+        return 0;
+    }
+
+    // 将时间转换为秒制
+    private long timeToLongB(String value) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            Date date = simpleDateFormat.parse(value);
+            return date.getTime() / 1000;
+        } catch (ParseException exception) {
+
+        }
+        return 0;
+    }
+
+    // 将时间字符串转换为小时和分钟
+    private int hourMinuteToInt(String value) {
+        if (value.length() == 0) {
+            return 0;
+        }
+        String hourMinute = value.substring(11);
+        String[] array = hourMinute.split(":");
+        return Integer.parseInt(array[0]) * 60 + Integer.parseInt(array[1]);
+    }
+
     private void initialCurrentTime() {
         String str = currentDate(System.currentTimeMillis());
         String[] array = str.split("-");
@@ -172,24 +220,89 @@ public class ReportMonthFragment extends LazyFragment {
         return n;
     }
 
-    private void getDayData(int startTime) {
-        mMap.clear();
-        mRealm = Realm.getDefaultInstance();
-        RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
-                .greaterThan("time", startTime)
-                .lessThan("time", startTime + 24 * 60 * 60 * currentMonthHaveHowMuchDays())
-                .findAll().sort("time", Sort.ASCENDING);
-        for (RecordModel model: list) {
-            if (mMap.containsKey((Integer) (model.getTime() / 60))) {
-                List<RecordModel> temlist = mMap.get((Integer) (model.getTime() / 60));
-                temlist.add(model);
-                mMap.put((Integer) (model.getTime() / 60), temlist);
+    private void readSleepAndGetupData() {
+        sleepTimes.clear(); // 删除所有数据
+        for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
+            List<String> list = new ArrayList<>();
+            sleepTimes.add(list);
+        }
+        if (SleepAndGetupTimeManager.times.size() == 0) {
+            return;
+        }
+        String[] days = SleepAndGetupTimeManager.times.keySet().toArray(new String[0]);
+        Arrays.sort(days);
+        for (int i = 0; i < days.length; i++) {
+            if (timeToLong(days[i]) < currentTime) {
+                continue;
+            }
+            int j = (int) ((timeToLong(days[i]) - currentTime) / (24 * 60 * 60));
+            if (j < 0 || j > sleepTimes.size()) {
+                continue;
+            }
+            List<String> list = sleepTimes.get(j);
+            list.addAll(SleepAndGetupTimeManager.times.get(days[i]));
+            sleepTimes.set(j, list);
+            System.out.println("年份：" + year + "月份：" + month + "当前月份第" + j + "天有" + list.size() + "段数据");
+        }
+    }
+
+    private void getMonthData() {
+        int count = 0;
+        int heart = 0;
+        int breath = 0;
+        int startSleep = 0;
+        sleepTotalTime = 0;
+        noSleepMinuteCount = 0;
+        nosleepTimeTotal = 0;
+        heartAvarage = 0;
+        breathAvarage = 0;
+        startSleepTime = 0;
+        for (int j = 0; j < currentMonthHaveHowMuchDays(); j++) {
+            List<String> list = sleepTimes.get(j);
+            if (list.size() > 0) {
+                int score = 0;
+                int deepSleep = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    String duration = list.get(i);
+                    String sleepTime = duration.split("&")[0];
+                    String getupTime = duration.split("&")[1];
+                    calculater.readDataFromDB(sleepTime, getupTime);
+                    int[] array = calculater.calculateSleepValue(sleepTime, getupTime);
+                    if (array[0] + array[1] + array[2] + array[3] > 0) {
+                        int totalTime = array[0] + array[1] + array[2] + array[3];
+                        int grade = 0;
+                        if (totalTime > 10 * 60 * 60) {
+                            grade = 100 * array[0] / totalTime;
+                        } else if (totalTime < 7 * 60 * 60) {
+                            grade = 90 * array[0] / totalTime;
+                        } else {
+                            grade = Math.min(120 * array[0] / totalTime, 100);
+                        }
+                        score += grade;
+                        deepSleep += array[0] / 60; // 深睡眠时长
+                        noSleepMinuteCount += array[5]; // 清醒次数，起床次数
+                        nosleepTimeTotal += array[3] / 60;
+                        count += 1;
+                        heart += array[6];
+                        breath += array[7];
+                        startSleep += hourMinuteToInt(sleepTime);
+                    }
+                    sleepTotalTime += (timeToLongB(getupTime) - timeToLongB(sleepTime)) / 60;
+
+                }
+                scores[j] = score / list.size();
+                sleepOneDayTimes[j] = deepSleep;
             } else {
-                List<RecordModel> temlist = new ArrayList<RecordModel>();
-                temlist.add(model);
-                mMap.put((Integer) (model.getTime() / 60), temlist);
+                scores[j] = 0;
+                sleepOneDayTimes[j] = 0;
             }
         }
+        if (count > 0) {
+            heartAvarage = heart / count;
+            breathAvarage = breath / count;
+            startSleepTime = startSleep / count;
+        }
+
         refreshSleepStatisticsUI();
     }
 
@@ -403,39 +516,20 @@ public class ReportMonthFragment extends LazyFragment {
 
     // 刷新统计时间相关数据UI
     private void refreshSleepStatisticsUI() {
-        long averageHeart = 0;
-        long averageBreath = 0;
-        if (mMap.size() > 0) {
-            for (Map.Entry<Integer, List<RecordModel>> entry: mMap.entrySet()) {
-                for (RecordModel model: entry.getValue()) {
-                    if (averageHeart == 0) {
-                        averageHeart = model.getHeartRate();
-                    } else {
-                        averageHeart = (averageHeart + model.getHeartRate()) / 2;
-                    }
-                    if (averageBreath == 0) {
-                        averageBreath = model.getBreathRate();
-                    } else {
-                        averageBreath = (averageBreath + model.getBreathRate()) / 2;
-                    }
-                }
-            }
-        }
-
         if (tvTime4 != null && tvTime5 != null) {
             String unit4 = getResources().getString(R.string.common_times_minute);
             String[] array4 = {unit4};
-            String content4 = (averageHeart > 9 ? "" + averageHeart : "0" + averageHeart)  + unit4;
+            String content4 = (heartAvarage > 9 ? "" + heartAvarage : "0" + heartAvarage)  + unit4;
             tvTime4.setText(BigSmallFontManager.createTimeValue(content4, getActivity(), 13, array4));
-            String content5 = (averageBreath > 9 ? "" + averageBreath : "0" + averageBreath)  + unit4;
+            String content5 = (breathAvarage > 9 ? "" + breathAvarage : "0" + breathAvarage)  + unit4;
             tvTime5.setText(BigSmallFontManager.createTimeValue(content5, getActivity(), 13, array4));
         }
         if (tvTime2 != null) {
             String unit21 = getResources().getString(R.string.common_hour);
             String unit22 = getResources().getString(R.string.common_minute);
             String[] array2 = {unit21, unit22};
-            int hour = mMap.size() / 60;
-            int minute = mMap.size() % 60;
+            int hour = sleepTotalTime / 60;
+            int minute = sleepTotalTime % 60;
             String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
             tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         }
@@ -454,20 +548,12 @@ public class ReportMonthFragment extends LazyFragment {
         if (tvTime1 == null) {
             return;
         }
-        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
-        if (userList != null && userList.size() > 0) {
-            int sleepH = 0, sleepM = 0;
-            for (AlarmModel model : userList) {
-                if (model.getType() == 0) {
-
-                } else {
-                    sleepH = model.getHour();
-                    sleepM = model.getMinute();
-                }
-            }
-            String unit11 = getResources().getString(R.string.common_hour2);
-            String unit12 = getResources().getString(R.string.common_minute3);
-            String[] array1 = {unit11, unit12};
+        String unit11 = getResources().getString(R.string.common_hour2);
+        String unit12 = getResources().getString(R.string.common_minute3);
+        String[] array1 = {unit11, unit12};
+        if (startSleepTime > 0) {
+            int sleepH = startSleepTime / 60;
+            int sleepM = startSleepTime % 60;
             if (sleepH <= 0 && sleepM <= 0) {
                 String content1 = "00" + unit11 + "00" + unit12;
                 tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
@@ -475,159 +561,81 @@ public class ReportMonthFragment extends LazyFragment {
                 String content1 = (sleepH > 9 ? "" + sleepH : "0" + sleepH) + unit11 + (sleepM > 9 ? "" + sleepM : "0" + sleepM) + unit12;
                 tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
             }
+        } else {
+            String content1 = "00" + unit11 + "00" + unit12;
+            tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         }
     }
 
     // 供外表调用，刷新UI
     public void refreshAllUI() {
-        getDayData(currentTime);
+        readSleepAndGetupData();
+        getMonthData();
     }
 
 
     // 计算熟睡、中睡，浅睡、清醒
     private void calculateSleepValue() {
-        if (mMap.size() > 0) {
-            int deepSleep = 0;
-            int middleSleep = 0;
-            int cheapSleep = 0;
-            int getup = 0;
-            int[] times = new int[31];
-            int bodyMotionCount = 0;
-            int getupCount = 0;
-            for (Map.Entry<Integer, List<RecordModel>> entry : mMap.entrySet()) {
-                for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
-                    if (entry.getKey() < currentTime / 60 + 24 * 60 * (i + 1)) {
-                        if (times[i] == 0) { // 如果时间没赋过值，则将第一个数据赋值给它
-                            deepSleep = 0;
-                            times[i] = entry.getKey() + 5;
-                            getupCount = 0;
-                            bodyMotionCount = 0;
-                        }
-                        if (entry.getKey() <= times[i]) {
-
-                        } else {
-                            times[i] += 5;
-                            if (getupCount > 0) {
-                                getup += 1;
-                            } else {
-                                if (bodyMotionCount > 6) {
-                                    getup += 1;
-                                } else if (bodyMotionCount >= 3) {
-                                    cheapSleep += 1;
-                                } else if (bodyMotionCount >= 1) {
-                                    middleSleep += 1;
-                                } else {
-                                    deepSleep += 1;
-                                }
-                            }
-                            if (bodyMotionCount > 0) {
-                                int grade = 90 - (bodyMotionCount / 100) * 20; // 计算当前日期的得分
-                                grade = Math.min(90, grade);
-                                grade = Math.max(70, grade);
-                                if (scores[i] == 0) {
-                                    scores[i] = grade;
-                                } else {
-                                    scores[i] = (scores[i] + grade) / 2;
-                                }
-                            }
-                            getupCount = 0;
-                            bodyMotionCount = 0;
-                        }
-                        sleepOneDayTimes[i] = deepSleep * 5;
-                    }
-                }
-
-                for (RecordModel model : entry.getValue()) {
-                    int a = model.getGetupFlag();
-                    int b = model.getBodyMotion();
-                    if (a == 0) {
-                        getupCount += 1;
-                    }
-                    if (b > 0) {
-                        bodyMotionCount += 1;
-                    }
-                }
-
+        if (tvSleepAverageTime != null) {
+            int deepSleepAvg = 0;
+            for (int i = 0; i < sleepOneDayTimes.length; i++) {
+                deepSleepAvg += sleepOneDayTimes[i];
             }
-            nosleepTimeTotal = getup * 5;
-            nosleepTimeTotal = getup;
+            String unit01 = getResources().getString(R.string.common_hour);
+            String unit02 = getResources().getString(R.string.common_minute);
+            String[] array1 = {unit01, unit02};
+            int hour = deepSleepAvg / 7 / 60;
+            int minute = deepSleepAvg / 7 % 60;
+            String content1 = (hour > 9 ? "" + hour : "0" + hour) + unit01 + (minute > 9 ? "" + minute : "0" + minute) + unit02;
+            tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
+        }
 
-            if (tvSleepAverageTime != null) {
-                int deepSleepAvg = 0;
-                for (int i = 0; i < sleepOneDayTimes.length; i++) {
-                    deepSleepAvg += sleepOneDayTimes[i];
-                }
-                String unit01 = getResources().getString(R.string.common_hour);
-                String unit02 = getResources().getString(R.string.common_minute);
-                String[] array1 = {unit01, unit02};
-                int hour = deepSleepAvg / 7 / 60;
-                int minute = deepSleepAvg / 7 % 60;
-                String content1 = (hour > 9 ? "" + hour : "0" + hour) + unit01 + (minute > 9 ? "" + minute : "0" + minute) + unit02;
-                tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
-            }
-
-            if (tvTime3 != null && tvTime6 != null) {
-                String unit21 = getResources().getString(R.string.common_hour);
-                String unit22 = getResources().getString(R.string.common_minute);
-                String[] array2 = {unit21, unit22};
-                int hour = nosleepTimeTotal / 60;
-                int minute = nosleepTimeTotal % 60;
-                String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
-                tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
-                String unit6 = getResources().getString(R.string.common_times);
-                String[] array6 = {unit6};
-                String content6 = noSleepMinuteCount > 9 ? "" + noSleepMinuteCount : "0" + noSleepMinuteCount + unit6;
-                tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
-            }
-
-        } else {
-            if (tvTime3 != null && tvTime6 != null) {
-                String unit21 = getResources().getString(R.string.common_hour);
-                String unit22 = getResources().getString(R.string.common_minute);
-                String[] array2 = {unit21, unit22};
-                String content2 = "00" + unit21 + "00" + unit22;
-                tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
-                String unit6 = getResources().getString(R.string.common_times);
-                String[] array6 = {unit6};
-                String content6 = "00" + unit6;
-                tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
-            }
+        if (tvTime3 != null && tvTime6 != null) {
+            String unit21 = getResources().getString(R.string.common_hour);
+            String unit22 = getResources().getString(R.string.common_minute);
+            String[] array2 = {unit21, unit22};
+            int hour = nosleepTimeTotal / 60;
+            int minute = nosleepTimeTotal % 60;
+            String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
+            tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
+            String unit6 = getResources().getString(R.string.common_times);
+            String[] array6 = {unit6};
+            String content6 = (noSleepMinuteCount > 9 ? "" + noSleepMinuteCount : "0" + noSleepMinuteCount) + unit6;
+            tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
         }
 
     }
 
     private void refreshCalenderView() {
-        if (mMap.size() > 0) {
-            Map<String, com.haibin.calendarview.Calendar> map = new HashMap<>();
-            for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
-                if (scores[i] >= 70) {
-                    String date = currentDateTime((long)(currentTime + i * 24 * 60 * 60) * 1000);
-                    String[] array = date.split("-");
-                    if (array.length == 3) {
-                        int year = Integer.parseInt(array[0]);
-                        int month = Integer.parseInt(array[1]);
-                        int day = Integer.parseInt(array[2]);
-                        int color = 0;
-                        if (scores[i] >= 85) {
-                            color = 0xFF6EE1CA;
-                        } else if (scores[i] >= 75) {
-                            color = 0xFF499BE5;
-                        } else {
-                            color = 0xFF626AEA;
-                        }
-                        map.put(getSchemeCalendar(year, month, day, color).toString(),
-                                getSchemeCalendar(year, month, day, color));
+        Map<String, com.haibin.calendarview.Calendar> map = new HashMap<>();
+        for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
+            if (scores[i] >= 70) {
+                String date = currentDateTime((long)(currentTime + i * 24 * 60 * 60) * 1000);
+                String[] array = date.split("-");
+                if (array.length == 3) {
+                    int year = Integer.parseInt(array[0]);
+                    int month = Integer.parseInt(array[1]);
+                    int day = Integer.parseInt(array[2]);
+                    int color = 0;
+                    if (scores[i] >= 85) {
+                        color = 0xFF6EE1CA;
+                    } else if (scores[i] >= 75) {
+                        color = 0xFF499BE5;
+                    } else {
+                        color = 0xFF626AEA;
                     }
+                    map.put(getSchemeCalendar(year, month, day, color).toString(),
+                            getSchemeCalendar(year, month, day, color));
                 }
             }
-            if (map.size() > 0) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        calendarView.setSchemeDate(map);
-                    }
-                });
-            }
+        }
+        if (map.size() > 0) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    calendarView.setSchemeDate(map);
+                }
+            });
         }
     }
 

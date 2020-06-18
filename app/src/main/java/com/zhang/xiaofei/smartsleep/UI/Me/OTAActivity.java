@@ -59,6 +59,8 @@ public class OTAActivity extends BaseAppActivity {
         List<OTAInfo> appNames = new ArrayList<>();
         appNames.add(new OTAInfo(getResources().getString(R.string.device_name), deviceName));
         appNames.add(new OTAInfo(getResources().getString(R.string.index_serial_no), deviceSerial));
+        Integer battery = YMApplication.getInstance().deviceBatteryMap.get(mac);
+        appNames.add(new OTAInfo(getResources().getString(R.string.device_info_battery), battery + "%"));
         if (mac.equals("00:00:00:00:00:00")) {
             appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V0.1"));
         } else {
@@ -122,7 +124,7 @@ public class OTAActivity extends BaseAppActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (position == 2) { // 调整至OTA
+                    if (position == 3) { // 调整至OTA
                         if (!DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getMac().equals(mac)) {
                             Toast.makeText(OTAActivity.this, "请先连接设备", Toast.LENGTH_SHORT).show();
                             return;

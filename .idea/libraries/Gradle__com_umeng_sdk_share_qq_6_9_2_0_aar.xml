@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.umeng.sdk:share-qq:6.9.2.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/f97f85cc2a76e4783140fa65b3f19f0a/jetified-share-qq-6.9.2.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/f97f85cc2a76e4783140fa65b3f19f0a/jetified-share-qq-6.9.2.0/res" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/f97f85cc2a76e4783140fa65b3f19f0a/jetified-share-qq-6.9.2.0/jars/libs/open_sdk_r5990_lite.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3d6fc87eb757dcdcb4c8dd9556520aae/jetified-share-qq-6.9.2.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3d6fc87eb757dcdcb4c8dd9556520aae/jetified-share-qq-6.9.2.0/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3d6fc87eb757dcdcb4c8dd9556520aae/jetified-share-qq-6.9.2.0/jars/libs/open_sdk_r5990_lite.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.umeng.sdk/share-qq/6.9.2.0/fdcea7db3cff238ea101d8790d581fe96b8c872/share-qq-6.9.2.0-javadoc.jar!/" />

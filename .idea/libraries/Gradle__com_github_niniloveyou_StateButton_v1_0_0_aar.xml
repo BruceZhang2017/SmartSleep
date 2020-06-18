@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.niniloveyou:StateButton:v1.0.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/2a6488ff600e5e3d4eb4b119719f465a/jetified-StateButton-v1.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/2a6488ff600e5e3d4eb4b119719f465a/jetified-StateButton-v1.0.0/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/b05def82f26c42520c4ace732b0b3838/jetified-StateButton-v1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/b05def82f26c42520c4ace732b0b3838/jetified-StateButton-v1.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

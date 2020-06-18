@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./xiyalama/libs/TingPhoneOpenSDK_6.1.6.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/xiyalama/libs/TingPhoneOpenSDK_6.1.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

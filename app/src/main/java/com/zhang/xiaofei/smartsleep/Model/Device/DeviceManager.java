@@ -40,7 +40,7 @@ public class DeviceManager {
     }
 
     private Lock lock = new ReentrantLock();// 锁对象
-    public List<DeviceModel> deviceList = new ArrayList<DeviceModel>();
+    public List<DeviceModel> deviceList = new ArrayList<>();
     public int currentDevice = 0;
     public int connectedCurrentDevice = 0;
     public int scaningCurrentDevice = 0;
@@ -61,6 +61,7 @@ public class DeviceManager {
         if (userList != null && userList.size() > 0) {
             for (DeviceModel model: userList) {
                 deviceList.add(model);
+                System.out.println("已经绑定的设备：" + model.getMac());
             }
             if (deviceList.size() > 1) {
                 Collections.reverse(deviceList);
@@ -102,7 +103,7 @@ public class DeviceManager {
                     it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(it);
-                    SendCMDToHomeActivity.send(16, (Activity) context);
+                    SendCMDToHomeActivity.send(16,0, (Activity) context);
                 }
             }else{
                 if (model.getData() != null && model.getData().length > 0) {
