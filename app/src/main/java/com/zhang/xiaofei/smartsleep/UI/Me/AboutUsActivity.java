@@ -103,7 +103,7 @@ public class AboutUsActivity extends BaseAppActivity {
                 @Override
                 public void onClick(View v) {
                     if (position == 0) {
-                        Toast.makeText(AboutUsActivity.this, "已经是最新版本", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AboutUsActivity.this, R.string.latest_version_tip, Toast.LENGTH_SHORT).show();
                     } else if (position == 1) {
                         String language = SpUtil.getInstance(YMApplication.getContext()).getString(SpUtil.LANGUAGE);
                         String url = "";

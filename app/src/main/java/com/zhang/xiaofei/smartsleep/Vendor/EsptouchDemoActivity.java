@@ -42,6 +42,7 @@ import com.espressif.iot.esptouch.util.ByteUtil;
 import com.espressif.iot.esptouch.util.TouchNetUtil;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
+import com.zhang.xiaofei.smartsleep.UI.Me.PDFActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -55,19 +56,24 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
 
     private static final int REQUEST_PERMISSION = 0x01;
     private static final int MENU_ITEM_ABOUT = 0;
+    private TextView tvWiFiName;
+    private TextView tvWiFiPWD;
     private EditText mApSsidTV;
     private EditText mApPasswordET;
+    private TextView tvWIFI24;
     private Button mConfirmBtn;
+    private Button btnHelp;
     String bssid = "";
     private EsptouchAsyncTask4 mTask;
     private TextView tvTitle;
     private ImageButton ibLeft;
     private ImageButton ibShowPwd;
     private ImageButton ibClearSSID;
-    private Boolean bShowPWD = false;
+    private Boolean bShowPWD = false; // 是否显示密码
     private GifImageView ivGif;
     private boolean mReceiverRegistered = false;
     GifDrawable gifFromResource;
+    private int deviceType = 0;
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -96,11 +102,18 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.esptouch_demo_activity); //""
+        deviceType = getIntent().getIntExtra("type", 0);
 
         mApSsidTV = (EditText)findViewById(R.id.et_wifiname);
         mApPasswordET = (EditText)findViewById(R.id.et_wifipwd);
         mConfirmBtn = findViewById(R.id.confirm_btn);
         ivGif = (GifImageView)findViewById(R.id.iv_head);
+        tvWIFI24 = (TextView)findViewById(R.id.tv_wifi_2_4);
+        tvWiFiName = (TextView)findViewById(R.id.tv_wifiname);
+        tvWiFiPWD = (TextView)findViewById(R.id.tv_wifipwd) ;
+        tvWiFiName.setText(R.string.mine_wifi_name);
+        tvWiFiPWD.setText(R.string.mine_wifi_pws);
+
         mConfirmBtn.setEnabled(false);
         mConfirmBtn.setOnClickListener(this);
 
@@ -144,12 +157,12 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
                 if (bShowPWD) {
                     bShowPWD = false;
                     mApPasswordET.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    ibShowPwd.setImageResource(R.mipmap.password_icon_visible);
+                    ibShowPwd.setImageResource(R.mipmap.password_icon_invisible);
                     mApPasswordET.setSelection(mApPasswordET.getText().length());
                 } else {
                     bShowPWD = true;
                     mApPasswordET.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    ibShowPwd.setImageResource(R.mipmap.password_icon_invisible);
+                    ibShowPwd.setImageResource(R.mipmap.password_icon_visible);
                     mApPasswordET.setSelection(mApPasswordET.getText().length());
                 }
 
@@ -178,12 +191,23 @@ public class EsptouchDemoActivity extends BaseAppActivity implements OnClickList
         });
 
         try {
-            gifFromResource = new GifDrawable(getAssets(), "picMadeByMatools.gif");
+            String name = deviceType == 0 ? "picMadeByMatools.gif" : "wifipic.gif";
+            gifFromResource = new GifDrawable(getAssets(), name);
             ivGif.setImageDrawable(gifFromResource);
         } catch(Exception e) {
 
         }
+        tvWIFI24.setText(R.string.wifi_only_support_2_4);
 
+        btnHelp = (Button)findViewById(R.id.help_btn);
+        btnHelp.setText(R.string.help);
+        btnHelp.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EsptouchDemoActivity.this, PDFActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

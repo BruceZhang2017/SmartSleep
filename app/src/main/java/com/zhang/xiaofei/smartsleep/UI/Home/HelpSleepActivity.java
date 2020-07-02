@@ -6,24 +6,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.deadline.statebutton.StateButton;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.sunofbeaches.himalaya.PlayHelper;
 import com.sunofbeaches.himalaya.PlayHelperCallback;
+//import com.umeng.socialize.utils.UmengText;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
@@ -32,7 +33,6 @@ import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.Tools.SendCMDToHomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
-import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,13 +46,11 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener, PlayHelperCallback, AlarmTimer.AlarmTimerInterface {
-
     ImageButton ibBack;
     TextView tvTime;
     TextView tvTimeRange;
     TextView tvTip;
     TextView tvRealTime;
-    Handler handler;
     RoundedImageView roundedImageView;
     TextView tvCount;
     ImageButton ibPalyPause;
@@ -61,7 +59,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     TextView tvSoundTitle;
     TextView tvHeartAndBreath;
     Switch switch1;
-    CountDownButton btnSleep;
+    StateButton btnSleep;
+    Button btnSleepTime;
     private static final String HELPSLEEPDYNAMICACTION = "Filter2";
     Realm mRealm;
     int currentTime;
@@ -72,17 +71,17 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     String strH = "";
     String strM = "";
     private PlayHelper playHelper; // 播放帮助类
-    private Timer buttonCountDownTimer; // 点击按钮，有3，2，1动画，使用定时器实现功能。
-    private int buttonCountDownCount = 0; // 点击按钮有3秒过渡动画
     private boolean bSleep = false;
     private DynamicReceiver dynamicReceiver;
     private String sleepStartTime = ""; // 睡觉开始时间
     private String sleepEndTime = ""; // 睡觉结束时间
+    private boolean bleConnected = false;
+    private int getAwayDuration = 0; // 离床时间统计
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        bleConnected = getIntent().getBooleanExtra("bleConnected", false);
         Intent intentBroadcast = new Intent();   //定义Intent
         intentBroadcast.setAction("Filter");
         intentBroadcast.putExtra("arg0", 5);
@@ -103,10 +102,11 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         tvHeartAndBreath = (TextView)findViewById(R.id.tv_heart_breath);
         initialCurrentTime();
         mRealm = Realm.getDefaultInstance();
+        boolean bSetAlarm = false;
         RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
         if (userList != null && userList.size() > 0) {
             System.out.println("已经制定过闹钟信息");
-            for (AlarmModel model: userList) {
+            for (AlarmModel model : userList) {
                 if (model.getType() == 0) {
                     getupH = model.getHour();
                     getupM = model.getMinute();
@@ -114,7 +114,12 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     sleepH = model.getHour();
                     sleepM = model.getMinute();
                 }
+                if (model.isOpen()) {
+                    bSetAlarm = true;
+                }
             }
+        }
+        if (bSetAlarm) {
             tvTimeRange.setText((sleepH > 9 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 9 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 9 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 9 ? (getupM + "") : ("0" + getupM))  );
             Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -129,12 +134,17 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             tvTimeRange.setCompoundDrawables(null,null,drawable,null);
         }
 
+        tvTimeRange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentB = new Intent(HelpSleepActivity.this, AlarmActivity.class);
+                startActivity(intentB);
+            }
+        });
+
         tvTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tvTip.getText().toString().length() <= 0) {
-                    return;
-                }
                 Intent intentB = new Intent(HelpSleepActivity.this, SmartSleepTestActivity.class);
                 startActivity(intentB);
             }
@@ -154,33 +164,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    new XPopup.Builder(HelpSleepActivity.this)
-//                        .enableDrag(false)
-                            .asBottomList(getResources().getString(R.string.report_smart_timing),
-                                    new String[]{"10" + getResources().getString(R.string.common_minute),
-                                            "20" + getResources().getString(R.string.common_minute),
-                                            "30" + getResources().getString(R.string.common_minute),
-                                            "60" + getResources().getString(R.string.common_minute),
-                                            "90" + getResources().getString(R.string.common_minute)},
-                                    new OnSelectListener() {
-                                        @Override
-                                        public void onSelect(int position, String text) {
-                                            int time = 0;
-                                            if (position == 0) {
-                                                time = 10 * 60;
-                                            } else if (position == 1) {
-                                                time = 20 * 60;
-                                            } else if (position == 2) {
-                                                time = 30 * 60;
-                                            } else if (position == 3) {
-                                                time = 60 * 60;
-                                            } else {
-                                                time = 90 * 60;
-                                            }
-                                            SendCMDToHomeActivity.send(7, time, HelpSleepActivity.this);
-                                        }
-                                    })
-                            .show();
+                    showTimeChoose();
                 } else {
                     SendCMDToHomeActivity.send(7, 0, HelpSleepActivity.this);
                 }
@@ -188,8 +172,25 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         });
         AlarmTimer.getInstance().list.add(this);
 
-        btnSleep = (CountDownButton) findViewById(R.id.btn_sleep);
-        btnSleep.setHandler(countDownHandler);
+        btnSleep = (StateButton) findViewById(R.id.btn_sleep);
+        btnSleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
+                    bSleep = true;
+                    btnSleep.setText(R.string.common_get_up);
+                    SendCMDToHomeActivity.send(3, 0, HelpSleepActivity.this); // 发送睡觉通知
+                    saveSleepStartTime();
+                } else {
+                    bSleep = false;
+                    SendCMDToHomeActivity.send(4,0, HelpSleepActivity.this); // 发送起床通知
+                    saveSleepEndTime();
+                    SendCMDToHomeActivity.send(15, 0,HelpSleepActivity.this); // 读取Flash data
+                    btnSleep.setText(R.string.alarm_sleep);
+                }
+                refreshMonitorValue();
+            }
+        });
 
         if (bSleep) {
             btnSleep.setText(R.string.common_get_up);
@@ -216,17 +217,62 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
 
         handleFixedTimeForHeartAndHealth(); // 读取心率和呼吸率
         registerBroadcast();
+
+        btnSleepTime = (Button)findViewById(R.id.btn_sleep_time);
+        btnSleepTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AlarmTimer.getInstance().bStart) {
+                    showTimeChoose();
+                }
+            }
+        });
+    }
+
+    private void showTimeChoose() {
+        int position = CacheUtil.getInstance(this).getInt("StopMusic");
+        new XPopup.Builder(HelpSleepActivity.this)
+//                        .enableDrag(false)
+                .asBottomList(getResources().getString(R.string.report_smart_timing),
+                        new String[]{"10" + getResources().getString(R.string.common_minute),
+                                "20" + getResources().getString(R.string.common_minute),
+                                "30" + getResources().getString(R.string.common_minute),
+                                "60" + getResources().getString(R.string.common_minute),
+                                "90" + getResources().getString(R.string.common_minute)},
+                        null,
+                        position - 1,
+                        new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                int time = 0;
+                                if (position == 0) {
+                                    time = 10 * 60;
+                                } else if (position == 1) {
+                                    time = 20 * 60;
+                                } else if (position == 2) {
+                                    time = 30 * 60;
+                                } else if (position == 3) {
+                                    time = 60 * 60;
+                                } else {
+                                    time = 90 * 60;
+                                }
+                                SendCMDToHomeActivity.send(7, time, HelpSleepActivity.this);
+                                CacheUtil.getInstance(HelpSleepActivity.this).setInt("StopMusic", position + 1);
+                            }
+                        })
+                .show();
     }
 
     private void refreshMonitorValue() {
-        if (DeviceManager.getInstance().deviceList.size() > 0 && bSleep == true) {
+        if (DeviceManager.getInstance().deviceList.size() > 0 && bSleep == true && bleConnected) {
             if (DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType() == 1) {
-                tvTip.setText(R.string.sleep_motion_tip3);
+                tvTip.setText(getResources().getString(R.string.sleep_motion_tip3) + " >");
             } else {
-                tvTip.setText(R.string.sleep_motion_tip2);
+                tvTip.setText(getResources().getString(R.string.sleep_motion_tip2) + " >");
             }
+            tvTip.setVisibility(View.VISIBLE);
         } else {
-            tvTip.setText("");
+            tvTip.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -280,11 +326,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             timer.cancel();
         }
         timer = null;
-        if (buttonCountDownTimer != null) {
-            buttonCountDownTimer.cancel();
-            buttonCountDownTimer = null;
-        }
-
     }
 
     // 生成大小字体不一样的内容
@@ -396,80 +437,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         switch1.setChecked(AlarmTimer.getInstance().bStart);
     }
 
-    Handler countDownHandler = new Handler(){
-        public void handleMessage(Message msg) {
-            int value = msg.what;
-            switch (value) {
-                case 0:
-                    if (buttonCountDownTimer != null) {
-                        return;
-                    }
-                    roundedImageView.setVisibility(View.VISIBLE);
-                    tvCount.setVisibility(View.VISIBLE);
-                    buttonCountDownTimer = new Timer(); // 按钮按下去时，定时器
-                    buttonCountDownTimer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    handleSleepOrGetupEvent();
-                                }
-                            });
-                        }
-                    }, 1000, 1000);
-                    break;
-                case 1:
-                    if (buttonCountDownTimer != null) {
-                        buttonCountDownTimer.cancel();
-                        buttonCountDownTimer = null;
-                        buttonCountDownCount = 0;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                roundedImageView.setVisibility(View.INVISIBLE);
-                                tvCount.setVisibility(View.INVISIBLE);
-                                tvCount.setText("" + 3);
-                            }
-                        });
-                        return;
-                    }
-                    break;
-                case 2:
-                    break;
-            }
-        };
-    };
-
-    private void handleSleepOrGetupEvent() {
-        buttonCountDownCount++;
-        if (buttonCountDownCount >= 3) {
-            buttonCountDownTimer.cancel();
-            buttonCountDownTimer = null;
-            buttonCountDownCount = 0;
-            roundedImageView.setVisibility(View.INVISIBLE);
-            tvCount.setVisibility(View.INVISIBLE);
-            tvCount.setText("" + 3);
-            if (btnSleep.getText().toString().equals(getResources().getString(R.string.alarm_sleep))) {
-                bSleep = true;
-                btnSleep.setText(R.string.common_get_up);
-                SendCMDToHomeActivity.send(3, 0, this); // 发送睡觉通知
-                saveSleepStartTime();
-            } else {
-                bSleep = false;
-                btnSleep.setText(R.string.alarm_sleep);
-                SendCMDToHomeActivity.send(4,0, this); // 发送起床通知
-                saveSleepEndTime();
-                SendCMDToHomeActivity.send(15, 0,this); // 读取Flash data
-            }
-
-            refreshMonitorValue();
-
-            return;
-        }
-        tvCount.setText("" + (3 - buttonCountDownCount));
-    }
-
     private void saveSleepStartTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = new Date();
@@ -532,7 +499,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     public class DynamicReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(HELPSLEEPDYNAMICACTION)) {    //动作检测
+            if (intent.getAction().equals(HELPSLEEPDYNAMICACTION)) {    //动作检测 5秒一次
                 //System.out.println("检测到用户到绑定设备");
                 int arg0 = intent.getIntExtra("arg0", 0);
                 if (arg0 == 0) { // 心跳和呼吸率
@@ -542,10 +509,28 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            System.out.println("当前离床统计的数据为：" + getAwayDuration);
                             if (arg1 == 0) {
-                                tvHeartAndBreath.setText(getResources().getString(R.string.bed_away));
+                                tvHeartAndBreath.setText(getResources().getString(R.string.bed_away)); // 离床
+                                getAwayDuration++;
+                                if (getAwayDuration >= 180) {
+                                    if (CacheUtil.getInstance(HelpSleepActivity.this).getBool("GetAway")) {
+                                        AlarmManager.alarmGetup(HelpSleepActivity.this.getApplicationContext());
+                                    }
+                                    getAwayDuration = 0;
+                                }
                             } else {
-                                tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + " " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + " " + getResources().getString(R.string.common_times_minute));
+                                getAwayDuration = 0;
+                                if (bSleep){
+                                    tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + " " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + " " + getResources().getString(R.string.common_times_minute));
+                                    if (CacheUtil.getInstance(HelpSleepActivity.this).getBool("AbnormalHeartRate")) {
+                                        if (arg2 > 100) {
+                                            AlarmManager.alarmGetup(HelpSleepActivity.this.getApplicationContext());
+                                        }
+                                    }
+                                } else {
+                                    tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + "-- " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + "-- " + getResources().getString(R.string.common_times_minute));
+                                }
                             }
                         }
                     });

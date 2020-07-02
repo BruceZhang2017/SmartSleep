@@ -136,6 +136,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             public void onClick(View v) {
                 Intent intentB = new Intent();
                 intentB.setClassName(HomeActivity.this,"com.zhang.xiaofei.smartsleep.UI.Home.HelpSleepActivity");
+                intentB.putExtra("bleConnected", fastBLEManager.currentBleDevice != null);
                 HomeActivity.this.startActivity(intentB);
                 HomeActivity.this.overridePendingTransition(R.anim.activity_open,0);
             }
@@ -150,11 +151,11 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             userId = userModel.getUserInfo().getUserId();
         }
 
-//        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
-//        foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
-//        //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
-//        foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
-//        startService(foregroundIntent);
+        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
+        foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
+        //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
+        foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
+        startService(foregroundIntent);
 
         DeviceManager.getInstance().downloadDeviceList();
         registerBLE(); // 注册BLE状态监听
@@ -244,9 +245,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             Toast.makeText(HomeActivity.this, getResources().getString(R.string.common_exit_app), Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
         } else {
-            //用户退出处理
-            finishAffinity();
-            System.exit(0);
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(homeIntent);
         }
     }
 
@@ -485,6 +487,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             }
         });
         DeviceManager.getInstance().readDB();
+        if (mTab1 == null) {
+            return;
+        }
+        mTab1.refreshDeviceWithBLEStateChanged();
     }
 
     @Override

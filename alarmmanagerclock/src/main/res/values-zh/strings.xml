@@ -1,0 +1,7 @@
+<resources>
+    <string name="alarm_dialog_title">闹钟提醒</string>
+    <string name="alarm_dialog_close">关闭闹钟</string>
+    <string name="middle_confirm">确定</string>
+    <string name="reminder">离床时间过久</string>
+    <string name="warning">异常</string>
+</resources>

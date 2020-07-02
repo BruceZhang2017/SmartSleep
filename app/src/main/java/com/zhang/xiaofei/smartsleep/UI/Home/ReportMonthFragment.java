@@ -26,6 +26,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.MLineDataSet;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
@@ -85,7 +86,7 @@ public class ReportMonthFragment extends LazyFragment {
     int sleepTotalTime = 0; // 睡眠总时长
     int heartAvarage = 0; // 平均心跳
     int breathAvarage = 0; // 平均呼吸率
-    LineDataSet set1;
+    MLineDataSet set1;
     boolean bChart = false;
     List<List<String>> sleepTimes = new ArrayList<>() ;
     ReportDataCalculater calculater = new ReportDataCalculater();
@@ -236,7 +237,7 @@ public class ReportMonthFragment extends LazyFragment {
                 continue;
             }
             int j = (int) ((timeToLong(days[i]) - currentTime) / (24 * 60 * 60));
-            if (j < 0 || j > sleepTimes.size()) {
+            if (j < 0 || j >= sleepTimes.size()) {
                 continue;
             }
             List<String> list = sleepTimes.get(j);
@@ -419,7 +420,7 @@ public class ReportMonthFragment extends LazyFragment {
             return;
         }
         bChart = true;
-        set1 = new LineDataSet(values, "");
+        set1 = new MLineDataSet(values, "");
 
         set1.setDrawIcons(false);
         set1.setDrawHorizontalHighlightIndicator(false);

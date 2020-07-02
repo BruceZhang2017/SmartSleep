@@ -19,15 +19,15 @@ import java.util.Calendar;
 public class AlarmManagerUtil {
     public static final String ALARM_ACTION = "com.loonggg.alarm.clock";
 
-    public static void setAlarmTime(Context context, long timeInMillis, Intent intent) {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent sender = PendingIntent.getBroadcast(context, intent.getIntExtra("id", 0),
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        int interval = (int) intent.getLongExtra("intervalMillis", 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            am.setWindow(AlarmManager.RTC_WAKEUP, timeInMillis, interval, sender);
-        }
-    }
+//    public static void setAlarmTime(Context context, long timeInMillis, Intent intent) {
+//        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        PendingIntent sender = PendingIntent.getBroadcast(context, intent.getIntExtra("id", 0),
+//                intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        int interval = (int) intent.getLongExtra("intervalMillis", 0);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            am.setWindow(AlarmManager.RTC_WAKEUP, timeInMillis, interval, sender);
+//        }
+//    }
 
     public static void cancelAlarm(Context context, int id) {
         Intent intent = new Intent(ALARM_ACTION);
@@ -44,11 +44,9 @@ public class AlarmManagerUtil {
      * @param minute          分
      * @param id              闹钟的id
      * @param week            week=0表示一次性闹钟或者按天的周期性闹钟，非0 的情况下是几就代表以周为周期性的周几的闹钟
-     * @param tips            闹钟提示信息
-     * @param soundOrVibrator 2表示声音和震动都执行，1表示只有铃声提醒，0表示只有震动提醒
      */
     public static void setAlarm(Context context, int flag, int hour, int minute, int id, int
-            week, String tips, int soundOrVibrator) {
+            week, int sound) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         long intervalMillis = 0;
@@ -62,12 +60,9 @@ public class AlarmManagerUtil {
             intervalMillis = 24 * 3600 * 1000 * 7;
         }
         Intent intent = new Intent(ALARM_ACTION);
-        intent.putExtra("intervalMillis", intervalMillis);
-        intent.putExtra("msg", tips);
-        intent.putExtra("id", id);
-        intent.putExtra("soundOrVibrator", soundOrVibrator);
+        intent.putExtra("sound", sound);
         PendingIntent sender = PendingIntent.getBroadcast(context, id, intent, PendingIntent
-                .FLAG_CANCEL_CURRENT);
+                .FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             am.setWindow(AlarmManager.RTC_WAKEUP, calMethod(week, calendar.getTimeInMillis()),
                     intervalMillis, sender);
@@ -131,34 +126,34 @@ public class AlarmManagerUtil {
     }
 
 
-    public static void createAlarm(Context context, String message, int hour, int minutes, ArrayList<Integer> days) {
-        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
-                //闹钟的小时
-                .putExtra(AlarmClock.EXTRA_HOUR, hour)
-                //闹钟的分钟
-                .putExtra(AlarmClock.EXTRA_MINUTES, minutes)
-                //响铃时提示的信息
-                .putExtra(AlarmClock.EXTRA_MESSAGE, message)
-                //用于指定该闹铃触发时是否振动
-                .putExtra(AlarmClock.EXTRA_VIBRATE, true)
-                //一个 content: URI，用于指定闹铃使用的铃声，也可指定 VALUE_RINGTONE_SILENT 以不使用铃声。
-                //如需使用默认铃声，则无需指定此 extra。
-                //.putExtra(AlarmClock.EXTRA_RINGTONE, ringtoneUri)
-                //一个 ArrayList，其中包括应重复触发该闹铃的每个周日。
-                // 每一天都必须使用 Calendar 类中的某个整型值（如 MONDAY）进行声明。
-                //对于一次性闹铃，无需指定此 extra
-                .putExtra(AlarmClock.EXTRA_DAYS, days)
-                //如果为true，则调用startActivity()不会进入手机的闹钟设置界面
-                .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
-        }
-    }
-
-    public static void dismissAlarm(Context context) {
-        Intent intent = new Intent(AlarmClock.ACTION_DISMISS_ALARM);
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
-        }
-    }
+//    public static void createAlarm(Context context, String message, int hour, int minutes, ArrayList<Integer> days) {
+//        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+//                //闹钟的小时
+//                .putExtra(AlarmClock.EXTRA_HOUR, hour)
+//                //闹钟的分钟
+//                .putExtra(AlarmClock.EXTRA_MINUTES, minutes)
+//                //响铃时提示的信息
+//                .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+//                //用于指定该闹铃触发时是否振动
+//                .putExtra(AlarmClock.EXTRA_VIBRATE, true)
+//                //一个 content: URI，用于指定闹铃使用的铃声，也可指定 VALUE_RINGTONE_SILENT 以不使用铃声。
+//                //如需使用默认铃声，则无需指定此 extra。
+//                //.putExtra(AlarmClock.EXTRA_RINGTONE, ringtoneUri)
+//                //一个 ArrayList，其中包括应重复触发该闹铃的每个周日。
+//                // 每一天都必须使用 Calendar 类中的某个整型值（如 MONDAY）进行声明。
+//                //对于一次性闹铃，无需指定此 extra
+//                .putExtra(AlarmClock.EXTRA_DAYS, days)
+//                //如果为true，则调用startActivity()不会进入手机的闹钟设置界面
+//                .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+//        if (intent.resolveActivity(context.getPackageManager()) != null) {
+//            context.startActivity(intent);
+//        }
+//    }
+//
+//    public static void dismissAlarm(Context context) {
+//        Intent intent = new Intent(AlarmClock.ACTION_DISMISS_ALARM);
+//        if (intent.resolveActivity(context.getPackageManager()) != null) {
+//            context.startActivity(intent);
+//        }
+//    }
 }

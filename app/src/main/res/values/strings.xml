@@ -48,7 +48,7 @@
     <string name="middle_fri">Fri</string>
     <string name="middle_sat">Sat</string>
     <string name="middle_sun">Sun</string>
-    <string name="middle_bedtime_reminder">Bedtime reminder</string>
+    <string name="middle_bedtime_reminder">Bedtime alarm clock</string>
     <string name="middle_tone">Tone</string>
     <string name="middle_default">Default</string>
     <string name="middle_skip">Skip</string>
@@ -84,9 +84,10 @@
     <string name="home_seconds_close">Close after *</string>
     <string name="home_found_new_version">New version **</string>
     <string name="home_update_now">Update</string>
-    <string name="mine_feedback">Advice &amp; feedback</string>
+    <string name="mine_feedback">Feedback list</string>
+    <string name="mine_feedbackB">Feedback</string>
     <string name="middle_alarms">Alarms</string>
-    <string name="middle_sleep_reminder">Sleep reminder</string>
+    <string name="middle_sleep_reminder">Sleep Alarm clock</string>
     <string name="middle_wellness">Health &amp; Wellness</string>
     <string name="middle_type_of_sleep_promotion">Type of sleep promotion</string>
     <string name="common_how_to_use">Instruction</string>
@@ -148,7 +149,7 @@
     <string name="common_bed_time">Bedtime</string>
     <string name="common_ordinary">Ordinary</string>
     <string name="common_fine">Fine</string>
-    <string name="report_smart_timing">Smart timing</string>
+    <string name="report_smart_timing">Sleep aid timing</string>
     <string name="report_sleep_not_monitoring">Sleep-button is not monitoring</string>
     <string name="report_sleep_quality">Sleep quality</string>
     <string name="report_sleep_analysis">After analysis of your sleep data last night, we found your bedtime routine is regular and sanative，with no snoring was detected during sleep.</string>
@@ -181,10 +182,11 @@
     <string name="common_no_yet_open">Not yet open</string>
     <string name="common_language_chinese">Chinese</string>
     <string name="common_language_english">English</string>
-    <string name="common_exit_app">Press again to exit the app</string>
+    <string name="common_exit_app">Press again to background the app</string>
     <string name="common_very_good">very good</string>
     <string name="common_Awesome">Awesome</string>
     <string name="common_so_so">so so</string>
+    <string name="common_not_grade">no score</string>
     <string name="common_exception">exception</string>
     <string name="alarm_remain_time">Alarm time remaining</string>
     <string name="alarm_sleep">Sleep</string>
@@ -195,7 +197,7 @@
     <string name="common_minute3"> </string>
     <string name="common_times">times</string>
     <string name="common_times_minute">times/min</string>
-    <string name="common_feedback_null">You can give some Advice &amp; feedback!</string>
+    <string name="common_feedback_null">You can give some Feedback!</string>
     <string name="common_get_up">Get up</string>
 
     <string name="homepage_series_title_one"> one hour deep sleep aid </string>
@@ -274,6 +276,7 @@
     <string name="sound1">Sound1</string>
     <string name="sound2">Sound2</string>
     <string name="sound3">Sound3</string>
+    <string name="sound4">Sound4</string>
     <string name="all_sound">All Sound</string>
 
     <string name="mobile_error_tip">Please fill in the correct mobile number</string>
@@ -328,4 +331,19 @@
     <string name="getup_alarm_clock_setup_instruction">Wake up alarm has been set and synchronized to the alarm center</string>
     <string name="sleep_alarm_clock_setup_instruction">Sleep alarm has been set and synchronized to the alarm center</string>
     <string name="alarm_clock_setup_instruction">If you need to modify the alarm, please delete the alarm first. Otherwise the alarm will not take effect.</string>
+    <string name="wifi_only_support_2_4">*Only supports 2.4G band WiFi</string>
+    <string name="help">Help</string>
+    <string name="wifi_device_type_1">Key version</string>
+    <string name="wifi_device_type_2">Touch screen version</string>
+    <string name="wifi_device_type">Device type</string>
+    <string name="device_ble_disconnect_tip">Bluetooth disconnected, please click the red Bluetooth icon to reconnect</string>
+    <string name="off_bed_reminder">Off bed reminder</string>
+    <string name="abnormal_heart_rate_reminder">Abnormal heart rate reminder</string>
+    <string name="cache_is_empty">Cache is empty</string>
+    <string name="latest_version_tip">Already the latest version</string>
+    <string name="use_of_terms">I have read and agreed to the \'Term of usage for Yamind APP\' </string>
+    <string name="battery"> Battery:</string>
+    <string name="bed_away_15_minutes_tip">The prompt is triggered when you are out of bed for more than 15 minutes.</string>
+    <string name="heart_rate_15_minutes_tip">If the heart rate is more than 100, the prompt will be triggered. </string>
+    <string name="monitor">monitor</string>
 </resources>

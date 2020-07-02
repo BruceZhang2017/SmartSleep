@@ -19,7 +19,7 @@ android {
         applicationId "com.zhang.xiaofei.smartsleep"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 9
+        versionCode 10
         versionName "1.0.23"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -90,13 +90,13 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'pub.devrel:easypermissions:2.0.1'
 
-    // 分享 QQ 微信 微博
-    implementation 'com.umeng.sdk:share-core:latest.integration'
-    implementation 'com.umeng.sdk:share-qq:latest.integration'
-    implementation 'com.umeng.sdk:share-wechat:latest.integration'
-    implementation 'com.umeng.sdk:share-sina:latest.integration'
-    implementation 'com.umeng.sdk:common:1.5.1'
-//官方文档中没有这个依赖，要是不添加会导致初始化的时候的UMConfigure这个类不能识别
+//    // 分享 QQ 微信 微博
+//    implementation 'com.umeng.sdk:share-core:latest.integration'
+//    implementation 'com.umeng.sdk:share-qq:latest.integration'
+//    implementation 'com.umeng.sdk:share-wechat:latest.integration'
+//    implementation 'com.umeng.sdk:share-sina:latest.integration'
+//    implementation 'com.umeng.sdk:common:1.5.1'
+////官方文档中没有这个依赖，要是不添加会导致初始化的时候的UMConfigure这个类不能识别
 
     implementation 'com.android.support:cardview-v7:28.1.0'
     implementation 'com.android.support:support-v4:28.0.0'
@@ -129,4 +129,5 @@ dependencies {
 
     implementation 'com.mylhyl:circleDialog:5.0.7' // Dialog扩展
     //implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
 }

@@ -12,6 +12,8 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -36,6 +38,7 @@ public class DynamicView extends View {
     public float currentValue;
     public Boolean isAnimating = false;
     public Path animatorPath;
+    public Handler handler;
 
     public DynamicView(Context context) {
         super(context);
@@ -158,6 +161,10 @@ public class DynamicView extends View {
             public void onAnimationUpdate(ValueAnimator animation) {
                 currentValue = (float) animation.getAnimatedValue();
                 postInvalidate();
+//                Message message = handler.obtainMessage();
+//                message.what = values.length == 50 ? 1 : 2;
+//                int index = (int) (currentValue * (values.length == 50 ? 5 : 25)) + currentFinished * (values.length == 50 ? 5 : 25);
+//                message.arg1 = values[index];
             }
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {

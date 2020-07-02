@@ -46,7 +46,7 @@ public class ClearCacheActivity extends BaseAppActivity {
             @Override
             public void onClick(View v) {
                 CleanCacheUtil.clearAllCache(getApplicationContext());
-                Toast.makeText(ClearCacheActivity.this, "缓存已清空", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClearCacheActivity.this, R.string.cache_is_empty, Toast.LENGTH_SHORT).show();
                 tvCache.setText("0 B");
             }
         });

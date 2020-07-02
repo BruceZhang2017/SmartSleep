@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.MLineDataSet;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
@@ -74,7 +75,7 @@ public class ReportWeekFragment extends LazyFragment {
     private TextView tvSimulationData;
     private TextView tvSleepRank;
     private int currentTime = 0;
-    LineDataSet set1;
+    MLineDataSet set1;
     LineDataSet set2;
     ArrayList<Entry> set1values;
     private Boolean bBelt = true; // 刷新睡眠带，睡眠纽扣
@@ -213,7 +214,7 @@ public class ReportWeekFragment extends LazyFragment {
                 continue;
             }
             int j = (int) ((timeToLong(days[i]) - currentTime) / (24 * 60 * 60));
-            if (j < 0 || j > sleepTimes.size()) {
+            if (j < 0 || j >= sleepTimes.size()) {
                 continue;
             }
             List<String> list = sleepTimes.get(j);
@@ -477,7 +478,7 @@ public class ReportWeekFragment extends LazyFragment {
         }
         bChart = true;
         // create a dataset and give it a type
-        set1 = new LineDataSet(set1values, "");
+        set1 = new MLineDataSet(set1values, "");
 
         set1.setDrawIcons(false);
         set1.setDrawHorizontalHighlightIndicator(false);
@@ -805,12 +806,16 @@ public class ReportWeekFragment extends LazyFragment {
         tvSleepValue.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 30, array));
         if (score >= 85) {
             tvSleepRank.setText(R.string.common_very_good);
-        } else if (score >= 75) {
+        } else if (score >= 70) {
             tvSleepRank.setText(R.string.common_Awesome);
-        } else {
+        } else if (score >= 50){
             tvSleepRank.setText(R.string.common_so_so);
+        } else if (score > 0) {
+            tvSleepRank.setText(R.string.common_not_good);
+        } else {
+            tvSleepRank.setText(R.string.common_not_grade);
         }
-
+        tvSleepRank.setTextColor(getResources().getColor(GradeColor.convertGradeToColor(score)));
         calculateSleepValue();
     }
 

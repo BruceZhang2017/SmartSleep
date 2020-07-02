@@ -99,6 +99,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private TextView tvSleepBottomCount1;
     private TextView tvSleepBottomCount2;
     private TextView tvSleepBottomCount3;
+    private TextView tvSleepBottomCount4;
     private ConstraintLayout cl5;
     private ConstraintLayout cl6;
     private ConstraintLayout cl11;
@@ -142,6 +143,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvCircleSleep4 = (TextView)findViewById(R.id.tv_sleep_4);
         circlePercentView = (CircleSeekBar)findViewById(R.id.circle_percent_progress);
         circlePercentView.setCurProcess(grade);
+        circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(grade)));
         circleSleep1 = (CirclePercentView)findViewById(R.id.circle_sleep_1);
         circleSleep1.setBgColor(getResources().getColor(R.color.color_33315FEE));
         circleSleep1.setProgressColor(getResources().getColor(R.color.color_315FEE));
@@ -236,7 +238,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvSleepBottomCount1 = (TextView)findViewById(R.id.tv_sleep_bottom_count_1);
         tvSleepBottomCount2 = (TextView)findViewById(R.id.tv_sleep_bottom_count_2);
         tvSleepBottomCount3 = (TextView)findViewById(R.id.tv_sleep_bottom_count_3);
-
+        tvSleepBottomCount4 = (TextView)findViewById(R.id.tv_sleep_bottom_count_4);
         refreshSleepStatisticsUI();
     }
 
@@ -270,6 +272,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String[] array = {unit};
         String content = grade + "" + unit;
         tvSleepReviewValue.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 25, array));
+        circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(grade)));
     }
 
     private String currentDate(long time) {
@@ -760,17 +763,17 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             sleep = 24 * 60 - sleep;
         }
         chart5 = initializeForChart(R.id.chart5, sleep, getup, 0f, 5f);
-        chart5.getAxisLeft().setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                if (value == 0) {
-                    return getResources().getString(R.string.common_week);
-                } else if (value == 5) {
-                    return getResources().getString(R.string.common_harsh);
-                }
-                return "";
-            }
-        });
+//        chart5.getAxisLeft().setValueFormatter(new ValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value) {
+//                if (value == 0) {
+//                    return getResources().getString(R.string.common_week);
+//                } else if (value == 5) {
+//                    return getResources().getString(R.string.common_harsh);
+//                }
+//                return "";
+//            }
+//        });
 
         setData5();
     }
@@ -994,8 +997,9 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         long averageBreath = 0;
         long averageTemp = 0;
         long averageHumidity = 0;
-        Integer count = 0;
+        Integer count = mlist.size();
         Integer bodyMotion = 0;
+        Integer snore = 0;
         if (mlist.size() > 0) {
             for (RecordModel model: mlist) {
                 averageHeart += model.getHeartRate();
@@ -1003,8 +1007,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 averageTemp += model.getTemperature();
                 averageHumidity += model.getHumidity();
                 bodyMotion += model.getBodyMotion();
+                snore += model.getSnore();
             }
-            count += mlist.size();
         }
         String unit11 = getResources().getString(R.string.common_hour2);
         String unit12 = getResources().getString(R.string.common_minute3);
@@ -1089,11 +1093,18 @@ public class ReportDayFragment extends LazyFragment { // 日报告
 
         String unit = getResources().getString(R.string.common_times);
         if (count > 0) {
-            String content = bodyMotion / count + getResources().getString(R.string.common_times);
+            String content = bodyMotion + getResources().getString(R.string.common_times);
             tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
         } else {
             String content = "0 " + getResources().getString(R.string.common_times);
             tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
+        }
+        if (count > 0) {
+            String content = snore + getResources().getString(R.string.common_times);
+            tvSleepBottomCount4.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
+        } else {
+            String content = "0 " + getResources().getString(R.string.common_times);
+            tvSleepBottomCount4.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
         }
         calculateSleepValue();
     }
@@ -1334,6 +1345,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         }
         refreshGrade();
         circlePercentView.setCurProcess(grade);
+        circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(grade)));
         System.out.println("计算得到的最终得分为：" + grade);
         sleepbeltValue[0] = grade;
         if (!bSleepBletValueRead) {

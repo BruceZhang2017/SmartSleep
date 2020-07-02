@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.uphyca:stetho_realm:2.1.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/823d9df79d95c885099166dffa17f34f/jetified-stetho_realm-2.1.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/823d9df79d95c885099166dffa17f34f/jetified-stetho_realm-2.1.0/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4f729d6b1c8a535ee4c55099fcdf2d31/jetified-stetho_realm-2.1.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4f729d6b1c8a535ee4c55099fcdf2d31/jetified-stetho_realm-2.1.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

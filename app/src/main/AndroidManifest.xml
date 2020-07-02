@@ -41,7 +41,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.mainTransparent">
-        <activity android:name=".UI.Home.MainBLETestActivity"></activity>
+        <activity android:name=".UI.Me.WifiDeviceTypeActivity"></activity>
+        <activity android:name=".UI.Me.PDFActivity" />
+        <activity android:name=".UI.Home.MainBLETestActivity" />
         <activity
             android:name=".UI.Home.ShareSleepQualityActivity"
             android:screenOrientation="portrait" />
@@ -104,6 +106,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.Login.StartPageActivity"
+            android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
@@ -132,8 +135,9 @@
         <activity
             android:name=".Kit.dfutest.DfuUpdateActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".UI.Home.BLESearchActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UI.Home.BLESearchActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

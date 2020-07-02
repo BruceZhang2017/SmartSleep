@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.kaopiz:kprogresshud:1.2.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/7fbf1acd91318a50fdfe6a6127f46d48/jetified-kprogresshud-1.2.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/7fbf1acd91318a50fdfe6a6127f46d48/jetified-kprogresshud-1.2.0/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5e14353feef4f1c568c8a7cfd0b2fe9c/jetified-kprogresshud-1.2.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5e14353feef4f1c568c8a7cfd0b2fe9c/jetified-kprogresshud-1.2.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.kaopiz/kprogresshud/1.2.0/19e35775be188511ec306ee2d0a63d766893643f/kprogresshud-1.2.0-javadoc.jar!/" />

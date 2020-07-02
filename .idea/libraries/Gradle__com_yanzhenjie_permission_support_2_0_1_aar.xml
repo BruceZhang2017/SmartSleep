@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.yanzhenjie.permission:support:2.0.1@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/37fa2912dd15ec331ffa8cf17f5c8e3b/jetified-support-2.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/37fa2912dd15ec331ffa8cf17f5c8e3b/jetified-support-2.0.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/58c8d2543cae6c9276bf03357bd55064/jetified-support-2.0.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/58c8d2543cae6c9276bf03357bd55064/jetified-support-2.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.yanzhenjie.permission/support/2.0.1/ae12e59e8e22b9ac6f9fc8f72d2f05c8b8ba0404/support-2.0.1-javadoc.jar!/" />

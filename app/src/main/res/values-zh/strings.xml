@@ -48,7 +48,7 @@
     <string name="middle_fri">周五</string>
     <string name="middle_sat">周六</string>
     <string name="middle_sun">周日</string>
-    <string name="middle_bedtime_reminder">睡眠提醒</string>
+    <string name="middle_bedtime_reminder">睡眠闹钟</string>
     <string name="middle_tone">提示音</string>
     <string name="middle_default">系统默认提示音</string>
     <string name="middle_skip">跳过</string>
@@ -84,9 +84,10 @@
     <string name="home_seconds_close">*秒后自动关闭</string>
     <string name="home_found_new_version">发现新版本**</string>
     <string name="home_update_now">立即更新</string>
-    <string name="mine_feedback">意见反馈</string>
+    <string name="mine_feedback">意见列表</string>
+    <string name="mine_feedbackB">意见反馈</string>
     <string name="middle_alarms">起床闹钟</string>
-    <string name="middle_sleep_reminder">睡眠提醒</string>
+    <string name="middle_sleep_reminder">睡眠闹钟</string>
     <string name="middle_wellness">健康养生</string>
     <string name="middle_type_of_sleep_promotion">助眠分类</string>
     <string name="common_how_to_use">产品教程</string>
@@ -144,11 +145,12 @@
     <string name="report_wake_up_times">清醒次数</string>
     <string name="common_average_score">平均分数</string>
     <string name="common_not_good">不太好</string>
+    <string name="common_not_grade">没有评分</string>
     <string name="common_average_deep_sleep">平均深睡眠时长</string>
     <string name="common_bed_time">上床时间</string>
     <string name="common_ordinary">一般</string>
     <string name="common_fine">健康</string>
-    <string name="report_smart_timing">智能定时</string>
+    <string name="report_smart_timing">助眠定时</string>
     <string name="report_sleep_not_monitoring">睡眠纽扣未在检测</string>
     <string name="report_sleep_quality">睡眠评分</string>
     <string name="report_sleep_analysis">根据当晚数据分析，您的睡眠作息很规律健康，睡眠没有打鼾，祝你身体健康！</string>
@@ -181,7 +183,7 @@
     <string name="common_no_yet_open">暂未开放</string>
     <string name="common_language_chinese">简体中文</string>
     <string name="common_language_english">英文</string>
-    <string name="common_exit_app">再按一次退出应用</string>
+    <string name="common_exit_app">再按一次收起应用</string>
     <string name="common_very_good">好极了</string>
     <string name="common_Awesome">棒棒哒</string>
     <string name="common_so_so">一般吧</string>
@@ -274,6 +276,7 @@
     <string name="sound1">铃声1</string>
     <string name="sound2">铃声2</string>
     <string name="sound3">铃声3</string>
+    <string name="sound4">铃声4</string>
     <string name="all_sound">所有铃声</string>
 
     <string name="mobile_error_tip">请填写正确的手机号码</string>
@@ -328,5 +331,20 @@
     <string name="getup_alarm_clock_setup_instruction">起床闹钟已经设置，已同步至闹钟中心</string>
     <string name="sleep_alarm_clock_setup_instruction">睡觉闹钟已经设置，已同步至闹钟中心</string>
     <string name="alarm_clock_setup_instruction">如需修改闹钟，请先删除已设置的闹钟。否则闹钟不会生效</string>
+    <string name="wifi_only_support_2_4">*仅支持2.4G频段WIFI</string>
+    <string name="help">帮助</string>
+    <string name="wifi_device_type_1">按键版</string>
+    <string name="wifi_device_type_2">触屏版</string>
+    <string name="wifi_device_type">设备类型</string>
+    <string name="device_ble_disconnect_tip">蓝牙已断开，请点击红色蓝牙图标重新连接</string>
+    <string name="off_bed_reminder">离床提示</string>
+    <string name="abnormal_heart_rate_reminder">心率异常提示</string>
+    <string name="cache_is_empty">缓存已清空</string>
+    <string name="latest_version_tip">已经是最新版本</string>
+    <string name="use_of_terms">我已详细阅读并同意《大雅健康App使用条款》</string>
+    <string name="battery"> 电量：</string>
+    <string name="bed_away_15_minutes_tip">当离床超过15分钟，该提示会被触发。</string>
+    <string name="heart_rate_15_minutes_tip">若心率超过100，该提示会被触发。</string>
+    <string name="monitor">检测</string>
 
 </resources>

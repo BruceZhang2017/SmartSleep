@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,8 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private DynamicView dynamicViewBreath;
     private int count = 0;
     private boolean bStart = false;
+    private TextView tvHeart;
+    private TextView tvBreath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         setContentView(R.layout.activity_smart_sleep_test);
         tvTitle = (TextView)findViewById(R.id.tv_title);
         tvTitle.setText(R.string.dynamic_curve);
+        tvHeart = (TextView)findViewById(R.id.tv_sleep_time_3);
+        tvBreath = (TextView)findViewById(R.id.tv_sleep_time_4);
         ibLeft = (ImageButton)findViewById(R.id.im_l);
         ibLeft.setImageResource(R.mipmap.suggest_icon_back);
         ibLeft.setVisibility(View.VISIBLE);
@@ -140,5 +146,15 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
             }
         });
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+
+            }
+        }
+    };
 
 }

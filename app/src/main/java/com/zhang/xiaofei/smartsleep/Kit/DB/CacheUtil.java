@@ -44,4 +44,13 @@ public class CacheUtil {
     public Boolean getBool(String key) {
         return hmSpref.getBoolean(key,false);
     }
+
+    public int getInt(String key) {
+        return hmSpref.getInt(key, 0);
+    }
+
+    public void setInt(String key, int value) {
+        editor.putInt(key, value);
+        editor.commit();
+    }
 }

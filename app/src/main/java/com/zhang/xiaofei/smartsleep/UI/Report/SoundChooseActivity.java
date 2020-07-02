@@ -2,6 +2,7 @@ package com.zhang.xiaofei.smartsleep.UI.Report;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.LanguageSystemActivity;
@@ -23,16 +25,21 @@ public class SoundChooseActivity extends BaseAppActivity {
 
     private TextView tvTitle;
     private ImageButton ibLeft;
+    private int currentPostion = 0;
+    private boolean isSleep = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_choose);
+        isSleep = getIntent().getBooleanExtra("isSleep", false);
+        currentPostion = CacheUtil.getInstance(this).getInt("alarmSound");
         ListView listView = findViewById(R.id.lv_settings);
         List<String> appNames = new ArrayList<>();
         appNames.add(getResources().getString(R.string.sound1));
         appNames.add(getResources().getString(R.string.sound2));
         appNames.add(getResources().getString(R.string.sound3));
+        appNames.add(getResources().getString(R.string.sound4));
         //适配adapter
         listView.setAdapter(new AppListAdapter(appNames));
 
@@ -78,7 +85,7 @@ public class SoundChooseActivity extends BaseAppActivity {
             textView.setText(mAppNames.get(position));
             ImageView ivSelected = (ImageView)convertView.findViewById(R.id.iv_select);
             ImageView ivLine = (ImageView)convertView.findViewById(R.id.iv_line);
-            if (position == 0) {
+            if (position == (isSleep ? Math.max(0,currentPostion % 10 - 1) : Math.max(0,currentPostion / 10 - 1))) {
                 ivSelected.setVisibility(View.VISIBLE);
             } else {
                 ivSelected.setVisibility(View.INVISIBLE);
@@ -86,11 +93,15 @@ public class SoundChooseActivity extends BaseAppActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (position == 0) {
 
-                    } else if (position == 1) {
-
+                    if (isSleep) {
+                        currentPostion = (currentPostion / 10) * 10 + (position + 1);
+                    } else {
+                        currentPostion = (currentPostion % 10) + (position + 1) * 10;
                     }
+                    CacheUtil.getInstance(SoundChooseActivity.this).setInt("alarmSound", currentPostion);
+                    setResult(position + 1);
+                    finish();
                 }
             });
             return convertView;

@@ -41,6 +41,7 @@ public class FeedbackListActivity extends BaseAppActivity {
 
     private TextView tvTitle;
     private ImageButton ibLeft;
+    private ImageButton ibRight;
     private ListView listView;
     private FeedbackListAdapter adapter;
     private ImageView ivNull;
@@ -62,6 +63,16 @@ public class FeedbackListActivity extends BaseAppActivity {
                 finish();
             }
         });
+        ibRight = (ImageButton)findViewById(R.id.im_r);
+        ibRight.setImageResource(R.mipmap.jiahao);
+        ibRight.setVisibility(View.VISIBLE);
+        ibRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FeedbackListActivity.this, FeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
         listView = (ListView) findViewById(R.id.list);
         adapter = new FeedbackListAdapter(fdList);
         listView.setAdapter(adapter);
@@ -69,10 +80,9 @@ public class FeedbackListActivity extends BaseAppActivity {
         tvNull = (TextView)findViewById(R.id.tv_null);
         ivNull.setVisibility(View.INVISIBLE);
         tvNull.setVisibility(View.INVISIBLE);
-        downloadFeedback();
 
         // common_feedback_null
-        String agree = getResources().getString(R.string.mine_feedback);
+        String agree = getResources().getString(R.string.mine_feedbackB);
         String text = getResources().getString(R.string.common_feedback_null);
         SpannableStringBuilder spannableBuilder = new SpannableStringBuilder(text);
         // 单独设置字体颜色
@@ -80,6 +90,12 @@ public class FeedbackListActivity extends BaseAppActivity {
         spannableBuilder.setSpan(new MyClickableSpan(), index, index + agree.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvNull.setText(spannableBuilder);
         tvNull.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        downloadFeedback();
     }
 
     class MyClickableSpan extends ClickableSpan {
@@ -192,6 +208,7 @@ public class FeedbackListActivity extends BaseAppActivity {
                     listView.setVisibility(View.INVISIBLE);
                     return;
                 }
+                fdList.clear();
                 for (FeedbackItemModel item:
                      model.getData()) {
                     fdList.add(item);

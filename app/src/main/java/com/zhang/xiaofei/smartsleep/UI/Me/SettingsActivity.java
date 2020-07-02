@@ -97,7 +97,7 @@ public class SettingsActivity extends BaseAppActivity {
                 @Override
                 public void onClick(View v) {
                     if (position == 0) {
-                        Intent intent = new Intent(SettingsActivity.this, EsptouchDemoActivity.class);
+                        Intent intent = new Intent(SettingsActivity.this, WifiDeviceTypeActivity.class);
                         startActivity(intent);
                     } else if (position == 1) {
                         Intent intent = new Intent(SettingsActivity.this, ClearCacheActivity.class);

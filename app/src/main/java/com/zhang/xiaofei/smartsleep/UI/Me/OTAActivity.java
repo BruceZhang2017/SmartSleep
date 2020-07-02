@@ -60,6 +60,9 @@ public class OTAActivity extends BaseAppActivity {
         appNames.add(new OTAInfo(getResources().getString(R.string.device_name), deviceName));
         appNames.add(new OTAInfo(getResources().getString(R.string.index_serial_no), deviceSerial));
         Integer battery = YMApplication.getInstance().deviceBatteryMap.get(mac);
+        if (battery == null){
+            battery = 0;
+        }
         appNames.add(new OTAInfo(getResources().getString(R.string.device_info_battery), battery + "%"));
         if (mac.equals("00:00:00:00:00:00")) {
             appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V0.1"));

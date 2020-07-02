@@ -501,14 +501,28 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
             int type = 0;
             TextView tvDeviceName = (TextView)convertView.findViewById(R.id.tv_device_name);
+            TextView tvBattery = (TextView)convertView.findViewById(R.id.tv_battery);
             if (DeviceManager.getInstance().deviceList.size() > position) {
                 type = DeviceManager.getInstance().deviceList.get(position).getDeviceType();
                 if (type == 1) {
+                    String mac = DeviceManager.getInstance().deviceList.get(position).getMac();
+                    if (mac.length() > 0) {
+                        Integer battery = YMApplication.getInstance().deviceBatteryMap.get(mac);
+                        if (battery != null && battery > 0) {
+                            tvBattery.setText(battery + "%");
+                        } else {
+                            tvBattery.setText("0%");
+                        }
+                    } else {
+                        tvBattery.setText("0%");
+                    }
                     tvDeviceName.setText(getResources().getString(R.string.report_yamy_sleep_belt));
                 } else if (type == 2) {
                     tvDeviceName.setText(getResources().getString(R.string.report_yamy_sleep_button));
+                    tvBattery.setText("0%");
                 } else {
                     tvDeviceName.setText(getResources().getString(R.string.homepage_breathing_machine));
+                    tvBattery.setText("");
                 }
             }
             String unit = getResources().getString(R.string.common_minute2);
@@ -525,7 +539,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             TextView tvBodyMove = (TextView)convertView.findViewById(R.id.tv_body_value);
 
             TextView tvDotValue = (TextView)convertView.findViewById(R.id.tv_dot_value);
-
+            TextView tvDisconnectTip = (TextView)convertView.findViewById(R.id.tv_disconnect_tip);
             ImageView ivBluetooth = (ImageView)convertView.findViewById(R.id.iv_bluetooth);
             ivBluetooth.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -537,13 +551,16 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             });
             if (type == 3) {
                 ivBluetooth.setVisibility(View.INVISIBLE);
+                tvDisconnectTip.setVisibility(View.INVISIBLE);
             } else {
                 ivBluetooth.setVisibility(View.VISIBLE);
                 if (YMApplication.getInstance().getBLEOpen()) {
                     if (((DeviceManager.getInstance().scaningCurrentDevice >> position) & 0x01) > 0) {
+                        tvDisconnectTip.setVisibility(View.VISIBLE);
                         ivBluetooth.setImageResource(R.mipmap.btscan);
                         removeShineAnimation(ivBluetooth);
                     } else {
+                        tvDisconnectTip.setVisibility(View.INVISIBLE);
                         if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
                             ivBluetooth.setImageResource(R.mipmap.bluetooth2);
                             removeShineAnimation(ivBluetooth);
@@ -554,6 +571,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                     }
 
                 } else {
+                    tvDisconnectTip.setVisibility(View.INVISIBLE);
                     ivBluetooth.setImageResource(R.mipmap.bluetooth3);
                     removeShineAnimation(ivBluetooth);
                 }
@@ -756,6 +774,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
         }
         if (connectState == 0) {
+            refreshTempratureAndHumdity(0, 0); // 刷新温度和湿度
             if (YMApplication.getInstance().getBLEOpen() == false) {
                 return;
             }

@@ -1,6 +1,7 @@
 package com.zhang.xiaofei.smartsleep.UI.Login;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,8 +49,10 @@ public class LoginActivity extends BaseAppActivity {
     @BindView(R.id.btn_area) Button btnArea;
     @BindView(R.id.btn_code) Button btnCode;
     @BindView(R.id.tv_agree_login)TextView tvAgree;
+    @BindView(R.id.tv_terms)TextView tvTerms;
     static int kRequestCode = 1;
     private static String TAG = "LoginActivity";
+    private boolean bAgreeTerms = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,9 @@ public class LoginActivity extends BaseAppActivity {
                     return;
                 }
                 if (code.length() <= 0) {
+                    return;
+                }
+                if (!bAgreeTerms) {
                     return;
                 }
                 Log.i(TAG, "Phone:" + phone + " area:" + area + " code:" + code);
@@ -109,6 +115,22 @@ public class LoginActivity extends BaseAppActivity {
         tvAgree.setText(spannableBuilder);
         tvAgree.setMovementMethod(LinkMovementMethod.getInstance());
 
+        tvTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bAgreeTerms) {
+                    bAgreeTerms = false;
+                    Drawable drawable = getResources().getDrawable(R.mipmap.checkbox1);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    tvTerms.setCompoundDrawables(drawable, null, null,null);
+                } else {
+                    bAgreeTerms = true;
+                    Drawable drawable = getResources().getDrawable(R.mipmap.checkbox2);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    tvTerms.setCompoundDrawables(drawable, null, null,null);
+                }
+            }
+        });
     }
 
     class MyClickableSpan extends ClickableSpan {

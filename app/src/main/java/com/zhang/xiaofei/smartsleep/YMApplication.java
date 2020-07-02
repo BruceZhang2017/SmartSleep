@@ -10,8 +10,8 @@ import com.ansen.http.net.HTTPCaller;
 import com.facebook.stetho.Stetho;
 import com.sunofbeaches.himalaya.IComponentApplication;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;
+//import com.umeng.commonsdk.UMConfigure;
+//import com.umeng.socialize.PlatformConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import com.zhang.xiaofei.smartsleep.Kit.Application.CustomMigration;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
@@ -54,11 +54,11 @@ public class YMApplication extends Application {
                                 .setFontAttrId(R.attr.fontPath)
                                 .build()))
                 .build());
-        PlatformConfig.setWeixin("wxa4dbc47c00500034", "6a223a6a98d76525f73fadb374d14e5f");//微信APPID和AppSecret
-//        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("30910805", "375e1761984e8ff4c55074d1f8daa312","http://www.yamind.cn");//微博
-        UMConfigure.setLogEnabled(true);
-        UMConfigure.init(this,"5db6902d4ca357d29c00074e","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+//        PlatformConfig.setWeixin("wxa4dbc47c00500034", "6a223a6a98d76525f73fadb374d14e5f");//微信APPID和AppSecret
+////        PlatformConfig.setQQZone("你的QQAPPID", "你的QQAppSecret");//QQAPPID和AppSecret
+//        PlatformConfig.setSinaWeibo("30910805", "375e1761984e8ff4c55074d1f8daa312","http://www.yamind.cn");//微博
+//        UMConfigure.setLogEnabled(true);
+//        UMConfigure.init(this,"5db6902d4ca357d29c00074e","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
 
         //Module类的APP初始化
         modulesApplicationInit();

@@ -352,6 +352,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_sleep_alert"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
+                android:visibility="invisible"
                 android:background="#00000000"/>
 
             <TextView
@@ -365,6 +366,7 @@
                 android:textColor="#FFFFFF"
                 android:text=":"
                 android:gravity="center"
+                android:visibility="invisible"
                 />
 
             <com.contrarywind.view.WheelView
@@ -376,6 +378,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_sleep_alert"
                 android:layout_marginTop="15dp"
                 android:background="#00000000"
+                android:visibility="invisible"
                 android:layout_marginRight="20dp"/>
 
 <!--            <TextView-->
@@ -412,6 +415,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_sun"/>
 
             <com.deadline.statebutton.StateButton
@@ -433,6 +437,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_mon"/>
 
             <com.deadline.statebutton.StateButton
@@ -454,6 +459,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_tue"/>
 
             <com.deadline.statebutton.StateButton
@@ -475,6 +481,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_wed"/>
 
             <com.deadline.statebutton.StateButton
@@ -496,6 +503,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_thu"/>
 
             <com.deadline.statebutton.StateButton
@@ -517,6 +525,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_fri"/>
 
             <com.deadline.statebutton.StateButton
@@ -538,6 +547,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_sat"/>
 
             <ImageView
@@ -548,6 +558,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_saturday2"
                 android:layout_marginTop="14dp"
+                android:visibility="invisible"
                 android:background="#17FFFFFF"/>
 
             <TextView
@@ -560,6 +571,7 @@
                 android:layout_marginTop="15dp"
                 android:textColor="#E9F0FF"
                 android:textSize="16sp"
+                android:visibility="invisible"
                 android:text="@string/middle_tone"/>
 
             <TextView
@@ -573,6 +585,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_tip2"
                 app:layout_constraintBottom_toBottomOf="@id/tv_tip2"
                 android:layout_marginRight="20dp"
+                android:visibility="invisible"
                 android:drawableRight="@mipmap/me_icon_more"/>
 
             <ImageView
@@ -583,6 +596,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_line_up2"
                 android:layout_marginTop="51dp"
+                android:visibility="invisible"
                 android:background="#17FFFFFF"/>
 
             <androidx.constraintlayout.widget.Group

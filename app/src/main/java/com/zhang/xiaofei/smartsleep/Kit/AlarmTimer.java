@@ -43,6 +43,7 @@ public class AlarmTimer {
 
     public void startTimer(int time) {
         // 启动计时器
+        stopTimer();
         mHandler.postDelayed(mRunnable, 1000 * time);
         bStart = true;
     }

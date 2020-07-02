@@ -42,6 +42,18 @@
         android:textSize="16sp"
         android:text="@string/report_yamy_sleep_belt" />
 
+    <TextView
+        android:id="@+id/tv_battery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="@id/iv_bluetooth"
+        app:layout_constraintTop_toTopOf="@id/iv_bluetooth"
+        app:layout_constraintBottom_toBottomOf="@id/iv_bluetooth"
+        android:layout_marginRight="10dp"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:text="0%" />
+
     <ImageView
         android:id="@+id/iv_bluetooth"
         android:layout_width="30dp"
@@ -267,6 +279,7 @@
         android:text="@string/report_daily_words"
         android:textSize="10sp"
         android:gravity="center"
+        android:visibility="invisible"
         android:background="@drawable/textview_background_corner"/>
 
     <TextView
@@ -281,6 +294,22 @@
         android:layout_marginRight="10dp"
         android:textColor="#8EA9E0"
         android:textSize="12sp"
+        android:visibility="invisible"
         android:text="@string/homepage_one_day"/>
+
+    <TextView
+        android:id="@+id/tv_disconnect_tip"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/circle_percent_progress"
+        app:layout_constraintRight_toRightOf="@id/iv_bluetooth"
+        app:layout_constraintTop_toBottomOf="@id/iv_bluetooth"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="0dp"
+        android:textColor="@color/color_E92C2C"
+        android:text="@string/device_ble_disconnect_tip"
+        android:background="#000000"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

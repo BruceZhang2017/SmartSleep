@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.lxj:xpermission:1.0.1@aar">
     <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/c0ef4bfcc783a14eb9ba828572af4540/jetified-xpermission-1.0.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/699d6b8288bece0365cbe4f206e57ca6/jetified-xpermission-1.0.1/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/c0ef4bfcc783a14eb9ba828572af4540/jetified-xpermission-1.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/c0ef4bfcc783a14eb9ba828572af4540/jetified-xpermission-1.0.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/699d6b8288bece0365cbe4f206e57ca6/jetified-xpermission-1.0.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/699d6b8288bece0365cbe4f206e57ca6/jetified-xpermission-1.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.lxj/xpermission/1.0.1/bdfa12b38ac72d3929397cf698b45452591e50a2/xpermission-1.0.1-javadoc.jar!/" />
