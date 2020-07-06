@@ -1,8 +1,5 @@
 package com.zhang.xiaofei.smartsleep.UI.Report;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.loonggg.lib.alarmmanager.clock.MediaPlayerUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
-import com.zhang.xiaofei.smartsleep.UI.Me.LanguageSystemActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +24,8 @@ public class SoundChooseActivity extends BaseAppActivity {
     private ImageButton ibLeft;
     private int currentPostion = 0;
     private boolean isSleep = false;
+    private AppListAdapter adapter;
+    private TextView tvCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,8 @@ public class SoundChooseActivity extends BaseAppActivity {
         appNames.add(getResources().getString(R.string.sound3));
         appNames.add(getResources().getString(R.string.sound4));
         //适配adapter
-        listView.setAdapter(new AppListAdapter(appNames));
+        adapter = new AppListAdapter(appNames);
+        listView.setAdapter(adapter);
 
         tvTitle = (TextView)findViewById(R.id.tv_title);
         tvTitle.setText("选择提示音");
@@ -54,6 +54,16 @@ public class SoundChooseActivity extends BaseAppActivity {
                 finish();
             }
         });
+
+        tvCurrent = (TextView)findViewById(R.id.tv_currnet_language_value);
+        int position = Math.max(0,currentPostion / 10 - 1);
+        tvCurrent.setText(appNames.get(position));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MediaPlayerUtil.getInstance().stopRing();
     }
 
     private class AppListAdapter extends BaseAdapter {
@@ -93,15 +103,15 @@ public class SoundChooseActivity extends BaseAppActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    MediaPlayerUtil.getInstance().startRing(getApplicationContext(), position);
                     if (isSleep) {
                         currentPostion = (currentPostion / 10) * 10 + (position + 1);
                     } else {
                         currentPostion = (currentPostion % 10) + (position + 1) * 10;
                     }
                     CacheUtil.getInstance(SoundChooseActivity.this).setInt("alarmSound", currentPostion);
-                    setResult(position + 1);
-                    finish();
+                    adapter.notifyDataSetChanged();
+                    tvCurrent.setText(mAppNames.get(position));
                 }
             });
             return convertView;

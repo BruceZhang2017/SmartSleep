@@ -23,8 +23,10 @@ import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.UI.Report.SoundChooseActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,9 +37,7 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
 
     @BindView(R.id.im_l) ImageButton ibLeft;
     @BindView(R.id.wv_minutes) WheelView wvMinutes1;
-    @BindView(R.id.wv_minutes_2) WheelView wvMinutes2;
     @BindView(R.id.wv_hours) WheelView wvHours1;
-    @BindView(R.id.wv_hours_2) WheelView wvHours2;
     @BindView(R.id.btn_sunday) StateButton btnSunday;
     @BindView(R.id.btn_monday) StateButton btnMonday;
     @BindView(R.id.btn_tuesday) StateButton btnTuesday;
@@ -45,25 +45,15 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
     @BindView(R.id.btn_thursday) StateButton btnThursday;
     @BindView(R.id.btn_friday) StateButton btnFirday;
     @BindView(R.id.btn_saturday) StateButton btnSaturday;
-    @BindView(R.id.btn_sunday2) StateButton btnSunday2;
-    @BindView(R.id.btn_monday2) StateButton btnMonday2;
-    @BindView(R.id.btn_tuesday2) StateButton btnTuesday2;
-    @BindView(R.id.btn_wednesday2) StateButton btnWednesday2;
-    @BindView(R.id.btn_thursday2) StateButton btnThursday2;
-    @BindView(R.id.btn_friday2) StateButton btnFirday2;
-    @BindView(R.id.btn_saturday2) StateButton btnSaturday2;
     @BindView(R.id.switch_alarm) Switch switchAlarm;
     @BindView(R.id.switch_sleep_alert) Switch switchSleepAlarm;
     @BindView(R.id.tv_value) TextView tvValue;
-    @BindView(R.id.tv_value2) TextView tvValue2;
 
     private ArrayList<String> hours = new ArrayList<>();
     private ArrayList<String> minutes = new ArrayList<>();
     private Realm mRealm;
     private AlarmModel alramGetupModel;
-    private AlarmModel alramSleepModel;
     private AlarmModel alarmGetupModelNew;
-    private AlarmModel alarmSleepModelNew;
     private int currentPostion = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,28 +89,11 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
                     alarmGetupModelNew.setSaturday(model.isSaturday());
                     alarmGetupModelNew.setSunday(model.isSunday());
                     alarmGetupModelNew.setOpen(model.isOpen());
-                } else {
-                    alramSleepModel = model;
-                    alarmSleepModelNew = new AlarmModel();
-                    alarmSleepModelNew.setType(1);
-                    alarmSleepModelNew.setHour(model.getHour());
-                    alarmSleepModelNew.setMinute(model.getMinute());
-                    alarmSleepModelNew.setMonday(model.isMonday());
-                    alarmSleepModelNew.setThursday(model.isThursday());
-                    alarmSleepModelNew.setWednesday(model.isWednesday());
-                    alarmSleepModelNew.setThursday(model.isThursday());
-                    alarmSleepModelNew.setFirday(model.isFirday());
-                    alarmSleepModelNew.setSaturday(model.isSaturday());
-                    alarmSleepModelNew.setSunday(model.isSunday());
-                    alarmSleepModelNew.setOpen(model.isOpen());
                 }
             }
         }
         if (alarmGetupModelNew != null) {
             switchAlarm.setChecked(alarmGetupModelNew.isOpen());
-        }
-        if (alarmSleepModelNew != null) {
-            switchSleepAlarm.setChecked(alarmSleepModelNew.isOpen());
         }
         initialWheel();
         initialButtons();
@@ -130,58 +103,25 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             alarmGetupModelNew = new AlarmModel();
             alarmGetupModelNew.setType(0);
         }
-        if (alarmSleepModelNew == null) {
-            alarmSleepModelNew = new AlarmModel();
-            alarmSleepModelNew.setType(1);
-        }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        System.out.println("初始化闹钟功能");
-        boolean bAlarmOpen = alarmSleepModelNew.isOpen() || alarmGetupModelNew.isOpen();
-        if (bAlarmOpen) {
-            mRealm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    if (alramSleepModel == null) {
-                        AlarmModel model = realm.createObject(AlarmModel.class);
-                        model.setHour(alarmSleepModelNew.getHour());
-                        model.setMinute(alarmSleepModelNew.getMinute());
-                        model.setMonday(alarmSleepModelNew.isMonday());
-                        model.setThursday(alarmSleepModelNew.isThursday());
-                        model.setWednesday(alarmSleepModelNew.isWednesday());
-                        model.setThursday(alarmSleepModelNew.isThursday());
-                        model.setFirday(alarmSleepModelNew.isFirday());
-                        model.setSaturday(alarmSleepModelNew.isSaturday());
-                        model.setSunday(alarmSleepModelNew.isSunday());
-                        model.setOpen(alarmSleepModelNew.isOpen());
-                        model.setType(alarmSleepModelNew.getType());
-                    } else {
-                        alramSleepModel.setHour(alarmSleepModelNew.getHour());
-                        alramSleepModel.setMinute(alarmSleepModelNew.getMinute());
-                        alramSleepModel.setMonday(alarmSleepModelNew.isMonday());
-                        alramSleepModel.setThursday(alarmSleepModelNew.isThursday());
-                        alramSleepModel.setWednesday(alarmSleepModelNew.isWednesday());
-                        alramSleepModel.setThursday(alarmSleepModelNew.isThursday());
-                        alramSleepModel.setFirday(alarmSleepModelNew.isFirday());
-                        alramSleepModel.setSaturday(alarmSleepModelNew.isSaturday());
-                        alramSleepModel.setSunday(alarmSleepModelNew.isSunday());
-                        alramSleepModel.setOpen(alarmSleepModelNew.isOpen());
-                        alramSleepModel.setType(alarmSleepModelNew.getType());
-                    }
-                }
-            });
-        } else {
-            RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).equalTo("type", 1).findAll();
-            mRealm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    userList.deleteAllFromRealm();
-                }
-            });
+    protected void onResume() {
+        super.onResume();
+        int postion = CacheUtil.getInstance(this).getInt("alarmSound");
+        if (currentPostion == postion) {
+            return;
         }
+        currentPostion = postion;
+        tvValue.setText(getResources().getString(R.string.sound) + Math.max(1, currentPostion / 10));
+        startClockStartGetup();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("初始化闹钟功能");
+        boolean bAlarmOpen = alarmGetupModelNew.isOpen();
         if (bAlarmOpen) {
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -226,6 +166,11 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mRealm.close();
@@ -258,33 +203,13 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             public void onItemSelected(int index) {
                 System.out.println("设置的分钟：" + index);
                 alarmGetupModelNew.setMinute(index);
+                startClockStartGetup();
             }
         });
         if (alarmGetupModelNew != null) {
             wvMinutes1.setCurrentItem(alarmGetupModelNew.getMinute());
         } else {
             wvMinutes1.setCurrentItem(0);
-        }
-
-        wvMinutes2.setTextSize(40);
-        wvMinutes2.setLineSpacingMultiplier(2f);
-        wvMinutes2.setDividerWidth(10);
-        wvMinutes2.setItemsVisibleCount(3);
-        wvMinutes2.setDividerColor(getResources().getColor(R.color.tranparencyColor));
-        wvMinutes2.setTextColorCenter(getResources().getColor(R.color.colorWhite));
-        wvMinutes2.setTextColorOut(getResources().getColor(R.color.color_555A63));
-        wvMinutes2.setAdapter(new ArrayWheelAdapter(minutes));
-        wvMinutes2.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-                System.out.println("设置的分钟2：" + index);
-                alarmSleepModelNew.setMinute(index);
-            }
-        });
-        if (alarmSleepModelNew != null) {
-            wvMinutes2.setCurrentItem(alarmSleepModelNew.getMinute());
-        } else {
-            wvMinutes2.setCurrentItem(0);
         }
 
         wvHours1.setTextSize(40);
@@ -300,29 +225,11 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             public void onItemSelected(int index) {
                 System.out.println("设置的小时：" + index);
                 alarmGetupModelNew.setHour(index);
+                startClockStartGetup();
             }
         });
         if (alarmGetupModelNew != null) {
             wvHours1.setCurrentItem(alarmGetupModelNew.getHour());
-        }
-
-        wvHours2.setTextSize(40);
-        wvHours2.setLineSpacingMultiplier(2f);
-        wvHours2.setDividerWidth(10);
-        wvHours2.setItemsVisibleCount(3);
-        wvHours2.setDividerColor(getResources().getColor(R.color.tranparencyColor));
-        wvHours2.setTextColorCenter(getResources().getColor(R.color.colorWhite));
-        wvHours2.setTextColorOut(getResources().getColor(R.color.color_555A63));
-        wvHours2.setAdapter(new ArrayWheelAdapter(hours));
-        wvHours2.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int index) {
-                System.out.println("设置的小时2：" + index);
-                alarmSleepModelNew.setHour(index);
-            }
-        });
-        if (alarmSleepModelNew != null) {
-            wvHours2.setCurrentItem(alarmSleepModelNew.getHour());
         }
     }
 
@@ -334,17 +241,9 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         btnThursday.setOnClickListener(this);
         btnFirday.setOnClickListener(this);
         btnSaturday.setOnClickListener(this);
-        btnSunday2.setOnClickListener(this);
-        btnMonday2.setOnClickListener(this);
-        btnTuesday2.setOnClickListener(this);
-        btnWednesday2.setOnClickListener(this);
-        btnThursday2.setOnClickListener(this);
-        btnFirday2.setOnClickListener(this);
-        btnSaturday2.setOnClickListener(this);
+
         tvValue.setOnClickListener(this);
-        tvValue2.setOnClickListener(this);
         tvValue.setText(getResources().getString(R.string.sound) + Math.max(1, currentPostion / 10));
-        tvValue2.setText(getResources().getString(R.string.sound) + Math.max(1, currentPostion % 10));
         if (alarmGetupModelNew != null) {
             btnMonday.setSelected(alarmGetupModelNew.isMonday());
             btnTuesday.setSelected(alarmGetupModelNew.isTuesday());
@@ -360,22 +259,6 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             changeColor(btnThursday.isSelected(), btnThursday);
             changeColor(btnFirday.isSelected(), btnFirday);
             changeColor(btnSaturday.isSelected(), btnSaturday);
-        }
-        if (alarmSleepModelNew != null) {
-            btnMonday2.setSelected(alarmSleepModelNew.isMonday());
-            btnTuesday2.setSelected(alarmSleepModelNew.isTuesday());
-            btnWednesday2.setSelected(alarmSleepModelNew.isWednesday());
-            btnThursday2.setSelected(alarmSleepModelNew.isThursday());
-            btnFirday2.setSelected(alarmSleepModelNew.isFirday());
-            btnSaturday2.setSelected(alarmSleepModelNew.isSaturday());
-            btnSunday2.setSelected(alarmSleepModelNew.isSunday());
-            changeColor(btnSunday2.isSelected(), btnSunday2);
-            changeColor(btnMonday2.isSelected(), btnMonday2);
-            changeColor(btnTuesday2.isSelected(), btnTuesday2);
-            changeColor(btnWednesday2.isSelected(), btnWednesday2);
-            changeColor(btnThursday2.isSelected(), btnThursday2);
-            changeColor(btnFirday2.isSelected(), btnFirday2);
-            changeColor(btnSaturday2.isSelected(), btnSaturday2);
         }
     }
 
@@ -424,58 +307,12 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
                 boolean saturday = btnSaturday.isSelected();
                 alarmGetupModelNew.setSaturday(saturday);
                 break;
-            case R.id.btn_sunday2:
-                btnSunday2.setSelected(!btnSunday2.isSelected());
-                changeColor(btnSunday2.isSelected(), btnSunday2);
-                boolean sunday2 = btnSunday2.isSelected();
-                alarmSleepModelNew.setSunday(sunday2);
-                break;
-            case R.id.btn_monday2:
-                btnMonday2.setSelected(!btnMonday2.isSelected());
-                changeColor(btnMonday2.isSelected(), btnMonday2);
-                boolean monday2 = btnMonday2.isSelected();
-                alarmSleepModelNew.setMonday(monday2);
-                break;
-            case R.id.btn_tuesday2:
-                btnTuesday2.setSelected(!btnTuesday2.isSelected());
-                changeColor(btnTuesday2.isSelected(), btnTuesday2);
-                boolean tuesday2 = btnTuesday2.isSelected();
-                alarmSleepModelNew.setTuesday(tuesday2);
-                break;
-            case R.id.btn_wednesday2:
-                btnWednesday2.setSelected(!btnWednesday2.isSelected());
-                changeColor(btnWednesday2.isSelected(), btnWednesday2);
-                boolean wednesday2 = btnWednesday2.isSelected();
-                alarmSleepModelNew.setWednesday(wednesday2);
-                break;
-            case R.id.btn_thursday2:
-                btnThursday2.setSelected(!btnThursday2.isSelected());
-                changeColor(btnThursday2.isSelected(), btnThursday2);
-                boolean thursday2 = btnThursday2.isSelected();
-                alarmSleepModelNew.setThursday(thursday2);
-                break;
-            case R.id.btn_friday2:
-                btnFirday2.setSelected(!btnFirday2.isSelected());
-                changeColor(btnFirday2.isSelected(), btnFirday2);
-                boolean firday2 = btnFirday2.isSelected();
-                alarmSleepModelNew.setFirday(firday2);
-                break;
-            case R.id.btn_saturday2:
-                btnSaturday2.setSelected(!btnSaturday2.isSelected());
-                changeColor(btnSaturday2.isSelected(), btnSaturday2);
-                boolean saturday2 = btnSaturday2.isSelected();
-                alarmSleepModelNew.setSaturday(saturday2);
-                break;
             case R.id.tv_value:
                 Intent intent = new Intent(AlarmActivity.this, SoundChooseActivity.class);
                 intent.putExtra("isSleep", false);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
                 break;
-            case R.id.tv_value2:
-                Intent intentB = new Intent(AlarmActivity.this, SoundChooseActivity.class);
-                intentB.putExtra("isSleep", true);
-                startActivityForResult(intentB, 2);
-                break;
+
         }
     }
 
@@ -496,11 +333,13 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    CacheUtil.getInstance(AlarmActivity.this).putBool("GetupAlarm", true);
                     alarmGetupModelNew.setOpen(true);
                     startClockStartGetup();
                 } else {
+                    CacheUtil.getInstance(AlarmActivity.this).putBool("GetupAlarm", false);
                     alarmGetupModelNew.setOpen(false);
-                    clearAlarm(2);
+                    stopClockGetup();
                 }
             }
         });
@@ -508,125 +347,97 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    alarmSleepModelNew.setOpen(true);
-                    startClockStartSleep();
+                    CacheUtil.getInstance(AlarmActivity.this).putBool("SleepAlarm", true);
+                    startClockSleep();
                 } else {
-                    alarmSleepModelNew.setOpen(false);
-                    clearAlarm(1);
+                    CacheUtil.getInstance(AlarmActivity.this).putBool("SleepAlarm", false);
+                    stopClockSleep();
                 }
             }
         });
-    }
-
-    private void startClockStartSleep() {
-        if (alarmSleepModelNew.getHour() == 0 && alarmSleepModelNew.getMinute() == 0) {
-            return;
-        }
-        if (btnSunday2.isSelected() == false &&
-            btnMonday2.isSelected() == false &&
-            btnTuesday2.isSelected() == false &&
-            btnWednesday2.isSelected() == false &&
-            btnThursday2.isSelected() == false &&
-            btnFirday2.isSelected() == false &&
-            btnSaturday2.isSelected() == false) {
-            return;
-        }
-//        if (alramSleepModel != null && alramSleepModel.isEqual(alarmSleepModelNew) ) {
-//            return;
-//        }
-        if (alarmSleepModelNew.isOpen() == false ) {
-            return;
-        }
-        System.out.println("有闹钟被设置");
-        int hour = alarmSleepModelNew.getHour();
-        int minute = alarmSleepModelNew.getMinute();
-        ArrayList<Integer> testDays = new ArrayList<>();
-        if (btnSaturday2.isSelected()) {
-            testDays.add(Calendar.SATURDAY);
-        }
-        if (btnMonday2.isSelected()) {
-            testDays.add(Calendar.MONDAY);
-        }
-        if (btnTuesday2.isSelected()) {
-            testDays.add(Calendar.TUESDAY);
-        }
-        if (btnWednesday2.isSelected()) {
-            testDays.add(Calendar.WEDNESDAY);
-        }
-        if (btnThursday2.isSelected()) {
-            testDays.add(Calendar.THURSDAY);
-        }
-        if (btnFirday2.isSelected()) {
-            testDays.add(Calendar.FRIDAY);
-        }
-        if (btnSunday2.isSelected()) {
-            testDays.add(Calendar.SUNDAY);
-        }
-
-        AlarmManagerUtil.setAlarm(this, 0, hour, minute, 1, 0, Math.max(0, currentPostion % 10 - 1));
+        boolean bSleep = CacheUtil.getInstance(AlarmActivity.this).getBool("SleepAlarm");
+        switchSleepAlarm.setChecked(bSleep);
     }
 
     private void startClockStartGetup() {
         if (alarmGetupModelNew.getHour() == 0 && alarmGetupModelNew.getMinute() == 0) {
             return;
         }
-        if (btnSunday.isSelected() == false &&
-                btnMonday.isSelected() == false &&
-                btnTuesday.isSelected() == false &&
-                btnWednesday.isSelected() == false &&
-                btnThursday.isSelected() == false &&
-                btnFirday.isSelected() == false &&
-                btnSaturday.isSelected() == false) {
-            return;
-        }
-//        if (alramGetupModel != null && alramGetupModel.isEqual(alarmGetupModelNew) ) {
-//            return;
-//        }
         if (alarmGetupModelNew.isOpen() == false ) {
             return;
         }
-        if (alarmGetupModelNew.isEqual(alarmSleepModelNew)) {
-            return;
-        }
-        System.out.println("有闹钟被设置");
         int hour1 = alarmGetupModelNew.getHour();
         int minute1 = alarmGetupModelNew.getMinute();
-        ArrayList<Integer> testDays = new ArrayList<>();
-        if (btnSaturday.isSelected()) {
-            testDays.add(Calendar.SATURDAY);
-        }
-        if (btnMonday.isSelected()) {
-            testDays.add(Calendar.MONDAY);
-        }
-        if (btnTuesday.isSelected()) {
-            testDays.add(Calendar.TUESDAY);
-        }
-        if (btnWednesday.isSelected()) {
-            testDays.add(Calendar.WEDNESDAY);
-        }
-        if (btnThursday.isSelected()) {
-            testDays.add(Calendar.THURSDAY);
-        }
-        if (btnFirday.isSelected()) {
-            testDays.add(Calendar.FRIDAY);
-        }
-        if (btnSunday.isSelected()) {
-            testDays.add(Calendar.SUNDAY);
-        }
-        AlarmManagerUtil.setAlarm(this, 0, hour1, minute1, 2, 0, Math.max(0, currentPostion / 10 - 1));
-    }
-
-    private void clearAlarm(int id) {
-        AlarmManagerUtil.cancelAlarm(this, id);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            tvValue.setText(getResources().getString(R.string.sound) + resultCode);
+        boolean sleep = CacheUtil.getInstance(AlarmActivity.this).getBool("SleepAlarm");
+        if (sleep) {
+            int value = startClock();
+            if (value == hour1 * 60 + minute1) {
+                AlarmManagerUtil.setAlarm(this, 0, hour1, minute1, 2, 0, Math.max(0, currentPostion / 10 - 1));
+            }
         } else {
-            tvValue2.setText(getResources().getString(R.string.sound) + resultCode);
+            AlarmManagerUtil.setAlarm(this, 0, hour1, minute1, 2, 0, Math.max(0, currentPostion / 10 - 1));
         }
+    }
+
+    private void stopClockGetup() {
+        boolean sleep = CacheUtil.getInstance(AlarmActivity.this).getBool("SleepAlarm");
+        if (sleep) {
+            AlarmManagerUtil.setAlarm(this, 0, 22, 30, 2, 0, 0);
+        } else {
+            clearAlarm();
+        }
+    }
+
+    private void startClockSleep() {
+        int sleep = 22 * 60 + 30;
+        boolean getup = CacheUtil.getInstance(AlarmActivity.this).getBool("GetupAlarm");
+        if (getup) {
+            int value = startClock();
+            if (value == sleep) {
+                AlarmManagerUtil.setAlarm(this, 0, 22, 30, 2, 0, 0);
+            }
+        } else {
+            AlarmManagerUtil.setAlarm(this, 0, 22, 30, 2, 0, 0);
+        }
+    }
+
+    private void stopClockSleep() {
+        boolean getup = CacheUtil.getInstance(AlarmActivity.this).getBool("GetupAlarm");
+        if (getup) {
+            int hour1 = alarmGetupModelNew.getHour();
+            int minute1 = alarmGetupModelNew.getMinute();
+            AlarmManagerUtil.setAlarm(this, 0, hour1, minute1, 2, 0, Math.max(0, currentPostion / 10 - 1));
+        } else {
+            clearAlarm();
+        }
+    }
+
+    private int startClock() {
+        int now = timeToHourMinute();
+        int hour1 = alarmGetupModelNew.getHour();
+        int minute1 = alarmGetupModelNew.getMinute();
+        int getup = hour1 * 60 + minute1;
+        int sleep = 22 * 60 + 30;
+        if (getup >= now && sleep >= now) {
+            return getup > sleep ? sleep : getup;
+        } else if (getup < now && sleep >= now) {
+            return sleep;
+        } else if (getup < now && sleep < now) {
+            return getup > sleep ? sleep : getup;
+        } else if (getup >= now && sleep < now) {
+            return getup;
+        }
+        return 0;
+    }
+
+    private int timeToHourMinute() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        String str = simpleDateFormat.format(new Date());
+        String[] array = str.split(":");
+        return Integer.parseInt(array[0]) * 60 + Integer.parseInt(array[1]);
+    }
+
+    private void clearAlarm() {
+        AlarmManagerUtil.cancelAlarm(this, 2);
     }
 }

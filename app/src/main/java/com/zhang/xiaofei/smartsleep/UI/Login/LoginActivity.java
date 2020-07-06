@@ -48,7 +48,6 @@ public class LoginActivity extends BaseAppActivity {
     @BindView(R.id.et_pwd) EditText etPWD;
     @BindView(R.id.btn_area) Button btnArea;
     @BindView(R.id.btn_code) Button btnCode;
-    @BindView(R.id.tv_agree_login)TextView tvAgree;
     @BindView(R.id.tv_terms)TextView tvTerms;
     static int kRequestCode = 1;
     private static String TAG = "LoginActivity";
@@ -112,8 +111,8 @@ public class LoginActivity extends BaseAppActivity {
         // 单独设置字体颜色
 
         spannableBuilder.setSpan(new MyClickableSpan(), agree.length(), text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        tvAgree.setText(spannableBuilder);
-        tvAgree.setMovementMethod(LinkMovementMethod.getInstance());
+        tvTerms.setText(spannableBuilder);
+        tvTerms.setMovementMethod(LinkMovementMethod.getInstance());
 
         tvTerms.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,12 +120,12 @@ public class LoginActivity extends BaseAppActivity {
                 if (bAgreeTerms) {
                     bAgreeTerms = false;
                     Drawable drawable = getResources().getDrawable(R.mipmap.checkbox1);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
                     tvTerms.setCompoundDrawables(drawable, null, null,null);
                 } else {
                     bAgreeTerms = true;
                     Drawable drawable = getResources().getDrawable(R.mipmap.checkbox2);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
                     tvTerms.setCompoundDrawables(drawable, null, null,null);
                 }
             }

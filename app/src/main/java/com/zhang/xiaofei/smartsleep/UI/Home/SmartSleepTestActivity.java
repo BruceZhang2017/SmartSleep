@@ -2,7 +2,10 @@ package com.zhang.xiaofei.smartsleep.UI.Home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import com.clj.blesample.comm.DataOberverManager;
 import com.clj.blesample.comm.DataObservable;
 import com.clj.blesample.comm.DataObserver;
+import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
@@ -34,6 +38,9 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
     private boolean bStart = false;
     private TextView tvHeart;
     private TextView tvBreath;
+    private TextView tvValue1;
+    private TextView tvValue2;
+    private DynamicReceiver dynamicReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,15 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         intentBroadcast.putExtra("arg0", 11);
         intentBroadcast.putExtra("value", true);
         sendBroadcast(intentBroadcast);
+
+        tvValue1 = (TextView)findViewById(R.id.tv_real_time_value);
+        tvValue2 = (TextView)findViewById(R.id.tv_real_time_value_b);
+        int heartValue = getIntent().getIntExtra("arg2", 0);
+        int breathValue = getIntent().getIntExtra("arg3", 0);
+        tvValue1.setText(heartValue + getResources().getString(R.string.common_times_minute));
+        tvValue2.setText(breathValue + getResources().getString(R.string.common_times_minute));
+
+        registerBroadcast();
     }
 
     public void addText(TextView textView, String content) {
@@ -110,6 +126,7 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         dynamicViewHeart.clearAnimator();
         dynamicViewBreath.clearAnimator();
         DataOberverManager.getInstance().deleteObserver(this);
+        unregisterBroadcast();
     }
 
     @Override
@@ -157,4 +174,31 @@ public class SmartSleepTestActivity extends BaseAppActivity implements DataObser
         }
     };
 
+    private void registerBroadcast() {
+        IntentFilter dynamic_filter = new IntentFilter();
+        dynamic_filter.addAction("filter3");    //添加动态广播的Action
+        dynamicReceiver = new DynamicReceiver();
+        registerReceiver(dynamicReceiver, dynamic_filter);    //注册自定义动态广播消息
+    }
+
+    private void unregisterBroadcast() {
+        unregisterReceiver(dynamicReceiver);
+    }
+
+    public class DynamicReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("filter3")) {    //动作检测 5秒一次
+                int arg2 = intent.getIntExtra("arg2", 0);
+                int arg3 = intent.getIntExtra("arg3", 0);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvValue1.setText(arg2 + getResources().getString(R.string.common_times_minute));
+                        tvValue2.setText(arg3 + getResources().getString(R.string.common_times_minute));
+                    }
+                });
+            }
+        }
+    }
 }

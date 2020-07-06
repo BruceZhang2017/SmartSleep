@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.shizhefei:ViewPagerIndicator:1.1.9@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/14a19c616389a31a47b1e6867487c614/jetified-ViewPagerIndicator-1.1.9/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/14a19c616389a31a47b1e6867487c614/jetified-ViewPagerIndicator-1.1.9/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/87da9bd865a8f952ef9d1c43f470a5f2/jetified-ViewPagerIndicator-1.1.9/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/87da9bd865a8f952ef9d1c43f470a5f2/jetified-ViewPagerIndicator-1.1.9/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.shizhefei/ViewPagerIndicator/1.1.9/675385b75a15ab25224b653acdd9f3f8cd339ca8/ViewPagerIndicator-1.1.9-javadoc.jar!/" />

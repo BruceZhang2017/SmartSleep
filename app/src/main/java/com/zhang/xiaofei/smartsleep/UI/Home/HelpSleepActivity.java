@@ -77,6 +77,9 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     private String sleepEndTime = ""; // 睡觉结束时间
     private boolean bleConnected = false;
     private int getAwayDuration = 0; // 离床时间统计
+    private int heartValue = 0;
+    private int breathValue = 0;
+    private Boolean timeRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,37 +105,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         tvHeartAndBreath = (TextView)findViewById(R.id.tv_heart_breath);
         initialCurrentTime();
         mRealm = Realm.getDefaultInstance();
-        boolean bSetAlarm = false;
-        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
-        if (userList != null && userList.size() > 0) {
-            System.out.println("已经制定过闹钟信息");
-            for (AlarmModel model : userList) {
-                if (model.getType() == 0) {
-                    getupH = model.getHour();
-                    getupM = model.getMinute();
-                } else {
-                    sleepH = model.getHour();
-                    sleepM = model.getMinute();
-                }
-                if (model.isOpen()) {
-                    bSetAlarm = true;
-                }
-            }
-        }
-        if (bSetAlarm) {
-            tvTimeRange.setText((sleepH > 9 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 9 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 9 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 9 ? (getupM + "") : ("0" + getupM))  );
-            Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            tvTimeRange.setCompoundDrawables(drawable,null,null,null);
-
-            timer.schedule(task, 0, 10000);
-
-        } else {
-            tvTimeRange.setText(R.string.alarm_not_set);
-            Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_edit);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            tvTimeRange.setCompoundDrawables(null,null,drawable,null);
-        }
 
         tvTimeRange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +118,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 Intent intentB = new Intent(HelpSleepActivity.this, SmartSleepTestActivity.class);
+                intentB.putExtra("arg2", heartValue);
+                intentB.putExtra("arg3", breathValue);
                 startActivity(intentB);
             }
         });
@@ -302,6 +276,44 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             default:
                 System.out.println("none");
                 break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean bSetAlarm = false;
+        RealmResults<AlarmModel> userList = mRealm.where(AlarmModel.class).findAll();
+        if (userList != null && userList.size() > 0) {
+            System.out.println("已经制定过闹钟信息");
+            for (AlarmModel model : userList) {
+                if (model.getType() == 0) {
+                    getupH = model.getHour();
+                    getupM = model.getMinute();
+                }
+                if (model.isOpen()) {
+                    bSetAlarm = true;
+                }
+            }
+            sleepH = 22;
+            sleepM = 30;
+        }
+        if (bSetAlarm) {
+            tvTimeRange.setText((sleepH > 9 ? (sleepH + "") : ("0" + sleepH)) + ":" + (sleepM > 9 ? (sleepM + "") : ("0" + sleepM)) + "-" + (getupH > 9 ? (getupH + "") : ("0" + getupH)) + ":" + (getupM > 9 ? (getupM + "") : ("0" + getupM))  );
+            Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_clock);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvTimeRange.setCompoundDrawables(drawable,null,null,null);
+            if (timeRunning) {
+                return;
+            }
+            timeRunning = true;
+            timer.schedule(task, 0, 10000);
+
+        } else {
+            tvTimeRange.setText(R.string.alarm_not_set);
+            Drawable drawable = getResources().getDrawable(R.mipmap.sleep_icon_edit);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvTimeRange.setCompoundDrawables(null,null,drawable,null);
         }
     }
 
@@ -515,19 +527,31 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                                 getAwayDuration++;
                                 if (getAwayDuration >= 180) {
                                     if (CacheUtil.getInstance(HelpSleepActivity.this).getBool("GetAway")) {
-                                        AlarmManager.alarmGetup(HelpSleepActivity.this.getApplicationContext());
+                                        AManager.alarmGetup(HelpSleepActivity.this.getApplicationContext(), 0);
                                     }
                                     getAwayDuration = 0;
                                 }
+                                Intent intentBroadcast = new Intent();   //定义Intent
+                                intentBroadcast.setAction("filter3");
+                                intentBroadcast.putExtra("arg2", 0);
+                                intentBroadcast.putExtra("arg3", 0);
+                                sendBroadcast(intentBroadcast);
                             } else {
                                 getAwayDuration = 0;
                                 if (bSleep){
                                     tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + " " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + " " + getResources().getString(R.string.common_times_minute));
                                     if (CacheUtil.getInstance(HelpSleepActivity.this).getBool("AbnormalHeartRate")) {
                                         if (arg2 > 100) {
-                                            AlarmManager.alarmGetup(HelpSleepActivity.this.getApplicationContext());
+                                            AManager.alarmGetup(HelpSleepActivity.this.getApplicationContext(), 1);
                                         }
                                     }
+                                    heartValue = arg2;
+                                    breathValue = arg3;
+                                    Intent intentBroadcast = new Intent();   //定义Intent
+                                    intentBroadcast.setAction("filter3");
+                                    intentBroadcast.putExtra("arg2", arg2);
+                                    intentBroadcast.putExtra("arg3", arg3);
+                                    sendBroadcast(intentBroadcast);
                                 } else {
                                     tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + "-- " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + "-- " + getResources().getString(R.string.common_times_minute));
                                 }

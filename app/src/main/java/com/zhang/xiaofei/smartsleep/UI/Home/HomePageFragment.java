@@ -620,6 +620,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvBodyMove.setText(R.string.common_many);
                 tvDotValue.setText(0 + "" + getResources().getString(R.string.common_times));
                 circlePercentView.setCurProcess(arraySleepbelt[0]);
+                circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(arraySleepbelt[0])));
                 tvSleepReviewValue.setText(arraySleepbelt[0] + getResources().getString(R.string.common_minute3));
             } else {
                 tvDot1.setText(R.string.middle_fall_asleep);
@@ -642,6 +643,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvBodyMove.setText(arraySleepbelt[3] + "" + unit3);
                 tvDotValue.setText(arraySleepbelt[4] + "" + unit3);
                 circlePercentView.setCurProcess(arraySleepbelt[0]);
+                circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(arraySleepbelt[0])));
                 tvSleepReviewValue.setText(arraySleepbelt[0] + getResources().getString(R.string.common_minute3));
             }
 

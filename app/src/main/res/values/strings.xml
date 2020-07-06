@@ -5,7 +5,7 @@
     <string name="common_birthday">Date of birth</string>
     <string name="common_height">Height</string>
     <string name="common_weight">Weight</string>
-    <string name="login_agree">Login means acceptence to our terms</string>
+    <string name="login_agree">I have read and agreed to the</string>
     <string name="login_login">Login</string>
     <string name="login_code">Send</string>
     <string name="login_input_code">Varification code</string>
@@ -48,7 +48,7 @@
     <string name="middle_fri">Fri</string>
     <string name="middle_sat">Sat</string>
     <string name="middle_sun">Sun</string>
-    <string name="middle_bedtime_reminder">Bedtime alarm clock</string>
+    <string name="middle_bedtime_reminder">Bedtime Reminder</string>
     <string name="middle_tone">Tone</string>
     <string name="middle_default">Default</string>
     <string name="middle_skip">Skip</string>
@@ -87,7 +87,7 @@
     <string name="mine_feedback">Feedback list</string>
     <string name="mine_feedbackB">Feedback</string>
     <string name="middle_alarms">Alarms</string>
-    <string name="middle_sleep_reminder">Sleep Alarm clock</string>
+    <string name="middle_sleep_reminder">Sleep Reminder</string>
     <string name="middle_wellness">Health &amp; Wellness</string>
     <string name="middle_type_of_sleep_promotion">Type of sleep promotion</string>
     <string name="common_how_to_use">Instruction</string>
@@ -341,9 +341,11 @@
     <string name="abnormal_heart_rate_reminder">Abnormal heart rate reminder</string>
     <string name="cache_is_empty">Cache is empty</string>
     <string name="latest_version_tip">Already the latest version</string>
-    <string name="use_of_terms">I have read and agreed to the \'Term of usage for Yamind APP\' </string>
     <string name="battery"> Battery:</string>
     <string name="bed_away_15_minutes_tip">The prompt is triggered when you are out of bed for more than 15 minutes.</string>
     <string name="heart_rate_15_minutes_tip">If the heart rate is more than 100, the prompt will be triggered. </string>
     <string name="monitor">monitor</string>
+    <string name="reminder">Too long out of bed</string>
+    <string name="warning">Warning</string>
+    <string name="heart_rate_100">heart rate is more than 100</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.zhang.xiaofei.smartsleep;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Build;
@@ -41,6 +43,9 @@ public class YMApplication extends Application {
     private boolean bleOpen = false; // 保存蓝牙是否开启
     private int[] sleepbeltValue = new int[5]; // 得分， 入睡，睡眠时长，心率，呼吸率
     public Map<String, Integer> deviceBatteryMap = new HashMap<>();
+    public static final String CHANNEL_ID_1 = "channel1";
+
+    public static final long[] VIBRATION_PATTERN = {100, 400, 250, 350, 1000};
 
     @Override
     public void onCreate() {
@@ -98,6 +103,7 @@ public class YMApplication extends Application {
         uploadManager.uploadSleepData();
 
         SleepAndGetupTimeManager.getHashMapData();
+        initNotificationChannels();
     }
 
     private void modulesApplicationInit(){
@@ -154,6 +160,31 @@ public class YMApplication extends Application {
 
     public void setSleepbeltValue(int[] sleepbeltValue) {
         this.sleepbeltValue = sleepbeltValue;
+    }
+
+    void initNotificationChannels() {
+        // make sure the least version is android oreo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            System.out.println("AAAAAAAA");
+            // initialise the channels
+            NotificationChannel channel1 = new NotificationChannel(
+                    CHANNEL_ID_1,
+                    "Channel1",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel1.setVibrationPattern(VIBRATION_PATTERN);
+            channel1.setDescription("This is channel 1");
+
+            // create the notification manager
+            NotificationManager manager = getSystemService(NotificationManager.class);
+
+            // create the channels
+            try {
+                manager.createNotificationChannel(channel1);
+            } catch(NullPointerException exception) {
+                System.err.println("Error: notification manager is NULL");
+            }
+        }
     }
 }
 

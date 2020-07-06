@@ -17,10 +17,6 @@ public class ClockAlarmActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock_alarm);
         String message = getResources().getString(R.string.alarm_dialog_close);
-        int arg = this.getIntent().getIntExtra("arg0", 0);
-        if (arg > 0) {
-            message = getResources().getString(R.string.reminder);
-        }
         int flag = this.getIntent().getIntExtra("flag", 0);
         int index = this.getIntent().getIntExtra("index", 0);
         showDialogInBroadcastReceiver(message, flag, index);
@@ -39,9 +35,6 @@ public class ClockAlarmActivity extends Activity {
             vibrator.vibrate(new long[]{100, 10, 100, 600}, 0);
         }
         String title = getResources().getString(R.string.alarm_dialog_title);
-        if (message.equals(getResources().getString(R.string.reminder))) {
-            title = getResources().getString(R.string.warning);
-        }
         final SimpleDialog dialog = new SimpleDialog(this, R.style.Theme_dialog);
         dialog.show();
         dialog.setTitle(title);

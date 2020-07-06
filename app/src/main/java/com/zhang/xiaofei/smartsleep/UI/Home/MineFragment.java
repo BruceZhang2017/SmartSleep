@@ -202,6 +202,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     }
                 }
             });
+            if (position == 4) {
+                mSwitch.setChecked(CacheUtil.getInstance(getContext()).getBool("GetAway"));
+            } else if (position == 5) {
+                mSwitch.setChecked(CacheUtil.getInstance(getContext()).getBool("AbnormalHeartRate"));
+            }
             return convertView;
         }
     }

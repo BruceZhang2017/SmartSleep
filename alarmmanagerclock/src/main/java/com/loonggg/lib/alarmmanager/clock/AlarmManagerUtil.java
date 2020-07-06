@@ -19,16 +19,6 @@ import java.util.Calendar;
 public class AlarmManagerUtil {
     public static final String ALARM_ACTION = "com.loonggg.alarm.clock";
 
-//    public static void setAlarmTime(Context context, long timeInMillis, Intent intent) {
-//        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        PendingIntent sender = PendingIntent.getBroadcast(context, intent.getIntExtra("id", 0),
-//                intent, PendingIntent.FLAG_CANCEL_CURRENT);
-//        int interval = (int) intent.getLongExtra("intervalMillis", 0);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            am.setWindow(AlarmManager.RTC_WAKEUP, timeInMillis, interval, sender);
-//        }
-//    }
-
     public static void cancelAlarm(Context context, int id) {
         Intent intent = new Intent(ALARM_ACTION);
         PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, PendingIntent
@@ -126,14 +116,14 @@ public class AlarmManagerUtil {
     }
 
 
-//    public static void createAlarm(Context context, String message, int hour, int minutes, ArrayList<Integer> days) {
+//    public static void createAlarm(Context context, int hour, int minutes) {
 //        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
 //                //闹钟的小时
 //                .putExtra(AlarmClock.EXTRA_HOUR, hour)
 //                //闹钟的分钟
 //                .putExtra(AlarmClock.EXTRA_MINUTES, minutes)
 //                //响铃时提示的信息
-//                .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+//                .putExtra(AlarmClock.EXTRA_MESSAGE, "睡觉时间到了")
 //                //用于指定该闹铃触发时是否振动
 //                .putExtra(AlarmClock.EXTRA_VIBRATE, true)
 //                //一个 content: URI，用于指定闹铃使用的铃声，也可指定 VALUE_RINGTONE_SILENT 以不使用铃声。
@@ -141,8 +131,6 @@ public class AlarmManagerUtil {
 //                //.putExtra(AlarmClock.EXTRA_RINGTONE, ringtoneUri)
 //                //一个 ArrayList，其中包括应重复触发该闹铃的每个周日。
 //                // 每一天都必须使用 Calendar 类中的某个整型值（如 MONDAY）进行声明。
-//                //对于一次性闹铃，无需指定此 extra
-//                .putExtra(AlarmClock.EXTRA_DAYS, days)
 //                //如果为true，则调用startActivity()不会进入手机的闹钟设置界面
 //                .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
 //        if (intent.resolveActivity(context.getPackageManager()) != null) {

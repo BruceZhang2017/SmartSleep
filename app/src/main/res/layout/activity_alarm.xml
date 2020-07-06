@@ -147,6 +147,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_sun"/>
 
             <com.deadline.statebutton.StateButton
@@ -168,6 +169,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_mon"/>
 
             <com.deadline.statebutton.StateButton
@@ -189,6 +191,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_tue"/>
 
             <com.deadline.statebutton.StateButton
@@ -210,6 +213,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_wed"/>
 
             <com.deadline.statebutton.StateButton
@@ -231,6 +235,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_thu"/>
 
             <com.deadline.statebutton.StateButton
@@ -252,6 +257,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_fri"/>
 
             <com.deadline.statebutton.StateButton
@@ -273,6 +279,7 @@
                 app:pressedStrokeColor="#4AC4C4"
                 app:normalBackgroundColor="#090E17"
                 app:pressedBackgroundColor="#4AC4C4"
+                android:visibility="invisible"
                 android:text="@string/middle_sat"/>
 
             <ImageView
@@ -281,8 +288,8 @@
                 android:layout_height="1dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_saturday"
-                android:layout_marginTop="14dp"
+                app:layout_constraintTop_toBottomOf="@id/wv_minutes"
+                android:layout_marginTop="30dp"
                 android:background="#17FFFFFF"/>
 
             <TextView
@@ -342,274 +349,18 @@
                 app:layout_constraintBottom_toBottomOf="@id/tv_sleep_alert"
                 android:layout_marginRight="20dp"
                 android:theme="@style/MySwitch"/>
-
-            <com.contrarywind.view.WheelView
-                android:id="@+id/wv_minutes_2"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:minHeight="120dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_sleep_alert"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="20dp"
-                android:visibility="invisible"
-                android:background="#00000000"/>
-
             <TextView
-                android:id="@+id/tv_maohao_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/wv_minutes_2"
-                app:layout_constraintBottom_toBottomOf="@id/wv_minutes_2"
-                app:layout_constraintRight_toLeftOf="@id/wv_minutes_2"
-                android:textSize="40sp"
-                android:textColor="#FFFFFF"
-                android:text=":"
-                android:gravity="center"
-                android:visibility="invisible"
-                />
-
-            <com.contrarywind.view.WheelView
-                android:id="@+id/wv_hours_2"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:minHeight="120dp"
-                app:layout_constraintRight_toLeftOf="@id/tv_maohao_2"
-                app:layout_constraintTop_toBottomOf="@id/tv_sleep_alert"
-                android:layout_marginTop="15dp"
-                android:background="#00000000"
-                android:visibility="invisible"
-                android:layout_marginRight="20dp"/>
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_pm"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:layout_constraintTop_toTopOf="@id/wv_hours_2"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/wv_hours_2"-->
-<!--                app:layout_constraintRight_toLeftOf="@id/wv_hours_2"-->
-<!--                android:textSize="12sp"-->
-<!--                android:textColor="#FFFFFF"-->
-<!--                android:text="PM"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:visibility="gone"-->
-<!--                android:gravity="center"/>-->
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_sunday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/wv_minutes_2"
-                app:layout_constraintRight_toLeftOf="@id/btn_monday2"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                android:layout_marginTop="30dp"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_sun"/>
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_monday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toRightOf="@id/btn_sunday2"
-                app:layout_constraintRight_toLeftOf="@id/btn_tuesday2"
-                app:layout_constraintTop_toTopOf="@id/btn_sunday2"
-                app:layout_constraintBottom_toBottomOf="@id/btn_sunday2"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_mon"/>
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_tuesday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toRightOf="@id/btn_monday2"
-                app:layout_constraintRight_toLeftOf="@id/btn_wednesday2"
-                app:layout_constraintTop_toTopOf="@id/btn_monday2"
-                app:layout_constraintBottom_toBottomOf="@id/btn_monday2"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_tue"/>
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_wednesday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toRightOf="@id/btn_tuesday2"
-                app:layout_constraintRight_toLeftOf="@id/btn_thursday2"
-                app:layout_constraintTop_toTopOf="@id/btn_tuesday2"
-                app:layout_constraintBottom_toBottomOf="@id/btn_tuesday2"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_wed"/>
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_thursday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toRightOf="@id/btn_wednesday2"
-                app:layout_constraintRight_toLeftOf="@id/btn_friday2"
-                app:layout_constraintTop_toTopOf="@id/btn_wednesday2"
-                app:layout_constraintBottom_toBottomOf="@id/btn_wednesday2"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_thu"/>
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_friday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toRightOf="@id/btn_thursday2"
-                app:layout_constraintRight_toLeftOf="@id/btn_saturday2"
-                app:layout_constraintTop_toTopOf="@id/btn_thursday2"
-                app:layout_constraintBottom_toBottomOf="@id/btn_thursday2"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_fri"/>
-
-            <com.deadline.statebutton.StateButton
-                android:id="@+id/btn_saturday2"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:layout_constraintLeft_toRightOf="@id/btn_friday2"
-                app:layout_constraintTop_toTopOf="@id/btn_friday2"
-                app:layout_constraintBottom_toBottomOf="@id/btn_friday2"
-                app:layout_constraintRight_toRightOf="parent"
-                android:textSize="14sp"
-                android:background="@null"
-                app:radius="19dp"
-                app:animationDuration="200"
-                app:normalStrokeWidth="1dp"
-                app:normalTextColor="#555A63"
-                app:pressedTextColor="#FFFFFF"
-                app:normalStrokeColor="#555A63"
-                app:pressedStrokeColor="#4AC4C4"
-                app:normalBackgroundColor="#090E17"
-                app:pressedBackgroundColor="#4AC4C4"
-                android:visibility="invisible"
-                android:text="@string/middle_sat"/>
-
-            <ImageView
-                android:id="@+id/iv_line_up2"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_saturday2"
-                android:layout_marginTop="14dp"
-                android:visibility="invisible"
-                android:background="#17FFFFFF"/>
-
-            <TextView
-                android:id="@+id/tv_tip2"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_line_up2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/switch_sleep_alert"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:textColor="#E9F0FF"
-                android:textSize="16sp"
-                android:visibility="invisible"
-                android:text="@string/middle_tone"/>
-
-            <TextView
-                android:id="@+id/tv_value2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#4176E3"
-                android:textSize="14sp"
-                android:text="@string/sound1"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_tip2"
-                app:layout_constraintBottom_toBottomOf="@id/tv_tip2"
                 android:layout_marginRight="20dp"
-                android:visibility="invisible"
-                android:drawableRight="@mipmap/me_icon_more"/>
-
-            <ImageView
-                android:id="@+id/iv_line2"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_line_up2"
-                android:layout_marginTop="51dp"
-                android:visibility="invisible"
-                android:background="#17FFFFFF"/>
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_alarm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="wv_hours,wv_minutes,tv_maohao,btn_saturday,btn_sunday,btn_monday,btn_tuesday,btn_wednesday,btn_thursday,btn_friday,iv_line,tv_tip,tv_value"/>
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_sleep_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="wv_hours_2,wv_minutes_2,tv_maohao_2,btn_saturday2,btn_sunday2,btn_monday2,btn_tuesday2,btn_wednesday2,btn_thursday2,btn_friday2,iv_line2,tv_tip2,tv_value2,iv_line_up2"/>
-
+                android:textSize="12dp"
+                android:textColor="@color/colorWhite"
+                android:text="每晚22：30"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
