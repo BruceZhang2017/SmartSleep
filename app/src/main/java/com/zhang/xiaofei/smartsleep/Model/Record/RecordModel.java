@@ -13,7 +13,7 @@ public class RecordModel extends RealmObject {
     int bodyMotion; // 体动
     int getupFlag; // 离床和在床
     int snore; // 打鼾
-    int breatheStop; // 呼吸停止
+    int breatheStop; // 呼吸停止时间
     boolean isSyncCloud;
 
     public int getUserId() {

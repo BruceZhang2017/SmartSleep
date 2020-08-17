@@ -115,6 +115,7 @@
                 android:hint="@string/login_contact_phone_hint"
                 android:textColorHint="#555A63"
                 android:textSize="14sp"
+                android:maxLength="11"
                 android:background="@null"
                 android:textColor="#4176E3"/>
 

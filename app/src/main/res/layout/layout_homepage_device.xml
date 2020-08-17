@@ -55,6 +55,26 @@
         android:text="0%" />
 
     <ImageView
+        android:id="@+id/iv_battery"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintTop_toTopOf="@id/tv_battery"
+        app:layout_constraintBottom_toBottomOf="@id/tv_battery"
+        app:layout_constraintRight_toLeftOf="@id/tv_battery"
+        android:layout_marginRight="3dp"
+        android:src="@mipmap/icon_battery_default"/>
+
+    <ImageView
+        android:id="@+id/iv_battery_value"
+        android:layout_width="11dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_battery"
+        app:layout_constraintLeft_toLeftOf="@id/iv_battery"
+        app:layout_constraintRight_toRightOf="@id/iv_battery"
+        android:layout_marginBottom="4dp"
+        android:background="@color/white"/>
+
+    <ImageView
         android:id="@+id/iv_bluetooth"
         android:layout_width="30dp"
         android:layout_height="30dp"

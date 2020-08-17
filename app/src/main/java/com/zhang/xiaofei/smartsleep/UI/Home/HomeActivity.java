@@ -48,18 +48,12 @@ import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
-import com.zhang.xiaofei.smartsleep.UI.Me.DeviceManageActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.EasyCaptureActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,6 +177,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         System.out.println("HomeActivity ontab select: " + index);
         if (index == 1) {
             mTab2.refreshDayReport();
+            boolean value = CacheUtil.getInstance(this).getBool("SyncData");
+            if (!value) {
+                mTab2.showSyncDataDialog();
+            }
         }
     }
 
@@ -204,6 +202,10 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         unregisterReceiver(this.bleListenerReceiver);
         readTempuratureTimer.cancel();
         readTempuratureTimer = null;
+        if (YMApplication.getInstance().player == null) {
+            return;
+        }
+        YMApplication.getInstance().player.stopSelf();
     }
 
     @Override
@@ -913,6 +915,37 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     fastBLEManager.macAddress = "";
                     fastBLEManager.stopBLEScan();
                     fastBLEManager.onDisConnect();
+                } else if (arg0 == 17) { // 历史数据
+                    System.out.println("刷新历史数据");
+                    if (mTab2 != null) {
+                        mTab2.refreshDayReport();
+                    }
+                } else if (arg0 == 18) { // 向历史数据
+                    handleBLEWrite(1);
+                } else if (arg0 == 19) {
+                    String mac = intent.getStringExtra("mac");
+                    String version = intent.getStringExtra("version");
+                    if (mac.length() == 0) {
+                        return;
+                    }
+                    if (version.length() == 0) {
+                        return;
+                    }
+                    final String newVersion = version.replace("1.", "");
+                    if (mRealm == null){
+                        return;
+                    }
+                    mRealm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            //先查找后得到DeviceModel对象
+                            DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", mac).findFirst();
+                            if (deviceModel != null) {
+                                deviceModel.setVersion(newVersion);
+                                System.out.println("更新设备的版本号信息：" + newVersion);
+                            }
+                        }
+                    });
                 }
             }
         }

@@ -16,24 +16,29 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.deadline.statebutton.StateButton;
+import com.loonggg.lib.alarmmanager.clock.ClockAlarmBActivity;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.sunofbeaches.himalaya.PlayHelper;
-import com.sunofbeaches.himalaya.PlayHelperCallback;
-//import com.umeng.socialize.utils.UmengText;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
+import com.zhang.xiaofei.smartsleep.Kit.Application.LogInterceptor;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
+import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
+import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.Tools.SendCMDToHomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
+import com.zhang.xiaofei.smartsleep.UI.music.Audio;
+import com.zhang.xiaofei.smartsleep.UI.music.PlayMusicChange;
+import com.zhang.xiaofei.smartsleep.UI.music.StorageUtil;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,11 +46,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener, PlayHelperCallback, AlarmTimer.AlarmTimerInterface {
+public class HelpSleepActivity extends BaseAppActivity implements View.OnClickListener, AlarmTimer.AlarmTimerInterface, PlayMusicChange {
     ImageButton ibBack;
     TextView tvTime;
     TextView tvTimeRange;
@@ -70,7 +83,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     int sleepM = 0;
     String strH = "";
     String strM = "";
-    private PlayHelper playHelper; // 播放帮助类
     private boolean bSleep = false;
     private DynamicReceiver dynamicReceiver;
     private String sleepStartTime = ""; // 睡觉开始时间
@@ -132,6 +144,11 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         ibPlayNext.setOnClickListener(this);
         tvSoundTitle = (TextView)findViewById(R.id.textView3);
 
+        if (YMApplication.getInstance().player != null && YMApplication.getInstance().player.playing) {
+            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
+            refreshMusicName();
+        }
+
         switch1 = (Switch)findViewById(R.id.switch1);
         switch1.setChecked(AlarmTimer.getInstance().bStart);
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -172,16 +189,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             btnSleep.setText(R.string.alarm_sleep);
         }
 
-        playHelper = new PlayHelper();
-        playHelper.playHelperCallback = this;
-        if (playHelper.initPresenter(this)) {
-            showHUD();
-        }
-        if (playHelper.isPlaying()) {
-            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
-            tvSoundTitle.setText(playHelper.playTitle());
-        }
-
         refreshMonitorValue();
 
         roundedImageView = (RoundedImageView)findViewById(R.id.iv_middle_circle);
@@ -201,6 +208,17 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 }
             }
         });
+
+        if (YMApplication.getInstance().player != null) {
+            YMApplication.getInstance().player.regMusicChange(this);
+        }
+    }
+
+    private void refreshMusicName() {
+        StorageUtil storage = new StorageUtil(getApplicationContext());
+        List<Audio> audioList = storage.loadAudio();
+        int audioIndex = storage.loadAudioIndex();
+        tvSoundTitle.setText(audioList.get(audioIndex).getTitle());
     }
 
     private void showTimeChoose() {
@@ -265,13 +283,32 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.ib_play_pause:
-                playHelper.play();
+                if (YMApplication.getInstance().player == null) {
+                    return;
+                }
+                if (YMApplication.getInstance().player.playing) {
+                    YMApplication.getInstance().player.pauseMedia();
+                    ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
+                    tvSoundTitle.setText("");
+                } else {
+                    YMApplication.getInstance().player.resumeMedia();
+                    ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
+                    refreshMusicName();
+                }
                 break;
             case R.id.ib_pre:
-                playHelper.playPre();
+                if (YMApplication.getInstance().player == null) {
+                    return;
+                }
+                YMApplication.getInstance().player.skipToPrevious();
+                refreshMusicName();
                 break;
             case R.id.ib_next:
-                playHelper.playNext();
+                if (YMApplication.getInstance().player == null) {
+                    return;
+                }
+                YMApplication.getInstance().player.skipToNext();
+                refreshMusicName();
                 break;
             default:
                 System.out.println("none");
@@ -325,8 +362,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        playHelper.deinitPresenter();
-        playHelper.playHelperCallback = null;
         AlarmTimer.getInstance().list.remove(this);
         unregisterBroadcast();
         Intent intentBroadcast = new Intent();   //定义Intent
@@ -338,6 +373,10 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
             timer.cancel();
         }
         timer = null;
+
+        if (YMApplication.getInstance().player != null) {
+            YMApplication.getInstance().player.unregMusicChange();
+        }
     }
 
     // 生成大小字体不一样的内容
@@ -420,30 +459,6 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         }
     }
 
-
-    @Override
-    public void refreshPlayStatus(boolean isPlaying) {
-        if (isPlaying) {
-            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
-        } else {
-            ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
-        }
-
-    }
-
-    @Override
-    public void refreshPlayTitle(String title) {
-        tvSoundTitle.setText(title);
-    }
-
-    @Override
-    public void callbackHideHUD(boolean isShowToast) {
-        hideHUD();
-        if (isShowToast) {
-            Toast.makeText(this, R.string.common_check_network, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public void stopAlarm() {
         switch1.setChecked(AlarmTimer.getInstance().bStart);
@@ -475,6 +490,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         arrayList.add(sleepStartTime + "&" + sleepEndTime);
         SleepAndGetupTimeManager.times.put(sleepEndTime.substring(0, 10), arrayList);
         SleepAndGetupTimeManager.putHashMapData();
+        upSleepAndGetupTime(sleepStartTime + ":00", sleepEndTime + ":00");
     }
 
     // 读取离床、心率和呼吸率
@@ -527,7 +543,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                                 getAwayDuration++;
                                 if (getAwayDuration >= 180) {
                                     if (CacheUtil.getInstance(HelpSleepActivity.this).getBool("GetAway")) {
-                                        AManager.alarmGetup(HelpSleepActivity.this.getApplicationContext(), 0);
+                                        //AManager.alarmGetup(HelpSleepActivity.this.getApplicationContext(), 0);
+                                        showAlarmDialog(context.getResources().getString(R.string.warning), context.getResources().getString(R.string.reminder));
                                     }
                                     getAwayDuration = 0;
                                 }
@@ -542,7 +559,8 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                                     tvHeartAndBreath.setText(getResources().getString(R.string.report_heart) + "：" + arg2 + " " + getResources().getString(R.string.common_times_minute) + "\n" + getResources().getString(R.string.report_respiratory_rate) + "：" + arg3 + " " + getResources().getString(R.string.common_times_minute));
                                     if (CacheUtil.getInstance(HelpSleepActivity.this).getBool("AbnormalHeartRate")) {
                                         if (arg2 > 100) {
-                                            AManager.alarmGetup(HelpSleepActivity.this.getApplicationContext(), 1);
+                                            //AManager.alarmGetup(HelpSleepActivity.this.getApplicationContext(), 1);
+                                            showAlarmDialog(context.getResources().getString(R.string.warning), context.getResources().getString(R.string.heart_rate_100));
                                         }
                                     }
                                     heartValue = arg2;
@@ -565,13 +583,58 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         }
     }
 
-    @Override
-    public void playFail() {
-        Toast.makeText(this, R.string.common_check_network, Toast.LENGTH_SHORT).show();
-        if (playHelper.isPlaying()) {
-            ibPalyPause.setImageResource(R.mipmap.sleep_icon_stop);
-        } else {
-            ibPalyPause.setImageResource(R.mipmap.sleep_icon_play);
+    private void upSleepAndGetupTime(String upTime, String downTime) {
+        YMUserInfoManager userInfoManager = new YMUserInfoManager(YMApplication.getContext());
+        UserModel model = userInfoManager.loadUserInfo();
+        if (model == null) {
+            return;
         }
+        OkHttpClient okHttpClient  = new OkHttpClient.Builder().addInterceptor(new LogInterceptor())
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = new FormBody.Builder().add("appUserId", model.getUserInfo().getUserId() + "").add("upTime", upTime).add("downTime", downTime).build();
+        Request request = new Request.Builder()
+                .url(YMApplication.getInstance().domain() + "app/userPara/saveUserTime")//请求的url
+                .addHeader("token", model.getToken())
+                .post(requestBody)
+                .build();
+
+        //创建/Call
+        Call call = okHttpClient.newCall(request);
+        //加入队列 异步操作
+        call.enqueue(new Callback() {
+            //请求错误回调方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("网络请求失败");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.code() == 200) {
+
+                } else {
+                    System.out.println("从服务器下载数据失败");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void playMusicChange() {
+        refreshMusicName();
+    }
+
+    public void showAlarmDialog(String title, String message) {
+        Intent clockIntent = new Intent(this, ClockAlarmBActivity.class);
+        clockIntent.putExtra("flag", 2);
+        clockIntent.putExtra("index", 0);
+        clockIntent.putExtra("title", title);
+        clockIntent.putExtra("message", message);
+        clockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(clockIntent);
     }
 }

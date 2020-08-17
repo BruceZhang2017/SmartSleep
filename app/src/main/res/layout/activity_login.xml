@@ -179,18 +179,26 @@
 
         <TextView
             android:id="@+id/tv_terms"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_items"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_line"
             android:text=""
             android:textColor="@color/colorWhite"
-            android:drawableLeft="@mipmap/checkbox1"
-            android:drawablePadding="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"/>
+
+        <ImageView
+            android:id="@+id/iv_items"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_line"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/checkbox1"/>
 
         <Button
             android:id="@+id/btn_login"

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class LoginActivity extends BaseAppActivity {
     @BindView(R.id.btn_area) Button btnArea;
     @BindView(R.id.btn_code) Button btnCode;
     @BindView(R.id.tv_terms)TextView tvTerms;
+    @BindView(R.id.iv_items)ImageView ivItems;
     static int kRequestCode = 1;
     private static String TAG = "LoginActivity";
     private boolean bAgreeTerms = false;
@@ -114,19 +116,15 @@ public class LoginActivity extends BaseAppActivity {
         tvTerms.setText(spannableBuilder);
         tvTerms.setMovementMethod(LinkMovementMethod.getInstance());
 
-        tvTerms.setOnClickListener(new View.OnClickListener() {
+        ivItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (bAgreeTerms) {
                     bAgreeTerms = false;
-                    Drawable drawable = getResources().getDrawable(R.mipmap.checkbox1);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
-                    tvTerms.setCompoundDrawables(drawable, null, null,null);
+                    ivItems.setImageResource(R.mipmap.checkbox1);
                 } else {
                     bAgreeTerms = true;
-                    Drawable drawable = getResources().getDrawable(R.mipmap.checkbox2);
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth() + 10, drawable.getMinimumHeight());
-                    tvTerms.setCompoundDrawables(drawable, null, null,null);
+                    ivItems.setImageResource(R.mipmap.checkbox2);
                 }
             }
         });

@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.marshalchen.ultimaterecyclerview:library:0.9.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9eec444f9d5fdd3d873fe94fae15a4e5/jetified-library-0.9.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9eec444f9d5fdd3d873fe94fae15a4e5/jetified-library-0.9.0/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9b25e1f29459d127f3413c36ef1d9705/jetified-library-0.9.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9b25e1f29459d127f3413c36ef1d9705/jetified-library-0.9.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9b25e1f29459d127f3413c36ef1d9705/jetified-library-0.9.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -84,7 +84,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         UserModel userModel = userManager.loadUserInfo();
         String photo = userModel.getUserInfo().getPhoto();
         if (photo != null && photo.startsWith("http")) {
-            Glide.with(this).load(photo).placeholder(R.mipmap.login_icon_head).into(ivHead);
+            photo = photo.replace("http://","https://");
+            Glide.with(this).load(photo.trim()).disallowHardwareConfig().placeholder(R.mipmap.login_icon_head).into(ivHead);
         }
         String nickname = userModel.getUserInfo().getNikeName();
         if (nickname != null && nickname.length() > 0) {
@@ -104,7 +105,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         UserModel userModel = userManager.loadUserInfo();
         String photo = userModel.getUserInfo().getPhoto();
         if (photo != null && photo.startsWith("http")) {
-            Glide.with(this).load(photo).placeholder(R.mipmap.login_icon_head).into(ivHead);
+            photo = photo.replace("http://","https://");
+            Glide.with(this).load(photo.trim()).disallowHardwareConfig().placeholder(R.mipmap.login_icon_head).into(ivHead);
         }
         String nickname = userModel.getUserInfo().getNikeName();
         if (nickname != null && nickname.length() > 0) {
@@ -156,18 +158,15 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             arrowImageView.setVisibility(position < 4 ? View.VISIBLE : View.INVISIBLE);
             appNameTextView.setText(mAppNames.get(position));
             appIconImageView.setBackgroundResource((int)(icons.get(position)));
-            appIconImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            appIconImageView.setOnClickListener(new View.OnClickListener(){
                 @Override
-                public boolean onLongClick(View v) {
+                public void onClick(View v) {
                     if (position == 4) {
                         Toast.makeText(getContext(), R.string.bed_away_15_minutes_tip, Toast.LENGTH_SHORT).show();
-                        return true;
                     }
                     if (position == 5) {
                         Toast.makeText(getContext(), R.string.heart_rate_15_minutes_tip, Toast.LENGTH_SHORT).show();
-                        return true;
                     }
-                    return false;
                 }
             });
             convertView.setOnClickListener(new View.OnClickListener() {

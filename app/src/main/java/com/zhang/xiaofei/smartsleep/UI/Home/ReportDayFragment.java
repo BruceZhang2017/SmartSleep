@@ -2,6 +2,7 @@ package com.zhang.xiaofei.smartsleep.UI.Home;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
@@ -31,15 +32,19 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.haibin.calendarview.CalendarView;
 import com.shizhefei.fragment.LazyFragment;
+import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
+import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Kit.ReadTXT;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.UI.Me.FeedbackActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.io.InputStream;
@@ -91,6 +96,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private TextView tvTime4; // 平均心率
     private TextView tvTime5; // 清醒时间
     private TextView tvTime6; // 平均心率
+    private TextView tvTime7; // 呼吸暂停次数
     private TextView tvSleepTime3; // 平均心率、体动 二选一
     private TextView tvSleepTime4; // 平均呼吸率、鼾声 二选一
     private ImageView ivSleepTime3;
@@ -103,6 +109,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private ConstraintLayout cl5;
     private ConstraintLayout cl6;
     private ConstraintLayout cl11;
+    private ConstraintLayout clRoot;
     private Realm mRealm;
     private int grade = 0;
     ArrayList<Entry> chart1Values;
@@ -118,6 +125,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     LineDataSet set4;
     LineDataSet set5;
     List<RecordModel> mlist = new ArrayList<>();
+    List<RecordModel> apneaList = new ArrayList<>();
     boolean isBlet = true;
     boolean bChart1 = false;
     boolean bChart2 = false;
@@ -127,6 +135,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     int[] cursor = new int[2];
     private boolean bSleepBletValueRead = false; // 睡眠带值是否有值
     private int[] sleepbeltValue = new int[5]; // 得分， 入睡，睡眠时长，心率，呼吸率
+    private int countApnea = 0; // 心跳暂停计数
+    private List<ImageView> ivList = new ArrayList<>();
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -137,6 +147,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         setContentView(R.layout.fragment_tabmain_item);
+        clRoot = (ConstraintLayout)findViewById(R.id.constraint_layout_root);
         tvCircleSleep1 = (TextView)findViewById(R.id.tv_sleep_1);
         tvCircleSleep2 = (TextView)findViewById(R.id.tv_sleep_2);
         tvCircleSleep3 = (TextView)findViewById(R.id.tv_sleep_3);
@@ -158,6 +169,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         circleSleep4.setProgressColor(getResources().getColor(R.color.color_61D088));
         readSleepAndGetupData(); // 读取睡觉和起床信息
         readDataFromDB();
+        setChartData();
         initializeForChart(); // 睡眠质量初始化
         initializeForChart2();
         initializeForChart3();
@@ -170,7 +182,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             public void onClick(View v) {
                 preSleepAndGetupData();
                 refreshAllChartX();
-                if (sleepTime.length() > 0) {
+                if (sleepTime.length() >= 16) {
                     refreshDateTimeData();
                 }
                 refreshData(isBlet);
@@ -183,7 +195,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             public void onClick(View v) {
                 nextSleepAndGetupData();
                 refreshAllChartX();
-                if (sleepTime.length() > 0) {
+                if (sleepTime.length() >= 16) {
                     refreshDateTimeData();
                 }
                 refreshData(isBlet);
@@ -205,11 +217,10 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         cl5 = (ConstraintLayout)findViewById(R.id.cl_5);
         cl6 = (ConstraintLayout)findViewById(R.id.cl_6);
         cl11 = (ConstraintLayout)findViewById(R.id.cl_11);
-
     }
 
     private void refreshDateTimeData() {
-        if (getupTime.length() > 0 && sleepTime.length() > 0) {
+        if (getupTime.length() > 11 && sleepTime.length() > 11) {
             String day = sleepTime.substring(0,11);
             String sleep = sleepTime.substring(11);
             String getup = getupTime.substring(11);
@@ -229,6 +240,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvTime4 = (TextView)findViewById(R.id.tv_time_4);
         tvTime5 = (TextView)findViewById(R.id.tv_time_5);
         tvTime6 = (TextView)findViewById(R.id.tv_time_6);
+        tvTime7 = (TextView)findViewById(R.id.tv_time_7);
 
         tvSleepTime3 = (TextView)findViewById(R.id.tv_sleep_time_3);
         tvSleepTime4 = (TextView)findViewById(R.id.tv_sleep_time_4);
@@ -353,8 +365,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         //chart.setOnChartValueSelectedListener(this);
         chart.setDrawGridBackground(false);
         // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
+        chart.setDragEnabled(false);
+        chart.setScaleEnabled(false);
         // chart.setScaleXEnabled(true);
         // chart.setScaleYEnabled(true);
         // force pinch zoom along both axis
@@ -380,7 +392,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
+            sleep = -24 * 60 + sleep;
         }
         xAxis.setAxisMinimum(sleep);
         xAxis.setAxisMaximum(getup);
@@ -483,7 +495,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
+            sleep = -24 * 60 + sleep;
         }
         chart2 = initializeForChart(R.id.chart2, sleep, getup, 0f, 150f);
         chart2.getAxisLeft().setLabelCount(6, true);
@@ -491,32 +503,83 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         setData2();
     }
 
-    private void setData2() {
-        chart2Values = new ArrayList<>();
+    private void setChartData() {
+        if (chart2Values == null) {
+            chart2Values = new ArrayList<>();
+        } else {
+            chart2Values.clear();
+        }
+        if (chart3Values == null) {
+            chart3Values = new ArrayList<>();
+        } else {
+            chart3Values.clear();
+        }
+        if (chart4Values == null) {
+            chart4Values = new ArrayList<>();
+        } else {
+            chart4Values.clear();
+        }
+        if (chart5Values == null) {
+            chart5Values = new ArrayList<>();
+        } else {
+            chart5Values.clear();
+        }
         int time = 0;
         int heart = 0;
+        int breath = 0;
+        int bodyMotion = 0;
+        int snore = 0;
         int count = 0;
         int total = 0;
+        int getup = hourMinuteToInt(getupTime);
         for (RecordModel model: mlist) {
             int t = hourMinuteToInt(timeToDate(model.getTime()));
+            if (t > getup) {
+                t = -24 * 60 + t;
+            }
             if (time == 0) {
                 time = t;
             } else if (time != t) {
                 chart2Values.add(new Entry(time, heart / count));
+                chart3Values.add(new Entry(time, breath / count));
+                chart4Values.add(new Entry(time, bodyMotion));
+                chart5Values.add(new Entry(time, snore));
                 time = 0;
                 heart = 0;
                 count = 0;
+                breath = 0;
+                bodyMotion = 0;
+                snore = 0;
             }
 
             heart += model.getHeartRate();
+            breath += model.getBreathRate();
+            bodyMotion += model.getBodyMotion();
+            snore += model.getSnore();
             count += 1;
             total += 1;
             if (total == mlist.size() && time != 0) {
                 chart2Values.add(new Entry(time, heart / count));
             }
-        }
-        Collections.sort(chart2Values, comparatorByX);
 
+            if (total == mlist.size() && time != 0) {
+                chart3Values.add(new Entry(time, breath / count));
+            }
+            if (total == mlist.size() && time != 0) {
+                chart4Values.add(new Entry(time, bodyMotion));
+            }
+            if (total == mlist.size() && time != 0) {
+                chart5Values.add(new Entry(time, snore));
+            }
+        }
+
+        Collections.sort(chart4Values, comparatorByX);
+        Collections.sort(chart2Values, comparatorByX);
+        Collections.sort(chart3Values, comparatorByX);
+        Collections.sort(chart5Values, comparatorByX);
+    }
+
+    private void setData2() {
 
         if (bChart2) {
             set2.setValues(chart2Values);
@@ -554,38 +617,13 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
+            sleep = -24 * 60 + sleep;
         }
         chart3 = initializeForChart(R.id.chart3, sleep, getup, 0f, 40f);
         setData3();
     }
 
     private void setData3() {
-        chart3Values = new ArrayList<>();
-        int time = 0;
-        int breath = 0;
-        int count = 0;
-        int total = 0;
-        for (RecordModel model: mlist) {
-            int t = hourMinuteToInt(timeToDate(model.getTime()));
-            if (time == 0) {
-                time = t;
-            } else if (time != t) {
-                chart3Values.add(new Entry(time, breath / count));
-                time = 0;
-                breath = 0;
-                count = 0;
-            }
-
-            breath += model.getBreathRate();
-            count += 1;
-            total += 1;
-            if (total == mlist.size() && time != 0) {
-                chart3Values.add(new Entry(time, breath / count));
-            }
-        }
-        Collections.sort(chart3Values, comparatorByX);
-
         if (bChart3) {
             set3 = (LineDataSet) chart3.getData().getDataSetByIndex(0);
             set3.setValues(chart3Values);
@@ -659,7 +697,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
+            sleep = -24 * 60 + sleep;
         }
         xAxis.setAxisMinimum(sleep);
         xAxis.setAxisMaximum(getup);
@@ -701,28 +739,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData4() {
-        chart4Values = new ArrayList<>();
-        int time = 0;
-        int bodyMotion = 0;
-        int total = 0;
-        for (RecordModel model: mlist) {
-            int t = hourMinuteToInt(timeToDate(model.getTime()));
-            if (time == 0) {
-                time = t;
-            } else if (time != t) {
-                chart4Values.add(new Entry(time, bodyMotion));
-                time = 0;
-                bodyMotion = 0;
-            }
-
-            bodyMotion += model.getBodyMotion();
-            total += 1;
-            if (total == mlist.size() && time != 0) {
-                chart4Values.add(new Entry(time, bodyMotion));
-            }
-        }
-        Collections.sort(chart4Values, comparatorByX);
-
         if (bChart4) {
             set4 = (LineDataSet) chart4.getData().getDataSetByIndex(0);
             set4.setValues(chart4Values);
@@ -760,7 +776,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
+            sleep = -24 * 60 + sleep;
         }
         chart5 = initializeForChart(R.id.chart5, sleep, getup, 0f, 5f);
 //        chart5.getAxisLeft().setValueFormatter(new ValueFormatter() {
@@ -779,27 +795,6 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     }
 
     private void setData5() {
-        chart5Values = new ArrayList<>();
-        int time = 0;
-        int snore = 0;
-        int total = 0;
-        for (RecordModel model: mlist) {
-            int t = hourMinuteToInt(timeToDate(model.getTime()));
-            if (time == 0) {
-                time = t;
-            } else if (time != t) {
-                chart5Values.add(new Entry(time, snore));
-                time = 0;
-                snore = 0;
-            }
-
-            snore += model.getSnore();
-            total += 1;
-            if (total == mlist.size() && time != 0) {
-                chart5Values.add(new Entry(time, snore));
-            }
-        }
-        Collections.sort(chart5Values, comparatorByX);
         if (bChart5) {
             set5 = (LineDataSet) chart5.getData().getDataSetByIndex(0);
             set5.setValues(chart5Values);
@@ -899,6 +894,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         cl6.setVisibility(isBlet ? View.VISIBLE : View.GONE);
 
         readDataFromDB();
+        setChartData();
         setData2();
         chart2.invalidate();
         setData3();
@@ -997,10 +993,19 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         long averageBreath = 0;
         long averageTemp = 0;
         long averageHumidity = 0;
+        long averageApnea = 0;
         Integer count = mlist.size();
         Integer bodyMotion = 0;
         Integer snore = 0;
         if (mlist.size() > 0) {
+            apneaList.clear();
+            if (ivList.size() > 0) {
+                for (ImageView ivItem: ivList) {
+                    clRoot.removeView(ivItem);
+                }
+                ivList.clear();
+                countApnea = 0;
+            }
             for (RecordModel model: mlist) {
                 averageHeart += model.getHeartRate();
                 averageBreath += model.getBreathRate();
@@ -1008,6 +1013,11 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 averageHumidity += model.getHumidity();
                 bodyMotion += model.getBodyMotion();
                 snore += model.getSnore();
+                if (model.getBreatheStop() > 0) {
+                    averageApnea += 1;
+                    apneaList.add(model);
+                    addApneaIcon(model.getTime(), model.getBreatheStop(), model.getHeartRate());
+                }
             }
         }
         String unit11 = getResources().getString(R.string.common_hour2);
@@ -1037,13 +1047,13 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             int sleep = hourMinuteToInt(sleepTime);
             int getup = hourMinuteToInt(getupTime);
             if (sleep > getup) {
-                sleep = 24 * 60 - sleep;
+                sleep = -24 * 60 + sleep;
             }
             String hour = (getup - sleep) / 60 > 9 ? ("" + (getup - sleep) / 60) : ("0" + (getup - sleep) / 60);
             String minute =  (getup - sleep) % 60 > 9 ? ("" + (getup - sleep) % 60) : ("0" + (getup - sleep) % 60);
             String content2 = hour + unit21 + minute + unit22;
             tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
-            sleepbeltValue[2] = Integer.parseInt(hour) * 100 + Integer.parseInt(minute);
+            sleepbeltValue[2] = ((getup - sleep) / 60) * 100 + ((getup - sleep) % 60);
         }
 
         String unit4 = getResources().getString(R.string.common_times_minute);
@@ -1090,8 +1100,11 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             String content6 = "00" + unit6;
             tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
         }
-
         String unit = getResources().getString(R.string.common_times);
+        String[] array7 = {getResources().getString(R.string.common_times)};
+        String content7 = averageApnea + unit;
+        tvTime7.setText(BigSmallFontManager.createTimeValue(content7, getActivity(), 13, array7));
+
         if (count > 0) {
             String content = bodyMotion + getResources().getString(R.string.common_times);
             tvSleepBottomCount3.setText(BigSmallFontManager.createTimeValue(content, getActivity(), 13, unit));
@@ -1198,6 +1211,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     // 重新刷新日报
     public void refreshDayReport() {
         readSleepAndGetupData(); // 重新读取睡觉和起床时间
+        refreshDateTimeData();
         refreshAllChartX();
         refreshData(isBlet);
     }
@@ -1214,7 +1228,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int sleep = hourMinuteToInt(sleepTime);
         int getup = hourMinuteToInt(getupTime);
         if (sleep > getup) {
-            sleep = 24 * 60 - sleep;
+            sleep = -24 * 60 + sleep;
         }
         chart.getXAxis().setLabelCount(6,true);
         chart.getXAxis().setAxisMinimum(sleep);
@@ -1276,6 +1290,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                         middleSleep += model.getTime() - startTime;
                         chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
                         chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+
                     } else {
                         deepSleep += model.getTime() - startTime;
                         chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),4));
@@ -1299,6 +1314,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                             deepSleep += model.getTime() - startTime;
                             chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
                             chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+
                         }
                     }
                 }
@@ -1316,11 +1332,11 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 tvCircleSleep3.setText(cheapSleep * 100 / c + "%");
                 tvCircleSleep4.setText(getup * 100 / c + "%");
                 if (c > 10 * 60 * 60) {
-                    grade = 100 * deepSleep / c;
+                    grade = Math.min(150 * deepSleep / c, 85);
                 } else if (c < 7 * 60 * 60) {
-                    grade = 90 * deepSleep / c;
+                    grade = Math.min(120 * deepSleep / c, 70);
                 } else {
-                    grade = Math.min(120 * deepSleep / c, 100);
+                    grade = Math.min(180 * deepSleep / c, 100);
                 }
             } else {
                 circleSleep1.setPercentage(0);
@@ -1355,4 +1371,243 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         setCharData();
         chart.invalidate();
     }
+
+    private void addApneaIcon(int time, int stopTime, int heart) {
+        if (countApnea >= 20) {
+            return;
+        }
+        int sleep = hourMinuteToInt(sleepTime);
+        int getup = hourMinuteToInt(getupTime);
+        int now = hourMinuteToInt(timeToDate(time));
+
+        int rId = 0;
+        countApnea += 1;
+        if (countApnea == 1) {
+            rId = R.id.iv_apnea_1;
+        } else if (countApnea == 2) {
+            rId = R.id.iv_apnea_2;
+        } else if (countApnea == 3) {
+            rId = R.id.iv_apnea_3;
+        } else if (countApnea == 4) {
+            rId = R.id.iv_apnea_4;
+        } else if (countApnea == 5) {
+            rId = R.id.iv_apnea_5;
+        } else if (countApnea == 6) {
+            rId = R.id.iv_apnea_6;
+        } else if (countApnea == 7) {
+            rId = R.id.iv_apnea_7;
+        } else if (countApnea == 8) {
+            rId = R.id.iv_apnea_8;
+        } else if (countApnea == 9) {
+            rId = R.id.iv_apnea_9;
+        } else if (countApnea == 10) {
+            rId = R.id.iv_apnea_10;
+        } else if (countApnea == 11) {
+            rId = R.id.iv_apnea_11;
+        } else if (countApnea == 12) {
+            rId = R.id.iv_apnea_12;
+        } else if (countApnea == 13) {
+            rId = R.id.iv_apnea_13;
+        } else if (countApnea == 14) {
+            rId = R.id.iv_apnea_14;
+        } else if (countApnea == 15) {
+            rId = R.id.iv_apnea_15;
+        } else if (countApnea == 16) {
+            rId = R.id.iv_apnea_16;
+        } else if (countApnea == 17) {
+            rId = R.id.iv_apnea_17;
+        } else if (countApnea == 18) {
+            rId = R.id.iv_apnea_18;
+        } else if (countApnea == 19) {
+            rId = R.id.iv_apnea_19;
+        } else if (countApnea == 20) {
+            rId = R.id.iv_apnea_20;
+        }
+        ImageView ivLeft = new ImageView(getActivity());
+        ivLeft.setId(rId);
+        ivLeft.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ivLeft.setImageResource(R.mipmap.report_icon_apnea);
+
+        ConstraintLayout.LayoutParams ivLeftLayoutParams = new ConstraintLayout.LayoutParams(
+                DisplayUtil.dip2px(26, getActivity()), DisplayUtil.dip2px(26, getActivity()));
+        float width = ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(43, getActivity());
+        float x = (float)(now - sleep) / (getup - sleep) * width;
+        ivLeftLayoutParams.setMarginStart((int)x);
+        ivLeftLayoutParams.topMargin = DisplayUtil.dip2px(20, getActivity());
+        ivLeftLayoutParams.topToTop = R.id.chart1;
+        ivLeftLayoutParams.leftToLeft = R.id.chart1;
+        ivLeft.setLayoutParams(ivLeftLayoutParams);
+        ivLeft.setOnClickListener(clickListener);
+        clRoot.addView(ivLeft);
+        ivList.add(ivLeft);
+    }
+
+    View.OnClickListener clickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), ApneaDialogActivity.class);
+            if (v.getId() == R.id.iv_apnea_1) {
+                if (apneaList.size() <= 0){
+                    return;
+                }
+                RecordModel model = apneaList.get(0);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_2) {
+                if (apneaList.size() < 1){
+                    return;
+                }
+                RecordModel model = apneaList.get(1);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_3) {
+                if (apneaList.size() < 2){
+                    return;
+                }
+                RecordModel model = apneaList.get(2);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_4) {
+                if (apneaList.size() < 3){
+                    return;
+                }
+                RecordModel model = apneaList.get(3);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_5) {
+                if (apneaList.size() < 4){
+                    return;
+                }
+                RecordModel model = apneaList.get(4);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_6) {
+                if (apneaList.size() < 5){
+                    return;
+                }
+                RecordModel model = apneaList.get(5);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_7) {
+                if (apneaList.size() < 6){
+                    return;
+                }
+                RecordModel model = apneaList.get(6);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_8) {
+                if (apneaList.size() < 7){
+                    return;
+                }
+                RecordModel model = apneaList.get(7);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_9) {
+                if (apneaList.size() < 8){
+                    return;
+                }
+                RecordModel model = apneaList.get(8);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_10) {
+                if (apneaList.size() < 9){
+                    return;
+                }
+                RecordModel model = apneaList.get(9);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_11) {
+                if (apneaList.size() < 10){
+                    return;
+                }
+                RecordModel model = apneaList.get(10);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_12) {
+                if (apneaList.size() < 11){
+                    return;
+                }
+                RecordModel model = apneaList.get(11);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_13) {
+                if (apneaList.size() < 12){
+                    return;
+                }
+                RecordModel model = apneaList.get(12);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_14) {
+                if (apneaList.size() < 13){
+                    return;
+                }
+                RecordModel model = apneaList.get(13);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_15) {
+                if (apneaList.size() < 14){
+                    return;
+                }
+                RecordModel model = apneaList.get(14);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_16) {
+                if (apneaList.size() < 15){
+                    return;
+                }
+                RecordModel model = apneaList.get(15);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_17) {
+                if (apneaList.size() < 16){
+                    return;
+                }
+                RecordModel model = apneaList.get(16);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_18) {
+                if (apneaList.size() < 17){
+                    return;
+                }
+                RecordModel model = apneaList.get(17);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_19) {
+                if (apneaList.size() < 18){
+                    return;
+                }
+                RecordModel model = apneaList.get(18);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            } else if(v.getId() == R.id.iv_apnea_20) {
+                if (apneaList.size() < 19){
+                    return;
+                }
+                RecordModel model = apneaList.get(19);
+                intent.putExtra("time", model.getTime());
+                intent.putExtra("stopTime", model.getBreatheStop());
+                intent.putExtra("heart", model.getHeartRate());
+            }
+            startActivity(intent);
+        }
+    };
 }

@@ -1,1 +1,1 @@
-include ':app', ':library', ':fast', ':esptouch', ':pickerview', ':wheelview', ':MPChartLib', ':xpopup', ':alarmmanagerclock', ':xiyalama', ':bottomDialog'
+include ':app', ':library', ':fast', ':esptouch', ':pickerview', ':wheelview', ':MPChartLib', ':xpopup', ':alarmmanagerclock', ':bottomDialog'

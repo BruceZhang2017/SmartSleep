@@ -33,6 +33,7 @@
     <string name="report_respiratory_rate">Respiratory rate</string>
     <string name="report_heart_rate">Heart rate aver.</string>
     <string name="report_heart">Heart rate</string>
+    <string name="avg_report_heart">Heart rate average</string>
     <string name="report_turn_over">Body rollover</string>
     <string name="report_turn_over_times">Rollover times</string>
     <string name="report_daily_words">Daily words</string>
@@ -198,22 +199,24 @@
     <string name="common_times">times</string>
     <string name="common_times_minute">times/min</string>
     <string name="common_feedback_null">You can give some Feedback!</string>
+    <string name="second">Second</string>
     <string name="common_get_up">Get up</string>
+    <string name="apnea">Apnea</string>
 
-    <string name="homepage_series_title_one"> one hour deep sleep aid </string>
-    <string name="homepage_series_content_one"> long night, continuous companion </string>
-    <string name="homepage_series_title_two">15 minutes breathing sleep therapy </string>
-    <string name="homepage_series_content_two">Dedicated anxiety and insomnia </string>
-    <string name="homepage_series_title_three"> morning yoga 21 days </string>
-    <string name="homepage_series_content_three">Good state Start in the morning </string>
-    <string name="homepage_series_title_four"> full body scanning relaxation method</string>
-    <string name="homepage_series_content_four">pressure insomnia dedicated </string>
-    <string name="homepage_series_title_five">Light reading sleep: classic ancient poetry </string>
-    <string name="homepage_series_content_five">Listen to the rhyme of Chinese culture</string>
-    <string name="homepage_series_title_six">Back to the present: meditation training class </string>
-    <string name="homepage_series_content_six">Mute the mind, focus on the new </string>
-    <string name="homepage_series_title_seven">Get started with zero basic yoga</string>
-    <string name="homepage_series_content_seven">Easily master 15 basic actions</string>
+    <string name="homepage_series_title_one"> Sleepla · Relax series </string>
+    <string name="homepage_series_content_one"> Sleepla\'s music brings you into the rest and tranquility </string>
+    <string name="homepage_series_title_two">Sleepla · Voice of nature </string>
+    <string name="homepage_series_content_two">The voice of nature helps you fall asleep quickly </string>
+    <string name="homepage_series_title_three"> Sleepla · Meditation series </string>
+    <string name="homepage_series_content_three">Close your eyes and concentrate As the voice pays attention to every moment of the body </string>
+    <!--    <string name="homepage_series_title_four"> full body scanning relaxation method</string>-->
+    <!--    <string name="homepage_series_content_four">pressure insomnia dedicated </string>-->
+    <!--    <string name="homepage_series_title_five">Light reading sleep: classic ancient poetry </string>-->
+    <!--    <string name="homepage_series_content_five">Listen to the rhyme of Chinese culture</string>-->
+    <!--    <string name="homepage_series_title_six">Back to the present: meditation training class </string>-->
+    <!--    <string name="homepage_series_content_six">Mute the mind, focus on the new </string>-->
+    <!--    <string name="homepage_series_title_seven">Get started with zero basic yoga</string>-->
+    <!--    <string name="homepage_series_content_seven">Easily master 15 basic actions</string>-->
 
     <string name="homepage_one_day">Happly everyday～</string>
     <string name="sleep_motion_tip">Sleep button not monitored</string>
@@ -301,6 +304,7 @@
 
     <string name="heart_name">Heartbeat</string>
     <string name="breath_name">Respiratory</string>
+    <string name="breath_stop">Respiratory Stop</string>
 
     <string name="ota_updating">OTA Updating...</string>
     <string name="ota_updata_success">OTA Update Success</string>
@@ -348,4 +352,21 @@
     <string name="reminder">Too long out of bed</string>
     <string name="warning">Warning</string>
     <string name="heart_rate_100">heart rate is more than 100</string>
+    <string name="sync_reports">Synchronize reports?</string>
+    <string name="please_connect_first">Please connect the device first</string>
+    <string name="music_1">Sleepla · Voice of nature</string>
+    <string name="music_desc_1">The voice of nature helps you fall asleep quickly</string>
+
+    <string name="music_1_1">Dreamland</string>
+    <string name="music_1_2">Deep blue dream</string>
+    <string name="music_1_3">Floating clouds</string>
+    <string name="music_1_4">Quiet night</string>
+    <string name="music_1_5">Snow dancing</string>
+    <string name="music_1_6">Empty realm</string>
+    <string name="music_1_7">Memory of you</string>
+    <string name="music_1_8">Sweet Dreams</string>
+    <string name="music_1_9">Starry sky</string>
+
+    <string name="login_invalid">The current login is invalid. Please login again</string>
+    <string name="every_22_30">every 22：30</string>
 </resources>

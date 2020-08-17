@@ -65,6 +65,10 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Context ctx = getApplicationContext();
+            DfuServiceInitiator.createDfuNotificationChannel(ctx);
+        }
         setContentView(R.layout.activity_dfu_update);
         stateButton = (StateButton)findViewById(R.id.startDfu);
         tvTitle = (TextView)findViewById(R.id.tv_title);
@@ -249,6 +253,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
             if (requestCode == 1) {
                 progressBar.setVisibility(View.VISIBLE);
                 final DfuServiceInitiator starter = new DfuServiceInitiator(dfu_macAddress)
+                        .setForeground(false)
                         .setDeviceName("Sleep_Baby")
                         .setKeepBond(true);
                 starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
@@ -321,6 +326,10 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
             intentBroadcast.putExtra("arg0", 6);
             sendBroadcast(intentBroadcast);
             stateButton.setText(R.string.ota_updata_success);
+
+            Intent intentBroadcastB = new Intent();   //定义Intent
+            intentBroadcastB.setAction("Filter100");
+            sendBroadcast(intentBroadcastB);
         }
 
         @Override
@@ -447,6 +456,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
                 Uri uri = Uri.fromFile(file);
                 progressBar.setVisibility(View.VISIBLE);
                 final DfuServiceInitiator starter = new DfuServiceInitiator(dfu_macAddress)
+                        .setForeground(false)
                         .setDeviceName("Sleep_Baby")
                         .setKeepBond(true);
                 starter.setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);

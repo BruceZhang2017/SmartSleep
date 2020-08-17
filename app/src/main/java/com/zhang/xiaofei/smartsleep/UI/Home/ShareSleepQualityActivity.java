@@ -48,6 +48,7 @@ public class ShareSleepQualityActivity extends BaseAppActivity {
         UserModel userModel = userManager.loadUserInfo();
         String photo = userModel.getUserInfo().getPhoto();
         if (photo != null && photo.startsWith("http")) {
+            photo = photo.replace("http://","https://");
             Glide.with(this).load(photo).placeholder(R.mipmap.login_icon_head).into(ivHead);
         }
         String nickname = userModel.getUserInfo().getNikeName();

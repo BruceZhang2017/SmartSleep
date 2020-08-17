@@ -65,7 +65,7 @@ public class FeedbackActivity extends BaseAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         tvTitle = (TextView)findViewById(R.id.tv_title);
-        tvTitle.setText(R.string.mine_feedback);
+        tvTitle.setText(R.string.mine_feedbackB);
         ibLeft = (ImageButton)findViewById(R.id.im_l);
         ibLeft.setImageResource(R.mipmap.suggest_icon_back);
         ibLeft.setVisibility(View.VISIBLE);
@@ -89,7 +89,7 @@ public class FeedbackActivity extends BaseAppActivity {
                     Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_contact, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (phone == null || phone.length() == 0 || !ValidateHelper.isPhoneNumberB(phone)){
+                if (phone == null || phone.length() == 0 || !ValidateHelper.isPhoneNumber(phone)){
                     Toast.makeText(FeedbackActivity.this, R.string.feedback_fail_telephone, Toast.LENGTH_SHORT).show();
                     return;
                 }

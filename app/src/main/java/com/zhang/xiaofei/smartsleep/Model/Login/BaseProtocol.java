@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class BaseProtocol implements Serializable {
     int code;
     String msg;
+    String enmsg;
 
     public int getCode() {
         return code;
@@ -20,5 +21,13 @@ public class BaseProtocol implements Serializable {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getEnmsg() {
+        return enmsg;
+    }
+
+    public void setEnmsg(String enmsg) {
+        this.enmsg = enmsg;
     }
 }

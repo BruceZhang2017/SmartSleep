@@ -360,7 +360,7 @@
                 android:layout_marginRight="20dp"
                 android:textSize="12dp"
                 android:textColor="@color/colorWhite"
-                android:text="每晚22：30"/>
+                android:text="@string/every_22_30"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

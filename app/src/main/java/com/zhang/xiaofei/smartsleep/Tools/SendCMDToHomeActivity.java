@@ -1,6 +1,7 @@
 package com.zhang.xiaofei.smartsleep.Tools;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 public class SendCMDToHomeActivity {

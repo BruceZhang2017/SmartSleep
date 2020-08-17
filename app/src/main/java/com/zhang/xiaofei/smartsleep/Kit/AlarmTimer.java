@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 
-import com.sunofbeaches.himalaya.PlayHelper;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ public class AlarmTimer {
         @Override
         public void run() {
             // 要做的事情
-            PlayHelper.stop();
             System.out.println("关闭音乐");
             bStart = false;
             if (list.size() > 0) {
@@ -30,6 +29,7 @@ public class AlarmTimer {
                     item.stopAlarm();
                 }
             }
+            YMApplication.getInstance().player.stopSelf(); // 暂停音乐
         }
     };
 

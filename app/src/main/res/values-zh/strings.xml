@@ -33,6 +33,7 @@
     <string name="report_respiratory_rate">呼吸率</string>
     <string name="report_heart_rate">平均心率</string>
     <string name="report_heart">心率</string>
+    <string name="avg_report_heart">平均心率</string>
     <string name="report_turn_over">翻身</string>
     <string name="report_turn_over_times">翻身次数</string>
     <string name="report_daily_words">每日心语</string>
@@ -197,23 +198,25 @@
     <string name="common_minute3">分</string>
     <string name="common_times">次</string>
     <string name="common_times_minute">次/分</string>
+    <string name="second">秒</string>
     <string name="common_feedback_null">您可以给提出一些意见反馈呢！</string>
     <string name="common_get_up">起床</string>
+    <string name="apnea">呼吸暂停</string>
 
-    <string name="homepage_series_title_one">一个小时深度助眠</string>
-    <string name="homepage_series_content_one">漫漫长夜，持续陪伴</string>
-    <string name="homepage_series_title_two">15分钟呼吸助眠疗法</string>
-    <string name="homepage_series_content_two">紧张焦虑失眠专用</string>
-    <string name="homepage_series_title_three">晨练瑜伽21天</string>
-    <string name="homepage_series_content_three">良好状态 从早晨开始</string>
-    <string name="homepage_series_title_four">全身扫描放松法</string>
-    <string name="homepage_series_content_four">压力失眠专用</string>
-    <string name="homepage_series_title_five">轻读助眠： 经典古诗文</string>
-    <string name="homepage_series_content_five">聆听华夏文化之韵</string>
-    <string name="homepage_series_title_six">回到当下：冥想训练课</string>
-    <string name="homepage_series_content_six">静心 凝神 聚焦 换新</string>
-    <string name="homepage_series_title_seven">零基础瑜伽入门</string>
-    <string name="homepage_series_content_seven">轻松掌握15种基础动作</string>
+    <string name="homepage_series_title_one">雅眠 · 安宁系列</string>
+    <string name="homepage_series_content_one">雅睡眠的助眠音乐带您进入轻松宁静之境</string>
+    <string name="homepage_series_title_two">雅眠 · 自然之声</string>
+    <string name="homepage_series_content_two">大自然的声音，助您快速入眠</string>
+    <string name="homepage_series_title_three">雅眠 · 冥想系列</string>
+    <string name="homepage_series_content_three">闭目，凝神随着声音关注身体的每个当下</string>
+<!--    <string name="homepage_series_title_four">全身扫描放松法</string>-->
+<!--    <string name="homepage_series_content_four">压力失眠专用</string>-->
+<!--    <string name="homepage_series_title_five">轻读助眠： 经典古诗文</string>-->
+<!--    <string name="homepage_series_content_five">聆听华夏文化之韵</string>-->
+<!--    <string name="homepage_series_title_six">回到当下：冥想训练课</string>-->
+<!--    <string name="homepage_series_content_six">静心 凝神 聚焦 换新</string>-->
+<!--    <string name="homepage_series_title_seven">零基础瑜伽入门</string>-->
+<!--    <string name="homepage_series_content_seven">轻松掌握15种基础动作</string>-->
 
     <string name="homepage_one_day">保持好心情，更助好健康！开心生活每一天～</string>
     <string name="sleep_motion_tip">睡眠纽扣未在监测</string>
@@ -302,6 +305,7 @@
 
     <string name="heart_name">心跳</string>
     <string name="breath_name">呼吸</string>
+    <string name="breath_stop">呼吸暂停</string>
 
     <string name="ota_updating">OTA升级中...</string>
     <string name="ota_updata_success">OTA升级成功</string>
@@ -311,8 +315,8 @@
     <string name="bt_connect_success_tip">蓝牙连接已成功</string>
     <string name="bt_reconnect_tip">搜索或连接失败，请重新</string>
     <string name="bt_scan">蓝牙扫描</string>
-    <string name="code_scan">二维码扫描</string>
-    <string name="code_bt_scan">二维码扫描，或者蓝牙扫描？</string>
+    <string name="code_scan">条形码扫描</string>
+    <string name="code_bt_scan">条形码扫描，或者蓝牙扫描？</string>
 
     <string name="submit_success">提交成功</string>
     <string name="submit_fail">提交失败</string>
@@ -348,5 +352,21 @@
     <string name="reminder">离床时间过久</string>
     <string name="warning">异常</string>
     <string name="heart_rate_100">心率超过100</string>
+    <string name="sync_reports">是否同步报告？</string>
+    <string name="please_connect_first">请先连接设备</string>
+    <string name="music_1">雅眠 · 自然之声</string>
+    <string name="music_desc_1">大自然的声音，助您快速入眠</string>
 
+    <string name="music_1_1">梦中幻境</string>
+    <string name="music_1_2">深蓝之梦</string>
+    <string name="music_1_3">彩云飘飘</string>
+    <string name="music_1_4">静谧的夜</string>
+    <string name="music_1_5">雪舞纷飞</string>
+    <string name="music_1_6">空之境界</string>
+    <string name="music_1_7">记忆的你</string>
+    <string name="music_1_8">甜梦</string>
+    <string name="music_1_9">星空</string>
+
+    <string name="login_invalid">当前登录已失效，请重新登录</string>
+    <string name="every_22_30">每晚22：30</string>
 </resources>

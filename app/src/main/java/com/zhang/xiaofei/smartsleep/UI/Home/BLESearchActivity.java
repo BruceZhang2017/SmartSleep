@@ -130,6 +130,9 @@ public class BLESearchActivity extends BaseAppActivity implements View.OnClickLi
             public void onConnect(BleDevice bleDevice) {
                 System.out.println("搜索到的设备名称：" + bleDevice.getName());
                 String result = "";
+                if (bleDevice.getName() == null || bleDevice.getName().length() == 0) {
+                    return;
+                }
                 if (bleDevice.getName().toLowerCase().equals("sleep_baby")) {
                     result = "SLEEPBABY_" + System.currentTimeMillis() +","+bleDevice.getMac();
                 } else if (bleDevice.getName().toLowerCase().equals("sleep_button")) {

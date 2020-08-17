@@ -249,11 +249,11 @@ public class ReportWeekFragment extends LazyFragment {
                         int totalTime = array[0] + array[1] + array[2] + array[3];
                         int grade = 0;
                         if (totalTime > 10 * 60 * 60) {
-                            grade = 100 * array[0] / totalTime;
+                            grade = Math.min(150 * array[0] / totalTime, 85);
                         } else if (totalTime < 7 * 60 * 60) {
-                            grade = 90 * array[0] / totalTime;
+                            grade = Math.min(120 * array[0] / totalTime, 70);
                         } else {
-                            grade = Math.min(120 * array[0] / totalTime, 100);
+                            grade = Math.min(180 * array[0] / totalTime, 100);
                         }
                         score += grade;
                         deepSleep += array[0] / 60; // 深睡眠时长
@@ -853,14 +853,18 @@ public class ReportWeekFragment extends LazyFragment {
     private void calculateSleepValue() {
         if (tvSleepAverageTime != null) {
             int deepSleepAvg = 0;
+            int days = 0;
             for (int i = 0; i < sleepOneDayTimes.length; i++) {
                 deepSleepAvg += sleepOneDayTimes[i];
+                if (sleepOneDayTimes[i] > 0) {
+                    days++;
+                }
             }
             String unit01 = getResources().getString(R.string.common_hour);
             String unit02 = getResources().getString(R.string.common_minute);
             String[] array1 = {unit01, unit02};
-            int hour = deepSleepAvg / 7 / 60;
-            int minute = deepSleepAvg / 7 % 60;
+            int hour = deepSleepAvg / (days > 0 ? days : 7) / 60;
+            int minute = deepSleepAvg / (days > 0 ? days : 7) % 60;
             String content1 = (hour > 9 ? "" + hour : "0" + hour) + unit01 + (minute > 9 ? "" + minute : "0" + minute) + unit02;
             tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         }

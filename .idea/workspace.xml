@@ -23,8 +23,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5cd3d51-6263-40d2-baf8-c3237e5ac776" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/MediaPlayerUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____app_libs_jsoup_1_10_2_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_adapters_4_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_runtime_4_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_viewbinding_4_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_SMSSDK_3_5_4_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_ShortMessageSDKGUI_3_5_4_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobCommons_2020_0730_1133_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobGuard_1_0_7_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobTools_2020_0730_1131_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_nativecrashreport_3_7_471_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/ClockAlarmBActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/libs/jsoup-1.10.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/release/output-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/music_play.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/LogInterceptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/Application/VersionChecker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/SleepTimeBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/SleepTimeResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ApneaDialogActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SleepDataDownload.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/Audio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/MainMusicActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/MediaPlayerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/PlayMusicChange.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/PlaybackStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/RecyclerView_Adapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/StorageUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/music/onItemClickListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/bottom_corner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/top_corner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_apnea_dialog.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_music_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_layout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/icon_battery_default.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/icon_heart_rate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/icon_pause.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/icon_start.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/icon_stop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/report_icon_apnea.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/icon_battery_default.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/icon_pause.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/icon_start.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/icon_stop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/api-versions-0-30.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/appcompat/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/cardview/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/constraintlayout/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/constraint/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/test/espresso/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/test/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/google/android/material/group-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/master-index.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/intermediates/lint-cache/sdk-registry.xml/sdk-registry.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -40,6 +93,8 @@
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle____xiyalama_libs_TingPhoneOpenSDK_6_1_6_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_1_0_aar.xml" afterDir="false" />
@@ -53,9 +108,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_1_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_adapters_4_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_adapters_4_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_runtime_4_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_runtime_4_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_viewbinding_4_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_viewbinding_4_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_adapters_4_0_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_common_4_0_0_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_common_4_0_1_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_databinding_runtime_4_0_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_databinding_viewbinding_4_0_0_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_0_0_aar.xml" afterDir="false" />
@@ -90,8 +146,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_SMSSDK_3_5_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_SMSSDK_3_5_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_ShortMessageSDKGUI_3_5_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_ShortMessageSDKGUI_3_5_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_SMSSDK_3_5_1_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__cn_smssdk_ShortMessageSDKGUI_3_5_1_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_ansen_http_okhttpencapsulation_1_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_ansen_http_okhttpencapsulation_1_0_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_bigkoo_alertview_1_0_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_bigkoo_alertview_1_0_3_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_clj_fastble_FastBleLib_2_3_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_clj_fastble_FastBleLib_2_3_4_aar.xml" afterDir="false" />
@@ -104,9 +160,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_10_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_10_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_chrisbanes_photoview_library_1_2_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_chrisbanes_photoview_library_1_2_4_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_feeeei_CircleSeekbar_v1_1_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_feeeei_CircleSeekbar_v1_1_2_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_hackware1993_MagicIndicator_1_5_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_hackware1993_MagicIndicator_1_5_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_hackware1993_MagicIndicator_1_5_0_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_niniloveyou_StateButton_v1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_niniloveyou_StateButton_v1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_2_0_1_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_haibin_calendarview_3_6_6_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_haibin_calendarview_3_6_6_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_10_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_10_2_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_runtime_10_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jakewharton_butterknife_runtime_10_2_0_aar.xml" afterDir="false" />
@@ -118,11 +175,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lxj_xpermission_1_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_lxj_xpermission_1_0_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_makeramen_roundedimageview_2_3_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_makeramen_roundedimageview_2_3_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_marshalchen_ultimaterecyclerview_library_0_9_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_marshalchen_ultimaterecyclerview_library_0_9_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobGuard_1_0_5_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobGuard_1_0_5_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobCommons_2020_0609_1841_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobGuard_1_0_5_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mob_MobTools_2020_0628_2144_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mylhyl_circleDialog_5_0_7_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mylhyl_circleDialog_5_0_7_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_shizhefei_ViewPagerIndicator_1_1_9_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_shizhefei_ViewPagerIndicator_1_1_9_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_picasso_picasso_2_3_2_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_crashreport_3_2_33_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_crashreport_3_2_33_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_nativecrashreport_3_7_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_nativecrashreport_3_7_3_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_tencent_bugly_nativecrashreport_3_7_3_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_uphyca_stetho_realm_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_uphyca_stetho_realm_2_1_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_yanzhenjie_permission_support_2_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_yanzhenjie_permission_support_2_0_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_youth_banner_banner_1_4_10_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_youth_banner_banner_1_4_10_aar.xml" afterDir="false" />
@@ -130,110 +190,330 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_calligraphy3_3_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_calligraphy3_3_1_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_viewpump_2_0_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_inflationx_viewpump_2_0_3_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_lizhangqu_coreprogress_1_0_2_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_github_lizhangqu_coreprogress_1_0_2_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_reactivex_rxjava2_rxjava_2_2_10_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_realm_realm_android_library_object_server_4_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_realm_realm_android_library_object_server_4_3_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jp_wasabeef_recyclerview_animators_2_2_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__jp_wasabeef_recyclerview_animators_2_2_3_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__no_nordicsemi_android_dfu_1_6_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__no_nordicsemi_android_dfu_1_6_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_reactivestreams_reactive_streams_1_0_2_jar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_gif_android_gif_drawable_1_2_19_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_gif_android_gif_drawable_1_2_19_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_relinker_1_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pl_droidsonroids_relinker_1_3_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__pub_devrel_easypermissions_2_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__pub_devrel_easypermissions_2_0_1_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MPChartLib/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/MPChartLib/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/alarmmanagerclock.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/AlarmManagerUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/AlarmManagerUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/ClockAlarmActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/java/com/loonggg/lib/alarmmanager/clock/ClockAlarmActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alarmmanagerclock/src/main/res/values-zh/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/res/values-zh/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alarmmanagerclock/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alarmmanagerclock/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/alarmmanagerclock/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/app-release.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/output.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/AlarmTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/AlarmTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/CardPager/CardPagerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/CardPager/CardPagerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/dfutest/DfuUpdateActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/dfutest/DfuUpdateActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/sectionHomePageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Kit/sectionHomePageAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Device/DeviceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Device/DeviceManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Login/BaseProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Login/BaseProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Record/RecordModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Model/Record/RecordModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Tools/SendCMDToHomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/Tools/SendCMDToHomeActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AlarmActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AlarmActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/AlarmManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/BLESearchActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/BLESearchActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HelpSleepActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomeActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/HomePageFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/MineFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/MineFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SmartSleepTestActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportDayFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportMonthFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ReportWeekFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ShareSleepQualityActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/ShareSleepQualityActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SleepAndGetupTimeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SleepAndGetupTimeManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SleepDataUploadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home/SleepDataUploadManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/BaseAppActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/BaseAppActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Report/SoundChooseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Report/SoundChooseActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginMoreActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Login/LoginMoreActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/AboutUsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/FeedbackActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/FeedbackActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/OTAActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Me/OTAActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/YMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/YMApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_alarm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_alarm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_feedback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_feedback.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_ota.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ota.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_smart_sleep_test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_wxentry.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_wxentry.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_tabmain_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_tabmain_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_tabmain_item2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_tabmain_item2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/home_page_item_linear.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_page_item_linear.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_homepage_device.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_homepage_device.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-v21/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-v21/styles.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values-zh/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-zh/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/ids.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/ids.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bottomDialog/bottomDialog.iml" beforeDir="false" afterPath="$PROJECT_DIR$/bottomDialog/bottomDialog.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/api-versions-0-30.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/appcompat/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/constraintlayout/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/constraint/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/test/espresso/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/test/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/google/android/material/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/master-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/sdk-registry.xml/sdk-registry.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/esptouch/esptouch.iml" beforeDir="false" afterPath="$PROJECT_DIR$/esptouch/esptouch.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/generated/source/buildConfig/release/com/clj/blesample/BuildConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/aapt_friendly_merged_manifests/release/aapt/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/aapt_friendly_merged_manifests/release/aapt/output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/annotation_processor_list/release/annotationProcessors.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/compile_library_classes_jar/release/classes.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/compile_only_not_namespaced_r_class_jar/release/R.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/compile_symbol_list/release/R.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/compiled_local_resources/release/out/xml_network_security_config.xml.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/mergeReleaseShaders/merger.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageReleaseAssets/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageReleaseResources/compile-file-map.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageReleaseResources/merged.dir/values-en/values-en.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageReleaseResources/merged.dir/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/packageReleaseResources/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/incremental/release-mergeNativeLibs/merge-state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/BuildConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/FastBLEManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/BLEDataObserver.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/DataOberverManager$ObserverManagerHolder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/DataOberverManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/DataObservable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/DataObserver.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/Observable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/Observer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/ObserverManager$ObserverManagerHolder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/comm/ObserverManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/operation/BLEOperation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/operation/OperationManager$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/operation/OperationManager$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/javac/release/classes/com/clj/blesample/operation/OperationManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/library_manifest/release/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/local_only_symbol_list/release/R-def.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/manifest_merge_blame_file/release/manifest-merger-blame-release-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/merged_manifests/release/output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/navigation_json/release/navigation.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/packaged_res/release/values-en/values-en.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/packaged_res/release/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/packaged_res/release/xml/network_security_config.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/runtime_library_classes_jar/release/classes.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/intermediates/symbol_list_with_package_name/release/package-aware-r.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fast/build/outputs/logs/manifest-merger-release-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/library/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fast/fast.iml" beforeDir="false" afterPath="$PROJECT_DIR$/fast/fast.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/library.iml" beforeDir="false" afterPath="$PROJECT_DIR$/library/library.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pickerview/pickerview.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pickerview/pickerview.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xiyalama/xiyalama.iml" beforeDir="false" afterPath="$PROJECT_DIR$/xiyalama/xiyalama.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wheelview/wheelview.iml" beforeDir="false" afterPath="$PROJECT_DIR$/wheelview/wheelview.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/TingPhoneOpenSDK_6.1.6.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/XmDownload_1.6.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/XmlyOAuth2SDK_V1.8.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/arm64-v8a/libxmediaplayerv7.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/armeabi/libmediadatacryto.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/armeabi/libsoundtouch.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/armeabi/libxmediaplayer.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/armeabi/libxmediaplayer_x.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/armeabi/libxmediaplayerv7.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/armeabi/libxmopendatacrypto.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/gson-2.8.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/okhttp-3.3.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/okio-1.8.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/image_default_album_s.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notification_default.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notify_btn_next_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notify_btn_pause2_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notify_btn_pause_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notify_btn_play2_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notify_btn_play_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-hdpi/notify_btn_prev_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/next_icon_transparent_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/next_icon_transparent_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/next_icon_transparent_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notification_default.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notification_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_close.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_dark_next_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_dark_pause2_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_dark_pause_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_dark_play2_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_dark_play_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_dark_prev_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_light_next_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_light_pause2_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_light_pause_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_light_play2_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_light_play_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_light_prev_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_next_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_pause2_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_play2_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_btn_prev_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_play_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/notify_play_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/pre_icon_transparent_disable.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/pre_icon_transparent_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/pre_icon_transparent_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/ting.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/widget_pause_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/widget_pause_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/widget_play_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable-xhdpi/widget_play_pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/next_play_selector_transparent.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_dark_next_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_dark_pause2_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_dark_pause_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_dark_play2_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_dark_play_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_dark_prev_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_light_next_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_light_pause2_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_light_pause_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_light_play2_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_light_play_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_btn_light_prev_normal_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/notify_play_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/pre_play_selector_transparent.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/drawable/widget_play_xml.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/layout/view_notify_dark_play.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/layout/view_notify_dark_play_big.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/layout/view_notify_play.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/layout/view_notify_play_big.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/values-v21/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/libs/sdk_drawable/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/androidTest/java/com/sunofbeaches/himalaya/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/AndroidWorkaround.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/DetailActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/IComponentApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/PlayHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/PlayHelperCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/PlayerActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/SearchActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/StatusBarTrunsparent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/AlbumListAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/IndicatorAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/MainContentAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/PlayListAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/PlayerTrackPagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/SearchRecommendAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/adapters/TrackListAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/base/BaseActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/base/BaseFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/base/IBasePresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/base/TingApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/HistoryDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/IHistoryDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/IHistoryDaoCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/ISubDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/ISubDaoCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/SubscriptionDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/XimalayApi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/data/XimalayaDBHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/fragments/HistoryFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/fragments/RecommendFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/fragments/SubscriptionFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IAlbumDetailPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IAlbumDetailViewCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IHistoryCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IHistoryPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IPlayerCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IPlayerPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IRecommendPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/IRecommendViewCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/ISearchCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/ISearchPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/ISubscriptionCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/interfaces/ISubscriptionPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/presenters/AlbumDetailPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/presenters/HistoryPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/presenters/PlayerPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/presenters/RecommendPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/presenters/SearchPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/presenters/SubscriptionPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/utils/Constants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/utils/FragmentCreator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/utils/ImageBlur.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/utils/LogUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/ConfirmCheckBoxDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/ConfirmDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/FlowTextLayout.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/LoadingView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/RoundRectImageView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/SobPopWindow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/java/com/sunofbeaches/himalaya/views/UILoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/anim/pop_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/anim/pop_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/flow_text_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/flow_text_bg_press.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/flow_text_color.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_back_btn.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_flow_text.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_paly_mode_list_order_looper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_paly_mode_random.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_paly_mode_single_loop.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_palyer_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_palyer_next.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_palyer_pause.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_palyer_play.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_palyer_pre.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_play_control_pause.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_play_control_play.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_play_mode_list_order.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_play_mode_list_revers.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/selector_search_recommend_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_album_item_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_confirm_dialog_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_edit_text_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_edit_text_cursor.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_play_list_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_recommend_item_bg_normal.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_recommend_item_bg_press.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/drawable/shape_subscription_bg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/activity_detail.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/activity_player.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/activity_search.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/dialog_check_box_confirm.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/dialog_confirm.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/fragment_empty_view.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/fragment_error_view.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/fragment_history.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/fragment_loading_view.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/fragment_recommend.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/fragment_subscription.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_album_detail.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_detail_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_history.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_play_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_recommend.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_search_tecommend.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_subscription.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_text.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/item_track_pager.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/pop_play_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/layout/search_result_layout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/arrow_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/author_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/back_icon_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/back_icon_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/content_empty.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/ic_sound.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/input_delete_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/loading.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/network_error.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/next_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/next_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/pause_black_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/pause_black_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_black_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_black_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_count_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_info_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_mode_loop_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_mode_loop_one_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_mode_loop_one_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_mode_loop_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_mode_random_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_mode_random_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/play_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/player_icon_list_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/player_icon_list_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/playlist_playing_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/previous_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/previous_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/search_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/sort_ascending.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/sort_ascending_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/sort_descending_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/sort_descending_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/stop_normal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/stop_press.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-mdpi/ximalay_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/main/res/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/src/test/java/com/sunofbeaches/himalaya/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xiyalama/xiyalama.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xpopup/xpopup.iml" beforeDir="false" afterPath="$PROJECT_DIR$/xpopup/xpopup.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="4a949aae7ce4" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="10.1.115.126:5555" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -301,10 +581,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="resourceFile" />
         <option value="layoutResourceFile_vertical" />
-        <option value="Interface" />
         <option value="layoutResourceFile" />
+        <option value="valueResourceFile" />
+        <option value="resourceFile" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -331,7 +612,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ApkExportedModule" value="app" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="4a949aae7ce4" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-07-06T02:02:31.133Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-07-25T03:20:21.620Z" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.BuildVariants" value="release" />
     <property name="ExportApk.SignV1" value="true" />
@@ -344,27 +625,34 @@
     <property name="project.structure.last.edited" value="Suggestions" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="PsdUISettings">
-    <option name="MODULE_TAB" value="Properties" />
+    <option name="MODULE_TAB" value="Signing Configs" />
+    <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
-    <key name="android.template.-416242048">
-      <recent name="com.zhang.xiaofei.smartsleep.UI.Me" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-nodpi" />
+      <recent name="$PROJECT_DIR$/app/libs" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/alarmmanagerclock/src/main/res/raw" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
+    </key>
+    <key name="android.template.175750051">
+      <recent name="com.zhang.xiaofei.smartsleep.UI.Home" />
     </key>
     <key name="android.template.packageName">
       <recent name="com.zhang.xiaofei.smartsleep.UI.Home" />
       <recent name="com.zhang.xiaofei.smartsleep.UI.Me" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/alarmmanagerclock/src/main/res/raw" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/zhang/xiaofei/smartsleep/UI/Home" />
-      <recent name="$PROJECT_DIR$/bottomDialog/src/main/res/drawable" />
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.zhang.xiaofei.smartsleep.UI.Home" />
+    </key>
+    <key name="android.template.-416242048">
+      <recent name="com.zhang.xiaofei.smartsleep.UI.Me" />
     </key>
   </component>
   <component name="RunManager" selected="Android App.app">
@@ -572,6 +860,10 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="245" y="173" key="#PSD" timestamp="1595036972986">
+      <screen x="0" y="23" width="1440" height="823" />
+    </state>
+    <state x="245" y="173" key="#PSD/0.23.1440.823@0.23.1440.823" timestamp="1595036972986" />
     <state x="184" y="96" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593925868865">
       <screen x="0" y="23" width="1440" height="823" />
     </state>
@@ -580,120 +872,153 @@
       <screen x="0" y="23" width="1440" height="823" />
     </state>
     <state x="416" y="244" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.823@0.23.1440.823" timestamp="1593960501730" />
-    <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1592299133455">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1595553165721">
+      <screen x="0" y="23" width="1440" height="826" />
     </state>
-    <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser/0.23.1440.828@0.23.1440.828" timestamp="1592299133455" />
+    <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser/0.23.1440.825@0.23.1440.825" timestamp="1594817938631" />
+    <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser/0.23.1440.826@0.23.1440.826" timestamp="1595553165721" />
+    <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser/0.23.1440.828@0.23.1440.828" timestamp="1594432584750" />
     <state x="532" y="128" key="#com.intellij.ide.util.MemberChooser/0.23.1440.829@0.23.1440.829" timestamp="1591886063112" />
-    <state x="458" y="188" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592634199545">
-      <screen x="0" y="23" width="1440" height="822" />
+    <state x="408" y="177" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1595035673874">
+      <screen x="0" y="23" width="1440" height="823" />
+    </state>
+    <state x="408" y="177" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1440.823@0.23.1440.823" timestamp="1595035673874" />
+    <state x="443" y="301" width="554" height="278" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1595757816969">
+      <screen x="0" y="23" width="1440" height="826" />
+    </state>
+    <state x="443" y="301" width="554" height="278" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.23.1440.826@0.23.1440.826" timestamp="1595757816969" />
+    <state x="458" y="189" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1594454428179">
+      <screen x="0" y="23" width="1440" height="825" />
     </state>
     <state x="458" y="188" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.822@0.23.1440.822" timestamp="1592634199545" />
+    <state x="458" y="189" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.825@0.23.1440.825" timestamp="1594454428178" />
+    <state x="308" y="195" key="AndroidCreateResourceFileDialog" timestamp="1595236957359">
+      <screen x="0" y="23" width="1440" height="823" />
+    </state>
+    <state x="308" y="195" key="AndroidCreateResourceFileDialog/0.23.1440.823@0.23.1440.823" timestamp="1595236957359" />
+    <state x="308" y="196" key="AndroidCreateResourceFileDialog/0.23.1440.826@0.23.1440.826" timestamp="1594822365963" />
     <state x="576" y="209" key="AndroidProcessChooserDialog" timestamp="1593567708270">
       <screen x="0" y="23" width="1440" height="829" />
     </state>
     <state x="576" y="208" key="AndroidProcessChooserDialog/0.23.1440.826@0.23.1440.826" timestamp="1591196062667" />
     <state x="576" y="209" key="AndroidProcessChooserDialog/0.23.1440.829@0.23.1440.829" timestamp="1593567708270" />
-    <state width="1398" height="97" key="GridCell.Tab.0.bottom" timestamp="1593938310817">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="290" key="GridCell.Tab.0.bottom/0.23.1440.822@0.23.1440.822" timestamp="1593920742773" />
-    <state width="1398" height="97" key="GridCell.Tab.0.bottom/0.23.1440.823@0.23.1440.823" timestamp="1593938310817" />
-    <state width="1398" height="57" key="GridCell.Tab.0.bottom/0.23.1440.825@0.23.1440.825" timestamp="1592123780285" />
-    <state width="1398" height="232" key="GridCell.Tab.0.bottom/0.23.1440.826@0.23.1440.826" timestamp="1593613679714" />
-    <state width="1398" height="326" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1591839730748" />
-    <state width="1398" height="228" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
-    <state width="1398" height="97" key="GridCell.Tab.0.center" timestamp="1593938310817">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="290" key="GridCell.Tab.0.center/0.23.1440.822@0.23.1440.822" timestamp="1593920742772" />
-    <state width="1398" height="97" key="GridCell.Tab.0.center/0.23.1440.823@0.23.1440.823" timestamp="1593938310817" />
-    <state width="1398" height="57" key="GridCell.Tab.0.center/0.23.1440.825@0.23.1440.825" timestamp="1592123780284" />
-    <state width="1398" height="232" key="GridCell.Tab.0.center/0.23.1440.826@0.23.1440.826" timestamp="1593613679714" />
-    <state width="1398" height="326" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1591839730747" />
-    <state width="1398" height="228" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
-    <state width="1398" height="97" key="GridCell.Tab.0.left" timestamp="1593938310816">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="290" key="GridCell.Tab.0.left/0.23.1440.822@0.23.1440.822" timestamp="1593920742771" />
-    <state width="1398" height="97" key="GridCell.Tab.0.left/0.23.1440.823@0.23.1440.823" timestamp="1593938310816" />
-    <state width="1398" height="57" key="GridCell.Tab.0.left/0.23.1440.825@0.23.1440.825" timestamp="1592123780284" />
-    <state width="1398" height="232" key="GridCell.Tab.0.left/0.23.1440.826@0.23.1440.826" timestamp="1593613679713" />
-    <state width="1398" height="326" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1591839730747" />
-    <state width="1398" height="228" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
-    <state width="1398" height="97" key="GridCell.Tab.0.right" timestamp="1593938310817">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="290" key="GridCell.Tab.0.right/0.23.1440.822@0.23.1440.822" timestamp="1593920742772" />
-    <state width="1398" height="97" key="GridCell.Tab.0.right/0.23.1440.823@0.23.1440.823" timestamp="1593938310817" />
-    <state width="1398" height="57" key="GridCell.Tab.0.right/0.23.1440.825@0.23.1440.825" timestamp="1592123780285" />
-    <state width="1398" height="232" key="GridCell.Tab.0.right/0.23.1440.826@0.23.1440.826" timestamp="1593613679714" />
-    <state width="1398" height="326" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1591839730747" />
-    <state width="1398" height="228" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
-    <state width="1398" height="97" key="GridCell.Tab.1.bottom" timestamp="1593938310818">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="97" key="GridCell.Tab.1.bottom/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
-    <state width="1398" height="227" key="GridCell.Tab.1.bottom/0.23.1440.825@0.23.1440.825" timestamp="1592122041854" />
-    <state width="1398" height="227" key="GridCell.Tab.1.bottom/0.23.1440.826@0.23.1440.826" timestamp="1592144302943" />
-    <state width="1398" height="228" key="GridCell.Tab.1.bottom/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
-    <state width="1398" height="97" key="GridCell.Tab.1.center" timestamp="1593938310818">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="97" key="GridCell.Tab.1.center/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
-    <state width="1398" height="227" key="GridCell.Tab.1.center/0.23.1440.825@0.23.1440.825" timestamp="1592122041853" />
-    <state width="1398" height="227" key="GridCell.Tab.1.center/0.23.1440.826@0.23.1440.826" timestamp="1592144302942" />
-    <state width="1398" height="228" key="GridCell.Tab.1.center/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
-    <state width="1398" height="97" key="GridCell.Tab.1.left" timestamp="1593938310818">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="97" key="GridCell.Tab.1.left/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
-    <state width="1398" height="227" key="GridCell.Tab.1.left/0.23.1440.825@0.23.1440.825" timestamp="1592122041853" />
-    <state width="1398" height="227" key="GridCell.Tab.1.left/0.23.1440.826@0.23.1440.826" timestamp="1592144302942" />
-    <state width="1398" height="228" key="GridCell.Tab.1.left/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
-    <state width="1398" height="97" key="GridCell.Tab.1.right" timestamp="1593938310818">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="1398" height="97" key="GridCell.Tab.1.right/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
-    <state width="1398" height="227" key="GridCell.Tab.1.right/0.23.1440.825@0.23.1440.825" timestamp="1592122041853" />
-    <state width="1398" height="227" key="GridCell.Tab.1.right/0.23.1440.826@0.23.1440.826" timestamp="1592144302943" />
-    <state width="1398" height="228" key="GridCell.Tab.1.right/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
-    <state x="369" y="267" key="com.intellij.ide.util.TipDialog" timestamp="1593938330058">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state x="369" y="267" key="com.intellij.ide.util.TipDialog/0.23.1440.822@0.23.1440.822" timestamp="1593854191958" />
-    <state x="369" y="267" key="com.intellij.ide.util.TipDialog/0.23.1440.823@0.23.1440.823" timestamp="1593938330058" />
-    <state x="369" y="268" key="com.intellij.ide.util.TipDialog/0.23.1440.825@0.23.1440.825" timestamp="1592120489984" />
-    <state x="369" y="268" key="com.intellij.ide.util.TipDialog/0.23.1440.826@0.23.1440.826" timestamp="1593595690461" />
-    <state x="369" y="268" key="com.intellij.ide.util.TipDialog/0.23.1440.827@0.23.1440.827" timestamp="1593615952910" />
-    <state x="369" y="269" key="com.intellij.ide.util.TipDialog/0.23.1440.828@0.23.1440.828" timestamp="1593439403326" />
-    <state x="369" y="269" key="com.intellij.ide.util.TipDialog/0.23.1440.829@0.23.1440.829" timestamp="1593737687978" />
-    <state x="369" y="270" key="com.intellij.ide.util.TipDialog/0.23.1440.830@0.23.1440.830" timestamp="1593502392424" />
-    <state x="373" y="190" width="875" height="489" key="find.popup" timestamp="1593960754980">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state x="373" y="190" width="875" height="488" key="find.popup/0.23.1440.822@0.23.1440.822" timestamp="1593920842399" />
-    <state x="373" y="190" width="875" height="489" key="find.popup/0.23.1440.823@0.23.1440.823" timestamp="1593960754980" />
-    <state x="373" y="191" width="782" height="488" key="find.popup/0.23.1440.825@0.23.1440.825" timestamp="1592123666663" />
-    <state x="373" y="191" width="875" height="489" key="find.popup/0.23.1440.826@0.23.1440.826" timestamp="1593613165680" />
-    <state x="373" y="191" width="822" height="488" key="find.popup/0.23.1440.827@0.23.1440.827" timestamp="1593789455835" />
-    <state x="373" y="191" width="875" height="491" key="find.popup/0.23.1440.828@0.23.1440.828" timestamp="1592296633875" />
-    <state x="373" y="191" width="822" height="490" key="find.popup/0.23.1440.829@0.23.1440.829" timestamp="1593701517864" />
-    <state x="373" y="192" width="822" height="490" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1593559851402" />
-    <state width="313" height="60" key="javadoc.popup.new" timestamp="1594000917532">
-      <screen x="0" y="23" width="1440" height="823" />
-    </state>
-    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.822@0.23.1440.822" timestamp="1593912171731" />
-    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.823@0.23.1440.823" timestamp="1594000917532" />
-    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.825@0.23.1440.825" timestamp="1592122479194" />
-    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.826@0.23.1440.826" timestamp="1593613964445" />
-    <state width="313" height="61" key="javadoc.popup.new/0.23.1440.827@0.23.1440.827" timestamp="1593788490972" />
-    <state width="313" height="61" key="javadoc.popup.new/0.23.1440.828@0.23.1440.828" timestamp="1593781599438" />
-    <state width="313" height="61" key="javadoc.popup.new/0.23.1440.829@0.23.1440.829" timestamp="1593701244885" />
-    <state width="313" height="62" key="javadoc.popup.new/0.23.1440.830@0.23.1440.830" timestamp="1593559851388" />
-    <state x="385" y="169" key="search.everywhere.popup" timestamp="1593132220952">
+    <state width="1398" height="13" key="GridCell.Tab.0.bottom" timestamp="1596715625650">
       <screen x="0" y="23" width="1440" height="822" />
     </state>
+    <state width="1398" height="13" key="GridCell.Tab.0.bottom/0.23.1440.822@0.23.1440.822" timestamp="1596715625650" />
+    <state width="1398" height="162" key="GridCell.Tab.0.bottom/0.23.1440.823@0.23.1440.823" timestamp="1595082346271" />
+    <state width="1398" height="226" key="GridCell.Tab.0.bottom/0.23.1440.825@0.23.1440.825" timestamp="1595594699084" />
+    <state width="1398" height="430" key="GridCell.Tab.0.bottom/0.23.1440.826@0.23.1440.826" timestamp="1595765431207" />
+    <state width="1398" height="126" key="GridCell.Tab.0.bottom/0.23.1440.827@0.23.1440.827" timestamp="1594821844549" />
+    <state width="1398" height="226" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1595429002923" />
+    <state width="1398" height="228" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
+    <state width="1398" height="13" key="GridCell.Tab.0.center" timestamp="1596715625650">
+      <screen x="0" y="23" width="1440" height="822" />
+    </state>
+    <state width="1398" height="13" key="GridCell.Tab.0.center/0.23.1440.822@0.23.1440.822" timestamp="1596715625650" />
+    <state width="1398" height="162" key="GridCell.Tab.0.center/0.23.1440.823@0.23.1440.823" timestamp="1595082346270" />
+    <state width="1398" height="226" key="GridCell.Tab.0.center/0.23.1440.825@0.23.1440.825" timestamp="1595594699083" />
+    <state width="1398" height="430" key="GridCell.Tab.0.center/0.23.1440.826@0.23.1440.826" timestamp="1595765431206" />
+    <state width="1398" height="126" key="GridCell.Tab.0.center/0.23.1440.827@0.23.1440.827" timestamp="1594821844549" />
+    <state width="1398" height="226" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1595429002923" />
+    <state width="1398" height="228" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
+    <state width="1398" height="13" key="GridCell.Tab.0.left" timestamp="1596715625649">
+      <screen x="0" y="23" width="1440" height="822" />
+    </state>
+    <state width="1398" height="13" key="GridCell.Tab.0.left/0.23.1440.822@0.23.1440.822" timestamp="1596715625649" />
+    <state width="1398" height="162" key="GridCell.Tab.0.left/0.23.1440.823@0.23.1440.823" timestamp="1595082346270" />
+    <state width="1398" height="226" key="GridCell.Tab.0.left/0.23.1440.825@0.23.1440.825" timestamp="1595594699083" />
+    <state width="1398" height="430" key="GridCell.Tab.0.left/0.23.1440.826@0.23.1440.826" timestamp="1595765431206" />
+    <state width="1398" height="126" key="GridCell.Tab.0.left/0.23.1440.827@0.23.1440.827" timestamp="1594821844548" />
+    <state width="1398" height="226" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1595429002923" />
+    <state width="1398" height="228" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
+    <state width="1398" height="13" key="GridCell.Tab.0.right" timestamp="1596715625650">
+      <screen x="0" y="23" width="1440" height="822" />
+    </state>
+    <state width="1398" height="13" key="GridCell.Tab.0.right/0.23.1440.822@0.23.1440.822" timestamp="1596715625650" />
+    <state width="1398" height="162" key="GridCell.Tab.0.right/0.23.1440.823@0.23.1440.823" timestamp="1595082346270" />
+    <state width="1398" height="226" key="GridCell.Tab.0.right/0.23.1440.825@0.23.1440.825" timestamp="1595594699083" />
+    <state width="1398" height="430" key="GridCell.Tab.0.right/0.23.1440.826@0.23.1440.826" timestamp="1595765431207" />
+    <state width="1398" height="126" key="GridCell.Tab.0.right/0.23.1440.827@0.23.1440.827" timestamp="1594821844549" />
+    <state width="1398" height="226" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1595429002923" />
+    <state width="1398" height="228" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1593568065262" />
+    <state width="1398" height="226" key="GridCell.Tab.1.bottom" timestamp="1595594699085">
+      <screen x="0" y="23" width="1440" height="825" />
+    </state>
+    <state width="1398" height="97" key="GridCell.Tab.1.bottom/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
+    <state width="1398" height="226" key="GridCell.Tab.1.bottom/0.23.1440.825@0.23.1440.825" timestamp="1595594699085" />
+    <state width="1398" height="227" key="GridCell.Tab.1.bottom/0.23.1440.826@0.23.1440.826" timestamp="1592144302943" />
+    <state width="1398" height="226" key="GridCell.Tab.1.bottom/0.23.1440.828@0.23.1440.828" timestamp="1595429002924" />
+    <state width="1398" height="228" key="GridCell.Tab.1.bottom/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
+    <state width="1398" height="226" key="GridCell.Tab.1.center" timestamp="1595594699084">
+      <screen x="0" y="23" width="1440" height="825" />
+    </state>
+    <state width="1398" height="97" key="GridCell.Tab.1.center/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
+    <state width="1398" height="226" key="GridCell.Tab.1.center/0.23.1440.825@0.23.1440.825" timestamp="1595594699084" />
+    <state width="1398" height="227" key="GridCell.Tab.1.center/0.23.1440.826@0.23.1440.826" timestamp="1592144302942" />
+    <state width="1398" height="226" key="GridCell.Tab.1.center/0.23.1440.828@0.23.1440.828" timestamp="1595429002924" />
+    <state width="1398" height="228" key="GridCell.Tab.1.center/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
+    <state width="1398" height="226" key="GridCell.Tab.1.left" timestamp="1595594699084">
+      <screen x="0" y="23" width="1440" height="825" />
+    </state>
+    <state width="1398" height="97" key="GridCell.Tab.1.left/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
+    <state width="1398" height="226" key="GridCell.Tab.1.left/0.23.1440.825@0.23.1440.825" timestamp="1595594699084" />
+    <state width="1398" height="227" key="GridCell.Tab.1.left/0.23.1440.826@0.23.1440.826" timestamp="1592144302942" />
+    <state width="1398" height="226" key="GridCell.Tab.1.left/0.23.1440.828@0.23.1440.828" timestamp="1595429002924" />
+    <state width="1398" height="228" key="GridCell.Tab.1.left/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
+    <state width="1398" height="226" key="GridCell.Tab.1.right" timestamp="1595594699085">
+      <screen x="0" y="23" width="1440" height="825" />
+    </state>
+    <state width="1398" height="97" key="GridCell.Tab.1.right/0.23.1440.823@0.23.1440.823" timestamp="1593938310818" />
+    <state width="1398" height="226" key="GridCell.Tab.1.right/0.23.1440.825@0.23.1440.825" timestamp="1595594699085" />
+    <state width="1398" height="227" key="GridCell.Tab.1.right/0.23.1440.826@0.23.1440.826" timestamp="1592144302943" />
+    <state width="1398" height="226" key="GridCell.Tab.1.right/0.23.1440.828@0.23.1440.828" timestamp="1595429002924" />
+    <state width="1398" height="228" key="GridCell.Tab.1.right/0.23.1440.829@0.23.1440.829" timestamp="1593568065263" />
+    <state x="221" y="73" key="SettingsEditor" timestamp="1595035550079">
+      <screen x="0" y="23" width="1440" height="823" />
+    </state>
+    <state x="221" y="73" key="SettingsEditor/0.23.1440.823@0.23.1440.823" timestamp="1595035550079" />
+    <state x="100" y="123" width="1240" height="623" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1595084775597">
+      <screen x="0" y="23" width="1440" height="823" />
+    </state>
+    <state x="100" y="123" width="1240" height="623" key="com.android.tools.idea.avdmanager.AvdListDialog/0.23.1440.823@0.23.1440.823" timestamp="1595084775597" />
+    <state x="369" y="267" key="com.intellij.ide.util.TipDialog" timestamp="1597029230572">
+      <screen x="0" y="23" width="1440" height="822" />
+    </state>
+    <state x="369" y="267" key="com.intellij.ide.util.TipDialog/0.23.1440.822@0.23.1440.822" timestamp="1597029230572" />
+    <state x="369" y="267" key="com.intellij.ide.util.TipDialog/0.23.1440.823@0.23.1440.823" timestamp="1596115735166" />
+    <state x="369" y="268" key="com.intellij.ide.util.TipDialog/0.23.1440.825@0.23.1440.825" timestamp="1596617334565" />
+    <state x="369" y="268" key="com.intellij.ide.util.TipDialog/0.23.1440.826@0.23.1440.826" timestamp="1596807308923" />
+    <state x="369" y="268" key="com.intellij.ide.util.TipDialog/0.23.1440.827@0.23.1440.827" timestamp="1595746947453" />
+    <state x="369" y="269" key="com.intellij.ide.util.TipDialog/0.23.1440.828@0.23.1440.828" timestamp="1595427307338" />
+    <state x="369" y="269" key="com.intellij.ide.util.TipDialog/0.23.1440.829@0.23.1440.829" timestamp="1593737687978" />
+    <state x="369" y="270" key="com.intellij.ide.util.TipDialog/0.23.1440.830@0.23.1440.830" timestamp="1593502392424" />
+    <state x="373" y="190" width="875" height="488" key="find.popup" timestamp="1597591570492">
+      <screen x="0" y="23" width="1440" height="822" />
+    </state>
+    <state x="373" y="190" width="875" height="488" key="find.popup/0.23.1440.822@0.23.1440.822" timestamp="1597591570492" />
+    <state x="373" y="191" width="782" height="488" key="find.popup/0.23.1440.823@0.23.1440.823" timestamp="1597132385157" />
+    <state x="373" y="191" width="782" height="488" key="find.popup/0.23.1440.825@0.23.1440.825" timestamp="1597111677862" />
+    <state x="373" y="191" width="875" height="489" key="find.popup/0.23.1440.826@0.23.1440.826" timestamp="1596807327939" />
+    <state x="373" y="191" width="822" height="488" key="find.popup/0.23.1440.827@0.23.1440.827" timestamp="1595422859767" />
+    <state x="373" y="191" width="875" height="491" key="find.popup/0.23.1440.828@0.23.1440.828" timestamp="1592296633875" />
+    <state x="373" y="191" width="822" height="490" key="find.popup/0.23.1440.829@0.23.1440.829" timestamp="1595430267814" />
+    <state x="373" y="192" width="822" height="490" key="find.popup/0.23.1440.830@0.23.1440.830" timestamp="1593559851402" />
+    <state width="313" height="60" key="javadoc.popup.new" timestamp="1596717718039">
+      <screen x="0" y="23" width="1440" height="822" />
+    </state>
+    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.822@0.23.1440.822" timestamp="1596717718039" />
+    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.823@0.23.1440.823" timestamp="1595323612681" />
+    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.825@0.23.1440.825" timestamp="1596615478897" />
+    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.826@0.23.1440.826" timestamp="1595769310667" />
+    <state width="313" height="60" key="javadoc.popup.new/0.23.1440.827@0.23.1440.827" timestamp="1595767780085" />
+    <state width="313" height="61" key="javadoc.popup.new/0.23.1440.828@0.23.1440.828" timestamp="1595429632933" />
+    <state width="313" height="61" key="javadoc.popup.new/0.23.1440.829@0.23.1440.829" timestamp="1593701244885" />
+    <state width="313" height="62" key="javadoc.popup.new/0.23.1440.830@0.23.1440.830" timestamp="1593559851388" />
+    <state x="385" y="170" key="search.everywhere.popup" timestamp="1594431801855">
+      <screen x="0" y="23" width="1440" height="828" />
+    </state>
     <state x="385" y="169" key="search.everywhere.popup/0.23.1440.822@0.23.1440.822" timestamp="1593132220952" />
+    <state x="385" y="170" key="search.everywhere.popup/0.23.1440.828@0.23.1440.828" timestamp="1594431801855" />
   </component>
 </project>

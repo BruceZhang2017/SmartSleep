@@ -35,7 +35,6 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mylhyl.circledialog.CircleDialog;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.IndicatorViewPager;
-import com.sunofbeaches.himalaya.MainActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
@@ -57,6 +56,7 @@ import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.FoundGoods.BasicFunctions;
 import com.zhang.xiaofei.smartsleep.UI.Me.DeviceManageActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.FeedbackActivity;
+import com.zhang.xiaofei.smartsleep.UI.music.MainMusicActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
@@ -154,9 +154,11 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 showDialogBLEScanOrCodeScan();
                 break;
             case R.id.ib_help_sleep:
-                Intent intentB = new Intent(getActivity(), MainActivity.class);
+                Intent intentB = new Intent(getActivity(), MainMusicActivity.class);
+                intentB.putExtra("title", R.string.homepage_series_title_one);
+                intentB.putExtra("message", R.string.homepage_series_content_one);
+                intentB.putExtra("position", 1);
                 startActivity(intentB);
-                //Toast.makeText(getActivity(), "正在更换喜马拉雅的SDK", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ib_devices:
                 Intent intentC = new Intent(getActivity(), DeviceManageActivity.class);
@@ -294,6 +296,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         if (banner.getVisibility() == View.VISIBLE) {
             banner.startAutoPlay();
         }
+        handler.postDelayed(runnable, 5000);//每两秒执行一次runnable.
     }
 
     @Override
@@ -303,6 +306,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         if (banner.getVisibility() == View.VISIBLE) {
             banner.stopAutoPlay();
         }
+        handler.removeCallbacks(runnable);
     }
 
     @Override
@@ -339,7 +343,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         ultimateRecyclerView.setHasFixedSize(true);
         ultimateRecyclerView.setClipToPadding(false);
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 3; i++) {
             list.add("one");
         }
         simpleRecyclerViewAdapter = new sectionHomePageAdapter(list);
@@ -476,7 +480,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         @Override
         public void dataCallback(Goods obj) {
             if (obj == null) {
-                Toast.makeText(getActivity(), getActivity().getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.common_check_network, Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -501,6 +505,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             }
             int type = 0;
             TextView tvDeviceName = (TextView)convertView.findViewById(R.id.tv_device_name);
+            ImageView ivBattery = (ImageView)convertView.findViewById(R.id.iv_battery);
+            ImageView ivBatteryValue = (ImageView)convertView.findViewById(R.id.iv_battery_value);
             TextView tvBattery = (TextView)convertView.findViewById(R.id.tv_battery);
             if (DeviceManager.getInstance().deviceList.size() > position) {
                 type = DeviceManager.getInstance().deviceList.get(position).getDeviceType();
@@ -510,19 +516,37 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                         Integer battery = YMApplication.getInstance().deviceBatteryMap.get(mac);
                         if (battery != null && battery > 0) {
                             tvBattery.setText(battery + "%");
+                            ivBattery.setVisibility(View.VISIBLE);
+                            ivBatteryValue.setVisibility(View.VISIBLE);
+                            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) ivBatteryValue.getLayoutParams();
+                            params.height = DisplayUtil.dip2px(16 * battery / 100, getActivity());
+                            ivBatteryValue.setLayoutParams(params);
+                            if (battery <= 20) {
+                                ivBatteryValue.setBackgroundColor(0xffe02020);
+                            } else {
+                                ivBatteryValue.setBackgroundColor(0xffffffff);
+                            }
                         } else {
                             tvBattery.setText("0%");
+                            ivBattery.setVisibility(View.VISIBLE);
+                            ivBatteryValue.setVisibility(View.INVISIBLE);
                         }
                     } else {
                         tvBattery.setText("0%");
+                        ivBattery.setVisibility(View.VISIBLE);
+                        ivBatteryValue.setVisibility(View.INVISIBLE);
                     }
                     tvDeviceName.setText(getResources().getString(R.string.report_yamy_sleep_belt));
                 } else if (type == 2) {
                     tvDeviceName.setText(getResources().getString(R.string.report_yamy_sleep_button));
                     tvBattery.setText("0%");
+                    ivBattery.setVisibility(View.VISIBLE);
+                    ivBatteryValue.setVisibility(View.INVISIBLE);
                 } else {
                     tvDeviceName.setText(getResources().getString(R.string.homepage_breathing_machine));
                     tvBattery.setText("");
+                    ivBattery.setVisibility(View.INVISIBLE);
+                    ivBatteryValue.setVisibility(View.INVISIBLE);
                 }
             }
             String unit = getResources().getString(R.string.common_minute2);
@@ -559,6 +583,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                         tvDisconnectTip.setVisibility(View.VISIBLE);
                         ivBluetooth.setImageResource(R.mipmap.btscan);
                         removeShineAnimation(ivBluetooth);
+                        tvBattery.setText("0%");
+                        refreshTempratureAndHumdity(0, 0); // 刷新温度和湿度
                     } else {
                         tvDisconnectTip.setVisibility(View.INVISIBLE);
                         if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
@@ -567,6 +593,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                         } else {
                             ivBluetooth.setImageResource(R.mipmap.bluetooth1);
                             addShineAnimation(ivBluetooth);
+                            tvBattery.setText("0%");
                         }
                     }
 
@@ -574,6 +601,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                     tvDisconnectTip.setVisibility(View.INVISIBLE);
                     ivBluetooth.setImageResource(R.mipmap.bluetooth3);
                     removeShineAnimation(ivBluetooth);
+                    tvBattery.setText("0%");
                 }
             }
 
@@ -805,4 +833,21 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
     public void refreshDeviceWithBLEStateChanged() {
         adapter.notifyDataSetChanged();
     }
+
+
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable(){
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub 
+            //要做的事情 
+            Intent intentBroadcast = new Intent();   //定义Intent
+            intentBroadcast.setAction("Filter");
+            intentBroadcast.putExtra("arg0", 18);
+            getActivity().sendBroadcast(intentBroadcast);
+            handler.postDelayed(this, 5000);
+        }
+    };
+
+
 }

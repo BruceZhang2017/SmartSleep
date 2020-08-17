@@ -15,6 +15,10 @@
             android:name=".ClockAlarmActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             ></activity>
+        <activity
+            android:name=".ClockAlarmBActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            ></activity>
     </application>
 
 </manifest>

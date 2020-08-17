@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.sunofbeaches.himalaya.SearchActivity;
 import com.zhang.xiaofei.smartsleep.R;
 
 import java.util.ArrayList;
@@ -85,9 +84,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                 } else if (position % 3 == 2) {
                     strSearch = "助眠瑜伽";
                 }
-                Intent intent = new Intent(context, SearchActivity.class);
-                intent.putExtra("key", strSearch);
-                context.startActivity(intent);
+
             }
         });
         return view;

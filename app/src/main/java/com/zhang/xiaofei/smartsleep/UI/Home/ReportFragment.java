@@ -1,8 +1,10 @@
 package com.zhang.xiaofei.smartsleep.UI.Home;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -30,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.loonggg.lib.alarmmanager.clock.SimpleDialog;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.enums.PopupPosition;
@@ -46,6 +49,7 @@ import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 //import com.umeng.socialize.bean.SHARE_MEDIA;
 //import com.umeng.socialize.media.UMImage;
 //import com.umeng.socialize.media.UMWeb;
+import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Login.BaseProtocol;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
@@ -838,4 +842,34 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 			}
 		});
 	}
+
+	public void showSyncDataDialog() {
+		// 这里的属性可以一直设置，因为每次设置后返回的是一个builder对象
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+		// 设置提示框的标题
+		builder.setTitle(R.string.sync_reports).
+				// 设置确定按钮
+						setPositiveButton(R.string.middle_confirm, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//do something
+						HomeActivity activity = (HomeActivity)getActivity();
+						activity.showProgressBarHUDAndHide();
+						CacheUtil.getInstance(getContext()).putBool("SyncData", true);
+						YMApplication.getInstance().downloadSleepAndGetupTime();
+						SleepDataUploadManager uploadManager = new SleepDataUploadManager();
+						uploadManager.uploadSleepData();
+					}
+				}).
+				// 设置取消按钮,null是什么都不做
+						setNegativeButton(R.string.middle_quit, null);
+		// 生产对话框
+		AlertDialog alertDialog = builder.create();
+		// 显示对话框
+		alertDialog.show();
+
+	}
+
+
 }

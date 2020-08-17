@@ -10,4 +10,25 @@
     <item name="score_3" type="id"/>
     <item name="score_4" type="id"/>
     <item name="score_5" type="id"/>
+
+    <item name="iv_apnea_1" type="id"/>
+    <item name="iv_apnea_2" type="id"/>
+    <item name="iv_apnea_3" type="id"/>
+    <item name="iv_apnea_4" type="id"/>
+    <item name="iv_apnea_5" type="id"/>
+    <item name="iv_apnea_6" type="id"/>
+    <item name="iv_apnea_7" type="id"/>
+    <item name="iv_apnea_8" type="id"/>
+    <item name="iv_apnea_9" type="id"/>
+    <item name="iv_apnea_10" type="id"/>
+    <item name="iv_apnea_11" type="id"/>
+    <item name="iv_apnea_12" type="id"/>
+    <item name="iv_apnea_13" type="id"/>
+    <item name="iv_apnea_14" type="id"/>
+    <item name="iv_apnea_15" type="id"/>
+    <item name="iv_apnea_16" type="id"/>
+    <item name="iv_apnea_17" type="id"/>
+    <item name="iv_apnea_18" type="id"/>
+    <item name="iv_apnea_19" type="id"/>
+    <item name="iv_apnea_20" type="id"/>
 </resources>

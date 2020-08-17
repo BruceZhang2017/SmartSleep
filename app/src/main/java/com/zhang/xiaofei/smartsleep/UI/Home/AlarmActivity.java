@@ -102,6 +102,7 @@ public class AlarmActivity extends BaseAppActivity implements View.OnClickListen
         if (alarmGetupModelNew == null) {
             alarmGetupModelNew = new AlarmModel();
             alarmGetupModelNew.setType(0);
+            alarmGetupModelNew.setHour(12);
         }
     }
 

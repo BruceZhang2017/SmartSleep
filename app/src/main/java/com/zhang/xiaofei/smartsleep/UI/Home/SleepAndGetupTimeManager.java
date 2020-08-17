@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class SleepAndGetupTimeManager {
     private static String TAG = "SleepAndGetupTimeManager";
-    static Map<String, List<String>> times = new HashMap<>();
+    public static Map<String, List<String>> times = new HashMap<>();
     /**
      * 用于保存集合
      *

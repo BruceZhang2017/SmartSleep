@@ -2,6 +2,7 @@ package com.zhang.xiaofei.smartsleep.UI.Login;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.util.Log;
 
@@ -40,6 +41,32 @@ public class BaseAppActivity extends AppCompatActivity {
                 .setSize(150,150)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE);
         hud.show();
+    }
+
+    final Handler hudHandler = new Handler();
+
+    public void showProgressBarHUDAndHide() {
+        hud = KProgressHUD.create(this)
+                .setStyle(KProgressHUD.Style.BAR_DETERMINATE)
+                .setLabel("Please wait");
+        hud.setMaxProgress(100);
+
+        hudHandler.postDelayed(new Runnable() {
+            int currentProgress;
+            @Override
+            public void run() {
+                currentProgress += 1;
+                hud.setProgress(currentProgress);
+                if (currentProgress == 80) {
+                    hud.setLabel("Almost finish...");
+                }
+                if (currentProgress < 100) {
+                    hudHandler.postDelayed(this, 50);
+                }
+            }
+        }, 100);
+        hud.show();
+
     }
 
     public void hideHUD() {

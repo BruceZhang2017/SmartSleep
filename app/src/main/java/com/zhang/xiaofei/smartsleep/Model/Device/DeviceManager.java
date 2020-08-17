@@ -3,6 +3,7 @@ package com.zhang.xiaofei.smartsleep.Model.Device;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.ansen.http.net.HTTPCaller;
 import com.ansen.http.net.NameValuePair;
@@ -10,6 +11,7 @@ import com.ansen.http.net.RequestDataCallback;
 import com.clj.blesample.FastBLEManager;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Login.UserModel;
+import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.Tools.SendCMDToHomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Home.HomeActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.LoginActivity;
@@ -99,6 +101,7 @@ public class DeviceManager {
                     //Toast.makeText(DeviceManageActivity.this, model.getMsg(), Toast.LENGTH_SHORT).show();
                 }
                 if (model.getCode() == 401) {
+                    Toast.makeText(getApplicationContext(), R.string.login_invalid, Toast.LENGTH_LONG).show();
                     Intent it = new Intent(getApplicationContext(), LoginActivity.class);
                     it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

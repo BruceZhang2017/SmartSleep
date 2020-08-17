@@ -20,7 +20,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zhang.xiaofei.smartsleep.BuildConfig;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
+import com.zhang.xiaofei.smartsleep.Kit.Application.VersionChecker;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Webview.WebActivity;
 import com.zhang.xiaofei.smartsleep.R;
@@ -31,6 +33,7 @@ import com.zhang.xiaofei.smartsleep.YMApplication;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
@@ -95,7 +98,7 @@ public class AboutUsActivity extends BaseAppActivity {
             textView.setText(mAppNames.get(position));
             TextView tvValue = convertView.findViewById(R.id.tv_value);
             if (position == 0) {
-                tvValue.setText("V1.0.23");
+                tvValue.setText("V1.0.25");
             } else {
                 tvValue.setText("");
             }
@@ -103,7 +106,42 @@ public class AboutUsActivity extends BaseAppActivity {
                 @Override
                 public void onClick(View v) {
                     if (position == 0) {
-                        Toast.makeText(AboutUsActivity.this, R.string.latest_version_tip, Toast.LENGTH_SHORT).show();
+                        showHUD();
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                super.run();
+                                VersionChecker versionChecker = new VersionChecker();
+                                try {
+                                    String mLatestVersionName = versionChecker.execute().get();
+                                    if (mLatestVersionName == null || mLatestVersionName.length() == 0) {
+                                        mLatestVersionName = "0";
+                                    }
+                                    String finalMLatestVersionName = mLatestVersionName;
+                                    AboutUsActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            hideHUD();
+                                            if ((BuildConfig.VERSION_NAME).compareTo(finalMLatestVersionName) < 0) {
+                                                //perform your task here like show alert dialogue "Need to upgrade app"
+                                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                intent.setData(Uri.parse("market://details?id=" + AboutUsActivity.this.getPackageName()));
+                                                if (intent.resolveActivity(getPackageManager()) != null) { //可以接收
+                                                    startActivity(intent);
+                                                } else { //没有应用市场，我们通过浏览器跳转到Google Play
+                                                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + AboutUsActivity.this.getPackageName()));
+                                                    startActivity(intent);
+                                                }
+                                            } else {
+                                                Toast.makeText(AboutUsActivity.this, R.string.latest_version_tip, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }.start();
                     } else if (position == 1) {
                         String language = SpUtil.getInstance(YMApplication.getContext()).getString(SpUtil.LANGUAGE);
                         String url = "";

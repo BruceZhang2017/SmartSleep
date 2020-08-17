@@ -2,16 +2,12 @@ package com.zhang.xiaofei.smartsleep.Kit;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.View;
 
-
 import com.marshalchen.ultimaterecyclerview.quickAdapter.easyRegularAdapter;
-import com.sunofbeaches.himalaya.SearchActivity;
-import com.zhang.xiaofei.smartsleep.Kit.itemCommonBinder;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.UI.music.MainMusicActivity;
 
-import java.security.SecureRandom;
 import java.util.List;
 
 
@@ -62,58 +58,39 @@ public class sectionHomePageAdapter extends easyRegularAdapter<String, itemHomeP
 
     @Override
     protected void withBindHolder(itemHomePageBinder holder, String data, int position) {
-        if (position % 7 == 0){
+        if (position == 1){
             holder.imageViewSample.setImageResource(R.mipmap.pic_1);
-            holder.textViewFeature.setText(R.string.homepage_series_title_one);
-            holder.textViewSample.setText(R.string.homepage_series_content_one);
-        } else if (position % 7 == 1){
+            holder.textViewFeature.setText(R.string.homepage_series_content_one);
+            holder.textViewSample.setText(R.string.homepage_series_title_one);
+        } else if (position == 2){
             holder.imageViewSample.setImageResource(R.mipmap.pic_2);
-            holder.textViewFeature.setText(R.string.homepage_series_title_two);
-            holder.textViewSample.setText(R.string.homepage_series_content_two);
-        } else if (position % 7 == 2){
+            holder.textViewFeature.setText(R.string.homepage_series_content_two);
+            holder.textViewSample.setText(R.string.homepage_series_title_two);
+        } else if (position == 3){
             holder.imageViewSample.setImageResource(R.mipmap.pic_3);
-            holder.textViewFeature.setText(R.string.homepage_series_title_three);
-            holder.textViewSample.setText(R.string.homepage_series_content_three);
-        } else if (position % 7 == 3){
-            holder.imageViewSample.setImageResource(R.mipmap.pic_4);
-            holder.textViewFeature.setText(R.string.homepage_series_title_four);
-            holder.textViewSample.setText(R.string.homepage_series_content_four);
-        } else if (position % 7 == 4){
-            holder.imageViewSample.setImageResource(R.mipmap.pic_5);
-            holder.textViewFeature.setText(R.string.homepage_series_title_five);
-            holder.textViewSample.setText(R.string.homepage_series_content_five);
-        } else if (position % 7 == 5){
-            holder.imageViewSample.setImageResource(R.mipmap.pic_6);
-            holder.textViewFeature.setText(R.string.homepage_series_title_six);
-            holder.textViewSample.setText(R.string.homepage_series_content_six);
-        } else if (position % 7 == 6){
-            holder.imageViewSample.setImageResource(R.mipmap.pic_7);
-            holder.textViewFeature.setText(R.string.homepage_series_title_seven);
-            holder.textViewSample.setText(R.string.homepage_series_content_seven);
+            holder.textViewFeature.setText(R.string.homepage_series_content_three);
+            holder.textViewSample.setText(R.string.homepage_series_title_three);
         }
         holder.item_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("在这里被点击了");
-                String strSearch = "";
-                if (position % 7 == 0){
-                    strSearch = "深度睡眠";
-                } else if (position % 7 == 1) {
-                    strSearch = "助眠疗法";
-                } else if (position % 7 == 2) {
-                    strSearch = "瑜伽21天";
-                } else if (position % 7 == 3) {
-                    strSearch = "失眠专用";
-                } else if (position % 7 == 4) {
-                    strSearch = "经典古诗文";
-                } else if (position % 7 == 5) {
-                    strSearch = "冥想训练";
-                } else if (position % 7 == 6) {
-                    strSearch = "瑜伽入门";
+                int title = 0;
+                int message = 0;
+                if (position == 1) {
+                    title = R.string.homepage_series_title_one;
+                    message = R.string.homepage_series_content_one;
+                } else if (position == 2) {
+                    title = R.string.homepage_series_title_two;
+                    message = R.string.homepage_series_content_two;
+                } else {
+                    title = R.string.homepage_series_title_three;
+                    message = R.string.homepage_series_content_three;
                 }
-                Intent intent = new Intent(context, SearchActivity.class);
-                intent.putExtra("key", strSearch);
-                context.startActivity(intent);
+                Intent intentB = new Intent(context, MainMusicActivity.class);
+                intentB.putExtra("title", title);
+                intentB.putExtra("message", message);
+                intentB.putExtra("position", position);
+                context.startActivity(intentB);
             }
         });
     }

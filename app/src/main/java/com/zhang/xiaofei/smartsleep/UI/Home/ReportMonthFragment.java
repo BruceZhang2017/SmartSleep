@@ -141,7 +141,7 @@ public class ReportMonthFragment extends LazyFragment {
                 calendarView.scrollToNext();
                 calendarView.clearSchemeDate();
                 calendarView.clearSingleSelect();
-                if (month < 11) {
+                if (month < 12) {
                     month++;
                 } else {
                     year++;
@@ -273,11 +273,11 @@ public class ReportMonthFragment extends LazyFragment {
                         int totalTime = array[0] + array[1] + array[2] + array[3];
                         int grade = 0;
                         if (totalTime > 10 * 60 * 60) {
-                            grade = 100 * array[0] / totalTime;
+                            grade = Math.min(150 * array[0] / totalTime, 85);
                         } else if (totalTime < 7 * 60 * 60) {
-                            grade = 90 * array[0] / totalTime;
+                            grade = Math.min(120 * array[0] / totalTime, 70);
                         } else {
-                            grade = Math.min(120 * array[0] / totalTime, 100);
+                            grade = Math.min(180 * array[0] / totalTime, 100);
                         }
                         score += grade;
                         deepSleep += array[0] / 60; // 深睡眠时长
@@ -406,9 +406,12 @@ public class ReportMonthFragment extends LazyFragment {
 
     private void setCharData() {
         ArrayList<Entry> values = new ArrayList<>();
+        ArrayList<Integer> colors = new ArrayList<Integer>();
         for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
             if (sleepOneDayTimes[i] > 0) {
                 values.add(new Entry(i, sleepOneDayTimes[i] / 60));
+                int score = scores[i];
+                colors.add(GradeColor.convertGradeToColor(score));
             }
         }
         System.out.println("当前月数据：" + values.size());
@@ -428,7 +431,7 @@ public class ReportMonthFragment extends LazyFragment {
 
         // black lines and points
         set1.setColor(getResources().getColor(R.color.colorWhite));
-        set1.setCircleColor(getResources().getColor(R.color.color_5DF2FF));
+        set1.setCircleColors(colors);
 
         // line thickness and point size
         set1.setLineWidth(1f);
@@ -579,14 +582,18 @@ public class ReportMonthFragment extends LazyFragment {
     private void calculateSleepValue() {
         if (tvSleepAverageTime != null) {
             int deepSleepAvg = 0;
+            int days = 0;
             for (int i = 0; i < sleepOneDayTimes.length; i++) {
                 deepSleepAvg += sleepOneDayTimes[i];
+                if (sleepOneDayTimes[i] > 0) {
+                    days++;
+                }
             }
             String unit01 = getResources().getString(R.string.common_hour);
             String unit02 = getResources().getString(R.string.common_minute);
             String[] array1 = {unit01, unit02};
-            int hour = deepSleepAvg / 7 / 60;
-            int minute = deepSleepAvg / 7 % 60;
+            int hour = deepSleepAvg / (days > 0 ? days : 30) / 60;
+            int minute = deepSleepAvg / (days > 0 ? days : 30) % 60;
             String content1 = (hour > 9 ? "" + hour : "0" + hour) + unit01 + (minute > 9 ? "" + minute : "0" + minute) + unit02;
             tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         }
