@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: in.srain.cube:ultra-ptr:1.0.11@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d468928b8c53cb0ce536fdac4ea7a93f/jetified-ultra-ptr-1.0.11/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d468928b8c53cb0ce536fdac4ea7a93f/jetified-ultra-ptr-1.0.11/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/d468928b8c53cb0ce536fdac4ea7a93f/jetified-ultra-ptr-1.0.11/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4b7772192af3e09a802fd9eb3b41f23e/jetified-ultra-ptr-1.0.11/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4b7772192af3e09a802fd9eb3b41f23e/jetified-ultra-ptr-1.0.11/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/4b7772192af3e09a802fd9eb3b41f23e/jetified-ultra-ptr-1.0.11/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/in.srain.cube/ultra-ptr/1.0.11/1191ec111e7de0a08c2194754b3c6f667906e738/ultra-ptr-1.0.11-javadoc.jar!/" />

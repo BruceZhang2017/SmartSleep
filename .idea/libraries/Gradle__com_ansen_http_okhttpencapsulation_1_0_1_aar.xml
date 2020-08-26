@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.ansen.http:okhttpencapsulation:1.0.1@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ede0057624e66f15fc97e3a195006c96/jetified-okhttpencapsulation-1.0.1/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ede0057624e66f15fc97e3a195006c96/jetified-okhttpencapsulation-1.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ede0057624e66f15fc97e3a195006c96/jetified-okhttpencapsulation-1.0.1/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/82c1f24f716e8d6ebf8f1c69b483e76b/jetified-okhttpencapsulation-1.0.1/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/82c1f24f716e8d6ebf8f1c69b483e76b/jetified-okhttpencapsulation-1.0.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/82c1f24f716e8d6ebf8f1c69b483e76b/jetified-okhttpencapsulation-1.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.ansen.http/okhttpencapsulation/1.0.1/727c1366b6dc94f0e0e4a53d8f827493cfcfccc/okhttpencapsulation-1.0.1-javadoc.jar!/" />

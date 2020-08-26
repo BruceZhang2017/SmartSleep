@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.haibin.calendarview.CalendarView;
 import com.shizhefei.fragment.LazyFragment;
+import com.zhang.xiaofei.smartsleep.Kit.Application.LogHelper;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
@@ -58,6 +60,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -137,6 +140,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
     private int[] sleepbeltValue = new int[5]; // 得分， 入睡，睡眠时长，心率，呼吸率
     private int countApnea = 0; // 心跳暂停计数
     private List<ImageView> ivList = new ArrayList<>();
+    private Set<Integer> setValue1 = new HashSet<Integer>();
+    TextView tvSleepDesc;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -152,6 +157,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvCircleSleep2 = (TextView)findViewById(R.id.tv_sleep_2);
         tvCircleSleep3 = (TextView)findViewById(R.id.tv_sleep_3);
         tvCircleSleep4 = (TextView)findViewById(R.id.tv_sleep_4);
+        tvSleepDesc = (TextView)findViewById(R.id.tv_sleep_desc);
         circlePercentView = (CircleSeekBar)findViewById(R.id.circle_percent_progress);
         circlePercentView.setCurProcess(grade);
         circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(grade)));
@@ -180,6 +186,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         ibLeftPre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 preSleepAndGetupData();
                 refreshAllChartX();
                 if (sleepTime.length() >= 16) {
@@ -187,12 +194,14 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 }
                 refreshData(isBlet);
                 refreshGrade();
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
         ibRightNex = (ImageButton)findViewById(R.id.ib_right_next);
         ibRightNex.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 nextSleepAndGetupData();
                 refreshAllChartX();
                 if (sleepTime.length() >= 16) {
@@ -200,6 +209,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 }
                 refreshData(isBlet);
                 refreshGrade();
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
 
@@ -250,6 +260,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         tvSleepBottomCount1 = (TextView)findViewById(R.id.tv_sleep_bottom_count_1);
         tvSleepBottomCount2 = (TextView)findViewById(R.id.tv_sleep_bottom_count_2);
         tvSleepBottomCount3 = (TextView)findViewById(R.id.tv_sleep_bottom_count_3);
+        tvSleepBottomCount3.setVisibility(View.INVISIBLE);
         tvSleepBottomCount4 = (TextView)findViewById(R.id.tv_sleep_bottom_count_4);
         refreshSleepStatisticsUI();
     }
@@ -407,7 +418,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         yAxis.setAxisMinimum(0f);
         yAxis.setSpaceTop(0);
         yAxis.setSpaceBottom(0);
-        yAxis.setLabelCount(5, true);
+        yAxis.setLabelCount(6, true);
         yAxis.setGranularityEnabled(true);
         yAxis.setGranularity(1f);
         yAxis.setDrawAxisLine(false);
@@ -480,7 +491,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             }
         });
 
-        set1.setMode(LineDataSet.Mode.LINEAR);
+        set1.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the data sets
 
@@ -532,6 +543,8 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         int count = 0;
         int total = 0;
         int getup = hourMinuteToInt(getupTime);
+        int sleep = hourMinuteToInt(sleepTime);
+        System.out.println("第" + sleep + " " + getup);
         for (RecordModel model: mlist) {
             int t = hourMinuteToInt(timeToDate(model.getTime()));
             if (t > getup) {
@@ -566,7 +579,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 chart3Values.add(new Entry(time, breath / count));
             }
             if (total == mlist.size() && time != 0) {
-                chart4Values.add(new Entry(time, bodyMotion));
+                chart4Values.add(new Entry(time, Math.min(bodyMotion, 5)));
             }
             if (total == mlist.size() && time != 0) {
                 chart5Values.add(new Entry(time, snore));
@@ -574,9 +587,49 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         }
 
         Collections.sort(chart4Values, comparatorByX);
+        if (chart4Values.size() > 0) {
+            if (chart4Values.get(0).getX() > sleep) {
+                chart4Values.add(0, new Entry(chart4Values.get(0).getX() - 1, 0));
+                chart4Values.add(0, new Entry(sleep, 0));
+            }
+            if (chart4Values.get(chart4Values.size() - 1).getX() < getup) {
+                chart4Values.add(new Entry(chart4Values.get(chart4Values.size() - 1).getX() + 1, 0));
+                chart4Values.add(new Entry(getup, 0));
+            }
+        }
         Collections.sort(chart2Values, comparatorByX);
+        if (chart2Values.size() > 0) {
+            if (chart2Values.get(0).getX() > sleep) {
+                chart2Values.add(0, new Entry(chart2Values.get(0).getX() - 1, 0));
+                chart2Values.add(0, new Entry(sleep, 0));
+            }
+            if (chart2Values.get(chart2Values.size() - 1).getX() < getup) {
+                chart2Values.add(new Entry(chart2Values.get(chart2Values.size() - 1).getX() + 1, 0));
+                chart2Values.add(new Entry(getup, 0));
+            }
+        }
         Collections.sort(chart3Values, comparatorByX);
+        if (chart3Values.size() > 0) {
+            if (chart3Values.get(0).getX() > sleep) {
+                chart3Values.add(0, new Entry(chart3Values.get(0).getX() - 1, 0));
+                chart3Values.add(0, new Entry(sleep, 0));
+            }
+            if (chart3Values.get(chart3Values.size() - 1).getX() < getup) {
+                chart3Values.add(new Entry(chart3Values.get(chart3Values.size() - 1).getX() + 1, 0));
+                chart3Values.add(new Entry(getup, 0));
+            }
+        }
         Collections.sort(chart5Values, comparatorByX);
+        if (chart5Values.size() > 0) {
+            if (chart5Values.get(0).getX() > sleep) {
+                chart5Values.add(0, new Entry(chart5Values.get(0).getX() - 1, 0));
+                chart5Values.add(0, new Entry(sleep, 0));
+            }
+            if (chart5Values.get(chart5Values.size() - 1).getX() < getup) {
+                chart5Values.add(new Entry(chart5Values.get(chart5Values.size() - 1).getX() + 1, 0));
+                chart5Values.add(new Entry(getup, 0));
+            }
+        }
     }
 
     private void setData2() {
@@ -892,6 +945,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         this.isBlet = isBlet;
         cl5.setVisibility(isBlet ? View.VISIBLE : View.GONE);
         cl6.setVisibility(isBlet ? View.VISIBLE : View.GONE);
+        cl11.setVisibility(isBlet ? View.GONE : View.VISIBLE);
 
         readDataFromDB();
         setChartData();
@@ -1135,6 +1189,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(items.size() - 1);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
+        System.out.println("当前的游标为：" + cursor[0] + " " + cursor[1]);
     }
 
     private void preSleepAndGetupData() {
@@ -1156,6 +1211,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(cursor[1]);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
+        System.out.println("PRE当前的游标为：" + cursor[0] + " " + cursor[1]);
     }
 
     private void nextSleepAndGetupData() {
@@ -1178,6 +1234,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         String duration = items.get(cursor[1]);
         sleepTime = duration.split("&")[0];
         getupTime = duration.split("&")[1];
+        System.out.println("NEXT当前的游标为：" + cursor[0] + " " + cursor[1]);
     }
 
     private void currentSleepAndGetupData(String day) {
@@ -1242,7 +1299,7 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         } else {
             chart1Values.clear();
         }
-
+        setValue1.clear();
         if (mlist.size() > 0) {
             int deepSleep = 0;
             int middleSleep = 0;
@@ -1252,8 +1309,16 @@ public class ReportDayFragment extends LazyFragment { // 日报告
             int bodyMotionCount = 0;
             int startTime = 0; // 开始计算的时间
             int i = 0;
+            int apneaTotal = 0;
+            int bodyMotionTotal = 0;
+            int apneaCount = 0;
             for (RecordModel model : mlist) { // 计算清醒和体动
                 i++;
+                bodyMotionTotal += model.getBodyMotion();
+                apneaTotal += model.getBreatheStop();
+                if (model.getBreatheStop() > 0) {
+                    apneaCount += 1;
+                }
                 if (startTime == 0) {
                     startTime = model.getTime();
                 }
@@ -1261,7 +1326,11 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 int a = model.getGetupFlag(); // 离床 在床
                 int b = model.getBodyMotion(); // 体动
                 if (a == 0) { // 离床，清醒
-                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),1));
+                    int time = hourMinuteToInt(timeToDate(model.getTime()));
+                    if (!setValue1.contains(time)) {
+                        chart1Values.add(new Entry(time,4));
+                        setValue1.add(time);
+                    }
                     if (startTime > 0) {
                         getup += model.getTime() - startTime;
                         startTime = model.getTime();
@@ -1270,31 +1339,67 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                     continue;
                 }
                 if (model.getTime() - startTime >= 60 && bodyMotionCount >= 5) {
-                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),2));
-                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),2));
+                    int time2 = hourMinuteToInt(timeToDate(startTime));
+                    if (!setValue1.contains(time2)) {
+                        chart1Values.add(new Entry(time2,3));
+                        setValue1.add(time2);
+                    }
+
+                    int time = hourMinuteToInt(timeToDate(model.getTime()));
+                    if (!setValue1.contains(time)) {
+                        chart1Values.add(new Entry(time,3));
+                        setValue1.add(time);
+                    }
                     cheapSleep += model.getTime() - startTime;
                     bodyMotionCount = 0;
                     startTime = model.getTime();
                     continue;
                 }
                 if (model.getTime() - startTime >= 3 * 60 && bodyMotionCount > 0) {
-                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
-                    chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+                    int time2 = hourMinuteToInt(timeToDate(startTime));
+                    if (!setValue1.contains(time2)) {
+                        chart1Values.add(new Entry(time2,2));
+                        setValue1.add(time2);
+                    }
+
+                    int time = hourMinuteToInt(timeToDate(model.getTime()));
+                    if (!setValue1.contains(time)) {
+                        chart1Values.add(new Entry(time,2));
+                        setValue1.add(time);
+                    }
                     middleSleep += model.getTime() - startTime;
                     bodyMotionCount = 0;
                     startTime = model.getTime();
                     continue;
                 }
                 if (model.getTime() - startTime >= 5 * 60) {
-                    if (bodyMotionCount > 0) {
+                    if (bodyMotionCount > 2) {
                         middleSleep += model.getTime() - startTime;
-                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
-                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+                        int time2 = hourMinuteToInt(timeToDate(startTime));
+                        if (!setValue1.contains(time2)) {
+                            chart1Values.add(new Entry(time2,2));
+                            setValue1.add(time2);
+                        }
+
+                        int time = hourMinuteToInt(timeToDate(model.getTime()));
+                        if (!setValue1.contains(time)) {
+                            chart1Values.add(new Entry(time,2));
+                            setValue1.add(time);
+                        }
 
                     } else {
                         deepSleep += model.getTime() - startTime;
-                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),4));
-                        chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),4));
+                        int time2 = hourMinuteToInt(timeToDate(startTime));
+                        if (!setValue1.contains(time2)) {
+                            chart1Values.add(new Entry(time2,1));
+                            setValue1.add(time2);
+                        }
+
+                        int time = hourMinuteToInt(timeToDate(model.getTime()));
+                        if (!setValue1.contains(time)) {
+                            chart1Values.add(new Entry(time,1));
+                            setValue1.add(time);
+                        }
                     }
                     bodyMotionCount = 0;
                     startTime = model.getTime();
@@ -1304,16 +1409,43 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                     if (model.getTime() - startTime <= 3 * 60) {
                         if (bodyMotionCount > 5) {
                             cheapSleep += model.getTime() - startTime;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),1));
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),1));
+                            int time2 = hourMinuteToInt(timeToDate(startTime));
+                            if (!setValue1.contains(time2)) {
+                                chart1Values.add(new Entry(time2,4));
+                                setValue1.add(time2);
+                            }
+
+                            int time = hourMinuteToInt(timeToDate(model.getTime()));
+                            if (!setValue1.contains(time)) {
+                                chart1Values.add(new Entry(time,4));
+                                setValue1.add(time);
+                            }
                         }else if (bodyMotionCount > 0) {
                             middleSleep += model.getTime() - startTime;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),2));
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),2));
+                            int time2 = hourMinuteToInt(timeToDate(startTime));
+                            if (!setValue1.contains(time2)) {
+                                chart1Values.add(new Entry(time2,3));
+                                setValue1.add(time2);
+                            }
+
+                            int time = hourMinuteToInt(timeToDate(model.getTime()));
+                            if (!setValue1.contains(time)) {
+                                chart1Values.add(new Entry(time,3));
+                                setValue1.add(time);
+                            }
                         } else {
                             deepSleep += model.getTime() - startTime;
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(startTime)),3));
-                            chart1Values.add(new Entry(hourMinuteToInt(timeToDate(model.getTime())),3));
+                            int time2 = hourMinuteToInt(timeToDate(startTime));
+                            if (!setValue1.contains(time2)) {
+                                chart1Values.add(new Entry(time2,2));
+                                setValue1.add(time2);
+                            }
+
+                            int time = hourMinuteToInt(timeToDate(model.getTime()));
+                            if (!setValue1.contains(time)) {
+                                chart1Values.add(new Entry(time,2));
+                                setValue1.add(time);
+                            }
 
                         }
                     }
@@ -1321,23 +1453,54 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 bodyMotionCount += b;
                 continue;
             }
+            if (chart1Values.size() > 0) {
+                int sleep = hourMinuteToInt(sleepTime);
+                int getupB = hourMinuteToInt(getupTime);
+                if (chart1Values.get(0).getX() > sleep) {
+                    chart1Values.add(0, new Entry(chart1Values.get(0).getX() - 1, 4));
+                    chart1Values.add(0, new Entry(sleep, 4));
+                }
+                if (chart1Values.get(chart1Values.size() - 1).getX() < getupB) {
+                    chart1Values.add(new Entry(chart1Values.get(chart1Values.size() - 1).getX() + 1, 4));
+                    chart1Values.add(new Entry(getupB, 4));
+                }
+            }
+//            int k = 0;
+//            for (Entry item : chart1Values) {
+//                k += 1;
+//                System.out.println("第" + k + "：" + item.getX());
+//            }
             int c = deepSleep + middleSleep + cheapSleep + getup;
             if (c > 0) {
-                circleSleep1.setPercentage(deepSleep * 100 / c);
-                circleSleep2.setPercentage(middleSleep * 100 / c);
-                circleSleep3.setPercentage(cheapSleep * 100 / c);
-                circleSleep4.setPercentage(getup * 100 / c);
-                tvCircleSleep1.setText(deepSleep * 100 / c + "%");
-                tvCircleSleep2.setText(middleSleep * 100 / c + "%");
-                tvCircleSleep3.setText(cheapSleep * 100 / c + "%");
-                tvCircleSleep4.setText(getup * 100 / c + "%");
+                System.out.println("计算得到的结果：" + deepSleep + " " + middleSleep + " " + cheapSleep + " " + getup);
+                int deep =  deepSleep * 100 / c;
+                int middle = middleSleep * 100 / c;
+                int cheap = cheapSleep * 100 / c;
+                int get = 100 - deep - middle - cheap;
+                circleSleep1.setPercentage(deep);
+                circleSleep2.setPercentage(middle);
+                circleSleep3.setPercentage(cheap);
+                circleSleep4.setPercentage(get);
+                tvCircleSleep1.setText(deep + "%");
+                tvCircleSleep2.setText(middle + "%");
+                tvCircleSleep3.setText(cheap + "%");
+                tvCircleSleep4.setText(get + "%");
+                float d = ((float)deepSleep) / ((float)c);
+                float d2 =  Math.abs((float)0.25 - d);
+                int d3 =  (int) (d2 * 100 * 0.5);
+                int d4 = (int) (apneaCount * 0.5);
                 if (c > 10 * 60 * 60) {
-                    grade = Math.min(150 * deepSleep / c, 85);
+                    int c1 = c / 3600 - 10;
+                    grade = Math.max(93 - 3 * c1 - d3 - d4, 40);
                 } else if (c < 7 * 60 * 60) {
-                    grade = Math.min(120 * deepSleep / c, 70);
+                    int c1 = 7 - c / 3600;
+                    grade = Math.max(88 - 8 * c1 - d3 - d4, 40);
                 } else {
-                    grade = Math.min(180 * deepSleep / c, 100);
+                    grade = Math.max(100 - d3 - d4, 40);
                 }
+//                grade -= bodyMotionTotal / 3600 * 2;
+//                grade -= apneaTotal / 3600 * 2;
+                grade = Math.min(100, grade);
             } else {
                 circleSleep1.setPercentage(0);
                 circleSleep2.setPercentage(0);
@@ -1347,8 +1510,10 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 tvCircleSleep2.setText("0%");
                 tvCircleSleep3.setText("0%");
                 tvCircleSleep4.setText("0%");
+                grade = 0;
             }
         } else {
+            grade = 0;
             System.out.println("不用计算的睡觉值：深睡-" + 0 + "中睡-" + 0 + "浅睡-" + 0 + "清醒-" + 0);
             circleSleep1.setPercentage(0);
             circleSleep2.setPercentage(0);
@@ -1364,6 +1529,15 @@ public class ReportDayFragment extends LazyFragment { // 日报告
         circlePercentView.setReachedColor(getResources().getColor(GradeColor.convertGradeToColor(grade)));
         System.out.println("计算得到的最终得分为：" + grade);
         sleepbeltValue[0] = grade;
+        if (grade >= 95) {
+            tvSleepDesc.setText(R.string.score_95_comment);
+        } else if (grade >= 80) {
+            tvSleepDesc.setText(R.string.score_80_comment);
+        } else if (grade >= 60) {
+            tvSleepDesc.setText(R.string.score_60_comment);
+        } else {
+            tvSleepDesc.setText(R.string.score_40_comment);
+        }
         if (!bSleepBletValueRead) {
             YMApplication.getInstance().setSleepbeltValue(sleepbeltValue);
         }
@@ -1432,6 +1606,9 @@ public class ReportDayFragment extends LazyFragment { // 日报告
                 DisplayUtil.dip2px(26, getActivity()), DisplayUtil.dip2px(26, getActivity()));
         float width = ScreenInfoUtils.getScreenWidth(getActivity()) - DisplayUtil.dip2px(43, getActivity());
         float x = (float)(now - sleep) / (getup - sleep) * width;
+        if (x >= width - DisplayUtil.dip2px(52, getActivity())) {
+            x = width - DisplayUtil.dip2px(52, getActivity());
+        }
         ivLeftLayoutParams.setMarginStart((int)x);
         ivLeftLayoutParams.topMargin = DisplayUtil.dip2px(20, getActivity());
         ivLeftLayoutParams.topToTop = R.id.chart1;

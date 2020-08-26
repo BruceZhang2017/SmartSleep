@@ -4,17 +4,21 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.ansen.http.net.HTTPCaller;
@@ -38,7 +42,9 @@ import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.Application.TestDataNotification;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
+import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.Kit.ReadTXT;
+import com.zhang.xiaofei.smartsleep.Kit.dfutest.DfuUpdateActivity;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
@@ -49,14 +55,17 @@ import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.UI.Me.EasyCaptureActivity;
+import com.zhang.xiaofei.smartsleep.UI.Me.OTAActivity;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -89,12 +98,16 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     public Realm mRealm;
     DynamicReceiver dynamicReceiver;
     private int userId = 0; // 用户ID
-    private Intent foregroundIntent;
     private static final String DEVICEACTION = "com.zhangxiaofei.broadcast.Filter";
     private Map<String, String> attachValue = new HashMap<String, String>();
     private BluetoothMonitorReceiver bleListenerReceiver;
     private List<RecordModel> recordModelList = new ArrayList<>(); // 记录将保存于数据库中
     private boolean bInsertingDB = false; //数据正在插入数据库
+    // 初始化定时器
+    Timer dbTimer;
+    TimerTask dbTimerTask;
+    private String strOTAMac = "";
+    private Set<String> macSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,12 +157,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (userModel != null) {
             userId = userModel.getUserInfo().getUserId();
         }
-
-        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
-        foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
-        //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
-        foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
-        startService(foregroundIntent);
 
         DeviceManager.getInstance().downloadDeviceList();
         registerBLE(); // 注册BLE状态监听
@@ -211,6 +218,18 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
+    }
+
+    private void showBTNotOpenDialog() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);  //先得到构造器
+        builder.setTitle(getResources().getString(R.string.open_bluetooth_tip)); //设置标题
+        builder.setPositiveButton(R.string.middle_confirm, new DialogInterface.OnClickListener() { //设置确定按钮
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); //关闭dialog
+            }
+        });
+
     }
 
     private void registerBroadcast() {
@@ -411,6 +430,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         sendBroadcast(intentBroadcast);
     }
 
+    Handler btHandler = new Handler();
     // 初始化蓝牙
     private void initialBLE() {
         fastBLEManager = new FastBLEManager();
@@ -419,6 +439,15 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         fastBLEManager.bleDataObserver = this;
 
         refreshBLEAndDevice();
+
+        btHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (YMApplication.getInstance().getBLEOpen() == false) {
+                    showBTNotOpenDialog();
+                }
+            }
+        }, 2000);
     }
 
     // 刷新设备列表并扫描第一个设备
@@ -466,7 +495,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
     }
 
     @Override
-    public void handleBLEData(int battery, int flash, String mac, int version) {
+    public void handleBLEData(int battery, int flash, String mac, String version, String sn) {
         System.out.println("处理BLE返回的数据 " + battery + " " + flash + " " + mac + " " + version);
         if (fastBLEManager == null) {
             return;
@@ -474,6 +503,12 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         String macAddress = fastBLEManager.macAddress;
         if (macAddress.length() == 0) {
             return;
+        }
+        if (macSet.contains(mac)) {
+
+        } else {
+            macSet.add(mac);
+            downloadOTA(version, mac);
         }
         YMApplication.getInstance().deviceBatteryMap.put(macAddress, battery);
         System.out.println("当前需要更新的设备：" + macAddress);
@@ -483,7 +518,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 //先查找后得到DeviceModel对象
                 DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", macAddress).findFirst();
                 if (deviceModel != null) {
-                    deviceModel.setVersion(version + "");
+                    deviceModel.setVersion(version);
                     System.out.println("更新设备的版本号信息：" + version);
                 }
             }
@@ -504,10 +539,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         TestDataNotification.getInstance().notifyObserver();
     }
 
-    // 初始化定时器
-    Timer dbTimer = null;
-    TimerTask dbTimerTask = null;
-
     private void startTimer() {
         stopTimer();
         dbTimer = new Timer();
@@ -522,7 +553,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                         saveFlashDataToDB();
                     }
                 });
-                stopTimer();
             }
         };
         dbTimer.schedule(dbTimerTask, 0, 3000);
@@ -558,7 +588,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
             return;
         }
         int deviceId = DeviceManager.getInstance().deviceList.get(current).getId();
-
+        System.out.println("将要保存到数据库中的设备ID: " + deviceId);
         if (bSaveDataToDBNow) {
             if (recordModelList.size() == 0) {
                 return;
@@ -1058,6 +1088,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 if (fastBLEManager != null && fastBLEManager.operationManager != null) {
                     fastBLEManager.operationManager.write(
                             fastBLEManager.operationManager.bleOperation.getTemplateAndHumidity(deviceId));
+                    handleBLEWrite(1);
                 }
             }
         });
@@ -1220,6 +1251,107 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 //        array[7] = breathStop;
 //        handleBLEData("", temTime, array);
     }
+
+    // 监测是否有升级包
+
+    private void downloadOTA(String deviceVersion, String mac) {
+        strOTAMac = mac;
+        YMUserInfoManager userManager = new YMUserInfoManager( this);
+        UserModel userModel = userManager.loadUserInfo();
+        com.ansen.http.net.Header headerToken = new com.ansen.http.net.Header("token", userModel.getToken());
+        System.out.println("token:" + userModel.getToken());
+        List<NameValuePair> postParam = new ArrayList<>();
+        postParam.add(new NameValuePair("type",1 + ""));
+        postParam.add(new NameValuePair("version",deviceVersion));
+
+        HTTPCaller.getInstance().postFile(
+                DeviceVersion.class,
+                YMApplication.getInstance().domain() + "app/deviceManage/compareVersion",
+                new com.ansen.http.net.Header[]{headerToken},
+                postParam,
+                requestDataCallback
+        );
+    }
+
+    private RequestDataCallback requestDataCallback = new RequestDataCallback<DeviceVersion>() {
+        @Override
+        public void dataCallback(int status, DeviceVersion user) {
+            System.out.println("网络请求返回的Status:" + status + " " + (Looper.myLooper() == Looper.getMainLooper()));
+            if(user != null && (user.getCode() == 200 || user.getCode() == 201)){
+                String url = user.getUrl();
+                if (url != null && url.length() > 0) {
+                    showDialog(url, strOTAMac);
+                }
+            }
+
+        }
+
+        @Override
+        public void dataCallback(DeviceVersion obj) { }
+    };
+
+    private class DeviceVersion extends BaseProtocol {
+        String url;
+        String version;
+        String data;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+    }
+
+    private void showDialog(String url, String mac) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.need_ota_tip);    //设置对话框标题
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getMac().equals(mac)) {
+                    Toast.makeText(HomeActivity.this, R.string.please_connect_first, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (url == null || url.length() == 0) {
+                    return;
+                }
+                Intent intent = new Intent(HomeActivity.this, DfuUpdateActivity.class);
+                intent.putExtra("mac", mac);
+                intent.putExtra("name", "Sleep_Baby");
+                if (url != null && url.length() > 0) {
+                    intent.putExtra("url", url);
+                }
+                HomeActivity.this.startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();  //创建对话框
+        dialog.show();
+    }
+
 }
 
 

@@ -487,6 +487,10 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         if (arrayList == null) {
             arrayList = new ArrayList<>();
         }
+        String time = sleepStartTime + "&" + sleepEndTime;
+        if (arrayList.contains(time)) {
+            return;
+        }
         arrayList.add(sleepStartTime + "&" + sleepEndTime);
         SleepAndGetupTimeManager.times.put(sleepEndTime.substring(0, 10), arrayList);
         SleepAndGetupTimeManager.putHashMapData();

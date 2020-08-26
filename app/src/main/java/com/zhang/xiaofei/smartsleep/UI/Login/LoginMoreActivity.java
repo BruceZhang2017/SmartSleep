@@ -170,11 +170,15 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
         if (height > 0) {
             btnHeight.setText(height + " cm");
             HeightOptions.setSelectOptions(height - 30);
+        } else {
+            HeightOptions.setSelectOptions(160 - 30);
         }
         int weight = userModel.getUserInfo().getWeight();
         if (weight > 0) {
             btnWeight.setText(weight + " kg");
             weightOptions.setSelectOptions(weight);
+        } else {
+            weightOptions.setSelectOptions(50);
         }
         int iID = userModel.getUserInfo().getUserId();
         if (iID > 0) {
@@ -186,7 +190,13 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_r:
-                refreshUserInfo();
+                if (value > 0) {
+                    refreshUserInfo();
+                } else {
+                    Intent intentB = new Intent(LoginMoreActivity.this, HomeActivity.class);
+                    intentB.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intentB);
+                }
                 break;
             case R.id.btn_next:
                 refreshUserInfo();

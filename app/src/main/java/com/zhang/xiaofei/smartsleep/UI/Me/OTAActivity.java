@@ -78,10 +78,10 @@ public class OTAActivity extends BaseAppActivity {
             battery = 0;
         }
         appNames.add(new OTAInfo(getResources().getString(R.string.device_info_battery), battery + "%"));
-        if (mac.equals("00:00:00:00:00:00")) {
+        if (mac == null || mac.equals("00:00:00:00:00:00")) {
             appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V0.1"));
         } else {
-            appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V1." + deviceVersion));
+            appNames.add(new OTAInfo(getResources().getString(R.string.index_version), "V" + deviceVersion));
         }
 
         //适配adapter
@@ -208,7 +208,7 @@ public class OTAActivity extends BaseAppActivity {
         System.out.println("token:" + userModel.getToken());
         List<NameValuePair> postParam = new ArrayList<>();
         postParam.add(new NameValuePair("type",1 + ""));
-        postParam.add(new NameValuePair("version","1." + deviceVersion));
+        postParam.add(new NameValuePair("version",deviceVersion));
 
         HTTPCaller.getInstance().postFile(
                 DeviceVersion.class,

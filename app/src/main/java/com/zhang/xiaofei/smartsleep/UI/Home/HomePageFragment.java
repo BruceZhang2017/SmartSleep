@@ -512,7 +512,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 type = DeviceManager.getInstance().deviceList.get(position).getDeviceType();
                 if (type == 1) {
                     String mac = DeviceManager.getInstance().deviceList.get(position).getMac();
-                    if (mac.length() > 0) {
+                    if (mac != null && mac.length() > 0) {
                         Integer battery = YMApplication.getInstance().deviceBatteryMap.get(mac);
                         if (battery != null && battery > 0) {
                             tvBattery.setText(battery + "%");

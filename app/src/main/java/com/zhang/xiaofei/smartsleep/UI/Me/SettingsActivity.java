@@ -12,14 +12,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
+import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
+import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
+import com.zhang.xiaofei.smartsleep.UI.Home.SleepAndGetupTimeManager;
 import com.zhang.xiaofei.smartsleep.UI.Login.BaseAppActivity;
 import com.zhang.xiaofei.smartsleep.UI.Login.LoginActivity;
 import com.zhang.xiaofei.smartsleep.Vendor.EsptouchDemoActivity;
+import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class SettingsActivity extends BaseAppActivity {
 
@@ -56,8 +64,35 @@ public class SettingsActivity extends BaseAppActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(SettingsActivity.this, "退出登录", Toast.LENGTH_SHORT).show();
+                Intent intentBroadcast = new Intent();   //定义Intent
+                intentBroadcast.setAction("Filter");
+                intentBroadcast.putExtra("arg0", 16);
+                intentBroadcast.putExtra("value", true);
+                sendBroadcast(intentBroadcast);
                 YMUserInfoManager userInfoManager = new YMUserInfoManager(SettingsActivity.this);
                 userInfoManager.clearUserInfo();
+                SleepAndGetupTimeManager.clearHashMapData(); // 清空时间记录
+                RealmResults<DeviceModel> devices = Realm.getDefaultInstance().where(DeviceModel.class).findAll();
+                if (devices != null && devices.size() > 0) {
+                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            devices.deleteAllFromRealm();
+                        }
+                    });
+                }
+                RealmResults<RecordModel> records = Realm.getDefaultInstance().where(RecordModel.class).findAll();
+                if (records != null && records.size() > 0) {
+                    Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            records.deleteAllFromRealm();
+                        }
+                    });
+                }
+                CacheUtil.getInstance(SettingsActivity.this).putBool("SyncData", false);
+                YMApplication.getInstance().setSleepbeltValue(new int[5]);
+                SleepAndGetupTimeManager.times.clear();
                 Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

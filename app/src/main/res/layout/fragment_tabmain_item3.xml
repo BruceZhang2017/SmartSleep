@@ -38,8 +38,8 @@
 
             <ImageButton
                 android:id="@+id/ib_left_pre"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_simulation_data"
                 app:layout_constraintBottom_toBottomOf="@id/tv_simulation_data"
@@ -49,8 +49,8 @@
 
             <ImageButton
                 android:id="@+id/ib_right_next"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_simulation_data"
                 app:layout_constraintBottom_toBottomOf="@id/tv_simulation_data"

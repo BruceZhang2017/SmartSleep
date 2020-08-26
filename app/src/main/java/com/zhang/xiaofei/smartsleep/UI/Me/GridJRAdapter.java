@@ -90,7 +90,7 @@ public class GridJRAdapter extends UltimateGridLayoutAdapter<DeviceModel, ItemGr
             if (jRitem.getDeviceType() > 2) {
                 b.textViewVersion.setText("V0.1");
             } else {
-                b.textViewVersion.setText("V1." + jRitem.getVersion());
+                b.textViewVersion.setText("V" + jRitem.getVersion());
             }
             b.ibDelete.setVisibility(isEdit ? View.VISIBLE : View.INVISIBLE);
         }

@@ -36,6 +36,8 @@ import com.zhang.xiaofei.smartsleep.YMApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +56,10 @@ public class LoginActivity extends BaseAppActivity {
     static int kRequestCode = 1;
     private static String TAG = "LoginActivity";
     private boolean bAgreeTerms = false;
+    int count = 60;
+    // 定时器
+    private Timer mTimer;
+    private TimerTask mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class LoginActivity extends BaseAppActivity {
                     return;
                 }
                 if (!bAgreeTerms) {
+                    Toast.makeText(LoginActivity.this, R.string.login_use_of_term_tip, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Log.i(TAG, "Phone:" + phone + " area:" + area + " code:" + code);
@@ -103,6 +110,28 @@ public class LoginActivity extends BaseAppActivity {
                 showHUD();
                 String zone = btnArea.getText().toString().replace("+", "");
                 SMSSDK.getVerificationCode(zone, phone);
+                mTimer = new Timer();
+                mTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        // 要做的事情
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                count -= 1;
+                                btnCode.setText(count + "" + getResources().getString(R.string.second));
+                                if (count == 0) {
+                                    count = 60;
+                                    mTimer.cancel();
+                                    btnCode.setText(getResources().getString(R.string.login_code));
+                                    btnCode.setEnabled(true);
+                                }
+                            }
+                        });
+                    }
+                };
+                mTimer.schedule(mTask, 1000, 1000);// 延迟1000毫秒后执行定时任务，并且每隔1000毫秒执行一次定时任务
+                btnCode.setEnabled(false);
             }
         });
 

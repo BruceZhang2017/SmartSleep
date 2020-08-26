@@ -34,8 +34,8 @@
     <string name="report_heart_rate">平均心率</string>
     <string name="report_heart">心率</string>
     <string name="avg_report_heart">平均心率</string>
-    <string name="report_turn_over">翻身</string>
-    <string name="report_turn_over_times">翻身次数</string>
+    <string name="report_turn_over">体动</string>
+    <string name="report_turn_over_times">体动次数</string>
     <string name="report_daily_words">每日心语</string>
     <string name="report_yamy_sleep_button">小雅睡眠扣</string>
     <string name="report_yamy_sleep_belt">小雅睡眠带</string>
@@ -369,4 +369,13 @@
 
     <string name="login_invalid">当前登录已失效，请重新登录</string>
     <string name="every_22_30">每晚22：30</string>
+    <string name="open_bluetooth_tip">请先打开蓝牙</string>
+    
+    <string name="score_95_comment">根据当晚数据分析，您的睡眠作息十分健康，请持之以恒！</string>
+    <string name="score_80_comment">根据当晚数据分析，您的睡眠作息比较健康，请继续保持良好睡眠习惯！</string>
+    <string name="score_60_comment">根据当晚数据分析，您的睡眠作息比较一般，请养成良好睡眠习惯！</string>
+    <string name="score_40_comment">根据当晚数据分析，您的睡眠作息不太好，请调整作息，祝您有个好的睡眠！</string>
+
+    <string name="login_use_of_term_tip">请勾选同意上分使用条款，方可进入软件</string>
+    <string name="need_ota_tip">睡眠带有更新内容，是否跳转到更新？</string>
 </resources>

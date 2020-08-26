@@ -10,6 +10,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +58,47 @@ public class SleepAndGetupTimeManager {
         JsonParser jsonParser = new JsonParser();
         JsonObject obj= jsonParser.parse(json).getAsJsonObject();
         times = gson.fromJson(obj, times.getClass());
+        remove7daysDateTime();
     }
 
+    public static void clearHashMapData() {
+        SharedPreferences sp = YMApplication.getContext().getSharedPreferences("SmartSleep", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.commit();
+    }
+    
+    public static void remove7daysDateTime() {
+        if (times.size() == 0) {
+            return;
+        }
+        Map<String, List<String>> timeBs = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : times.entrySet()) {
+            String first = entry.getValue().get(0);
+            String[] array = first.split("&");
+            if (array.length > 1) {
+                System.out.println("计算的参数为：" + array[1]);
+                if (checkTime(array[1].substring(0, 10)) || checkTime(array[0].substring(0, 10)) || checkTime(entry.getKey())) {
 
+                } else {
+                    timeBs.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        times = timeBs;
+    }
+    
+    private static boolean checkTime(String time) {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = simpleDateFormat.parse(time);
+            if (now.getTime() - date.getTime() >= 7 * 24 * 60 * 60 * 1000) {
+                return true;
+            }
+        } catch (ParseException exception) {
+
+        }
+        return false;
+    }
 }

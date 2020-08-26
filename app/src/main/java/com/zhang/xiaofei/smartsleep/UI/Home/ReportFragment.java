@@ -845,7 +845,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 
 	public void showSyncDataDialog() {
 		// 这里的属性可以一直设置，因为每次设置后返回的是一个builder对象
-		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		// 设置提示框的标题
 		builder.setTitle(R.string.sync_reports).

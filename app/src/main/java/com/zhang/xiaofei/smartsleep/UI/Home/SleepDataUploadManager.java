@@ -208,9 +208,15 @@ public class SleepDataUploadManager {
     // 下载服务器端数据
     private void downloadSleepDataFromCloud(String serial) {
         System.out.println("从服务器端下载数据");
+        if (serial == null) {
+            return;
+        }
         YMUserInfoManager userInfoManager = new YMUserInfoManager(YMApplication.getContext());
         UserModel model = userInfoManager.loadUserInfo();
         if (model == null) {
+            return;
+        }
+        if (model.getUserInfo() == null) {
             return;
         }
         OkHttpClient okHttpClient  = new OkHttpClient.Builder().addInterceptor(new LogInterceptor())

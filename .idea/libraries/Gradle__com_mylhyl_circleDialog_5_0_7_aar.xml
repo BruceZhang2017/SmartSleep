@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.mylhyl:circleDialog:5.0.7@aar">
     <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e36ff82fc85aea5c6cfd0cbb5d69670b/jetified-circleDialog-5.0.7/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6fc7a393c98fd335de1879bbc625ced4/jetified-circleDialog-5.0.7/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e36ff82fc85aea5c6cfd0cbb5d69670b/jetified-circleDialog-5.0.7/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e36ff82fc85aea5c6cfd0cbb5d69670b/jetified-circleDialog-5.0.7/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/e36ff82fc85aea5c6cfd0cbb5d69670b/jetified-circleDialog-5.0.7/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6fc7a393c98fd335de1879bbc625ced4/jetified-circleDialog-5.0.7/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6fc7a393c98fd335de1879bbc625ced4/jetified-circleDialog-5.0.7/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/6fc7a393c98fd335de1879bbc625ced4/jetified-circleDialog-5.0.7/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.mylhyl/circleDialog/5.0.7/b84d8de5fbf4cbb1d4e94b4a83c65dcd001e8b9b/circleDialog-5.0.7-javadoc.jar!/" />

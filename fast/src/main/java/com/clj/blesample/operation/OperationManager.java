@@ -141,7 +141,16 @@ public class OperationManager {
         if (data[0] == (byte)0xeb && data[1] == (byte)0x60) {
             if (data[3] == 0x01) {
                 int battery = (int)(data[4] & 0xff);
-                int version = (int)(data[17] & 0xff) + ((int)(data[16] & 0xff) << 8);
+                String version = "";
+                String sn = "";
+                if (data.length > 27) {
+                    version = (int)(data[16] & 0xff) + "." + (int)(data[17] & 0xff) + "." + (int)(data[18] & 0xff) + "." + (int)(data[19] & 0xff);
+                    byte[] sns = new byte[13];
+                    for (int i = 20; i < 33; i++) {
+                        sns[i - 20] = data[i];
+                    }
+                    sn = new String(sns);
+                }
                 byte[] mac = new byte[6];
                 for (int i = 11; i < 17; i++) {
                     mac[i - 11] = data[i];
@@ -151,12 +160,12 @@ public class OperationManager {
                 int flash = (data[6] << 24) + (data[7] << 16) + (data[8] << 8) + data[9];
                 if (bleDataObserver != null) {
                     System.out.println("解析数据中:" + battery + " " + flash + " " + strMac + " " + version);
-                    bleDataObserver.handleBLEData(battery, flash, strMac, version);
+                    bleDataObserver.handleBLEData(battery, flash, strMac, version, sn);
                 }
                 bleDataObserver.handleBLEWrite(2); // 读取温度和湿度
-                if (flash >= 0) { // 读取设备里数据
+                //if (flash >= 0) { // 读取设备里数据
                     bleDataObserver.handleBLEWrite(3); // 读取flash内数据
-                }
+                //}
 
             } else if (data[3] == 0x03) {
                 float temprature = data[4] + data[5] / 100;

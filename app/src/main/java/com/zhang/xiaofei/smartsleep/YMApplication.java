@@ -19,6 +19,7 @@ import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import com.zhang.xiaofei.smartsleep.Kit.Application.CustomMigration;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogInterceptor;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogcatHelper;
+import com.zhang.xiaofei.smartsleep.Kit.Application.RecordDeleteManager;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
@@ -37,7 +38,10 @@ import com.zhang.xiaofei.smartsleep.UI.music.MediaPlayerService;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,10 +76,12 @@ public class YMApplication extends Application {
 
     public static final long[] VIBRATION_PATTERN = {100, 400, 250, 350, 1000};
     public MediaPlayerService player;
+    private Intent foregroundIntent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        System.out.println("Application OnCreate");
         instante = this;
         ScreenInfoUtils.printScreenInfo(this);
         ViewPump.init(ViewPump.builder()
@@ -120,6 +126,7 @@ public class YMApplication extends Application {
 
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bleOpen = bluetoothAdapter.isEnabled();
+        RecordDeleteManager.delete7DaysBeforeData();
         downloadSleepAndGetupTime();
         LogcatHelper.getInstance(this).start();
         SleepDataUploadManager uploadManager = new SleepDataUploadManager();
@@ -260,11 +267,23 @@ public class YMApplication extends Application {
         }
         for (SleepTimeBean bean: list) {
             String key = bean.getDownTime().substring(0, 10);
+            System.out.println("计算的参数B为：" + key);
+            if (checkTime(key)) {
+                continue;
+            }
             List<String> arrayList = SleepAndGetupTimeManager.times.get(key);
             if (arrayList == null) {
                 arrayList = new ArrayList<>();
             }
-            String time = bean.getUpTime().substring(0, 16) + "&" + bean.getDownTime().substring(0, 16);
+            String strSleep = bean.getUpTime().substring(0, 16);
+            String strGetup = bean.getDownTime().substring(0, 16);
+            String time = strSleep + "&" + strGetup;
+            if (checkTime(strSleep.substring(0, 10)) || checkTime(strGetup.substring(0, 10))) {
+                continue;
+            }
+            if (arrayList.contains(time)) {
+                continue;
+            }
             arrayList.add(time);
             SleepAndGetupTimeManager.times.put(key, arrayList);
         }
@@ -273,6 +292,28 @@ public class YMApplication extends Application {
         intentBroadcast.setAction("Filter");
         intentBroadcast.putExtra("arg0", 17);
         sendBroadcast(intentBroadcast);
+    }
+
+    private boolean checkTime(String time) {
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = simpleDateFormat.parse(time);
+            if (now.getTime() - date.getTime() >= 7 * 24 * 60 * 60 * 1000) {
+                return true;
+            }
+        } catch (ParseException exception) {
+
+        }
+        return false;
+    }
+
+    public void startForegroundNotificationService() {
+        foregroundIntent = new Intent(); // 开启前端服务。会常驻在前台
+        foregroundIntent.setAction("com.Xiaofei.service.FOREGROUND_SERVICE");
+        //Android 5.0之后，隐式调用是除了设置setAction()外，还需要设置setPackage();
+        foregroundIntent.setPackage("com.zhang.xiaofei.smartsleep");
+        startService(foregroundIntent);
     }
 }
 

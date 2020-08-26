@@ -369,4 +369,13 @@
 
     <string name="login_invalid">The current login is invalid. Please login again</string>
     <string name="every_22_30">every 22：30</string>
+    <string name="open_bluetooth_tip">Please turn on Bluetooth first</string>
+
+    <string name="score_95_comment">Your sleep and rest are very healthy, please persevere!</string>
+    <string name="score_80_comment">Your sleep and rest is relatively healthy, please continue to maintain good sleep habits!</string>
+    <string name="score_60_comment">Your sleep and rest is relatively average, please develop good sleeping habits!</string>
+    <string name="score_40_comment">Your sleep and rest is not very good, please adjust your schedule and wish you a good sleep!</string>
+
+    <string name="login_use_of_term_tip">Please tick to agree to the above terms of use before entering the software</string>
+    <string name="need_ota_tip">Sleep has updated content, do you skip to update?</string>
 </resources>

@@ -850,6 +850,11 @@ public class LineChartRenderer extends LineRadarRenderer {
          * @return
          */
         protected Bitmap getBitmap(int index) {
+            if (circleBitmaps == null || circleBitmaps.length == 0) {
+                Bitmap.Config conf = Bitmap.Config.ARGB_4444;
+                Bitmap circleBitmap = Bitmap.createBitmap((int) (10 * 2.1), (int) (10 * 2.1), conf);
+                return circleBitmap;
+            }
             return circleBitmaps[index % circleBitmaps.length];
         }
     }

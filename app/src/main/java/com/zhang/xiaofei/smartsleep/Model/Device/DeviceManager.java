@@ -62,8 +62,17 @@ public class DeviceManager {
                 .findAll();
         if (userList != null && userList.size() > 0) {
             for (DeviceModel model: userList) {
-                deviceList.add(model);
-                System.out.println("已经绑定的设备：" + model.getMac());
+                DeviceModel newModel = new DeviceModel();
+                newModel.setId(model.getId());
+                newModel.setUserId(model.getUserId());
+                newModel.setBindTime(model.getBindTime());
+                newModel.setDeviceSerial(model.getDeviceSerial());
+                newModel.setDeviceType(model.getDeviceType());
+                newModel.setMac(model.getMac());
+                newModel.setVersion(model.getVersion());
+                newModel.setUpToCloud(model.getUpToCloud());
+                deviceList.add(newModel);
+                System.out.println("已经绑定的设备：" + newModel.getMac());
             }
             if (deviceList.size() > 1) {
                 Collections.reverse(deviceList);
@@ -129,13 +138,21 @@ public class DeviceManager {
             int count = 0;
             for (int i = 0; i < models.length; i++) {
                 boolean value = false;
+                boolean bBad = false;
                 for (DeviceModel model: deviceList) {
+                    if (model.getMac() == null) {
+                        continue;
+                    }
+                    if (models[i].getMac() == null) {
+                        bBad = true;
+                        break;
+                    }
                     if (model.getMac().equals(models[i].getMac())) {
                         value = true;
                         break;
                     }
                 }
-                if (value == false) {
+                if (value == false && bBad == false) {
                     count += 1;
                     addDeviceToDB(models[i]);
                     deviceList.add(models[i]);

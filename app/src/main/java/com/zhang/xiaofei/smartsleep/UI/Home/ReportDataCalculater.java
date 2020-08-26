@@ -58,10 +58,18 @@ public class ReportDataCalculater {
             int breathAvarage = 0; // 呼吸平均值
             int startTime = 0; // 开始计算的时间
             int i = 0;
+            int apneaTotal = 0;
+            int bodyMotionTotal = 0;
+            int apneaCount = 0;
             for (RecordModel model : mlist) { // 计算清醒和体动
                 i++;
+                bodyMotionTotal += model.getBodyMotion();
+                apneaTotal += model.getBreatheStop();
                 heartTotal += model.getHeartRate(); // 统计心跳数据
                 breathTotal += model.getBreathRate(); // 统计呼吸率数据
+                if (model.getBreathRate() >  0) {
+                    apneaCount += 1;
+                }
                 if (startTime == 0) {
                     startTime = model.getTime();
                 }
@@ -89,7 +97,7 @@ public class ReportDataCalculater {
                     continue;
                 }
                 if (model.getTime() - startTime >= 5 * 60) {
-                    if (bodyMotionCount > 0) {
+                    if (bodyMotionCount > 2) {
                         middleSleep += model.getTime() - startTime;
                     } else {
                         deepSleep += model.getTime() - startTime;
@@ -114,9 +122,9 @@ public class ReportDataCalculater {
             }
             heartAvarage = heartTotal / mlist.size();
             breathAvarage = breathTotal / mlist.size();
-            return new int[]{deepSleep, middleSleep, cheapSleep, getup, 0, getupCount, heartAvarage, breathAvarage};
+            return new int[]{deepSleep, middleSleep, cheapSleep, getup, 0, getupCount, heartAvarage, breathAvarage,bodyMotionTotal,apneaTotal,apneaCount};
         }
-        return new int[]{0,0,0,0,0,0,0,0};
+        return new int[]{0,0,0,0,0,0,0,0,0,0,0};
     }
 
     private String timeToHourMinute(long time) {

@@ -256,9 +256,9 @@ public class FastBLEManager implements BLEDataObserver{
     // Obeserver 实现
 
     @Override
-    public void handleBLEData(int battery, int flash, String mac, int version) {
+    public void handleBLEData(int battery, int flash, String mac, String version, String sn) {
         if (bleDataObserver != null) {
-            bleDataObserver.handleBLEData(battery, flash, mac, version);
+            bleDataObserver.handleBLEData(battery, flash, mac, version, sn);
         }
     }
 

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,6 +31,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.shizhefei.fragment.LazyFragment;
+import com.zhang.xiaofei.smartsleep.Kit.Application.LogHelper;
 import com.zhang.xiaofei.smartsleep.Kit.BigSmallFont.BigSmallFontManager;
 import com.zhang.xiaofei.smartsleep.Kit.DisplayUtil;
 import com.zhang.xiaofei.smartsleep.Model.Alarm.AlarmModel;
@@ -118,20 +120,25 @@ public class ReportWeekFragment extends LazyFragment {
         ibLeftPre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("上一步");
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 currentTime -= 7 * 24 * 60 * 60;
                 tvSimulationData.setText(getTextValue());
                 readSleepAndGetupData();
                 getWeekData();
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
         ibRightNex = (ImageButton)findViewById(R.id.ib_right_next);
         ibRightNex.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 currentTime += 7 * 24 * 60 * 60;
                 tvSimulationData.setText(getTextValue());
                 readSleepAndGetupData();
                 getWeekData();
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
         tvSimulationData = (TextView)findViewById(R.id.tv_simulation_data);
@@ -221,6 +228,7 @@ public class ReportWeekFragment extends LazyFragment {
             list.addAll(SleepAndGetupTimeManager.times.get(days[i]));
             sleepTimes.set(j, list);
         }
+        System.out.println("sleepTimes打印: " + LogHelper.ListToString(sleepTimes));
     }
 
     private void getWeekData() {
@@ -247,14 +255,22 @@ public class ReportWeekFragment extends LazyFragment {
                     int[] array = calculater.calculateSleepValue(sleepTime, getupTime);
                     if (array[0] + array[1] + array[2] + array[3] > 0) {
                         int totalTime = array[0] + array[1] + array[2] + array[3];
+                        float d = ((float)array[0]) / ((float)totalTime);
+                        float d2 =  Math.abs((float)0.25 - d);
+                        int d3 =  (int) (d2 * 100 * 0.5);
+                        int d4 = (int) (array[10] * 0.5);
                         int grade = 0;
                         if (totalTime > 10 * 60 * 60) {
-                            grade = Math.min(150 * array[0] / totalTime, 85);
+                            int c1 = totalTime / 3600 - 10;
+                            grade = Math.max(93 - 3 * c1 - d3 - d4, 40);
                         } else if (totalTime < 7 * 60 * 60) {
-                            grade = Math.min(120 * array[0] / totalTime, 70);
+                            int c1 = 7 - totalTime / 3600;
+                            grade = Math.max(88 - 8 * c1 - d3 - d4, 40);
                         } else {
-                            grade = Math.min(180 * array[0] / totalTime, 100);
+                            grade = Math.max(100 - d3 - d4, 40);
                         }
+//                        grade -= array[8] / 3600 * 2;
+//                        grade -= array[9] / 3600 * 2;
                         score += grade;
                         deepSleep += array[0] / 60; // 深睡眠时长
                         noSleepMinuteCount += array[5]; // 清醒次数，起床次数
@@ -268,6 +284,7 @@ public class ReportWeekFragment extends LazyFragment {
 
                 }
                 scores[j] = score / list.size();
+                scores[j] = Math.min(100, scores[j]);
                 System.out.println("周" + j + "得分" + scores[j]);
                 sleepOneDayTimes[j] = deepSleep;
             } else {
