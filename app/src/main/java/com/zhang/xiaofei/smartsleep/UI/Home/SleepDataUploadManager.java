@@ -7,6 +7,7 @@ import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhang.xiaofei.smartsleep.Kit.Application.LogInterceptor;
+import com.zhang.xiaofei.smartsleep.Kit.Application.SerialHandler;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
@@ -74,7 +75,7 @@ public class SleepDataUploadManager {
         //MediaType  设置Content-Type 标头中包含的媒体类型值
         RequestBody requestBody = new FormBody.Builder()
                 .add("userId", model.getUserInfo().getUserId() + "")
-                .add("serial", serial)
+                .add("serial", SerialHandler.handleSerial(serial))
                 .add("sleepDataTime", dateTime)
                 .add("data", data)
                 .build();
@@ -226,7 +227,7 @@ public class SleepDataUploadManager {
                 .build();
 
         //MediaType  设置Content-Type 标头中包含的媒体类型值
-        RequestBody requestBody = new FormBody.Builder().add("userId", model.getUserInfo().getUserId() + "").add("serial", serial).build();
+        RequestBody requestBody = new FormBody.Builder().add("userId", model.getUserInfo().getUserId() + "").add("serial", SerialHandler.handleSerial(serial)).build();
         Request request = new Request.Builder()
                 .url(YMApplication.getInstance().domain() + "app/sleep/listForUserSleepData")//请求的url
                 .addHeader("token", model.getToken())
@@ -270,28 +271,16 @@ public class SleepDataUploadManager {
     }
 
     private void insertDataToDB(List<RecordModel> list) {
-        Realm mRealm = Realm.getDefaultInstance();
-        RealmResults<RecordModel> models = mRealm.where(RecordModel.class).findAll();
-        System.out.println("将服务器端数据插入至本地数据库3：" + models.size());
         List<RecordModel> newList = new ArrayList<>();
         RecordModel model = null;
         for (int i = 0; i < list.size(); i++) {
             model = list.get(i);
-            boolean tem = false;
-            for (RecordModel item: models) {
-                if (model.getDeviceId() == item.getDeviceId() && model.getTime() == item.getTime()) {
-                    tem = true;
-                    break;
-                }
-            }
-            if (tem) {
-                continue;
-            }
             model.setSyncCloud(true);
             newList.add(model);
         }
+        System.out.println("将服务器端数据插入至本地数据库2：" + newList.size());
         if (newList.size() > 0) {
-            System.out.println("将服务器端数据插入至本地数据库2：" + newList.size());
+            Realm mRealm = Realm.getDefaultInstance();
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -303,7 +292,7 @@ public class SleepDataUploadManager {
                 public void run() {
                     pushNotification();
                 }
-            }, 3000);//3秒后执行Runnable中的run方法
+            }, 2000);//3秒后执行Runnable中的run方法
         }
     }
 

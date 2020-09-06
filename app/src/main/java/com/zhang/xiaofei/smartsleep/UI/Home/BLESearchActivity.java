@@ -156,7 +156,7 @@ public class BLESearchActivity extends BaseAppActivity implements View.OnClickLi
         String[] uuids = null;
         UUID[] serviceUuids = null;
 
-        String[] names = null;
+        String[] names = new String[]{"Sleep_Baby", "Sleep_Button"};
 
         boolean isAutoConnect = false;
 

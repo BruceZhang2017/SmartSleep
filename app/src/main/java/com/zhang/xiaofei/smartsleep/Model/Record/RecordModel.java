@@ -1,10 +1,12 @@
 package com.zhang.xiaofei.smartsleep.Model.Record;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class RecordModel extends RealmObject {
     int userId;
     int deviceId;
+    @PrimaryKey
     int time;
     int temperature;
     int humidity;

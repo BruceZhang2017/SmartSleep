@@ -67,6 +67,10 @@ public class OTAActivity extends BaseAppActivity {
         Intent intent = getIntent();
         String deviceName = intent.getStringExtra("name");
         deviceSerial = intent.getStringExtra("serial");
+        if (deviceSerial.contains("-")) {
+            String[] array = deviceSerial.split("-");
+            deviceSerial = array[1];
+        }
         deviceVersion = intent.getStringExtra("version");
         mac = intent.getStringExtra("mac");
         ListView listView = findViewById(R.id.lv_settings);
@@ -158,6 +162,11 @@ public class OTAActivity extends BaseAppActivity {
                             return;
                         }
                         if (url == null || url.length() == 0) {
+                            Toast.makeText(OTAActivity.this, R.string.current_lastest_firmwareversion, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (newVersion == null || newVersion.length() == 0) {
+                            Toast.makeText(OTAActivity.this, R.string.current_lastest_firmwareversion, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         Intent intent = new Intent(OTAActivity.this, DfuUpdateActivity.class);

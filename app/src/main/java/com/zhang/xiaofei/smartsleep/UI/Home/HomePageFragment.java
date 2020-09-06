@@ -633,8 +633,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvDot2.setText(R.string.report_sleep_hour);
                 tvDot3.setText(R.string.common_body_moves);
                 tvDot4.setText(R.string.common_snoring_times);
-                String unit21 = getResources().getString(R.string.common_hour);
-                String unit22 = getResources().getString(R.string.common_minute);
+                String unit21 = getResources().getString(R.string.common_hour2);
+                String unit22 = getResources().getString(R.string.common_minute2);
                 int[] arraySleepbelt = YMApplication.getInstance().getSleepbeltValue();
                 int sleepTime = arraySleepbelt[1];
                 int sleepH = sleepTime / 100;
@@ -655,8 +655,8 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 tvDot2.setText(R.string.report_sleep_hour);
                 tvDot3.setText(R.string.report_heart_rate);
                 tvDot4.setText(R.string.report_respiratory_rate_aver);
-                String unit21 = getResources().getString(R.string.common_hour);
-                String unit22 = getResources().getString(R.string.common_minute);
+                String unit21 = getResources().getString(R.string.common_hour2);
+                String unit22 = getResources().getString(R.string.common_minute2);
                 int[] arraySleepbelt = YMApplication.getInstance().getSleepbeltValue();
                 int sleepTime = arraySleepbelt[1];
                 int sleepH = sleepTime / 100;
@@ -666,7 +666,9 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                 int h = arraySleepbelt[2] / 100;
                 int m = arraySleepbelt[2] % 100;
                 //System.out.println("h: " + h + "m :" + m);
-                tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit21 + (m > 9 ? ("" + m) : ("0" + m)) + unit22);
+                String unit31 = getResources().getString(R.string.common_hour);
+                String unit32 = getResources().getString(R.string.common_minute);
+                tvSleepDuration.setText((h > 9 ? ("" + h) : ("0" + h)) + unit31 + (m > 9 ? ("" + m) : ("0" + m)) + unit32);
                 String unit3 = getResources().getString(R.string.common_times_minute);
                 tvBodyMove.setText(arraySleepbelt[3] + "" + unit3);
                 tvDotValue.setText(arraySleepbelt[4] + "" + unit3);

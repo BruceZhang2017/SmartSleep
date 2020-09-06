@@ -58,7 +58,7 @@
     <string name="middle_confirm">确定</string>
     <string name="middle_country_region">选择国家和地区</string>
     <string name="middle_fall_asleep">入睡时间</string>
-    <string name="middle_sleep_duration">入睡时长</string>
+    <string name="middle_sleep_duration">平均睡眠时长</string>
     <string name="report_health">健康</string>
     <string name="report_a_little_bit_late">略晚</string>
     <string name="report_regular">正常</string>
@@ -307,8 +307,8 @@
     <string name="breath_name">呼吸</string>
     <string name="breath_stop">呼吸暂停</string>
 
-    <string name="ota_updating">OTA升级中...</string>
-    <string name="ota_updata_success">OTA升级成功</string>
+    <string name="ota_updating">固件升级中...</string>
+    <string name="ota_updata_success">固件升级成功</string>
 
     <string name="dialog_delete_image_title">确定删除图片？</string>
     <string name="bt_disconnect_success_tip">蓝牙连接已断开</string>
@@ -323,7 +323,7 @@
     <string name="upload_log">上传日志</string>
     <string name="current_date_no_date">该日期没有数据</string>
     <string name="alert_db_same_type_exist">您已添加了相同类型的设备，请先删除后，再添加。</string>
-    <string name="ota_fail">OTA升级失败，请重试！</string>
+    <string name="ota_fail">固件升级失败，请重试！</string>
     <string name="feedback_fail_contact">提交失败，请填写姓名</string>
     <string name="feedback_fail_telephone">提交失败，请填写电话</string>
     <string name="feedback_fail_problem_desc">提交失败，请填写问题描述</string>
@@ -344,7 +344,8 @@
     <string name="off_bed_reminder">离床提示</string>
     <string name="abnormal_heart_rate_reminder">心率异常提示</string>
     <string name="cache_is_empty">缓存已清空</string>
-    <string name="latest_version_tip">已经是最新版本</string>
+    <string name="latest_version_tip">已经是最新App版本</string>
+    <string name="current_lastest_firmwareversion">当前已是最新固件</string>
     <string name="battery"> 电量：</string>
     <string name="bed_away_15_minutes_tip">当离床超过15分钟，该提示会被触发。</string>
     <string name="heart_rate_15_minutes_tip">若心率超过100，该提示会被触发。</string>
@@ -378,4 +379,8 @@
 
     <string name="login_use_of_term_tip">请勾选同意上分使用条款，方可进入软件</string>
     <string name="need_ota_tip">睡眠带有更新内容，是否跳转到更新？</string>
+    <string name="sleep_report_fail">监测时间少于10分钟，无法分析数据</string>
+    <string name="ota_progress">升级进度</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
 </resources>

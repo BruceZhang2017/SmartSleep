@@ -18,6 +18,7 @@ import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -103,6 +104,9 @@ public class OperationManager {
 
     public void write(byte[] hex) {
         System.out.println("发送的数据" + HexUtil.formatHexString(hex, true));
+        if (bluetoothGattService == null) {
+            return;
+        }
         BleManager.getInstance().write(
                 bleDevice,
                 bluetoothGattService.getUuid().toString(),

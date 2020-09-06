@@ -27,6 +27,7 @@ import com.king.zxing.Intents;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.grid.BasicGridLayoutManager;
 import com.mylhyl.circledialog.CircleDialog;
+import com.zhang.xiaofei.smartsleep.Kit.Application.SerialHandler;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceListModel;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
@@ -279,7 +280,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
         Intent intentBroadcast = new Intent();   //定义Intent
         intentBroadcast.setAction(DYNAMICACTION);
         intentBroadcast.putExtra("arg0", 1);
-        intentBroadcast.putExtra("serial", serial);
+        intentBroadcast.putExtra("serial", SerialHandler.handleSerial(serial));
         intentBroadcast.putExtra("mac", mac);
         sendBroadcast(intentBroadcast);
     }
@@ -306,7 +307,7 @@ public class DeviceManageActivity extends BaseAppActivity implements EasyPermiss
         System.out.println("token:" + userModel.getToken());
         List<NameValuePair> postParam = new ArrayList<>();
         postParam.add(new NameValuePair("userId",userModel.getUserInfo().getUserId() + ""));
-        postParam.add(new NameValuePair("serial",serial));
+        postParam.add(new NameValuePair("serial",SerialHandler.handleSerial(serial)));
         postParam.add(new NameValuePair("mac",mac));
         postParam.add(new NameValuePair("version",1 + ""));
 

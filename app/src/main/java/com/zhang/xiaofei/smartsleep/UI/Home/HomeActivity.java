@@ -39,6 +39,7 @@ import com.king.zxing.Intents;
 import com.zhang.xiaofei.smartsleep.Kit.AlarmTimer;
 import com.zhang.xiaofei.smartsleep.Kit.Application.BluetoothMonitorReceiver;
 import com.zhang.xiaofei.smartsleep.Kit.Application.ScreenInfoUtils;
+import com.zhang.xiaofei.smartsleep.Kit.Application.SerialHandler;
 import com.zhang.xiaofei.smartsleep.Kit.Application.TestDataNotification;
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
@@ -496,7 +497,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
 
     @Override
     public void handleBLEData(int battery, int flash, String mac, String version, String sn) {
-        System.out.println("处理BLE返回的数据 " + battery + " " + flash + " " + mac + " " + version);
+        System.out.println("处理BLE返回的数据 " + battery + " " + flash + " " + mac + " " + version + " sn: " + sn);
         if (fastBLEManager == null) {
             return;
         }
@@ -504,11 +505,11 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         if (macAddress.length() == 0) {
             return;
         }
-        if (macSet.contains(mac)) {
+        if (macSet.contains(macAddress)) {
 
         } else {
-            macSet.add(mac);
-            downloadOTA(version, mac);
+            macSet.add(macAddress);
+            downloadOTA(version, macAddress);
         }
         YMApplication.getInstance().deviceBatteryMap.put(macAddress, battery);
         System.out.println("当前需要更新的设备：" + macAddress);
@@ -519,6 +520,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                 DeviceModel deviceModel = mRealm.where(DeviceModel.class).equalTo("mac", macAddress).findFirst();
                 if (deviceModel != null) {
                     deviceModel.setVersion(version);
+                    if (sn != null && sn.length() > 0 && !deviceModel.getDeviceSerial().contains("-")) {
+                        deviceModel.setDeviceSerial(deviceModel.getDeviceSerial() + "-" + sn);
+                    }
                     System.out.println("更新设备的版本号信息：" + version);
                 }
             }
@@ -976,6 +980,21 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                             }
                         }
                     });
+                }  else if (arg0 == 20) {
+                    boolean arg1 = intent.getBooleanExtra("arg1", false);
+                    String arg2 = intent.getStringExtra("arg2");
+                    String[] array = arg2.split(" ");
+                    if (mTab1 == null) {
+                        return;
+                    }
+                    if (DeviceManager.getInstance().currentDevice >= DeviceManager.getInstance().deviceList.size()) {
+                        return;
+                    }
+                    int deviceId = DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getDeviceType();
+                    if (fastBLEManager != null && fastBLEManager.operationManager != null) {
+                        fastBLEManager.operationManager.write(
+                                fastBLEManager.operationManager.bleOperation.autoDetection(deviceId, arg1, array[0] + ":00", array[1] + ":00"));
+                    }
                 }
             }
         }
@@ -1121,7 +1140,7 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         System.out.println("token:" + userModel.getToken());
         List<NameValuePair> postParam = new ArrayList<>();
         postParam.add(new NameValuePair("userId",userModel.getUserInfo().getUserId() + ""));
-        postParam.add(new NameValuePair("serial",serial));
+        postParam.add(new NameValuePair("serial", SerialHandler.handleSerial(serial) ));
         postParam.add(new NameValuePair("mac",mac));
         postParam.add(new NameValuePair("version",1 + ""));
 
@@ -1326,10 +1345,6 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!DeviceManager.getInstance().deviceList.get(DeviceManager.getInstance().currentDevice).getMac().equals(mac)) {
-                    Toast.makeText(HomeActivity.this, R.string.please_connect_first, Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (url == null || url.length() == 0) {
                     return;
                 }

@@ -265,9 +265,9 @@ public class YMApplication extends Application {
         if (list == null || list.size() == 0) {
             return;
         }
+        SleepAndGetupTimeManager.times.clear();
         for (SleepTimeBean bean: list) {
             String key = bean.getDownTime().substring(0, 10);
-            System.out.println("计算的参数B为：" + key);
             if (checkTime(key)) {
                 continue;
             }
@@ -277,6 +277,7 @@ public class YMApplication extends Application {
             }
             String strSleep = bean.getUpTime().substring(0, 16);
             String strGetup = bean.getDownTime().substring(0, 16);
+            System.out.println("计算的参数B为：" + key + " " + strSleep + " " + strGetup);
             String time = strSleep + "&" + strGetup;
             if (checkTime(strSleep.substring(0, 10)) || checkTime(strGetup.substring(0, 10))) {
                 continue;

@@ -67,7 +67,7 @@ public class ReportDataCalculater {
                 apneaTotal += model.getBreatheStop();
                 heartTotal += model.getHeartRate(); // 统计心跳数据
                 breathTotal += model.getBreathRate(); // 统计呼吸率数据
-                if (model.getBreathRate() >  0) {
+                if (model.getBreatheStop() >  0) {
                     apneaCount += 1;
                 }
                 if (startTime == 0) {
@@ -84,19 +84,19 @@ public class ReportDataCalculater {
                     getupCount += 1;
                     continue;
                 }
-                if (model.getTime() - startTime >= 60 && bodyMotionCount >= 5) {
+                if (model.getTime() - startTime >= 60 && bodyMotionCount >= 5) { // 1分钟
                     cheapSleep += model.getTime() - startTime;
                     bodyMotionCount = 0;
                     startTime = model.getTime();
                     continue;
                 }
-                if (model.getTime() - startTime >= 3 * 60 && bodyMotionCount > 0) {
+                if (model.getTime() - startTime >= 3 * 60 && bodyMotionCount > 0) { // 3分钟
                     middleSleep += model.getTime() - startTime;
                     bodyMotionCount = 0;
                     startTime = model.getTime();
                     continue;
                 }
-                if (model.getTime() - startTime >= 5 * 60) {
+                if (model.getTime() - startTime >= 5 * 60) { // 5分钟
                     if (bodyMotionCount > 2) {
                         middleSleep += model.getTime() - startTime;
                     } else {
@@ -107,7 +107,7 @@ public class ReportDataCalculater {
                     continue;
                 }
                 if (i == mlist.size()) {
-                    if (model.getTime() - startTime <= 3 * 60) {
+                    if (model.getTime() - startTime <= 3 * 60) { // 3分钟
                         if (bodyMotionCount > 5) {
                             cheapSleep += model.getTime() - startTime;
                         }else if (bodyMotionCount > 0) {

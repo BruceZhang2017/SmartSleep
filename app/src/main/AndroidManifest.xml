@@ -43,8 +43,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.mainTransparent">
+        android:theme="@style/Theme.mainTransparent"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".UI.Home.DynamicMonitorActivity"></activity>
 
         <service android:name=".UI.music.MediaPlayerService" />
 
@@ -159,8 +160,9 @@
         <service android:name=".Kit.dfutest.BluetoothService" />
         <service android:name=".Kit.dfutest.dfu_service.DfuService" />
 
-        <activity android:name=".UI.Home.ApneaDialogActivity"
-            android:theme="@style/dialogstyle"/>
+        <activity
+            android:name=".UI.Home.ApneaDialogActivity"
+            android:theme="@style/dialogstyle" />
     </application>
 
 </manifest>

@@ -342,7 +342,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 							public void onSelect(int position, String text) {
 								if (position == 0) {
 									tvTitle.setText(R.string.report_sleep_belt);
-									dayFragment.refreshData(true);
+									// dayFragment.refreshData(true); // TODO: - 刷新报告内容
 									weekFragment.refreshSleepStatistic(true);
 									monthFragment.refreshSleepStatistic(true);
 									scrollView.setVisibility(View.INVISIBLE);
@@ -350,7 +350,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 									indicator.setVisibility(View.VISIBLE);
 								} else if (position == 1) {
 									tvTitle.setText(R.string.report_sleep_button);
-									dayFragment.refreshData(false);
+									// dayFragment.refreshData(false); // TODO: - 刷新报告内容
 									weekFragment.refreshSleepStatistic(false);
 									monthFragment.refreshSleepStatistic(false);
 									scrollView.setVisibility(View.INVISIBLE);

@@ -99,6 +99,40 @@
         android:layout_height="1dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="0dp"
+        android:background="#1AFFFFFF"
+        app:layout_constraintBottom_toTopOf="@id/tv_monitor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_monitor"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/report_smart_timing"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_line_2"/>
+
+    <ImageView
+        android:id="@+id/iv_arror"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginRight="30dp"
+        android:src="@mipmap/me_icon_more"
+        app:layout_constraintTop_toTopOf="@id/tv_monitor"
+        app:layout_constraintBottom_toBottomOf="@id/tv_monitor"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_line_2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginBottom="14dp"
         android:background="#1AFFFFFF"
         app:layout_constraintBottom_toTopOf="@id/ib_play_pause"

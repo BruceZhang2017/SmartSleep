@@ -110,27 +110,6 @@ public class LoginActivity extends BaseAppActivity {
                 showHUD();
                 String zone = btnArea.getText().toString().replace("+", "");
                 SMSSDK.getVerificationCode(zone, phone);
-                mTimer = new Timer();
-                mTask = new TimerTask() {
-                    @Override
-                    public void run() {
-                        // 要做的事情
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                count -= 1;
-                                btnCode.setText(count + "" + getResources().getString(R.string.second));
-                                if (count == 0) {
-                                    count = 60;
-                                    mTimer.cancel();
-                                    btnCode.setText(getResources().getString(R.string.login_code));
-                                    btnCode.setEnabled(true);
-                                }
-                            }
-                        });
-                    }
-                };
-                mTimer.schedule(mTask, 1000, 1000);// 延迟1000毫秒后执行定时任务，并且每隔1000毫秒执行一次定时任务
                 btnCode.setEnabled(false);
             }
         });
@@ -241,11 +220,34 @@ public class LoginActivity extends BaseAppActivity {
                     Toast.makeText(LoginActivity.this, getResources().getText(R.string.login_success), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, LoginMoreActivity.class);
                     startActivity(intent);
+                    btnCode.setEnabled(true);
                 }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
                     //获取验证码成功
                     Toast.makeText(LoginActivity.this, getResources().getText(R.string.login_sms_tip), Toast.LENGTH_SHORT).show();
+                    mTimer = new Timer();
+                    mTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            // 要做的事情
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    count -= 1;
+                                    btnCode.setText(count + "" + getResources().getString(R.string.second));
+                                    if (count == 0) {
+                                        count = 60;
+                                        mTimer.cancel();
+                                        btnCode.setText(getResources().getString(R.string.login_code));
+                                        btnCode.setEnabled(true);
+                                    }
+                                }
+                            });
+                        }
+                    };
+                    mTimer.schedule(mTask, 1000, 1000);// 延迟1000毫秒后执行定时任务，并且每隔1000毫秒执行一次定时任务
                 }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
                     //返回支持发送验证码的国家列表
+                    btnCode.setEnabled(true);
                 }
             } else {
                 ((Throwable)data).printStackTrace();
@@ -254,6 +256,7 @@ public class LoginActivity extends BaseAppActivity {
                 } else {
                     Toast.makeText(LoginActivity.this, getResources().getText(R.string.common_check_network), Toast.LENGTH_SHORT).show();
                 }
+                btnCode.setEnabled(true);
             }
         }
     };

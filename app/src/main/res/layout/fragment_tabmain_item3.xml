@@ -66,7 +66,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ib_left_pre"
+                app:layout_constraintTop_toBottomOf="@id/cl_10"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="28dp"/>
 
@@ -105,7 +105,7 @@
                 app:year_view_scheme_color="#f17706"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_sleep_week_average"
+                app:layout_constraintTop_toBottomOf="@id/ib_left_pre"
                 android:layout_marginTop="30dp"/>
 
             <View
@@ -263,7 +263,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cl_10"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_week_average"
                 android:layout_marginTop="20dp"
                 android:paddingBottom="10dp">
 
@@ -304,80 +304,10 @@
                 android:layout_marginLeft="20dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/cl_2"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintTop_toBottomOf="@id/tv_sleep_data"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/block_bordor">
-
-                <TextView
-                    android:id="@+id/tv_time_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="23时30分"
-                    android:textColor="#FFFFFF"
-                    android:textSize="22sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginLeft="10dp"/>
-
-                <ImageView
-                    android:id="@+id/iv_time_1"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_time_1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="7dp"
-                    android:src="@mipmap/report_icon_go_to_bed"/>
-
-                <TextView
-                    android:id="@+id/tv_sleep_time_1"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/common_bed_time"
-                    android:textColor="#555A63"
-                    android:textSize="14sp"
-                    app:layout_constraintLeft_toRightOf="@id/iv_time_1"
-                    app:layout_constraintTop_toTopOf="@id/iv_time_1"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_time_1"
-                    android:layout_marginLeft="10dp"/>
-
-                <TextView
-                    android:id="@+id/tv_sleep_tag_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_health"
-                    android:textColor="#4BBE20"
-                    android:textSize="10sp"
-                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_1"
-                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_1"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_1"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="6dp"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/textview_bordor"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cl_1"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_sleep_data"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/block_bordor">
@@ -412,7 +342,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/middle_sleep_duration"
                     android:textColor="#555A63"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     app:layout_constraintLeft_toRightOf="@id/iv_time_2"
                     app:layout_constraintTop_toTopOf="@id/iv_time_2"
                     app:layout_constraintBottom_toBottomOf="@id/iv_time_2"
@@ -441,82 +371,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/cl_6"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintTop_toBottomOf="@id/cl_4"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/block_bordor">
-
-                <TextView
-                    android:id="@+id/tv_time_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="7dp"
-                    android:text="00时00分"
-                    android:textColor="#FFFFFF"
-                    android:textSize="22sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_time_3"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_time_3"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="7dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:src="@mipmap/report_icon_sober"/>
-
-                <TextView
-                    android:id="@+id/tv_sleep_time_3"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_awake_duration"
-                    android:textColor="#555A63"
-                    android:textSize="14sp"
-                    app:layout_constraintLeft_toRightOf="@id/iv_time_3"
-                    app:layout_constraintTop_toTopOf="@id/iv_time_3"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_time_3"
-                    android:layout_marginLeft="10dp"/>
-
-                <TextView
-                    android:id="@+id/tv_sleep_tag_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_health"
-                    android:textColor="#4BBE20"
-                    android:textSize="10sp"
-                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_3"
-                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_3"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_3"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="6dp"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/textview_bordor"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toLeftOf="@id/cl_5"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cl_1"
-                android:layout_marginTop="24dp"
+                app:layout_constraintLeft_toRightOf="@id/cl_2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sleep_data"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/block_bordor">
 
                 <TextView
@@ -549,7 +410,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/report_heart_rate_aver"
                     android:textColor="#555A63"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     app:layout_constraintLeft_toRightOf="@id/iv_time_4"
                     app:layout_constraintTop_toTopOf="@id/iv_time_4"
                     app:layout_constraintBottom_toBottomOf="@id/iv_time_4"
@@ -580,8 +441,7 @@
                 android:id="@+id/cl_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cl_4"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintTop_toBottomOf="@id/cl_2"
                 android:layout_marginTop="24dp"
@@ -617,7 +477,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/report_respiratory_rate_aver"
                     android:textColor="#555A63"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     app:layout_constraintLeft_toRightOf="@id/iv_time_5"
                     app:layout_constraintTop_toTopOf="@id/iv_time_5"
                     app:layout_constraintBottom_toBottomOf="@id/iv_time_5"
@@ -643,75 +503,6 @@
                     android:visibility="invisible"
                     android:background="@drawable/textview_bordor"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/cl_3"
-                app:layout_constraintTop_toBottomOf="@id/cl_4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/block_bordor">
-
-                <TextView
-                    android:id="@+id/tv_time_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="7dp"
-                    android:text="00次"
-                    android:textColor="#FFFFFF"
-                    android:textSize="22sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_time_6"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_time_6"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="7dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:src="@mipmap/report_icon_clear"/>
-
-                <TextView
-                    android:id="@+id/tv_sleep_time_6"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_wake_up_times"
-                    android:textColor="#555A63"
-                    android:textSize="14sp"
-                    app:layout_constraintLeft_toRightOf="@id/iv_time_6"
-                    app:layout_constraintTop_toTopOf="@id/iv_time_6"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_time_6"
-                    android:layout_marginLeft="10dp"/>
-
-                <TextView
-                    android:id="@+id/tv_sleep_tag_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/report_health"
-                    android:textColor="#CAAD2A"
-                    android:textSize="10sp"
-                    app:layout_constraintLeft_toRightOf="@id/tv_sleep_time_6"
-                    app:layout_constraintTop_toTopOf="@id/tv_sleep_time_6"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_sleep_time_6"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="6dp"
-                    android:paddingLeft="9dp"
-                    android:paddingRight="9dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/textview_bordor"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

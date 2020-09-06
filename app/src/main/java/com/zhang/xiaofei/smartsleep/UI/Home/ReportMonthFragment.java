@@ -60,12 +60,9 @@ import io.realm.Sort;
 public class ReportMonthFragment extends LazyFragment {
     private LineChart chart; // 睡眠质量分析
     private TextView tvSleepAverageTime;
-    private TextView tvTime1; // 上床时间
     private TextView tvTime2; // 入睡时长
-    private TextView tvTime3; // 清醒时间
     private TextView tvTime4; // 平均心率
     private TextView tvTime5; // 平均呼吸率
-    private TextView tvTime6; // 清醒次数
     private TextView tvSleepTime4;
     private TextView tvSleepTime5;
     private ImageView ivSleepTime4;
@@ -89,6 +86,8 @@ public class ReportMonthFragment extends LazyFragment {
     int breathAvarage = 0; // 平均呼吸率
     MLineDataSet set1;
     boolean bChart = false;
+    private int sleepDataSize = 0;
+    private int sleepTimesTotal = 0; // 总睡眠时长
     List<List<String>> sleepTimes = new ArrayList<>() ;
     ReportDataCalculater calculater = new ReportDataCalculater();
 
@@ -264,11 +263,15 @@ public class ReportMonthFragment extends LazyFragment {
         heartAvarage = 0;
         breathAvarage = 0;
         startSleepTime = 0;
+        sleepDataSize = 0;
+        sleepTimesTotal = 0;
         for (int j = 0; j < currentMonthHaveHowMuchDays(); j++) {
             List<String> list = sleepTimes.get(j);
+            sleepDataSize += list.size();
             if (list.size() > 0) {
                 int score = 0;
                 int deepSleep = 0;
+                int haveGradeCount = 0;
                 for (int i = 0; i < list.size(); i++) {
                     String duration = list.get(i);
                     String sleepTime = duration.split("&")[0];
@@ -276,20 +279,36 @@ public class ReportMonthFragment extends LazyFragment {
                     calculater.readDataFromDB(sleepTime, getupTime);
                     int[] array = calculater.calculateSleepValue(sleepTime, getupTime);
                     if (array[0] + array[1] + array[2] + array[3] > 0) {
+                        int sleepB = hourMinuteToInt(sleepTime);
+                        haveGradeCount += 1;
                         int totalTime = array[0] + array[1] + array[2] + array[3];
+                        int deep =  array[0] * 100 / totalTime;
+                        int middle = array[1] * 100 / totalTime;
+                        int cheap = array[2] * 100 / totalTime;
+                        int get = 100 - deep - middle - cheap;
+                        sleepTimesTotal += totalTime;
                         float d = ((float)array[0]) / ((float)totalTime);
                         float d2 =  Math.abs((float)0.25 - d);
                         int d3 =  (int) (d2 * 100 * 0.5);
                         int d4 = (int) (array[10] * 0.5);
                         int grade = 0;
+                        int c1 = 0;
                         if (totalTime > 10 * 60 * 60) {
-                            int c1 = totalTime / 3600 - 10;
-                            grade = Math.max(93 - 3 * c1 - d3 - d4, 40);
+                            c1 = totalTime / 3600 - 10;
+                            grade = Math.max(93 - 3 * c1 - d3 - d4 - get, 40);
                         } else if (totalTime < 7 * 60 * 60) {
-                            int c1 = 7 - totalTime / 3600;
-                            grade = Math.max(88 - 8 * c1 - d3 - d4, 40);
+                            c1 = 7 - totalTime / 3600;
+                            grade = Math.max(88 - 8 * c1 - d3 - d4 - get, 40);
                         } else {
-                            grade = Math.max(100 - d3 - d4, 40);
+                            grade = Math.max(100 - d3 - d4 - get, 40);
+                        }
+                        if (sleepB > 23 * 60 + 30) {
+                            int value = 23 * 60 + 30 - sleepB;
+                            grade -= value / 10;
+                        }
+                        if (sleepB < 12 * 60) {
+                            int value = sleepB + 30;
+                            grade -= value / 10;
                         }
 //                        grade -= array[8] / 3600 * 2;
 //                        grade -= array[9] / 3600 * 2;
@@ -305,7 +324,7 @@ public class ReportMonthFragment extends LazyFragment {
                     sleepTotalTime += (timeToLongB(getupTime) - timeToLongB(sleepTime)) / 60;
 
                 }
-                scores[j] = score / list.size();
+                scores[j] = haveGradeCount > 0 ? score / haveGradeCount : 0;
                 scores[j] = Math.min(100, scores[j]);
                 sleepOneDayTimes[j] = deepSleep;
             } else {
@@ -338,12 +357,9 @@ public class ReportMonthFragment extends LazyFragment {
 
     private void initialText() {
         tvSleepAverageTime = (TextView)findViewById(R.id.tv_sleep_average_time);
-        tvTime1 = (TextView)findViewById(R.id.tv_time_1);
         tvTime2 = (TextView)findViewById(R.id.tv_time_2);
-        tvTime3 = (TextView)findViewById(R.id.tv_time_3);
         tvTime4 = (TextView)findViewById(R.id.tv_time_4);
         tvTime5 = (TextView)findViewById(R.id.tv_time_5);
-        tvTime6 = (TextView)findViewById(R.id.tv_time_6);
 
         tvSleepTime4 = (TextView)findViewById(R.id.tv_sleep_time_4);
         tvSleepTime5 = (TextView)findViewById(R.id.tv_sleep_time_5);
@@ -421,15 +437,16 @@ public class ReportMonthFragment extends LazyFragment {
 
     private void setCharData() {
         ArrayList<Entry> values = new ArrayList<>();
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
+        int days = currentMonthHaveHowMuchDays();
+        for (int i = 0; i < days; i++) {
             if (sleepOneDayTimes[i] > 0) {
                 values.add(new Entry(i, sleepOneDayTimes[i] / 60));
-                int score = scores[i];
-                colors.add(GradeColor.convertGradeToColor(score));
             }
         }
-        System.out.println("当前月数据：" + values.size());
+        if (values.size() == 0) {
+            return;
+        }
+        System.out.println("当前月数据：" + values.size() + " day:" + days);
         if (bChart) {
             set1.setValues(values);
             set1.notifyDataSetChanged();
@@ -446,14 +463,14 @@ public class ReportMonthFragment extends LazyFragment {
 
         // black lines and points
         set1.setColor(getResources().getColor(R.color.colorWhite));
-        set1.setCircleColors(colors);
+        set1.setCircleColor(0xFF5DF2FF);
 
         // line thickness and point size
         set1.setLineWidth(1f);
         set1.setCircleRadius(3f);
 
         // draw points as solid circles
-        set1.setDrawCircleHole(false);
+        set1.setDrawCircleHole(true);
 
         // customize legend entry
         set1.setFormLineWidth(1f);
@@ -547,13 +564,13 @@ public class ReportMonthFragment extends LazyFragment {
             String unit21 = getResources().getString(R.string.common_hour);
             String unit22 = getResources().getString(R.string.common_minute);
             String[] array2 = {unit21, unit22};
-            int hour = sleepTotalTime / 60;
-            int minute = sleepTotalTime % 60;
+            int avg = sleepTimesTotal / 60 / Math.max(1, sleepDataSize);
+            int hour = avg / 60;
+            int minute = avg % 60;
             String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
             tvTime2.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
         }
 
-        refreshStartOrEndSleepUI();
         if (chart == null) {
             return;
         }
@@ -561,29 +578,6 @@ public class ReportMonthFragment extends LazyFragment {
         chart.invalidate();
         calculateSleepValue();
         refreshCalenderView();
-    }
-
-    private void refreshStartOrEndSleepUI() {
-        if (tvTime1 == null) {
-            return;
-        }
-        String unit11 = getResources().getString(R.string.common_hour2);
-        String unit12 = getResources().getString(R.string.common_minute3);
-        String[] array1 = {unit11, unit12};
-        if (startSleepTime > 0) {
-            int sleepH = startSleepTime / 60;
-            int sleepM = startSleepTime % 60;
-            if (sleepH <= 0 && sleepM <= 0) {
-                String content1 = "00" + unit11 + "00" + unit12;
-                tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
-            } else {
-                String content1 = (sleepH > 9 ? "" + sleepH : "0" + sleepH) + unit11 + (sleepM > 9 ? "" + sleepM : "0" + sleepM) + unit12;
-                tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
-            }
-        } else {
-            String content1 = "00" + unit11 + "00" + unit12;
-            tvTime1.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
-        }
     }
 
     // 供外表调用，刷新UI
@@ -613,26 +607,12 @@ public class ReportMonthFragment extends LazyFragment {
             tvSleepAverageTime.setText(BigSmallFontManager.createTimeValue(content1, getActivity(), 13, array1));
         }
 
-        if (tvTime3 != null && tvTime6 != null) {
-            String unit21 = getResources().getString(R.string.common_hour);
-            String unit22 = getResources().getString(R.string.common_minute);
-            String[] array2 = {unit21, unit22};
-            int hour = nosleepTimeTotal / 60;
-            int minute = nosleepTimeTotal % 60;
-            String content2 = (hour > 9 ? "" + hour : "0" + hour) + unit21 + (minute > 9 ? "" + minute : "0" + minute) + unit22;
-            tvTime3.setText(BigSmallFontManager.createTimeValue(content2, getActivity(), 13, array2));
-            String unit6 = getResources().getString(R.string.common_times);
-            String[] array6 = {unit6};
-            String content6 = (noSleepMinuteCount > 9 ? "" + noSleepMinuteCount : "0" + noSleepMinuteCount) + unit6;
-            tvTime6.setText(BigSmallFontManager.createTimeValue(content6, getActivity(), 13, array6));
-        }
-
     }
 
     private void refreshCalenderView() {
         Map<String, com.haibin.calendarview.Calendar> map = new HashMap<>();
         for (int i = 0; i < currentMonthHaveHowMuchDays(); i++) {
-            if (scores[i] >= 70) {
+            if (scores[i] > 0) {
                 String date = currentDateTime((long)(currentTime + i * 24 * 60 * 60) * 1000);
                 String[] array = date.split("-");
                 if (array.length == 3) {
@@ -642,11 +622,16 @@ public class ReportMonthFragment extends LazyFragment {
                     int color = 0;
                     if (scores[i] >= 85) {
                         color = 0xFF6EE1CA;
-                    } else if (scores[i] >= 75) {
+                    } else if (scores[i] >= 70) {
                         color = 0xFF499BE5;
-                    } else {
+                    } else if (scores[i] >= 50) {
                         color = 0xFF626AEA;
+                    } else if (scores[i] > 0) {
+                        color = 0xFFF3D032;
+                    } else {
+                        color = 0xFFE92C2C;
                     }
+                    System.out.println("第" + i + "天颜色" + color + "得分" + scores[i]);
                     map.put(getSchemeCalendar(year, month, day, color).toString(),
                             getSchemeCalendar(year, month, day, color));
                 }

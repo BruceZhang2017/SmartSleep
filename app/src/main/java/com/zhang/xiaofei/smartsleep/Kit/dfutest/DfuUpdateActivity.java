@@ -298,7 +298,7 @@ public class DfuUpdateActivity extends BaseActivity implements View.OnClickListe
             Log.i("TEST", "onProgressChanged: " + deviceAddress + "百分比" + percent + ",speed "
                     + speed + ",avgSpeed " + avgSpeed + ",currentPart " + currentPart
                     + ",partTotal " + partsTotal);
-            tv_show.setText("升级进度：" + percent + "%");
+            tv_show.setText(getResources().getString(R.string.ota_progress) + "：" + percent + "%");
         }
 
         @Override

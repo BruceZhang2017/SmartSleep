@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.deadline.statebutton.StateButton;
 import com.loonggg.lib.alarmmanager.clock.ClockAlarmBActivity;
@@ -66,6 +67,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
     TextView tvRealTime;
     RoundedImageView roundedImageView;
     TextView tvCount;
+    TextView tvMonitor;
     ImageButton ibPalyPause;
     ImageButton ibPlayPre;
     ImageButton ibPlayNext;
@@ -176,7 +178,10 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
                     bSleep = false;
                     SendCMDToHomeActivity.send(4,0, HelpSleepActivity.this); // 发送起床通知
                     saveSleepEndTime();
-                    SendCMDToHomeActivity.send(15, 0,HelpSleepActivity.this); // 读取Flash data
+                    Intent intentBroadcast = new Intent();   //定义Intent
+                    intentBroadcast.setAction("Filter");
+                    intentBroadcast.putExtra("arg0", 17);
+                    YMApplication.getContext().sendBroadcast(intentBroadcast);
                     btnSleep.setText(R.string.alarm_sleep);
                 }
                 refreshMonitorValue();
@@ -212,6 +217,15 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         if (YMApplication.getInstance().player != null) {
             YMApplication.getInstance().player.regMusicChange(this);
         }
+
+        tvMonitor = (TextView)findViewById(R.id.tv_monitor);
+        tvMonitor.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HelpSleepActivity.this, DynamicMonitorActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void refreshMusicName() {
@@ -483,6 +497,16 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         if (sleepStartTime.length() == 0) {
             return;
         }
+        try {
+            Date dateB = simpleDateFormat.parse(sleepStartTime);
+            if (date.getTime() - dateB.getTime() < 10 * 60 * 1000) {
+                Toast.makeText(this, R.string.sleep_report_fail, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (Exception exc) {
+
+        }
+
         List<String> arrayList = SleepAndGetupTimeManager.times.get(sleepEndTime.substring(0, 10));
         if (arrayList == null) {
             arrayList = new ArrayList<>();
