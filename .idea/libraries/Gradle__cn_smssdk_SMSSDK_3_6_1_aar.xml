@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: cn.smssdk:SMSSDK:3.6.1@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9895f9093a72ff41e0e1c68aad60acb2/jetified-SMSSDK-3.6.1/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9895f9093a72ff41e0e1c68aad60acb2/jetified-SMSSDK-3.6.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9895f9093a72ff41e0e1c68aad60acb2/jetified-SMSSDK-3.6.1/res" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/9895f9093a72ff41e0e1c68aad60acb2/jetified-SMSSDK-3.6.1/jars/libs/SMSSDK-3.6.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5a20efb286b7e9e45c8b19130a998762/jetified-SMSSDK-3.6.1/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5a20efb286b7e9e45c8b19130a998762/jetified-SMSSDK-3.6.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5a20efb286b7e9e45c8b19130a998762/jetified-SMSSDK-3.6.1/res" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/5a20efb286b7e9e45c8b19130a998762/jetified-SMSSDK-3.6.1/jars/libs/SMSSDK-3.6.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

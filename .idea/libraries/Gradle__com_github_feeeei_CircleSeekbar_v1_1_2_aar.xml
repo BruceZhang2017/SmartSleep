@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.feeeei:CircleSeekbar:v1.1.2@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/66b24d37196c6f3c4a2b83c5df6aae19/jetified-CircleSeekbar-v1.1.2/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/66b24d37196c6f3c4a2b83c5df6aae19/jetified-CircleSeekbar-v1.1.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/66b24d37196c6f3c4a2b83c5df6aae19/jetified-CircleSeekbar-v1.1.2/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/07673144d0dfe25600b617765fdfafb3/jetified-CircleSeekbar-v1.1.2/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/07673144d0dfe25600b617765fdfafb3/jetified-CircleSeekbar-v1.1.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/07673144d0dfe25600b617765fdfafb3/jetified-CircleSeekbar-v1.1.2/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

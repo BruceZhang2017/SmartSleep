@@ -82,6 +82,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
+
 public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageChangeListener { // 日报告
     private ImageButton ibLeftPre;
     private ImageButton ibRightNex;
@@ -89,7 +91,7 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
     ViewPager viewPager;
     IndicatorViewPager indicatorViewPager;
     private LayoutInflater inflate;
-    int total = 0;
+    List<String> titleList = new ArrayList<>();
     int current = 0; // 当前的位置
     MyAdapter adapter;
 
@@ -110,7 +112,7 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         inflate = LayoutInflater.from(getApplicationContext());
         adapter = new MyAdapter(getChildFragmentManager());
         indicatorViewPager.setAdapter(adapter);
-        current = total > 0 ? total - 1 : 0;
+        current = titleList.size() > 0 ? titleList.size() - 1 : 0;
         if (current > 0) {
             viewPager.setCurrentItem(current, true); // 滑动到指定位置
         }
@@ -139,10 +141,13 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
             }
         });
         readSleepAndGetupData(); // 读取睡觉和起床信息
-        if (total == 0) {
+        if (titleList.size() == 0) {
             ibLeftPre.setVisibility(View.INVISIBLE);
             ibRightNex.setVisibility(View.INVISIBLE);
             tvSimulationData.setText(currentDate(System.currentTimeMillis()));
+        } else if (titleList.size() == 1) {
+            ibLeftPre.setVisibility(View.INVISIBLE);
+            ibRightNex.setVisibility(View.INVISIBLE);
         } else {
             ibRightNex.setVisibility(View.INVISIBLE);
         }
@@ -156,7 +161,7 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
 
         @Override
         public int getCount() {
-            return Math.max(1, total);
+            return Math.max(1, titleList.size());
         }
 
         @Override
@@ -171,19 +176,10 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         public Fragment getFragmentForPage(int position) {
             String sleepTime = "";
             String getupTime = "";
-            int count = 0;
-            String[] days = SleepAndGetupTimeManager.times.keySet().toArray(new String[0]);
-            Arrays.sort(days);
-            for (String day: days) {
-                List<String> items = SleepAndGetupTimeManager.times.get(day);
-                for (String item: items) {
-                    if (position == count) {
-                        sleepTime = item.split("&")[0];
-                        getupTime = item.split("&")[1];
-                        return new ReportDayItemFragment(sleepTime, getupTime);
-                    }
-                    count += 1;
-                }
+            if (position < titleList.size()) {
+                String item = titleList.get(position);
+                sleepTime = item.split("&")[0];
+                getupTime = item.split("&")[1];
             }
             return new ReportDayItemFragment(sleepTime, getupTime);
         }
@@ -191,23 +187,15 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
     }
 
     private String[] getSleepAndGetupTime(int position) {
+        if (titleList.size() == 0) {
+            return new String[0];
+        }
         String sleepTime = "";
         String getupTime = "";
-        int count = 0;
-        String[] days = SleepAndGetupTimeManager.times.keySet().toArray(new String[0]);
-        Arrays.sort(days);
-        for (String day: days) {
-            List<String> items = SleepAndGetupTimeManager.times.get(day);
-            for (String item: items) {
-                if (position == count) {
-                    sleepTime = item.split("&")[0];
-                    getupTime = item.split("&")[1];
-                    return new String[]{sleepTime, getupTime};
-                }
-                count += 1;
-            }
-        }
-        return new String[0];
+        String item = titleList.get(position);
+        sleepTime = item.split("&")[0];
+        getupTime = item.split("&")[1];
+        return new String[]{sleepTime, getupTime};
     }
 
     private void refreshDateTimeData(String sleepTime, String getupTime) {
@@ -253,7 +241,7 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
     };
 
     private void calSleepAndGetup() {
-        total = 0;
+        titleList.clear();
         if (SleepAndGetupTimeManager.times.size() == 0) {
             return;
         }
@@ -261,7 +249,7 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         Arrays.sort(days);
         for (String day: days) {
             List<String> items = SleepAndGetupTimeManager.times.get(day);
-            total += items.size();
+            titleList.addAll(items);
         }
     }
 
@@ -270,8 +258,8 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         if (SleepAndGetupTimeManager.times.size() == 0) {
             return;
         }
-        if (total > 0) {
-            String[] array = getSleepAndGetupTime(total - 1);
+        if (titleList.size() > 0) {
+            String[] array = getSleepAndGetupTime(titleList.size() - 1);
             if (array != null && array.length > 0) {
                 refreshDateTimeData(array[0], array[1]);
             }
@@ -298,7 +286,7 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         }
         current += 1;
         viewPager.setCurrentItem(current, true);
-        if (current + 1 == total) {
+        if (current + 1 == titleList.size()) {
             ibRightNex.setVisibility(View.INVISIBLE);
             ibLeftPre.setVisibility(View.VISIBLE);
         } else {
@@ -306,51 +294,33 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         }
     }
 
-//    private void currentSleepAndGetupData(String day) {
-//        if (SleepAndGetupTimeManager.times.size() == 0) {
-//            return;
-//        }
-//        String[] days = SleepAndGetupTimeManager.times.keySet().toArray(new String[0]);
-//        Arrays.sort(days);
-//        int j = -1;
-//        for (int i = 0; i < days.length; i++) {
-//            if (day.equals(days[i])) {
-//                j = i;
-//                break;
-//            }
-//        }
-//        if (j < 0) {
-//            Toast.makeText(getActivity(), R.string.current_date_no_date, Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        cursor[0] = j;
-//        List<String> items = SleepAndGetupTimeManager.times.get(days[cursor[0]]);
-//        Collections.sort(items);
-//        cursor[1] = items.size() - 1;
-//        String duration = items.get(cursor[1]);
-//        String sleepTime = duration.split("&")[0];
-//        String getupTime = duration.split("&")[1];
-//        refreshDateTimeData(sleepTime, getupTime);
-//    }
-
     @Override
     public void onPageSelected(int position) {
         System.out.println("onPageSelected " + position);
         current = position;
-        String[] array = getSleepAndGetupTime(position);
+        String[] array = getSleepAndGetupTime(current);
         if (array != null && array.length > 0) {
             refreshDateTimeData(array[0], array[1]);
         }
-        if (total > 0) {
+        if (titleList.size() > 0) {
             if (current == 0) {
                 ibLeftPre.setVisibility(View.INVISIBLE);
                 ibRightNex.setVisibility(View.VISIBLE);
-            } else if (current + 1 == total) {
+            } else if (current + 1 == titleList.size()) {
                 ibLeftPre.setVisibility(View.VISIBLE);
                 ibRightNex.setVisibility(View.INVISIBLE);
             } else {
                 ibLeftPre.setVisibility(View.VISIBLE);
                 ibRightNex.setVisibility(View.VISIBLE);
+            }
+            ReportDayItemFragment fra = (ReportDayItemFragment)adapter.getCurrentFragment();
+            if (fra != null && fra.mlist.size() == 0) {
+                System.out.println("刷新代码需要执行");
+                String[] arr = getSleepAndGetupTime(current);
+                if (arr != null && arr.length == 2) {
+                    fra.refreshTime(arr[0], arr[1]);
+                }
+                fra.refreshDayReport();
             }
         }
     }
@@ -362,7 +332,38 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        System.out.println("onPageScrollStateChanged " + state);
+        if (state == SCROLL_STATE_IDLE) {
+            int c = viewPager.getCurrentItem();
+            if (c != current) {
+                System.out.println("onPageScrollStateChanged " + state);
+                current = c;
+                String[] array = getSleepAndGetupTime(current);
+                if (array != null && array.length > 0) {
+                    refreshDateTimeData(array[0], array[1]);
+                }
+                if (titleList.size() > 0) {
+                    if (current == 0) {
+                        ibLeftPre.setVisibility(View.INVISIBLE);
+                        ibRightNex.setVisibility(View.VISIBLE);
+                    } else if (current + 1 == titleList.size()) {
+                        ibLeftPre.setVisibility(View.VISIBLE);
+                        ibRightNex.setVisibility(View.INVISIBLE);
+                    } else {
+                        ibLeftPre.setVisibility(View.VISIBLE);
+                        ibRightNex.setVisibility(View.VISIBLE);
+                    }
+                    ReportDayItemFragment fra = (ReportDayItemFragment)adapter.getCurrentFragment();
+                    if (fra != null && fra.mlist.size() == 0) {
+                        System.out.println("刷新代码需要执行");
+                        String[] arr = getSleepAndGetupTime(current);
+                        if (arr != null && arr.length == 2) {
+                            fra.refreshTime(arr[0], arr[1]);
+                        }
+                        fra.refreshDayReport();
+                    }
+                }
+            }
+         }
     }
 
     public void refreshDayReport() {
@@ -371,13 +372,21 @@ public class ReportDayFragment extends LazyFragment implements ViewPager.OnPageC
         }
         calSleepAndGetup();
         adapter.notifyDataSetChanged();
-        current = total > 0 ? total - 1 : 0;
+
+        current = titleList.size() > 0 ? titleList.size() - 1 : 0;
         if (viewPager == null) {
             return;
         }
-        if (total > 0) {
-            viewPager.setCurrentItem(current, true); // 滑动到指定位置
+        if (titleList.size() > 0) {
+            System.out.println("刷新界面和曲线内容: " + titleList.size());
+            viewPager.setCurrentItem(current, false); // 滑动到指定位置
             ibRightNex.setVisibility(View.INVISIBLE);
+        }
+        if (titleList.size() > 0) {
+            ReportDayItemFragment fra = (ReportDayItemFragment)adapter.getCurrentFragment();
+            if (fra != null) {
+                fra.refreshDayReport();
+            }
         }
     }
 }

@@ -97,6 +97,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     private ViewPager viewPager;
     private FixedIndicatorView indicator;
+    boolean bConnected = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -385,7 +386,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
             String value = DeviceInfoManager.getInstance().hashMap.get(mac);
             if (value != null) {
                 String[] array = value.split("-");
-                if (array != null && array.length >= 2) {
+                if (array != null && array.length >= 2 && bConnected) {
                     tvTemprature.setText(array[0] + "℃");
                     tvHumdity.setText(array[1] + "%");
                 }
@@ -573,6 +574,7 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                     }
                 }
             });
+            bConnected = false;
             if (type == 3) {
                 ivBluetooth.setVisibility(View.INVISIBLE);
                 tvDisconnectTip.setVisibility(View.INVISIBLE);
@@ -585,11 +587,13 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
                         removeShineAnimation(ivBluetooth);
                         tvBattery.setText("0%");
                         refreshTempratureAndHumdity(0, 0); // 刷新温度和湿度
+                        ivBatteryValue.setVisibility(View.INVISIBLE);
                     } else {
                         tvDisconnectTip.setVisibility(View.INVISIBLE);
                         if (((DeviceManager.getInstance().connectedCurrentDevice >> position) & 0x01) > 0) {
                             ivBluetooth.setImageResource(R.mipmap.bluetooth2);
                             removeShineAnimation(ivBluetooth);
+                            bConnected = true;
                         } else {
                             ivBluetooth.setImageResource(R.mipmap.bluetooth1);
                             addShineAnimation(ivBluetooth);
@@ -781,6 +785,11 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
 
     // 刷新温度和湿度
     public void refreshTempratureAndHumdity(float temprature, float humdity) {
+        if (!bConnected) {
+            tvTemprature.setText("0℃");
+            tvHumdity.setText("0%");
+            return;
+        }
         if (tvTemprature != null) {
             tvTemprature.setText(temprature + "℃");
         }
@@ -795,10 +804,16 @@ public class HomePageFragment extends BasicFunctions implements View.OnClickList
         for (int i = 0; i < DeviceManager.getInstance().deviceList.size(); i++) {
             if (DeviceManager.getInstance().deviceList.get(i).getMac().equals(mac)) {
                 if (connectState >= 3) {
-                    DeviceManager.getInstance().scaningCurrentDevice = (((DeviceManager.getInstance().scaningCurrentDevice >> (i + 1)) << 1) + (connectState == 4 ? 1 : 0)) << i;
+                    int value = (DeviceManager.getInstance().scaningCurrentDevice >> (i + 1));
+                    DeviceManager.getInstance().scaningCurrentDevice = ((value << 1) + (connectState == 4 ? 1 : 0)) << i;
                     System.out.println("scaningCurrentDevice：" + DeviceManager.getInstance().scaningCurrentDevice);
                 } else {
-                    DeviceManager.getInstance().connectedCurrentDevice = (((DeviceManager.getInstance().connectedCurrentDevice >> (i + 1)) << 1) + (connectState == 1 ? 1 : 0)) << i;
+                    if (connectState == 1) {
+                        int value = (DeviceManager.getInstance().scaningCurrentDevice >> (i + 1));
+                        DeviceManager.getInstance().scaningCurrentDevice = ((value << 1) + 0) << i;
+                    }
+                    int value = (DeviceManager.getInstance().connectedCurrentDevice >> (i + 1));
+                    DeviceManager.getInstance().connectedCurrentDevice = ((value << 1) + (connectState == 1 ? 1 : 0)) << i;
                     System.out.println("connectedCurrentDevice：" + DeviceManager.getInstance().connectedCurrentDevice);
                 }
                 adapter.notifyDataSetChanged();

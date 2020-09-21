@@ -8,6 +8,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 
 import com.ansen.http.entity.HttpConfig;
 import com.ansen.http.net.HTTPCaller;
@@ -130,7 +132,7 @@ public class YMApplication extends Application {
         downloadSleepAndGetupTime();
         LogcatHelper.getInstance(this).start();
         SleepDataUploadManager uploadManager = new SleepDataUploadManager();
-        uploadManager.uploadSleepData();
+        uploadManager.uploadSleepData(true);
 
         SleepAndGetupTimeManager.getHashMapData();
         initNotificationChannels();
@@ -139,6 +141,34 @@ public class YMApplication extends Application {
     public static Context getContext() {
         return instante;
     }
+
+    public void uploadDataToCloud() {
+        new Thread(new Runnable(){
+            public void run(){
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Message msg = new Message();
+                msg.arg1 = 1;
+                handler.sendMessage(msg);
+            }
+
+        }).start();
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.arg1) {
+                case 1:
+                    SleepDataUploadManager uploadManager = new SleepDataUploadManager();
+                    uploadManager.uploadSleepData(false);
+            }
+
+        }
+    };
 
     private void initialOKHttp3() {
         HttpConfig httpConfig=new HttpConfig();

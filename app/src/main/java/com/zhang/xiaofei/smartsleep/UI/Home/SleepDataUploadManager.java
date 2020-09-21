@@ -45,7 +45,7 @@ import okhttp3.Response;
 public class SleepDataUploadManager {
 
     // 向服务器上报睡眠数据
-    public void uploadSleepData() {
+    public void uploadSleepData(boolean bNeedDownload) {
         boolean value = CacheUtil.getInstance(YMApplication.getContext()).getBool("SyncData");
         if (!value) {
             return;
@@ -54,7 +54,7 @@ public class SleepDataUploadManager {
             @Override
             public void run() {
                 System.out.println("将本地数据与服务器端数据同步");
-                readDataFromDB();
+                readDataFromDB(bNeedDownload);
             }
         }).start();
     }
@@ -114,7 +114,7 @@ public class SleepDataUploadManager {
     }
 
     // 从数据库中读取数据
-    private void readDataFromDB() {
+    public void readDataFromDB(boolean bNeedDownload) {
         Realm mRealm = Realm.getDefaultInstance();
         YMUserInfoManager userInfoManager = new YMUserInfoManager(YMApplication.getContext());
         UserModel userModel = userInfoManager.loadUserInfo();
@@ -131,7 +131,9 @@ public class SleepDataUploadManager {
         }
         int deviceId = deviceList.get(0).getId();
         String serial = deviceList.get(0).getDeviceSerial();
-        downloadSleepDataFromCloud(serial); // 将该需要的数据下载下来
+        if (bNeedDownload) {
+            downloadSleepDataFromCloud(serial); // 将该需要的数据下载下来
+        }
         RealmResults<RecordModel> list = mRealm.where(RecordModel.class)
                 .equalTo("isSyncCloud", false)
                 .equalTo("deviceId", deviceId)

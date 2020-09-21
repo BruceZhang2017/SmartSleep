@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.mob:MobGuard:1.0.8@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/c6c60bc349f1d561343139c283d88d46/jetified-MobGuard-1.0.8/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/c6c60bc349f1d561343139c283d88d46/jetified-MobGuard-1.0.8/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/c6c60bc349f1d561343139c283d88d46/jetified-MobGuard-1.0.8/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3123acb7c206255cd4868f8cf62c7f13/jetified-MobGuard-1.0.8/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3123acb7c206255cd4868f8cf62c7f13/jetified-MobGuard-1.0.8/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/3123acb7c206255cd4868f8cf62c7f13/jetified-MobGuard-1.0.8/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

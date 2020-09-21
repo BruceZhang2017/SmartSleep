@@ -14,11 +14,14 @@ import com.zhang.xiaofei.smartsleep.Kit.AndroidWorkaround;
 import com.zhang.xiaofei.smartsleep.Kit.Language.LanguageUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.Kit.Statusbar.StatusBarTrunsparent;
+import com.zhang.xiaofei.smartsleep.R;
 import com.zhang.xiaofei.smartsleep.YMApplication;
 
 public class BaseAppActivity extends AppCompatActivity {
 
     public KProgressHUD hud;
+    public int duration = 500;
+    public int currentProgress = 0;
 
     public boolean environmentForStore() { // 设置标识符 true or false
         return false;
@@ -48,20 +51,19 @@ public class BaseAppActivity extends AppCompatActivity {
     public void showProgressBarHUDAndHide() {
         hud = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.BAR_DETERMINATE)
-                .setLabel("Please wait");
+                .setLabel(getResources().getString(R.string.progress_wait));
         hud.setMaxProgress(100);
 
         hudHandler.postDelayed(new Runnable() {
-            int currentProgress;
             @Override
             public void run() {
                 currentProgress += 1;
                 hud.setProgress(currentProgress);
                 if (currentProgress == 80) {
-                    hud.setLabel("Almost finish...");
+                    hud.setLabel(getResources().getString(R.string.progress_will_finish));
                 }
                 if (currentProgress < 100) {
-                    hudHandler.postDelayed(this, 50);
+                    hudHandler.postDelayed(this, duration);
                 }
             }
         }, 100);

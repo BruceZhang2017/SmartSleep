@@ -859,7 +859,7 @@ public class ReportFragment extends Fragment implements CalendarView.OnCalendarR
 						CacheUtil.getInstance(getContext()).putBool("SyncData", true);
 						YMApplication.getInstance().downloadSleepAndGetupTime();
 						SleepDataUploadManager uploadManager = new SleepDataUploadManager();
-						uploadManager.uploadSleepData();
+						uploadManager.uploadSleepData(true);
 					}
 				}).
 				// 设置取消按钮,null是什么都不做

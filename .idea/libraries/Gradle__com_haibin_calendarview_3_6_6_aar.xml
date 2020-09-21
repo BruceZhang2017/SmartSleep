@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.haibin:calendarview:3.6.6@aar">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/bd7fe5f54bad56aff1107176119703c5/jetified-calendarview-3.6.6/AndroidManifest.xml" />
-      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/bd7fe5f54bad56aff1107176119703c5/jetified-calendarview-3.6.6/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/bd7fe5f54bad56aff1107176119703c5/jetified-calendarview-3.6.6/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/be7868620b0d2797e97f85a24aa28d54/jetified-calendarview-3.6.6/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/be7868620b0d2797e97f85a24aa28d54/jetified-calendarview-3.6.6/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/be7868620b0d2797e97f85a24aa28d54/jetified-calendarview-3.6.6/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/com.haibin/calendarview/3.6.6/1728ff86b13992278929af453fdc1c3124b7d69b/calendarview-3.6.6-javadoc.jar!/" />

@@ -954,6 +954,9 @@ public class HomeActivity extends BaseAppActivity implements BadgeDismissListene
                     if (mTab2 != null) {
                         mTab2.refreshDayReport();
                     }
+                    if (currentProgress > 0 && currentProgress < 100) {
+                        duration = 100;
+                    }
                 } else if (arg0 == 18) { // 向历史数据
                     handleBLEWrite(1);
                 } else if (arg0 == 19) {

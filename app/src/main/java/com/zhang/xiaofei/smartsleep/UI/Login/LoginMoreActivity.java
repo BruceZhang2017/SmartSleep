@@ -44,6 +44,7 @@ import com.lzy.imagepicker.view.CropImageView;
 import com.zhang.xiaofei.smartsleep.Kit.AndroidWorkaround;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
 import com.zhang.xiaofei.smartsleep.Kit.ImagePicker.PicassoImageLoader;
+import com.zhang.xiaofei.smartsleep.Kit.Language.SpUtil;
 import com.zhang.xiaofei.smartsleep.Model.CardBean;
 import com.zhang.xiaofei.smartsleep.Model.Feedback.FeedbackItemModel;
 import com.zhang.xiaofei.smartsleep.Model.Feedback.FeedbackModel;
@@ -77,6 +78,11 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
     @BindView(R.id.tv_r) TextView btnSkip;
     @BindView(R.id.iv_head) ImageView ivHead;
     @BindView(R.id.tv_cardId) TextView tvID;
+    @BindView(R.id.tv_nickname)TextView tvNickNmae;
+    @BindView(R.id.tv_sex)TextView tvSex;
+    @BindView(R.id.tv_birthday)TextView tvBirthday;
+    @BindView(R.id.tv_height)TextView tvHeight;
+    @BindView(R.id.tv_weight) TextView tvWeight;
     private OptionsPickerView pvOptions;
     private ArrayList<CardBean> options1Items = new ArrayList<>();
     private OptionsPickerView HeightOptions;
@@ -183,6 +189,21 @@ public class LoginMoreActivity extends AppCompatActivity implements View.OnClick
         int iID = userModel.getUserInfo().getUserId();
         if (iID > 0) {
             tvID.setText("ID " + iID);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String language = SpUtil.getInstance(YMApplication.getContext()).getString(SpUtil.LANGUAGE);
+        if (language.equals("en") || language.contains("en")) {
+            tvNickNmae.setText("Nickname");
+            tvSex.setText("Sex");
+            tvBirthday.setText("Birth");
+            tvHeight.setText("Height");
+            tvWeight.setText("Weight");
+            btnNext.setText("Next");
+            btnSkip.setText(value > 0 ? "Save" : "Skip");
         }
     }
 

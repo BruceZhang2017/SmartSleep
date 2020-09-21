@@ -295,10 +295,10 @@ public class ReportMonthFragment extends LazyFragment {
                         int c1 = 0;
                         if (totalTime > 10 * 60 * 60) {
                             c1 = totalTime / 3600 - 10;
-                            grade = Math.max(93 - 3 * c1 - d3 - d4 - get, 40);
+                            grade = Math.max(93 - 3 * c1 - d3 - d4 - get, 20);
                         } else if (totalTime < 7 * 60 * 60) {
                             c1 = 7 - totalTime / 3600;
-                            grade = Math.max(88 - 8 * c1 - d3 - d4 - get, 40);
+                            grade = Math.max(88 - 8 * c1 - d3 - d4 - get, 30);
                         } else {
                             grade = Math.max(100 - d3 - d4 - get, 40);
                         }
@@ -310,6 +310,7 @@ public class ReportMonthFragment extends LazyFragment {
                             int value = sleepB + 30;
                             grade -= value / 10;
                         }
+                        System.out.println("打印计算的值周：" + grade + " " + c1 + " " + d3 + " " + d4 + " " + get);
 //                        grade -= array[8] / 3600 * 2;
 //                        grade -= array[9] / 3600 * 2;
                         score += grade;
@@ -324,7 +325,7 @@ public class ReportMonthFragment extends LazyFragment {
                     sleepTotalTime += (timeToLongB(getupTime) - timeToLongB(sleepTime)) / 60;
 
                 }
-                scores[j] = haveGradeCount > 0 ? score / haveGradeCount : 0;
+                scores[j] = haveGradeCount > 0 ? (score / haveGradeCount) : 0;
                 scores[j] = Math.min(100, scores[j]);
                 sleepOneDayTimes[j] = deepSleep;
             } else {
@@ -442,9 +443,6 @@ public class ReportMonthFragment extends LazyFragment {
             if (sleepOneDayTimes[i] > 0) {
                 values.add(new Entry(i, sleepOneDayTimes[i] / 60));
             }
-        }
-        if (values.size() == 0) {
-            return;
         }
         System.out.println("当前月数据：" + values.size() + " day:" + days);
         if (bChart) {

@@ -519,6 +519,7 @@ public class HelpSleepActivity extends BaseAppActivity implements View.OnClickLi
         SleepAndGetupTimeManager.times.put(sleepEndTime.substring(0, 10), arrayList);
         SleepAndGetupTimeManager.putHashMapData();
         upSleepAndGetupTime(sleepStartTime + ":00", sleepEndTime + ":00");
+        YMApplication.getInstance().uploadDataToCloud();
     }
 
     // 读取离床、心率和呼吸率

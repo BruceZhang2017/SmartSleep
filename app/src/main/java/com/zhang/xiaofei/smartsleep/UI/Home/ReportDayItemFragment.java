@@ -147,6 +147,11 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
         }
     }
 
+    public void refreshTime(String sleepTime, String getupTime) {
+        this.sleepTime = sleepTime;
+        this.getupTime = getupTime;
+    }
+
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.layout_preview, container, false);
@@ -503,7 +508,10 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
         int total = 0;
         int getup = hourMinuteToInt(getupTime);
         int sleep = hourMinuteToInt(sleepTime);
-        System.out.println("第" + sleep + " " + getup);
+        if (sleep > getup) {
+            sleep = -24 * 60 + sleep;
+        }
+        System.out.println("睡觉时间和起床时间：" + sleep + " " + getup);
         for (RecordModel model: mlist) {
             int t = hourMinuteToInt(timeToDate(model.getTime()));
             if (t > getup) {
@@ -1131,6 +1139,7 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
             chart1Values.clear();
         }
         setValue1.clear();
+        int getupT = hourMinuteToInt(getupTime);
         if (mlist.size() > 0) {
             int deepSleep = 0;
             int middleSleep = 0;
@@ -1158,6 +1167,9 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                 int b = model.getBodyMotion(); // 体动
                 if (a == 0) { // 离床，清醒
                     int time = hourMinuteToInt(timeToDate(model.getTime()));
+                    if (time > getupT) {
+                        time = -24 * 60 + time;
+                    }
                     if (!setValue1.contains(time)) {
                         chart1Values.add(new Entry(time,4));
                         setValue1.add(time);
@@ -1171,12 +1183,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                 }
                 if (model.getTime() - startTime >= 60 && bodyMotionCount >= 5) {
                     int time2 = hourMinuteToInt(timeToDate(startTime));
+                    if (time2 > getupT) {
+                        time2 = -24 * 60 + time2;
+                    }
                     if (!setValue1.contains(time2)) {
                         chart1Values.add(new Entry(time2,3));
                         setValue1.add(time2);
                     }
 
                     int time = hourMinuteToInt(timeToDate(model.getTime()));
+                    if (time > getupT) {
+                        time = -24 * 60 + time;
+                    }
                     if (!setValue1.contains(time)) {
                         chart1Values.add(new Entry(time,3));
                         setValue1.add(time);
@@ -1188,12 +1206,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                 }
                 if (model.getTime() - startTime >= 3 * 60 && bodyMotionCount > 0) {
                     int time2 = hourMinuteToInt(timeToDate(startTime));
+                    if (time2 > getupT) {
+                        time2 = -24 * 60 + time2;
+                    }
                     if (!setValue1.contains(time2)) {
                         chart1Values.add(new Entry(time2,2));
                         setValue1.add(time2);
                     }
 
                     int time = hourMinuteToInt(timeToDate(model.getTime()));
+                    if (time > getupT) {
+                        time = -24 * 60 + time;
+                    }
                     if (!setValue1.contains(time)) {
                         chart1Values.add(new Entry(time,2));
                         setValue1.add(time);
@@ -1207,12 +1231,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                     if (bodyMotionCount > 2) {
                         middleSleep += model.getTime() - startTime;
                         int time2 = hourMinuteToInt(timeToDate(startTime));
+                        if (time2 > getupT) {
+                            time2 = -24 * 60 + time2;
+                        }
                         if (!setValue1.contains(time2)) {
                             chart1Values.add(new Entry(time2,2));
                             setValue1.add(time2);
                         }
 
                         int time = hourMinuteToInt(timeToDate(model.getTime()));
+                        if (time > getupT) {
+                            time = -24 * 60 + time;
+                        }
                         if (!setValue1.contains(time)) {
                             chart1Values.add(new Entry(time,2));
                             setValue1.add(time);
@@ -1221,12 +1251,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                     } else {
                         deepSleep += model.getTime() - startTime;
                         int time2 = hourMinuteToInt(timeToDate(startTime));
+                        if (time2 > getupT) {
+                            time2 = -24 * 60 + time2;
+                        }
                         if (!setValue1.contains(time2)) {
                             chart1Values.add(new Entry(time2,1));
                             setValue1.add(time2);
                         }
 
                         int time = hourMinuteToInt(timeToDate(model.getTime()));
+                        if (time > getupT) {
+                            time = -24 * 60 + time;
+                        }
                         if (!setValue1.contains(time)) {
                             chart1Values.add(new Entry(time,1));
                             setValue1.add(time);
@@ -1241,12 +1277,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                         if (bodyMotionCount > 5) {
                             cheapSleep += model.getTime() - startTime;
                             int time2 = hourMinuteToInt(timeToDate(startTime));
+                            if (time2 > getupT) {
+                                time2 = -24 * 60 + time2;
+                            }
                             if (!setValue1.contains(time2)) {
                                 chart1Values.add(new Entry(time2,4));
                                 setValue1.add(time2);
                             }
 
                             int time = hourMinuteToInt(timeToDate(model.getTime()));
+                            if (time > getupT) {
+                                time = -24 * 60 + time;
+                            }
                             if (!setValue1.contains(time)) {
                                 chart1Values.add(new Entry(time,4));
                                 setValue1.add(time);
@@ -1254,12 +1296,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                         }else if (bodyMotionCount > 0) {
                             middleSleep += model.getTime() - startTime;
                             int time2 = hourMinuteToInt(timeToDate(startTime));
+                            if (time2 > getupT) {
+                                time2 = -24 * 60 + time2;
+                            }
                             if (!setValue1.contains(time2)) {
                                 chart1Values.add(new Entry(time2,3));
                                 setValue1.add(time2);
                             }
 
                             int time = hourMinuteToInt(timeToDate(model.getTime()));
+                            if (time > getupT) {
+                                time = -24 * 60 + time;
+                            }
                             if (!setValue1.contains(time)) {
                                 chart1Values.add(new Entry(time,3));
                                 setValue1.add(time);
@@ -1267,12 +1315,18 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                         } else {
                             deepSleep += model.getTime() - startTime;
                             int time2 = hourMinuteToInt(timeToDate(startTime));
+                            if (time2 > getupT) {
+                                time2 = -24 * 60 + time2;
+                            }
                             if (!setValue1.contains(time2)) {
                                 chart1Values.add(new Entry(time2,2));
                                 setValue1.add(time2);
                             }
 
                             int time = hourMinuteToInt(timeToDate(model.getTime()));
+                            if (time > getupT) {
+                                time = -24 * 60 + time;
+                            }
                             if (!setValue1.contains(time)) {
                                 chart1Values.add(new Entry(time,2));
                                 setValue1.add(time);
@@ -1288,6 +1342,9 @@ public class ReportDayItemFragment extends LazyFragment { // 日报告
                 Collections.sort(chart1Values, comparatorByX);
                 int sleep = hourMinuteToInt(sleepTime);
                 int getupB = hourMinuteToInt(getupTime);
+                if (sleep > getupB) {
+                    sleep = -24 * 60 + sleep;
+                }
                 if (chart1Values.get(0).getX() > sleep) {
                     chart1Values.add(0, new Entry(chart1Values.get(0).getX() - 1, 4));
                     chart1Values.add(0, new Entry(sleep, 4));

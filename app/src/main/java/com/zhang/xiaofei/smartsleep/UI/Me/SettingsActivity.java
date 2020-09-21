@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.zhang.xiaofei.smartsleep.Kit.DB.CacheUtil;
 import com.zhang.xiaofei.smartsleep.Kit.DB.YMUserInfoManager;
+import com.zhang.xiaofei.smartsleep.Model.Device.DeviceManager;
 import com.zhang.xiaofei.smartsleep.Model.Device.DeviceModel;
 import com.zhang.xiaofei.smartsleep.Model.Record.RecordModel;
 import com.zhang.xiaofei.smartsleep.R;
@@ -72,6 +73,9 @@ public class SettingsActivity extends BaseAppActivity {
                 YMUserInfoManager userInfoManager = new YMUserInfoManager(SettingsActivity.this);
                 userInfoManager.clearUserInfo();
                 SleepAndGetupTimeManager.clearHashMapData(); // 清空时间记录
+                DeviceManager.getInstance().scaningCurrentDevice = 0;
+                DeviceManager.getInstance().connectedCurrentDevice = 0;
+                YMApplication.getInstance().deviceBatteryMap.clear();
                 RealmResults<DeviceModel> devices = Realm.getDefaultInstance().where(DeviceModel.class).findAll();
                 if (devices != null && devices.size() > 0) {
                     Realm.getDefaultInstance().executeTransaction(new Realm.Transaction() {

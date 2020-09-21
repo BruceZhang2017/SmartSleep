@@ -439,19 +439,19 @@ public class ReportWeekFragment extends LazyFragment {
             public String getFormattedValue(float value) {
                 switch ((int)value) {
                     case 1:
-                        return getResources().getString(R.string.middle_mon);
-                    case 2:
-                        return getResources().getString(R.string.middle_tue);
-                    case 3:
-                        return getResources().getString(R.string.middle_wed);
-                    case 4:
-                        return getResources().getString(R.string.middle_thu);
-                    case 5:
-                        return getResources().getString(R.string.middle_fri);
-                    case 6:
-                        return getResources().getString(R.string.middle_sat);
-                    case 7:
                         return getResources().getString(R.string.middle_sun);
+                    case 2:
+                        return getResources().getString(R.string.middle_mon);
+                    case 3:
+                        return getResources().getString(R.string.middle_tue);
+                    case 4:
+                        return getResources().getString(R.string.middle_wed);
+                    case 5:
+                        return getResources().getString(R.string.middle_thu);
+                    case 6:
+                        return getResources().getString(R.string.middle_fri);
+                    case 7:
+                        return getResources().getString(R.string.middle_sat);
                     default:
                         return "";
 
@@ -499,7 +499,7 @@ public class ReportWeekFragment extends LazyFragment {
             for (int i = 0; i < scores.length; i++) {
                 if (scores[i] > 0) {
                     value = scores[i];
-                    set1values.add(new Entry(i,scores[i]));
+                    set1values.add(new Entry(i + 1,scores[i]));
                 }
             }
             System.out.println("获取到数据的数量为：" + set1values.size() + " " + value);
@@ -593,19 +593,19 @@ public class ReportWeekFragment extends LazyFragment {
             public String getFormattedValue(float value) {
                 switch ((int)value) {
                     case 1:
-                        return getResources().getString(R.string.middle_mon);
-                    case 2:
-                        return getResources().getString(R.string.middle_tue);
-                    case 3:
-                        return getResources().getString(R.string.middle_wed);
-                    case 4:
-                        return getResources().getString(R.string.middle_thu);
-                    case 5:
-                        return getResources().getString(R.string.middle_fri);
-                    case 6:
-                        return getResources().getString(R.string.middle_sat);
-                    case 7:
                         return getResources().getString(R.string.middle_sun);
+                    case 2:
+                        return getResources().getString(R.string.middle_mon);
+                    case 3:
+                        return getResources().getString(R.string.middle_tue);
+                    case 4:
+                        return getResources().getString(R.string.middle_wed);
+                    case 5:
+                        return getResources().getString(R.string.middle_thu);
+                    case 6:
+                        return getResources().getString(R.string.middle_fri);
+                    case 7:
+                        return getResources().getString(R.string.middle_sat);
                     default:
                         return "";
 
@@ -647,7 +647,7 @@ public class ReportWeekFragment extends LazyFragment {
 
         for (int i = 0; i < sleepOneDayTimes.length; i++) {
             if (sleepOneDayTimes[i] > 0) {
-                values.add(new Entry(i, sleepOneDayTimes[i] / 60));
+                values.add(new Entry(i + 1, sleepOneDayTimes[i] / 60));
             }
         }
 
